@@ -1,5 +1,7 @@
 package net.wohlfart.gl;
 
+import java.text.DecimalFormat;
+
 import net.wohlfart.tools.Quaternion;
 import net.wohlfart.tools.SimpleMath;
 
@@ -42,7 +44,7 @@ public class Camera implements CanRotate {
 	public Vector3f getDir(final Vector3f result) {
 		result.x = 2f * (q.x * q.z + q.w * q.y);
 		result.y = 2f * (q.y * q.z - q.w * q.x);
-		result.z = (1f - 2f * ( q.x * q.x - q.y * q.y));
+		result.z = (1f - 2f * ( q.x * q.x + q.y * q.y));
 		return result.normalise(new Vector3f());
 	}
 
@@ -106,17 +108,21 @@ public class Camera implements CanRotate {
 
 
 	public String toString() {
+
+		Vector3f up = getUp(new Vector3f());
+		Vector3f dir = getDir(new Vector3f());
+		Vector3f rght = getRght(new Vector3f());
+
+
 		return ""
 				+ "Cam: [" + q.toString() + "] \n"
-				+ " up: " + getUp(new Vector3f()) + "\n"
-				+ " dir: " + getDir(new Vector3f()) + "\n"
-				+ " rght: " + getRght(new Vector3f()) + "\n"
+				+ " up: " + up + " size:" + Math.sqrt(up.x * up.x + up.y * up.y + up.z * up.z) + "\n"
+				+ " dir: " + dir + " size:" + Math.sqrt(dir.x * dir.x + dir.y * dir.y + dir.z * dir.z)  + "\n"
+				+ " rght: " + rght + " size:" + Math.sqrt(rght.x * rght.x + rght.y * rght.y + rght.z * rght.z)  + "\n"
 
-				+ " dot: up.dir" + Vector3f.dot(getUp(new Vector3f()), getDir(new Vector3f()))
-				+ " dot: up.rght" + Vector3f.dot(getUp(new Vector3f()), getRght(new Vector3f()))
-				+ " dot: dir.rght" + Vector3f.dot(getDir(new Vector3f()), getRght(new Vector3f()))
-
-
+				+ " dot: up.dir" + Vector3f.dot(up, dir)
+				+ " dot: up.rght" + Vector3f.dot(up, rght)
+				+ " dot: dir.rght" + Vector3f.dot(dir, rght)
 				;
 	}
 
