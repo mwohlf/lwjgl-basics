@@ -25,25 +25,25 @@ public class Camera implements CanRotate {
 	@Override
 	public Vector3f getRght(final Vector3f result) {
 		result.x = (1f - 2f * (q.y * q.y + q.z * q.z));
-		result.y = 2f * ( q.x * q.y + q.w * q.z);
-		result.z = 2f * ( q.x * q.z - q.w * q.y);
+		result.y = 2f * ( q.x * q.y - q.w * q.z);
+		result.z = 2f * ( q.x * q.z + q.w * q.y);
 		return result.normalise(new Vector3f());
 	}
 
 	// the (0,1,0) vector / Y axis
 	@Override
 	public Vector3f getUp(final Vector3f result) {
-		result.x = 2f * (q.x * q.y  - q.w * q.z);
+		result.x = 2f * (q.x * q.y  + q.w * q.z);
 		result.y = (1f - 2f * (q.z * q.z + q.x * q.x));
-		result.z = 2f * (q.y * q.z + q.w * q.x);
+		result.z = 2f * (q.y * q.z - q.w * q.x);
 		return result.normalise(new Vector3f());
 	}
 
 	// the (0,0,-1) vector / Z axis
 	@Override
 	public Vector3f getDir(final Vector3f result) {
-		result.x = 2f * (q.x * q.z + q.w * q.y);
-		result.y = 2f * (q.y * q.z - q.w * q.x);
+		result.x = 2f * (q.x * q.z - q.w * q.y);
+		result.y = 2f * (q.y * q.z + q.w * q.x);
 		result.z = (1f - 2f * ( q.x * q.x + q.y * q.y));
 		return result.normalise(new Vector3f());
 	}
