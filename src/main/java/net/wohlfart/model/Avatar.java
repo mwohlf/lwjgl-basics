@@ -58,8 +58,8 @@ public class Avatar {
 				if (evt.isLeftButtonPressed()) {
 					int dx = evt.getDx();
 					int dy = evt.getDy();
-					camera.rotate(-(float)dy/2000f, new Vector3f(1,0,0));
-					camera.rotate((float)dx/2000f, new Vector3f(0,1,0));
+					camera.rotate(-(float)dy/200f, new Vector3f(1,0,0));
+					camera.rotate((float)dx/200f, new Vector3f(0,1,0));
 				}
 			}
 		});
@@ -68,7 +68,14 @@ public class Avatar {
 			@Override
 			public void keyEvent(MouseWheelEvent evt) {
 				int wheel = evt.getWheel();
-				camera.rotate(-(float)wheel/2000f, new Vector3f(0,0,1));
+				// camera.rotate(-(float)wheel/2000f, new Vector3f(0,0,1));
+				Vector3f pos = scene.getPos();
+				Vector3f move = camera.getDir(new Vector3f());
+				move.x *= (float)wheel/10f;
+				move.y *= (float)wheel/10f;
+				move.z *= (float)wheel/10f;
+				Vector3f.sub(pos, move, pos);
+				scene.setPos(pos);
 			}
 		});
 
