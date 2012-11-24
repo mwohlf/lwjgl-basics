@@ -1,7 +1,5 @@
 package net.wohlfart.gl;
 
-import java.text.DecimalFormat;
-
 import net.wohlfart.tools.Quaternion;
 import net.wohlfart.tools.SimpleMath;
 
@@ -11,7 +9,9 @@ import org.lwjgl.util.vector.Vector3f;
 
 
 
-// To make a camera you typically use three vectors: Position, View, and Up
+// To make a camera you typically use three vectors: Position, View, and Up,
+// we derive view and up from the quaternion and keep the camera at the origin
+//
 // see: http://www.gamedev.net/page/resources/_/technical/math-and-physics/a-simple-quaternion-based-camera-r1997
 // see: http://code.google.com/p/jmonkeyengine/source/browse/branches/jme3/src/core/com/jme3/math/Quaternion.java?r=5231
 // see: http://introcs.cs.princeton.edu/java/32class/Quaternion.java.html
@@ -39,7 +39,7 @@ public class Camera implements CanRotate {
 		return result.normalise(new Vector3f());
 	}
 
-	// the (0,0,-1) vector / Z axis
+	// the (0,0,1) vector / Z axis
 	@Override
 	public Vector3f getDir(final Vector3f result) {
 		result.x = 2f * (q.x * q.z - q.w * q.y);
@@ -49,11 +49,9 @@ public class Camera implements CanRotate {
 	}
 
 
-
 	/**
-	 * @param angle rotation ange in rad
-	 * @param axis the axs for the rotation must be in the cam's coord system e.g. use
-	 *        (0,1,0)
+	 * @param angle rotation in rad
+	 * @param axis rotation axis, must be in the cam's coord system e.g. use (0,1,0)
 	 */
 	public void rotate(final float angle, final Vector3f axis){
 		axis.normalise();
@@ -69,8 +67,6 @@ public class Camera implements CanRotate {
 		rot.normalizeLocal();
 		q.set(rot);
 	}
-
-
 
 
 	public void lookThrough() {
@@ -94,25 +90,10 @@ public class Camera implements CanRotate {
 	}
 
 
-	float getPitch() {
-		return (float)Math.atan2(2*(q.y*q.z + q.w*q.x), q.w*q.w - q.x*q.x - q.y*q.y + q.z*q.z);
-	}
-
-	float getYaw() {
-		return (float)Math.asin(-2*(q.x*q.z - q.w*q.y));
-	}
-
-	float getRoll() {
-		return (float)Math.atan2(2*(q.x*q.y + q.w*q.z), q.w*q.w + q.x*q.x - q.y*q.y - q.z*q.z);
-	}
-
-
 	public String toString() {
-
 		Vector3f up = getUp(new Vector3f());
 		Vector3f dir = getDir(new Vector3f());
 		Vector3f rght = getRght(new Vector3f());
-
 
 		return ""
 				+ "Cam: [" + q.toString() + "] \n"
