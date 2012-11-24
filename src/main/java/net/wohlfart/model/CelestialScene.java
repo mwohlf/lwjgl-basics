@@ -17,9 +17,11 @@ public class CelestialScene implements CanMove {
 
 	public CelestialScene() {
 		//celestials.add(new Celestial(){{position.set(new Vector3f(0,0,-40f));}});
+		//addRandomPlanets(13);
+	}
 
-		// FIXME: this is ad-hoc init of a solar system remove in production...
-		final int planetCount = 13;
+
+	private void addRandomPlanets(final int planetCount) {
 		final Random random = new Random(1);
 		for (int i = 1; i <= planetCount; i++) {
 			final Celestial celestial = new Celestial(random.nextLong());

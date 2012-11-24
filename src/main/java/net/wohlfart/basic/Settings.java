@@ -37,5 +37,9 @@ public class Settings {
 	public float getZFar() {
 		return zFar;
 	}
+	public float getClearColor() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
 
 }

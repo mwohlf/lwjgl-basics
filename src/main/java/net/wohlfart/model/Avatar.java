@@ -48,7 +48,6 @@ public class Avatar {
 					camera.rotate(-speed, new Vector3f(0,0,1));//camera.getDir(new Vector3f()));
 					break;
 				}
-				System.out.println(camera.toString());
 			}
 		});
 
