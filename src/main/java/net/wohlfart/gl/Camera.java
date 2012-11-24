@@ -22,8 +22,7 @@ public class Camera implements CanRotate {
 	// the (1,0,0) vector / X axis
 	@Override
 	public Vector3f getRght(final Vector3f result) {
-		// C
-		result.x = 1f - 2f * (q.y * q.y + q.z * q.z);
+		result.x = (1f - 2f * (q.y * q.y + q.z * q.z));
 		result.y = 2f * ( q.x * q.y + q.w * q.z);
 		result.z = 2f * ( q.x * q.z - q.w * q.y);
 		return result.normalise(new Vector3f());
@@ -33,7 +32,7 @@ public class Camera implements CanRotate {
 	@Override
 	public Vector3f getUp(final Vector3f result) {
 		result.x = 2f * (q.x * q.y  - q.w * q.z);
-		result.y = 1f - 2f * (q.z * q.z + q.x * q.x);
+		result.y = (1f - 2f * (q.z * q.z + q.x * q.x));
 		result.z = 2f * (q.y * q.z + q.w * q.x);
 		return result.normalise(new Vector3f());
 	}
@@ -43,14 +42,17 @@ public class Camera implements CanRotate {
 	public Vector3f getDir(final Vector3f result) {
 		result.x = 2f * (q.x * q.z + q.w * q.y);
 		result.y = 2f * (q.y * q.z - q.w * q.x);
-		result.z = 1f - 2f * ( q.x * q.x - q.y * q.y);
+		result.z = (1f - 2f * ( q.x * q.x - q.y * q.y));
 		return result.normalise(new Vector3f());
 	}
 
 
 
-
-	// the rotation axis are in the cam local coord system
+	/**
+	 * @param angle rotation ange in rad
+	 * @param axis the axs for the rotation must be in the cam's coord system e.g. use
+	 *        (0,1,0)
+	 */
 	public void rotate(final float angle, final Vector3f axis){
 		axis.normalise();
 		Quaternion rot = new Quaternion();
