@@ -8,6 +8,9 @@ public class Settings {
 	protected int width = 800;
 	protected int height = 600;
 
+	protected float zNear = 1f;
+	protected float zFar = 100000f;
+
 
 	public int getWidth() {
 		return width;
@@ -26,6 +29,13 @@ public class Settings {
 	}
 	public boolean getResizable() {
 		return true;
+	}
+
+	public float getZNear() {
+		return zNear;
+	}
+	public float getZFar() {
+		return zFar;
 	}
 
 }

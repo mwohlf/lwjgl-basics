@@ -11,13 +11,13 @@
 		</property>
 	</bean>
 
-	<bean name="settings" class="net.wohlfart.basic.Settings">
+	<bean name="gameSettings" class="net.wohlfart.basic.Settings">
       <property name="width" value="${display.width}" />
       <property name="height" value="${display.height}" />
 	</bean>
 
 	<bean class="net.wohlfart.basic.Game" >
-	   <property name="settings" ref="settings" />
+	   <property name="gameSettings" ref="gameSettings" />
 	</bean>
 
 </beans>

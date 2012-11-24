@@ -4,6 +4,8 @@ import net.wohlfart.gl.Camera;
 import net.wohlfart.gl.IState;
 import net.wohlfart.gl.input.InputSource;
 import net.wohlfart.gl.input.KeyTypedEvent;
+import net.wohlfart.widgets.Renderer;
+import net.wohlfart.widgets.WidgetSet;
 
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.Display;
@@ -15,6 +17,8 @@ public class CelestialState implements IState {
 	protected Camera camera;
 	protected Avatar avatar;
 
+	protected Renderer renderer;
+	protected WidgetSet widgetSet;
 
 	protected boolean escPressed = false;
 
@@ -33,6 +37,8 @@ public class CelestialState implements IState {
 				}
 			}
 		});
+		widgetSet = new WidgetSet();
+		renderer = new Renderer();
 	}
 
 	@Override
@@ -44,6 +50,7 @@ public class CelestialState implements IState {
 	public void render() {
 		camera.lookThrough();
 		scene.render();
+		widgetSet.paint(renderer);
 	}
 
 	@Override

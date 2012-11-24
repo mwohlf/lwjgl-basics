@@ -77,7 +77,6 @@ public enum InputSource {
 				fire(new MouseMotionEvent(dx, dy, Mouse.getX(), Mouse.getY(), pressedButtons));
 			}
 		}
-		System.out.println("pressedButtons: " + pressedButtons);
 	}
 
 

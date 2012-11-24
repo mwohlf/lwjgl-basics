@@ -83,22 +83,22 @@ public class Avatar {
 				Vector3f pos = scene.getPos();  // this is actually the pos itself not a copy!
 				switch (evt.getKey()) {
 				case Keyboard.KEY_W:
-					pos.z += speed;
+					Vector3f.sub(pos, camera.getDir(new Vector3f()), pos);
 					break;
 				case Keyboard.KEY_Y:
-					pos.z -= speed;
+					Vector3f.add(pos, camera.getDir(new Vector3f()), pos);
 					break;
 				case Keyboard.KEY_A:
-					pos.x += speed;
+					Vector3f.sub(pos, camera.getRght(new Vector3f()), pos);
 					break;
 				case Keyboard.KEY_S:
-					pos.x -= speed;
+					Vector3f.add(pos, camera.getRght(new Vector3f()), pos);
 					break;
 				case Keyboard.KEY_Q:
-					pos.y += speed;
+					Vector3f.add(pos, camera.getUp(new Vector3f()), pos);
 					break;
 				case Keyboard.KEY_X:
-					pos.y -= speed;
+					Vector3f.sub(pos, camera.getUp(new Vector3f()), pos);
 					break;
 				}
 				scene.setPos(pos);

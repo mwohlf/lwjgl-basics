@@ -36,21 +36,25 @@ public class Game {
 			lastTimestamp = now;
 			currentState.render();
 			Display.update(); // draw the buffer to the screen, trigger input
-			Display.sync(10); // cap fps to 60fps
+			delay();
 		}
 
 		destroyDisplay();
 	}
 
-	// set by spring
-	public void setSettings(Settings settings) {
-		this.settings = settings;
+
+
+
+	private void delay() {
+		try {
+			Thread.sleep(50);
+		} catch (InterruptedException ex) {
+			ex.printStackTrace();
+		}
 	}
 
-	private void setCurrentState(final IState newState) {
-		currentState = newState;
-		currentState.setup();
-	}
+
+
 
 	private void setupDisplay() throws LWJGLException {
 
@@ -62,7 +66,7 @@ public class Game {
 		// reset the projection matrix
 		GL11.glMatrixMode(GL11.GL_PROJECTION);
 		GL11.glLoadIdentity();
-		GLU.gluPerspective( 45.0f, (float)settings.getWidth()/(float)settings.getHeight(), 1.0f, 200.0f );
+		GLU.gluPerspective( 45.0f, (float)settings.getWidth()/(float)settings.getHeight(), settings.getZNear(), settings.getZFar() );
 
 
 		// reset the global matrix
@@ -87,10 +91,29 @@ public class Game {
 		GL11.glLight(GL11.GL_LIGHT1, GL11.GL_DIFFUSE, (FloatBuffer) temp.asFloatBuffer().put(lightDiffuse).flip());              // Setup The Diffuse Light
 		GL11.glLight(GL11.GL_LIGHT1, GL11.GL_POSITION, (FloatBuffer) temp.asFloatBuffer().put(lightPosition).flip());         // Position The Light
 		GL11.glEnable(GL11.GL_LIGHT1);
+
+		Display.setVSyncEnabled(true);
+
 	}
 
 	private void destroyDisplay() {
 		Display.destroy();
 	}
+
+
+
+
+
+
+	// set by spring
+	public void setGameSettings(Settings settings) {
+		this.settings = settings;
+	}
+
+	public void setCurrentState(final IState newState) {
+		currentState = newState;
+		currentState.setup();
+	}
+
 
 }
