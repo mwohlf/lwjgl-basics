@@ -1,6 +1,6 @@
 package net.wohlfart.gl.input;
 
-import net.wohlfart.gl.input.InputSource.MouseButton;
+import net.wohlfart.gl.input.MouseButton;
 
 public class MouseWheelEvent {
 	protected int wheel;

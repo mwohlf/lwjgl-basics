@@ -11,8 +11,7 @@ import org.lwjgl.input.Mouse;
 public enum InputSource {
 	INSTANCE;
 
-	// order and number is from LWJGLMouse
-	public enum MouseButton { LEFT, RIGHT, MIDDLE; }
+
 	public byte pressedButtons = 0;
 
 
