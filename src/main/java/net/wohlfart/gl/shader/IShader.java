@@ -1,6 +1,8 @@
-package net.wohlfart.gl.texture;
+package net.wohlfart.gl.shader;
 
-public interface ITexture {
+import org.lwjgl.util.vector.Matrix4f;
+
+public interface IShader {
 
 	public abstract void init();
 

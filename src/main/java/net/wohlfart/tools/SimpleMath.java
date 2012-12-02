@@ -32,4 +32,8 @@ public final class SimpleMath {
 		return (deg * SimpleMath.TWO_PI) / 360f;
 	}
 
+	public static float coTan(float angle) {
+		return (float)(1f / Math.tan(angle));
+	}
+
 }

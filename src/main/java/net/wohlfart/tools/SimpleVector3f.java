@@ -1,7 +1,9 @@
 package net.wohlfart.tools;
 
+import org.lwjgl.util.vector.Vector3f;
+
 @SuppressWarnings("serial")
-public class Vector3f extends org.lwjgl.util.vector.Vector3f {
+public class SimpleVector3f extends Vector3f {
 	
 	
 	public String toString() {

@@ -1,5 +1,6 @@
 package net.wohlfart.model;
 
+import net.wohlfart.basic.IGameContext;
 import net.wohlfart.gl.Camera;
 import net.wohlfart.gl.IState;
 import net.wohlfart.gl.input.InputSource;
@@ -9,7 +10,6 @@ import net.wohlfart.widgets.Screen;
 
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.Display;
-import org.lwjgl.opengl.GL11;
 
 public class CelestialState implements IState {
 
@@ -26,7 +26,7 @@ public class CelestialState implements IState {
 	// ui, sounds, cam
 
 	@Override
-	public void setup() {
+	public void setup(final IGameContext gameContext) {
 		camera = new Camera();
 		scene = new CelestialScene();
 		avatar = new Avatar(camera, scene);
@@ -51,11 +51,11 @@ public class CelestialState implements IState {
 
 	@Override
 	public void render() {
-		GL11.glLoadIdentity();
+		//GL11.glLoadIdentity();
 		camera.lookThrough();
 		scene.render();
 
-		
+
 		widgetSet.paint(renderer);
 	}
 
@@ -67,7 +67,7 @@ public class CelestialState implements IState {
 
 
 	@Override
-	public void teardown() {
+	public void teardown(final IGameContext gameContext) {
 		scene.teardown();
 	}
 

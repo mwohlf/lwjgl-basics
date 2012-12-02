@@ -17,7 +17,7 @@ public class CelestialScene implements CanMove {
 
 	public CelestialScene() {
 		//celestials.add(new Celestial(){{position.set(new Vector3f(0,0,-40f));}});
-		//addRandomPlanets(13);
+		addRandomPlanets(13);
 	}
 
 

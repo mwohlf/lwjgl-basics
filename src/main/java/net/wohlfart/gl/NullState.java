@@ -1,10 +1,12 @@
 package net.wohlfart.gl;
 
+import net.wohlfart.basic.IGameContext;
+
 public enum NullState implements IState {
 	INSTANCE;
 
 	@Override
-	public void setup() {
+	public void setup(IGameContext gameContext) {
 	}
 
 	@Override
@@ -21,7 +23,7 @@ public enum NullState implements IState {
 	}
 
 	@Override
-	public void teardown() {
+	public void teardown(IGameContext gameContext) {
 	}
 
 }

@@ -1,11 +1,12 @@
 package net.wohlfart.tools;
 
+import org.lwjgl.util.vector.Quaternion;
 import org.lwjgl.util.vector.Vector3f;
 
 
 // see: http://code.google.com/p/jmonkeyengine/source/browse/branches/jme3/src/core/com/jme3/math/Quaternion.java?r=5231
 @SuppressWarnings("serial")
-public class Quaternion extends org.lwjgl.util.vector.Quaternion {
+public class SimpleQuaternion extends Quaternion {
 
 
 	public void normalizeLocal() {
@@ -46,6 +47,7 @@ public class Quaternion extends org.lwjgl.util.vector.Quaternion {
                 + 2 * w * x * vec.y
                 - x * x * vec.z
                 + w * w * vec.z;
+        
         vec.x = xx;
         vec.y = yy;
         vec.z = zz;

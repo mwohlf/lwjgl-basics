@@ -1,6 +1,6 @@
 package net.wohlfart.gl;
 
-import net.wohlfart.tools.Quaternion;
+import net.wohlfart.tools.SimpleQuaternion;
 import net.wohlfart.tools.SimpleMath;
 
 import org.lwjgl.opengl.GL11;
@@ -18,7 +18,7 @@ import org.lwjgl.util.vector.Vector3f;
 // see: http://www.mathworks.de/de/help/aeroblks/quaternionrotation.html
 // see: http://stackoverflow.com/questions/4870393/rotating-coordinate-system-via-a-quaternion
 public class Camera implements CanRotate {
-	private final Quaternion q  = new Quaternion();
+	private final SimpleQuaternion q  = new SimpleQuaternion();
 
 
 	// the (1,0,0) vector / X axis
@@ -55,7 +55,7 @@ public class Camera implements CanRotate {
 	 */
 	public void rotate(final float angle, final Vector3f axis){
 		axis.normalise();
-		Quaternion rot = new Quaternion();
+		SimpleQuaternion rot = new SimpleQuaternion();
 		double n = Math.sqrt(axis.x * axis.x + axis.y * axis.y + axis.z * axis.z);
 		float sin = (float) (Math.sin(0.5 * angle) / n);
 		rot.x = axis.x * sin;
@@ -63,14 +63,14 @@ public class Camera implements CanRotate {
 		rot.z = axis.z * sin;
 		rot.w = (float) Math.cos(0.5 * angle);
 
-		Quaternion.mul(rot, q, rot);
+		SimpleQuaternion.mul(rot, q, rot);
 		rot.normalizeLocal();
 		q.set(rot);
 	}
 
 
 	public void lookThrough() {
-		GL11.glLoadIdentity();
+		//GL11.glLoadIdentity();
 		float x,y,z;
 		float angle = 2f * (float)Math.acos(q.w);
 		float s = (float)Math.sqrt(1-q.w*q.w); // assuming quaternion normalised then w is less than 1, so term always positive.
@@ -82,7 +82,7 @@ public class Camera implements CanRotate {
 			y = q.y;
 			z = q.z;
 		} else {
-			x = q.x / s; // normalise axis
+			x = q.x / s; // normalize axis
 			y = q.y / s;
 			z = q.z / s;
 		}

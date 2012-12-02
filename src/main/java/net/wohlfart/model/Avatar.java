@@ -11,41 +11,50 @@ import org.lwjgl.input.Keyboard;
 import org.lwjgl.util.vector.Vector3f;
 
 public class Avatar {
+	// used for key triggered rotations
+	private final float ROT_KEY_SPEED = 0.01f;
+	// used for mouse movement triggered rotations
+	private final float ROT_MOUSE_SPEED = 0.005f;
+	// used for mouse wheel triggered moves
+	private final float MOVE_WHEEL_SPEED = 0.005f;
+	// used for key triggered moves
+	private final float MOVE_KEY_SPEED = 0.5f;
 
-	private final CanRotate camera;
-	private final CanMove scene;
 
-	public Avatar(final CanRotate camera, final CanMove scene) {
-		this.camera = camera;
-		this.scene = scene;
+	private final CanRotate rotation;
+	private final CanMove position;
+
+	public Avatar(final CanRotate rotation, final CanMove position) {
+		this.rotation = rotation;
+		this.position = position;
 
 		registerMoves();
 		registerRotations();
 	}
 
+
 	private void registerRotations() {
-		final float speed = 0.01f;
 		InputSource.INSTANCE.register(new KeyPressedEvent.Listener() {
 			@Override
 			public void keyEvent(KeyPressedEvent evt) {
 				switch (evt.getKey()) {
 				case Keyboard.KEY_UP:
-					camera.rotate(speed, new Vector3f(1,0,0));//camera.getRght(new Vector3f()));
+					rotation.rotate(ROT_KEY_SPEED, new Vector3f(1,0,0));//camera.getRght(new Vector3f()));
 					break;
 				case Keyboard.KEY_DOWN:
-					camera.rotate(-speed, new Vector3f(1,0,0));//camera.getRght(new Vector3f()));
+					rotation.rotate(-ROT_KEY_SPEED, new Vector3f(1,0,0));//camera.getRght(new Vector3f()));
 					break;
 				case Keyboard.KEY_LEFT:
-					camera.rotate(speed, new Vector3f(0,1,0));//camera.getUp(new Vector3f()));
+					rotation.rotate(ROT_KEY_SPEED, new Vector3f(0,1,0));//camera.getUp(new Vector3f()));
 					break;
 				case Keyboard.KEY_RIGHT:
-					camera.rotate(-speed, new Vector3f(0,1,0));//camera.getUp(new Vector3f()));
+					rotation.rotate(-ROT_KEY_SPEED, new Vector3f(0,1,0));//camera.getUp(new Vector3f()));
 					break;
 				case Keyboard.KEY_PRIOR:
-					camera.rotate(speed, new Vector3f(0,0,1));//camera.getDir(new Vector3f()));
+					rotation.rotate(ROT_KEY_SPEED, new Vector3f(0,0,1));//camera.getDir(new Vector3f()));
 					break;
 				case Keyboard.KEY_NEXT:
-					camera.rotate(-speed, new Vector3f(0,0,1));//camera.getDir(new Vector3f()));
+					rotation.rotate(-ROT_KEY_SPEED, new Vector3f(0,0,1));//camera.getDir(new Vector3f()));
 					break;
 				}
 			}
@@ -57,8 +66,8 @@ public class Avatar {
 				if (evt.isLeftButtonPressed()) {
 					int dx = evt.getDx();
 					int dy = evt.getDy();
-					camera.rotate(-(float)dy/200f, new Vector3f(1,0,0));
-					camera.rotate((float)dx/200f, new Vector3f(0,1,0));
+					rotation.rotate(-(float)dy * ROT_MOUSE_SPEED, new Vector3f(1,0,0));
+					rotation.rotate(+(float)dx * ROT_MOUSE_SPEED, new Vector3f(0,1,0));
 				}
 			}
 		});
@@ -67,48 +76,44 @@ public class Avatar {
 			@Override
 			public void keyEvent(MouseWheelEvent evt) {
 				int wheel = evt.getWheel();
-				// camera.rotate(-(float)wheel/2000f, new Vector3f(0,0,1));
-				Vector3f pos = scene.getPos();
-				Vector3f move = camera.getDir(new Vector3f());
-				move.x *= (float)wheel/10f;
-				move.y *= (float)wheel/10f;
-				move.z *= (float)wheel/10f;
+				Vector3f pos = position.getPos();
+				Vector3f move = rotation.getDir(new Vector3f());
+				move.x *= (float)wheel * MOVE_WHEEL_SPEED;
+				move.y *= (float)wheel * MOVE_WHEEL_SPEED;
+				move.z *= (float)wheel * MOVE_WHEEL_SPEED;
 				Vector3f.sub(pos, move, pos);
-				scene.setPos(pos);
+				position.setPos(pos);
 			}
 		});
-
 	};
 
 
 	private void registerMoves() {
-		final float speed = 0.8f;
 		InputSource.INSTANCE.register(new KeyPressedEvent.Listener() {
 			@Override
 			public void keyEvent(KeyPressedEvent evt) {
-				Vector3f pos = scene.getPos();  // this is actually the pos itself not a copy!
+				Vector3f pos = position.getPos();  // this is actually the pos itself not a copy!
 				switch (evt.getKey()) {
 				case Keyboard.KEY_W:
-					Vector3f.sub(pos, camera.getDir(new Vector3f()), pos);
+					Vector3f.sub(pos, (Vector3f)rotation.getDir(new Vector3f()).scale(MOVE_KEY_SPEED), pos);
 					break;
 				case Keyboard.KEY_Y:
-					Vector3f.add(pos, camera.getDir(new Vector3f()), pos);
+					Vector3f.add(pos, (Vector3f)rotation.getDir(new Vector3f()).scale(MOVE_KEY_SPEED), pos);
 					break;
 				case Keyboard.KEY_A:
-					Vector3f.sub(pos, camera.getRght(new Vector3f()), pos);
+					Vector3f.sub(pos, (Vector3f)rotation.getRght(new Vector3f()).scale(MOVE_KEY_SPEED), pos);
 					break;
 				case Keyboard.KEY_S:
-					Vector3f.add(pos, camera.getRght(new Vector3f()), pos);
+					Vector3f.add(pos, (Vector3f)rotation.getRght(new Vector3f()).scale(MOVE_KEY_SPEED), pos);
 					break;
 				case Keyboard.KEY_Q:
-					Vector3f.add(pos, camera.getUp(new Vector3f()), pos);
+					Vector3f.add(pos, (Vector3f)rotation.getUp(new Vector3f()).scale(MOVE_KEY_SPEED), pos);
 					break;
 				case Keyboard.KEY_X:
-					Vector3f.sub(pos, camera.getUp(new Vector3f()), pos);
+					Vector3f.sub(pos, (Vector3f)rotation.getUp(new Vector3f()).scale(MOVE_KEY_SPEED), pos);
 					break;
 				}
-				scene.setPos(pos);
-
+				position.setPos(pos);
 			}
 		});
 	}

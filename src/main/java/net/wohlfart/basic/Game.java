@@ -1,108 +1,144 @@
 package net.wohlfart.basic;
 
-import java.nio.FloatBuffer;
-
 import net.wohlfart.gl.IState;
 import net.wohlfart.gl.NullState;
 import net.wohlfart.gl.input.InputSource;
-import net.wohlfart.model.CelestialState;
+import net.wohlfart.tools.SimpleMath;
 
-import org.lwjgl.BufferUtils;
 import org.lwjgl.LWJGLException;
+import org.lwjgl.Sys;
+import org.lwjgl.opengl.ContextAttribs;
 import org.lwjgl.opengl.Display;
+import org.lwjgl.opengl.DisplayMode;
 import org.lwjgl.opengl.GL11;
-import org.lwjgl.util.glu.GLU;
+import org.lwjgl.opengl.PixelFormat;
+import org.lwjgl.util.vector.Matrix4f;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-public class Game {
+
+
+public class Game implements IGameContext {
+	protected static final Logger LOGGER = LoggerFactory.getLogger(Game.class);
 
 	protected InputSource inputProcessor = InputSource.INSTANCE;
-	protected Settings settings = Settings.DEFAULT;
 	protected IState currentState = NullState.INSTANCE;
+	protected Settings settings = new Settings(); // default in case nothing gets injected
 
+	private long now;
+	private long lastTimestamp;
+	private float delta; // in [s]
 
-	public void start() throws LWJGLException, InterruptedException {
-		setupDisplay();
-		setCurrentState(new CelestialState());
-		loop();
-		destroyDisplay();
-	}
-	
-	
-	private void loop() {
-		long now, lastTimestamp = System.nanoTime();
+	private SpringContext context;
 
-		while (!currentState.isDone()) {
-			GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT);
-			GL11.glLoadIdentity();
-			inputProcessor.process(); // trigger the callbacks for user input
-			now = System.nanoTime();
-			currentState.update((now - lastTimestamp) / 1000000.0f);
-			lastTimestamp = now;
-			currentState.render();
-			Display.update(); // draw the buffer to the screen, trigger input
-			delay();
-		}
-
-	}
-
-
-	private void delay() {
+	/**
+	 * set the initial state and fire up the main loop
+	 */
+	public void start() {
 		try {
-			Thread.sleep(50);
-		} catch (InterruptedException ex) {
-			ex.printStackTrace();
+			bootupOpenGL();
+			setCurrentState(GameStates.SIMPLE);
+			lastTimestamp = Sys.getTime();
+			runApplicationLoop();
+			shutdownOpenGL();
+		} catch (LWJGLException ex) {
+			LOGGER.warn("Application startup failed", ex);
 		}
+	}
+
+	/**
+	 * this is the main loop that does all the work
+	 */
+	private void runApplicationLoop() {
+		while (!currentState.isDone()) {
+			// calculate the time since last loop
+			now = Sys.getTime();
+			delta = (now - lastTimestamp) / (float)Sys.getTimerResolution();
+			lastTimestamp = now;
+			LOGGER.debug("[ms]/frame: {} ; frame/[s]: {}", delta, 1f/delta);
+			// call the model to do their things
+			currentState.update(delta);
+			// do the magic
+			currentState.render();
+			Display.sync(settings.getSync());
+			// draw the (double-)buffer to the screen, trigger input
+			Display.update();
+			// triggers the callbacks for user input
+			inputProcessor.process();
+		}
+	}
+
+	/**
+	 * setup a OpenGL 3.3 environment
+	 */
+	private void bootupOpenGL() throws LWJGLException {
+		setupDisplay();
+		// Map the internal OpenGL coordinate system to the entire screen
+		GL11.glViewport(0, 0, settings.width, settings.height);
+		// used for GL11.glClear(GL11.GL_COLOR_BUFFER_BIT);
+		GL11.glClearColor(0.4f, 0.1f, 0.1f, 0f);
+
 	}
 
 
 	private void setupDisplay() throws LWJGLException {
+		PixelFormat pixelFormat = new PixelFormat();
+		ContextAttribs contextAtributes = new ContextAttribs(3, 3); // OpenGL versions
+		contextAtributes.withForwardCompatible(true);
+		contextAtributes.withProfileCore(true);
+		Display.setDisplayMode(new DisplayMode(settings.getWidth(), settings.getHeight()));
+		Display.setResizable(false); // doesn't work anyways
+		Display.setTitle(settings.getTitle());
+		//Display.setVSyncEnabled(true);
+		Display.create(pixelFormat, contextAtributes); // creates the GL context
+		LOGGER.info("OpenGL version: " + GL11.glGetString(GL11.GL_VERSION));
+	}
 
-		Display.setDisplayMode(settings.getDisplayMode());
-		Display.setResizable(settings.getResizable());
-		Display.setVSyncEnabled(true);
-		Display.create(); // creates the GL context
+	/**
+	 * - the projection matrix defines the lens of the camera
+	 * - the view matrix defines the position and the direction of the camera
+	 * - the model matrix defines the position and direction of each 3D model
+	 * see: http://www.lwjgl.org/wiki/index.php?title=The_Quad_with_Projection,_View_and_Model_matrices
+	 * @return  our projection matrix
+	 */
+	public Matrix4f createProjectionMatrix() {
+		// Setup projection matrix
+		Matrix4f projectionMatrix = new Matrix4f();
+		float fieldOfView = settings.getFieldOfView();
+		float aspectRatio = (float)settings.width / (float)settings.height;
+		float nearPlane = settings.getNearPlane();
+		float farPlane = settings.getFarPlane();
 
-		Display.setTitle("lwjgl OpenGL version: " + GL11.glGetString(GL11.GL_VERSION));
+		float yScale = SimpleMath.coTan(SimpleMath.deg2rad(fieldOfView / 2f));
+		float xScale = yScale / aspectRatio;
+		float frustumLength = farPlane - nearPlane;
 
-		// this color is used in GL11.glClear for each rendering loop
-		GL11.glClearColor(0.1f, 0.1f, 0.3f, 0.0f);
+		projectionMatrix.m00 = xScale;
+		projectionMatrix.m11 = yScale;
+		projectionMatrix.m22 = -((farPlane + nearPlane) / frustumLength);
+		projectionMatrix.m23 = -1;
+		projectionMatrix.m32 = -((2 * nearPlane * farPlane) / frustumLength);
 
-		// setup the projection matrix stack,
-		// the projection is responsible for creating the 2D image out of the 3D scene
-		GL11.glMatrixMode(GL11.GL_PROJECTION);
-		GL11.glLoadIdentity();
-		GLU.gluPerspective( 45.0f, (float)settings.getWidth()/(float)settings.getHeight(), settings.getZNear(), settings.getZFar() );
-
-		// setup the modelview matrix stack
-		GL11.glMatrixMode(GL11.GL_MODELVIEW);
-		GL11.glLoadIdentity();
-		GL11.glEnable(GL11.GL_DEPTH_TEST);
-
-		GL11.glEnable(GL11.GL_LIGHTING);
-		GL11.glEnable(GL11.GL_COLOR_MATERIAL); // enables opengl to use glColor3f to define material color
-		// a single light
-		FloatBuffer whiteLight = BufferUtils.createFloatBuffer(4);
-		whiteLight.put(0.9f).put(0.9f).put(0.9f).put(0.9f).flip();
-		GL11.glLight(GL11.GL_LIGHT0, GL11.GL_POSITION, whiteLight);
-		GL11.glEnable(GL11.GL_LIGHT0);
+		return projectionMatrix;
 	}
 
 
-	private void destroyDisplay() {
+	private void shutdownOpenGL() {
 		Display.destroy();
 	}
 
+	public void setCurrentState(final GameStates newState) {
+		currentState.teardown(this);
+		currentState = newState.getValue();
+		currentState.setup(this);
+	}
 
-
-	// set by spring
-	public void setGameSettings(Settings settings) {
+	public void setGameSettings(final Settings settings) {
 		this.settings = settings;
 	}
 
-	public void setCurrentState(final IState newState) {
-		currentState = newState;
-		currentState.setup();
+	public void setContext(SpringContext context) {
+		this.context = context;
 	}
-
 
 }
