@@ -1,20 +1,20 @@
 package net.wohlfart.basic;
 
-import java.util.Set;
 import java.util.Map.Entry;
+import java.util.Set;
 
 import org.springframework.context.ApplicationContext;
 
-public class SpringContext {
-	private final ApplicationContext context;
+public class GameContext implements IGameContext {
+	private final ApplicationContext delegate;
 
-	SpringContext(final ApplicationContext context) {
-		this.context = context;
+	GameContext(final ApplicationContext context) {
+		this.delegate = context;
 	}
 
-
+	@Override
 	public <T> T getBeanOfType(Class<T> clazz) {
-		Set<Entry<String, T>> set = context.getBeansOfType(clazz).entrySet();
+		Set<Entry<String, T>> set = delegate.getBeansOfType(clazz).entrySet();
 		if (set.size() > 1) {
 			throw new IllegalStateException("Multiple bean with type GameLoop found in application context, not sure which one to start");
 		} if (set.size() < 1) {
@@ -23,7 +23,5 @@ public class SpringContext {
 		T t = set.iterator().next().getValue();
 		return t;
 	}
-
-
 
 }

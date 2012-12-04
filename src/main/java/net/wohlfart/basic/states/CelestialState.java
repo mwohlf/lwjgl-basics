@@ -1,17 +1,19 @@
-package net.wohlfart.model;
+package net.wohlfart.basic.states;
 
-import net.wohlfart.basic.IGameContext;
+import net.wohlfart.basic.Game;
 import net.wohlfart.gl.Camera;
-import net.wohlfart.gl.IState;
 import net.wohlfart.gl.input.InputSource;
 import net.wohlfart.gl.input.KeyTypedEvent;
+import net.wohlfart.model.Avatar;
+import net.wohlfart.model.CelestialScene;
 import net.wohlfart.widgets.Renderer;
 import net.wohlfart.widgets.Screen;
 
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.Display;
+import org.lwjgl.util.vector.Matrix4f;
 
-public class CelestialState implements IState {
+public class CelestialState implements IGameState {
 
 	protected InputSource inputProcessor;
 	protected CelestialScene scene;
@@ -23,13 +25,19 @@ public class CelestialState implements IState {
 
 	protected boolean escPressed = false;
 
+
+	CelestialState() {
+	}
+
+
 	// ui, sounds, cam
 
 	@Override
-	public void setup(final IGameContext gameContext) {
+	public void setup(final Game game, final Matrix4f matrix) {
 		camera = new Camera();
 		scene = new CelestialScene();
 		avatar = new Avatar(camera, scene);
+		avatar.setInputSource(InputSource.INSTANCE);
 		InputSource.INSTANCE.register(new KeyTypedEvent.Listener() {
 			@Override
 			public void keyEvent(KeyTypedEvent evt) {
@@ -67,7 +75,7 @@ public class CelestialState implements IState {
 
 
 	@Override
-	public void teardown(final IGameContext gameContext) {
+	public void teardown(final Game game) {
 		scene.teardown();
 	}
 

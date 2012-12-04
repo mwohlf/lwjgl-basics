@@ -1,15 +1,17 @@
-package net.wohlfart.basic;
+package net.wohlfart.basic.states;
 
+import java.awt.Color;
+import java.awt.Font;
 import java.nio.FloatBuffer;
 
-import net.wohlfart.gl.CanMove;
+import net.wohlfart.basic.Game;
 import net.wohlfart.gl.CanMoveImpl;
-import net.wohlfart.gl.CanRotate;
 import net.wohlfart.gl.CanRotateImpl;
-import net.wohlfart.gl.IState;
+import net.wohlfart.gl.input.InputSource;
 import net.wohlfart.gl.shader.SimpleShader;
 import net.wohlfart.model.Avatar;
 import net.wohlfart.tools.SimpleMatrix4f;
+import net.wohlfart.tools.TrueTypeFont;
 
 import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.Display;
@@ -18,25 +20,38 @@ import org.lwjgl.opengl.GL15;
 import org.lwjgl.opengl.GL20;
 import org.lwjgl.opengl.GL30;
 import org.lwjgl.util.vector.Matrix4f;
-import org.lwjgl.util.vector.Vector3f;
 
-public class SimpleState implements IState {
+public class SimpleState implements IGameState {
 
 	private int vertexCount;
 	private int vaoId;
 	private int vboId;
 	private SimpleShader shader;
+	private TrueTypeFont trueTypeFont;
 
 	private CanMoveImpl canMove = new CanMoveImpl();
 	private CanRotateImpl canRotate = new CanRotateImpl();
-	private Avatar avatar = new Avatar(canRotate, canMove);
+	private final Avatar avatar = new Avatar(canRotate, canMove);
+
+
+	SimpleState() {
+
+	}
 
 	@Override
-	public void setup(final IGameContext gameContext) {
+	public void setup(final Game game, final Matrix4f projectionMatrix) {
+
+		Font font = TrueTypeFont.getFont("Courier New", Font.BOLD, 32);
+		if (font == null) {
+			font = new Font("Serif", Font.BOLD, 32);
+		}
+		trueTypeFont = new TrueTypeFont(font, true);
+
+		avatar.setInputSource(InputSource.INSTANCE);
 
 		shader = new SimpleShader();
 		shader.init();
-		shader.setProjectionMatrix(gameContext.createProjectionMatrix());
+		shader.setProjectionMatrix(projectionMatrix);
 		shader.setViewMatrix(new Matrix4f());
 		shader.setModelMatrix(new Matrix4f());
 
@@ -111,6 +126,9 @@ public class SimpleState implements IState {
 		GL20.glDisableVertexAttribArray(0);
 		GL30.glBindVertexArray(0);
 
+
+		//trueTypeFont.drawString(20.0f, 20.0f, "Slick displaying True Type Fonts", 0.5f, 0.5f, TrueTypeFont.ALIGN_CENTER);
+
 		shader.unbind();
 	}
 
@@ -123,7 +141,7 @@ public class SimpleState implements IState {
 
 
 	@Override
-	public void teardown(IGameContext gameContext) {
+	public void teardown(Game game) {
 		// nothing to do yet
 	}
 

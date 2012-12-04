@@ -5,8 +5,6 @@ import org.lwjgl.util.vector.Matrix4f;
 
 public interface IGameContext {
 
-	Matrix4f createProjectionMatrix();
-
-
+	<T> T getBeanOfType(Class<T> clazz);
 
 }

@@ -10,6 +10,10 @@ import net.wohlfart.gl.input.MouseWheelEvent;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.util.vector.Vector3f;
 
+
+// this is a class that handles a canRotate and a canMove object
+// FIXME: remove the dependency to the InputSource singleton and add
+// configurable key/mouse actions instead of hardcoded ones
 public class Avatar {
 	// used for key triggered rotations
 	private final float ROT_KEY_SPEED = 0.01f;
@@ -20,21 +24,26 @@ public class Avatar {
 	// used for key triggered moves
 	private final float MOVE_KEY_SPEED = 0.5f;
 
-
+	private InputSource inputSource;
 	private final CanRotate rotation;
 	private final CanMove position;
 
-	public Avatar(final CanRotate rotation, final CanMove position) {
+	public Avatar(final CanRotate rotation,
+			      final CanMove position) {
 		this.rotation = rotation;
 		this.position = position;
+	}
 
+
+	public void setInputSource(InputSource inputSource) {
+		this.inputSource = inputSource;
 		registerMoves();
 		registerRotations();
 	}
 
 
 	private void registerRotations() {
-		InputSource.INSTANCE.register(new KeyPressedEvent.Listener() {
+		inputSource.register(new KeyPressedEvent.Listener() {
 			@Override
 			public void keyEvent(KeyPressedEvent evt) {
 				switch (evt.getKey()) {
@@ -60,7 +69,7 @@ public class Avatar {
 			}
 		});
 
-		InputSource.INSTANCE.register(new MouseMotionEvent.Listener() {
+		inputSource.register(new MouseMotionEvent.Listener() {
 			@Override
 			public void keyEvent(MouseMotionEvent evt) {
 				if (evt.isLeftButtonPressed()) {
@@ -72,7 +81,7 @@ public class Avatar {
 			}
 		});
 
-		InputSource.INSTANCE.register(new MouseWheelEvent.Listener() {
+		inputSource.register(new MouseWheelEvent.Listener() {
 			@Override
 			public void keyEvent(MouseWheelEvent evt) {
 				int wheel = evt.getWheel();
@@ -89,7 +98,7 @@ public class Avatar {
 
 
 	private void registerMoves() {
-		InputSource.INSTANCE.register(new KeyPressedEvent.Listener() {
+		inputSource.register(new KeyPressedEvent.Listener() {
 			@Override
 			public void keyEvent(KeyPressedEvent evt) {
 				Vector3f pos = position.getPos();  // this is actually the pos itself not a copy!
@@ -117,6 +126,7 @@ public class Avatar {
 			}
 		});
 	}
+
 
 
 }

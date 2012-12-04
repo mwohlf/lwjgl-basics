@@ -1,10 +1,9 @@
 package net.wohlfart.gl.input;
 
-public enum InputProcessor {
-	INSTANCE;
+public interface InputProcessor {
 
     // @formatter:off
-    private enum Command {
+    public enum Command {
         MOVE_LEFT,
         MOVE_RIGHT,
         MOVE_UP,

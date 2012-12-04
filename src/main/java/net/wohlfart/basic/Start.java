@@ -1,10 +1,5 @@
 package net.wohlfart.basic;
 
-import java.util.Map.Entry;
-import java.util.Set;
-
-
-import org.lwjgl.LWJGLException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
@@ -13,9 +8,9 @@ public class Start {
 
 	public static void main(String[] args) {
 		ApplicationContext appContext = new ClassPathXmlApplicationContext(CONFIG_FILE);
-		SpringContext context = new SpringContext(appContext);
+		GameContext context = new GameContext(appContext);
 		Game game = context.getBeanOfType(Game.class);
-		game.setContext(context);
+		//game.setContext(context);
 		game.start();
 	}
 

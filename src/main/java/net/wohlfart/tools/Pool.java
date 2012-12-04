@@ -1,7 +1,7 @@
 package net.wohlfart.tools;
 
 
-
+// see: http://libgdx.badlogicgames.com/nightlies/docs/api/com/badlogic/gdx/utils/Pool.html
 abstract public class Pool<T> {
 	public final int max;
 
@@ -19,7 +19,7 @@ abstract public class Pool<T> {
 
 	/** @param max The maximum number of free objects to store in this pool. */
 	public Pool (int initialCapacity, int max) {
-		freeObjects = new Array(false, initialCapacity);
+		freeObjects = new Array<T>(false, initialCapacity);
 		this.max = max;
 	}
 
@@ -36,7 +36,7 @@ abstract public class Pool<T> {
 	public void free (T object) {
 		if (object == null) throw new IllegalArgumentException("object cannot be null.");
 		if (freeObjects.size < max) freeObjects.add(object);
-		if (object instanceof Poolable) ((Poolable)object).reset();
+		if (object instanceof IPoolable) ((IPoolable)object).reset();
 	}
 
 	/** Puts the specified objects in the pool. Null objects within the array are silently ignored.
@@ -47,7 +47,7 @@ abstract public class Pool<T> {
 			T object = objects.get(i);
 			if (object == null) continue;
 			if (freeObjects.size < max) freeObjects.add(object);
-			if (object instanceof Poolable) ((Poolable)object).reset();
+			if (object instanceof IPoolable) ((IPoolable)object).reset();
 		}
 	}
 
@@ -57,7 +57,7 @@ abstract public class Pool<T> {
 	}
 
 	/** Objects implementing this interface will have {@link #reset()} called when passed to {@link #free(Object)}. */
-	static public interface Poolable {
+	static public interface IPoolable {
 		/** Resets the object for reuse. Object references should be nulled and fields may be set to default values. */
 		public void reset ();
 	}

@@ -1,7 +1,8 @@
 package net.wohlfart.basic;
 
-import net.wohlfart.gl.IState;
-import net.wohlfart.gl.NullState;
+import net.wohlfart.basic.states.GameStates;
+import net.wohlfart.basic.states.IGameState;
+import net.wohlfart.basic.states.NullState;
 import net.wohlfart.gl.input.InputSource;
 import net.wohlfart.tools.SimpleMath;
 
@@ -18,27 +19,28 @@ import org.slf4j.LoggerFactory;
 
 
 
-public class Game implements IGameContext {
+public class Game {
 	protected static final Logger LOGGER = LoggerFactory.getLogger(Game.class);
 
 	protected InputSource inputProcessor = InputSource.INSTANCE;
-	protected IState currentState = NullState.INSTANCE;
+	protected IGameState currentState = GameStates.NULL.getValue();
 	protected Settings settings = new Settings(); // default in case nothing gets injected
 
 	private long now;
 	private long lastTimestamp;
 	private float delta; // in [s]
 
-	private SpringContext context;
+	private Matrix4f projectionMatrix;
 
 	/**
 	 * set the initial state and fire up the main loop
 	 */
 	public void start() {
 		try {
+			lastTimestamp = Sys.getTime();
+			projectionMatrix = createProjectionMatrix();
 			bootupOpenGL();
 			setCurrentState(GameStates.SIMPLE);
-			lastTimestamp = Sys.getTime();
 			runApplicationLoop();
 			shutdownOpenGL();
 		} catch (LWJGLException ex) {
@@ -80,7 +82,8 @@ public class Game implements IGameContext {
 
 	}
 
-
+	// see: http://lwjgl.org/forum/index.php/topic,2951.0.html
+	// for more about setting up a display...
 	private void setupDisplay() throws LWJGLException {
 		PixelFormat pixelFormat = new PixelFormat();
 		ContextAttribs contextAtributes = new ContextAttribs(3, 3); // OpenGL versions
@@ -91,7 +94,8 @@ public class Game implements IGameContext {
 		Display.setTitle(settings.getTitle());
 		//Display.setVSyncEnabled(true);
 		Display.create(pixelFormat, contextAtributes); // creates the GL context
-		LOGGER.info("OpenGL version: " + GL11.glGetString(GL11.GL_VERSION));
+		LOGGER.info("Vendor: " + GL11.glGetString(GL11.GL_VENDOR));
+		LOGGER.info("Version: " + GL11.glGetString(GL11.GL_VERSION));
 	}
 
 	/**
@@ -103,7 +107,7 @@ public class Game implements IGameContext {
 	 */
 	public Matrix4f createProjectionMatrix() {
 		// Setup projection matrix
-		Matrix4f projectionMatrix = new Matrix4f();
+		Matrix4f matrix = new Matrix4f();
 		float fieldOfView = settings.getFieldOfView();
 		float aspectRatio = (float)settings.width / (float)settings.height;
 		float nearPlane = settings.getNearPlane();
@@ -113,13 +117,13 @@ public class Game implements IGameContext {
 		float xScale = yScale / aspectRatio;
 		float frustumLength = farPlane - nearPlane;
 
-		projectionMatrix.m00 = xScale;
-		projectionMatrix.m11 = yScale;
-		projectionMatrix.m22 = -((farPlane + nearPlane) / frustumLength);
-		projectionMatrix.m23 = -1;
-		projectionMatrix.m32 = -((2 * nearPlane * farPlane) / frustumLength);
+		matrix.m00 = xScale;
+		matrix.m11 = yScale;
+		matrix.m22 = -((farPlane + nearPlane) / frustumLength);
+		matrix.m23 = -1;
+		matrix.m32 = -((2 * nearPlane * farPlane) / frustumLength);
 
-		return projectionMatrix;
+		return matrix;
 	}
 
 
@@ -130,15 +134,11 @@ public class Game implements IGameContext {
 	public void setCurrentState(final GameStates newState) {
 		currentState.teardown(this);
 		currentState = newState.getValue();
-		currentState.setup(this);
+		currentState.setup(this, projectionMatrix);
 	}
 
 	public void setGameSettings(final Settings settings) {
 		this.settings = settings;
-	}
-
-	public void setContext(SpringContext context) {
-		this.context = context;
 	}
 
 }
