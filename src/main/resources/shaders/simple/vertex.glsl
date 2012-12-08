@@ -3,41 +3,43 @@
 // see: http://www.lighthouse3d.com/cg-topics/code-samples/opengl-3-3-glsl-1-5-sample/
 // see: http://www.arcsynthesis.org/gltut/Basics/Tut02%20Vertex%20Attributes.html
 
+// location might affect glVertexAttribPointer & glEnableVertexAttribArray
+layout (location = 0) in vec4 in_Position;
+layout (location = 1) in vec4 in_Color;
+layout (location = 2) in vec2 in_TexCoord;
 
-layout (location = 0) in vec4 position;
-layout (location = 1) in vec4 color;
-layout (location = 2) in vec2 textureCoord;
-
-uniform mat4 projectionMatrix; // cameraToClipMatrix
-uniform mat4 viewMatrix;       // worldToCameraMatrix
-uniform mat4 modelMatrix;      // modelToWorldMatrix
-
+uniform mat4 modelToWorldMatrix;     // modelMatrix
+uniform mat4 worldToCameraMatrix;    // viewMatrix
+uniform mat4 cameraToClipMatrix;     // projectionMatrix
 
 out vec4 pass_Color;
 out vec2 pass_TextureCoord;
 
-// we need to write:
-//   vec4 gl_Position
-//   float gl_PointSize
+// predefined variable names:
+//  out gl_PerVertex {
+//     vec4  gl_Position;
+//     float gl_PointSize;
+//     float gl_ClipDistance[];
+//  };
 
 void main(void) {
-    //gl_PointSize = 1;
-    //gl_Position = projectionMatrix * viewMatrix * modelMatrix * position;
+    gl_PointSize = 1;
+    //gl_Position = projectionMatrix * viewMatrix * modelMatrix * in_Position;
 
-    // step 1: move, rotate the object
-    vec4 worldPos = modelMatrix * position;
+    // step 1: rotate then move the object to its position in the world
+    vec4 worldPos = modelToWorldMatrix * in_Position;
 
-    // step 2: move, rotate the object according to the cam direction/ position:
-    vec4 cameraPos = viewMatrix * worldPos;
+    // step 2: move, rotate, morph the object according to the cam direction/position/field of view
+    vec4 cameraPos = worldToCameraMatrix * worldPos;
 
     // http://stackoverflow.com/questions/10617589/why-would-it-be-beneficial-to-have-a-separate-projection-matrix-yet-combine-mod
     // read: http://www.arcsynthesis.org/gltut/Positioning/Tut07%20The%20Perils%20of%20World%20Space.html
     // need to do lights and stuff here
 
-    // step 3: project the cobject from cam space into 2D view
-    gl_Position = projectionMatrix * cameraPos;
+    // step 3: project the object from 3D cam space into 2D view
+    gl_Position = cameraToClipMatrix * cameraPos;
 
 
-    pass_Color = color;
-    pass_TextureCoord = textureCoord;
+    pass_Color = in_Color;
+    pass_TextureCoord = in_TexCoord;
 }

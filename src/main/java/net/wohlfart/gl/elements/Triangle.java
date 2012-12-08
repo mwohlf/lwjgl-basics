@@ -1,7 +1,10 @@
 package net.wohlfart.gl.elements;
 
-import java.nio.ByteBuffer;
 import java.nio.FloatBuffer;
+
+import net.wohlfart.gl.shader.IShader;
+import net.wohlfart.tools.Pool;
+import net.wohlfart.tools.Pool.IPoolable;
 
 import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL11;
@@ -9,9 +12,6 @@ import org.lwjgl.opengl.GL15;
 import org.lwjgl.opengl.GL20;
 import org.lwjgl.opengl.GL30;
 import org.lwjgl.util.vector.Vector3f;
-
-import net.wohlfart.tools.Pool;
-import net.wohlfart.tools.Pool.IPoolable;
 
 
 // see: http://lwjgl.blogspot.de/2012/04/chapter-one-triangle.html
@@ -24,11 +24,13 @@ public class Triangle implements IDrawable, IPoolable {
 		}
 	};
 
+	private IShader shader;
 	// A VAO can have up to 16 attributes (VBO's) assigned to it by default
-	private int vaoId;   // Vertex Array Object  
-	private int vboId;   // Our Vertex Buffer Object 
+	private int vaoHandle;   // Vertex Array Object
+	private int vboHandle;   // Vertex Buffer Object
 
 	private int vertexCount;
+
 
 
 	/**
@@ -39,16 +41,20 @@ public class Triangle implements IDrawable, IPoolable {
 	/**
 	 * @return a new object possibly from the pool
 	 */
-	public static Triangle create() {
-		return create( new Vector3f(+0.0f,+0.5f,+0.0f),
+	public static Triangle create(final IShader shader) {
+		return create( shader,
+				       new Vector3f(+0.0f,+0.5f,+0.0f),
 				       new Vector3f(-0.5f,-0.5f,+0.0f),
 				       new Vector3f(+0.5f,-0.5f,+0.0f));
 	}
 
-	public static Triangle create(final Vector3f tm,
+	public static Triangle create(final IShader shader,
+			                      final Vector3f tm,
             				      final Vector3f bl,
                                   final Vector3f br) {
 		Triangle result = pool.obtain();
+
+		result.shader = shader;
 
 		float[] vertices = new float[] {
 				tm.x, tm.y, tm.z,
@@ -57,30 +63,30 @@ public class Triangle implements IDrawable, IPoolable {
 		result.vertexCount = 3;
 
 		// create a  VAO in memory
-		result.vaoId = GL30.glGenVertexArrays();
+		result.vaoHandle = GL30.glGenVertexArrays();
 		// select/bind the VAO
-		GL30.glBindVertexArray(result.vaoId);
-		
+		GL30.glBindVertexArray(result.vaoHandle);
+
 		// create a VBO in the VAO
-		result.vboId = GL15.glGenBuffers();
+		result.vboHandle = GL15.glGenBuffers();
 		// select/bin the VBO
-		GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, result.vboId);
-		
+		GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, result.vboHandle);
+
 		// create & flip a buffer for the vertices
 		FloatBuffer verticesBuffer = BufferUtils.createFloatBuffer(result.vertexCount * 3);
 		verticesBuffer.put(vertices);
 		verticesBuffer.flip();
-		
+
 		// set the size and data of the VBO and set it to STATIC_DRAW
 		GL15.glBufferData(GL15.GL_ARRAY_BUFFER, verticesBuffer, GL15.GL_STATIC_DRAW);
 
-		// set up our vertex attributes pointer 
-		GL20.glVertexAttribPointer(0, 3, GL11.GL_FLOAT, false, 0, 0);
+		// assign vertex VBO to slot 0 of the VAO
+		GL20.glVertexAttribPointer(0, result.vertexCount, GL11.GL_FLOAT, false, 0, 0);
+
+		// disable VBO
+		GL20.glEnableVertexAttribArray(0);
 
 		// disable VAO
-		GL20.glEnableVertexAttribArray(0);
-		
-		// disable VBO
 		GL30.glBindVertexArray(0);
 
 		return result;
@@ -104,11 +110,11 @@ public class Triangle implements IDrawable, IPoolable {
 
 		// Delete the vertex VBO
 		GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, 0);
-		GL15.glDeleteBuffers(vboId);
+		GL15.glDeleteBuffers(vboHandle);
 
 		// Delete the VAO
 		GL30.glBindVertexArray(0);
-		GL30.glDeleteVertexArrays(vaoId);
+		GL30.glDeleteVertexArrays(vaoHandle);
 	}
 
 
@@ -116,7 +122,7 @@ public class Triangle implements IDrawable, IPoolable {
 	@Override
 	public void draw() {
 		// bind to the VAO
-		GL30.glBindVertexArray(vaoId);
+		GL30.glBindVertexArray(vaoHandle);
 		// draw the vertices
 		GL11.glDrawArrays(GL11.GL_TRIANGLES, 0, vertexCount);
 		// unbind the VAO

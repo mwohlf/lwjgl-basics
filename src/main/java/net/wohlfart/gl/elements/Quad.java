@@ -3,15 +3,16 @@ package net.wohlfart.gl.elements;
 import java.nio.ByteBuffer;
 import java.nio.FloatBuffer;
 
+import net.wohlfart.gl.shader.IShader;
+import net.wohlfart.tools.Pool;
+import net.wohlfart.tools.Pool.IPoolable;
+
 import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL15;
 import org.lwjgl.opengl.GL20;
 import org.lwjgl.opengl.GL30;
 import org.lwjgl.util.vector.Vector3f;
-
-import net.wohlfart.tools.Pool;
-import net.wohlfart.tools.Pool.IPoolable;
 
 
 // read: http://stackoverflow.com/questions/10617589/why-would-it-be-beneficial-to-have-a-separate-projection-matrix-yet-combine-mod
@@ -25,33 +26,39 @@ public class Quad implements IDrawable, IPoolable {
 		}
 	};
 
-	private int vaoId;
-	private int vboId;
+	private IShader shader;
+	private int vaoHandle;
+	private int vboHandle;
 
 	private int vertexCount;
 	private int indicesCount;
 
 
 	/**
-	 * only callec created by the pool
+	 * only called/created by the pool
 	 */
 	private Quad() {}
 
 	/**
 	 * @return a new object possibly from the pool
 	 */
-	public static Quad create() {
-		return create( new Vector3f(+0.5f,+0.5f,+0.0f),
+	public static Quad create(final IShader shader) {
+		return create( shader,
+			           new Vector3f(+0.5f,+0.5f,+0.0f),
 				       new Vector3f(-0.5f,+0.5f,+0.0f),
 				       new Vector3f(-0.5f,-0.5f,+0.0f),
 				       new Vector3f(+0.5f,-0.5f,+0.0f));
 	}
 
-	public static Quad create(final Vector3f tr,
+	public static Quad create(final IShader shader,
+                              final Vector3f tr,
 			                  final Vector3f tl,
 			                  final Vector3f bl,
 			                  final Vector3f br) {
 		Quad result = pool.obtain();
+
+		result.shader = shader;
+
 
 		float[] vertices = new float[] {
 				tr.x, tr.y, tr.z,
@@ -69,8 +76,8 @@ public class Quad implements IDrawable, IPoolable {
 
 		// Create a new Vertex Array Object in memory and select it (bind)
 		// A VAO can have up to 16 attributes (VBO's) assigned to it by default
-		result.vaoId = GL30.glGenVertexArrays();
-		GL30.glBindVertexArray(result.vaoId);
+		result.vaoHandle = GL30.glGenVertexArrays();
+		GL30.glBindVertexArray(result.vaoHandle);
 
 		// Sending data to OpenGL requires the usage of (flipped) byte buffers
 		FloatBuffer verticesBuffer = BufferUtils.createFloatBuffer(result.vertexCount * 3);
@@ -82,17 +89,17 @@ public class Quad implements IDrawable, IPoolable {
 		indicesBuffer.flip();
 
 		// Create a new VBO for the indices and select it (bind)
-		result.vboId = GL15.glGenBuffers();
-		GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, result.vboId);
+		result.vboHandle = GL15.glGenBuffers();
+		GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, result.vboHandle);
 		GL15.glBufferData(GL15.GL_ARRAY_BUFFER, verticesBuffer, GL15.GL_STATIC_DRAW);		// Deselect (bind to 0) the VBO
-		// Put the VBO in the attributes list at index 0
-		GL20.glVertexAttribPointer(0, 3, GL11.GL_FLOAT, false, 0, 0);
+		// assign vertex VBO to slot 0 of the VAO
+		GL20.glVertexAttribPointer(shader.getInPosition(), 3, GL11.GL_FLOAT, false, 0, 0);
 		// Deselect (bind to 0) the VBO
 		GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, 0);
 
 		// Create a new VBO for the indices and select it (bind)
-		result.vboId = GL15.glGenBuffers();
-		GL15.glBindBuffer(GL15.GL_ELEMENT_ARRAY_BUFFER, result.vboId);
+		result.vboHandle = GL15.glGenBuffers();
+		GL15.glBindBuffer(GL15.GL_ELEMENT_ARRAY_BUFFER, result.vboHandle);
 		GL15.glBufferData(GL15.GL_ELEMENT_ARRAY_BUFFER, indicesBuffer, GL15.GL_STATIC_DRAW);
 		// Deselect (bind to 0) the VBO
 		GL15.glBindBuffer(GL15.GL_ELEMENT_ARRAY_BUFFER, 0);
@@ -126,15 +133,15 @@ public class Quad implements IDrawable, IPoolable {
 
 		// Delete the vertex VBO
 		GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, 0);
-		GL15.glDeleteBuffers(vboId);
+		GL15.glDeleteBuffers(vboHandle);
 
 		// Delete the index VBO
 		GL15.glBindBuffer(GL15.GL_ELEMENT_ARRAY_BUFFER, 0);
-		GL15.glDeleteBuffers(vboId);
+		GL15.glDeleteBuffers(vboHandle);
 
 		// Delete the VAO
 		GL30.glBindVertexArray(0);
-		GL30.glDeleteVertexArrays(vaoId);
+		GL30.glDeleteVertexArrays(vaoHandle);
 	}
 
 
@@ -142,11 +149,11 @@ public class Quad implements IDrawable, IPoolable {
 	@Override
 	public void draw() {
 		// Bind to the VAO that has all the information about the vertices
-		GL30.glBindVertexArray(vaoId);
+		GL30.glBindVertexArray(vaoHandle);
 		GL20.glEnableVertexAttribArray(0);
 
 		// Bind to the index VBO that has all the information about the order of the vertices
-		GL15.glBindBuffer(GL15.GL_ELEMENT_ARRAY_BUFFER, vboId);
+		GL15.glBindBuffer(GL15.GL_ELEMENT_ARRAY_BUFFER, vboHandle);
 
 		// Draw the vertices
 		GL11.glDrawArrays(GL11.GL_TRIANGLES, 0, vertexCount);

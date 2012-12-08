@@ -2,7 +2,6 @@ package net.wohlfart.basic;
 
 import net.wohlfart.basic.states.GameStates;
 import net.wohlfart.basic.states.IGameState;
-import net.wohlfart.basic.states.NullState;
 import net.wohlfart.gl.input.InputSource;
 import net.wohlfart.tools.SimpleMath;
 
@@ -80,7 +79,9 @@ public class Game {
 		// used for GL11.glClear(GL11.GL_COLOR_BUFFER_BIT);
 		GL11.glClearColor(0.4f, 0.1f, 0.1f, 0f);
 		// turn culling off so it will be drawn regardless of what way it is facing
-		GL11.glDisable(GL11.GL_CULL_FACE);  
+		GL11.glDisable(GL11.GL_CULL_FACE);
+		//GL11.glEnable(GL11.GL_CULL_FACE);
+
 
 	}
 

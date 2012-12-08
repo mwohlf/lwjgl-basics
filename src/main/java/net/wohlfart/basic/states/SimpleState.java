@@ -1,8 +1,6 @@
 package net.wohlfart.basic.states;
 
-import java.awt.Color;
 import java.awt.Font;
-import java.nio.FloatBuffer;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -19,23 +17,13 @@ import net.wohlfart.model.Avatar;
 import net.wohlfart.tools.SimpleMatrix4f;
 import net.wohlfart.tools.TrueTypeFont;
 
-import org.lwjgl.BufferUtils;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.Display;
-import org.lwjgl.opengl.GL11;
-import org.lwjgl.opengl.GL15;
-import org.lwjgl.opengl.GL20;
-import org.lwjgl.opengl.GL30;
 import org.lwjgl.util.vector.Matrix4f;
 
 public class SimpleState implements IGameState {
 
-	private int vertexCount;
-	private int vaoId;
-	private int vboId;
 	private SimpleShader shader;
-	private TrueTypeFont trueTypeFont;
-	
 	private boolean quit = false;
 
 	private CanMoveImpl canMove = new CanMoveImpl();
@@ -51,12 +39,6 @@ public class SimpleState implements IGameState {
 	@Override
 	public void setup(final Game game, final Matrix4f projectionMatrix) {
 
-		Font font = TrueTypeFont.getFont("Courier New", Font.BOLD, 32);
-		if (font == null) {
-			font = new Font("Serif", Font.BOLD, 32);
-		}
-		trueTypeFont = new TrueTypeFont(font, true);
-
 		avatar.setInputSource(InputSource.INSTANCE);
 
 		shader = new SimpleShader();
@@ -64,17 +46,20 @@ public class SimpleState implements IGameState {
 		shader.setProjectionMatrix(projectionMatrix);
 		shader.setViewMatrix(new Matrix4f());
 		shader.setModelMatrix(new Matrix4f());
+		//shader.bind();
 
-		// drawables.add(Quad.create());
-		drawables.add(Triangle.create());
-		
+		//drawables.add(Quad.create(shader));
+		drawables.add(Triangle.create(shader));
+
+		//shader.unbind();
+
 		InputSource.INSTANCE.register(new KeyPressedEvent.Listener(){
 			@Override
 			public void keyEvent(KeyPressedEvent evt) {
 				if (Keyboard.KEY_ESCAPE == evt.getKey()) {
 					quit = true;
 				}
-			}		
+			}
 		});
 
 	}
@@ -86,7 +71,6 @@ public class SimpleState implements IGameState {
 		// rotate the view
 		Matrix4f viewMatrix = SimpleMatrix4f.create(canRotate);
 		shader.setViewMatrix(viewMatrix);
-
 
 		// move the object
 		Matrix4f modelMatrix = SimpleMatrix4f.create(canMove);
