@@ -10,6 +10,8 @@ public interface IShader {
 	public abstract void bind();
 
 	public abstract void unbind();
+	
+	public abstract void destroy();
 
 	public abstract int getInPosition();
 

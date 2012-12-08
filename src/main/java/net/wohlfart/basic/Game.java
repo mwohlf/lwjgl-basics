@@ -59,6 +59,8 @@ public class Game {
 			LOGGER.debug("[ms]/frame: {} ; frame/[s]: {}", delta, 1f/delta);
 			// call the model to do their things
 			currentState.update(delta);
+			// clear the screen buffer
+			GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT);
 			// do the magic
 			currentState.render();
 			Display.sync(settings.getSync());
@@ -77,7 +79,7 @@ public class Game {
 		// Map the internal OpenGL coordinate system to the entire screen
 		GL11.glViewport(0, 0, settings.width, settings.height);
 		// used for GL11.glClear(GL11.GL_COLOR_BUFFER_BIT);
-		GL11.glClearColor(0.4f, 0.1f, 0.1f, 0f);
+		GL11.glClearColor(0.1f, 0.7f, 0.1f, 0f);
 		// turn culling off so it will be drawn regardless of what way it is facing
 		GL11.glDisable(GL11.GL_CULL_FACE);
 		//GL11.glEnable(GL11.GL_CULL_FACE);

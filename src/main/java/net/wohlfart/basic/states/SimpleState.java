@@ -48,8 +48,8 @@ public class SimpleState implements IGameState {
 		shader.setModelMatrix(new Matrix4f());
 		//shader.bind();
 
-		//drawables.add(Quad.create(shader));
-		drawables.add(Triangle.create(shader));
+		drawables.add(Quad.create(shader));
+		//drawables.add(Triangle.create(shader));
 
 		//shader.unbind();
 

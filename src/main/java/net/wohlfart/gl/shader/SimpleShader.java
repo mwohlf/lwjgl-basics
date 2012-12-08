@@ -2,10 +2,27 @@ package net.wohlfart.gl.shader;
 
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL20;
+import org.lwjgl.opengl.GL30;
+import org.lwjgl.opengl.GL31;
+import org.lwjgl.opengl.GL32;
 import org.lwjgl.util.vector.Matrix4f;
 
+
+/**
+ *
+ * notes:
+ * glEnableVertexAttribArray(0); enables the use of the vertex attribute at index 0 in the vertex shader.
+ *
+ *
+ *
+ *
+ *
+ *
+ * @author michael
+ *
+ */
 public class SimpleShader extends AbstractShader{
-	// variable names inside the vertex shader
+	// variable names hardcoded inside the vertex shader
 	private static final String MODEL_MATRIX = "modelToWorldMatrix";
 	private static final String VIEW_MATRIX = "worldToCameraMatrix";
 	private static final String PROJECTION_MATRIX = "cameraToClipMatrix";
@@ -13,7 +30,6 @@ public class SimpleShader extends AbstractShader{
 	private static final String POSITION = "in_Position";
 	private static final String COLOR = "in_Color";
 	private static final String TEXTURE_COORD = "in_TexCoord";
-
 
 	private static final String VERTEX_SHADER_FILE = "/shaders/simple/vertex.glsl";
 	private static final String FRAGMENT_SHADER_FILE = "/shaders/simple/fragment.glsl";
@@ -38,6 +54,7 @@ public class SimpleShader extends AbstractShader{
 		vertexShaderId = loadShader(VERTEX_SHADER_FILE, GL20.GL_VERTEX_SHADER);
 		fragmentShaderId = loadShader(FRAGMENT_SHADER_FILE, GL20.GL_FRAGMENT_SHADER);
 
+
 		// Create a new shader program that links both shaders
 		programId = GL20.glCreateProgram();
 		GL20.glAttachShader(programId, vertexShaderId);
@@ -57,9 +74,18 @@ public class SimpleShader extends AbstractShader{
 		GL20.glValidateProgram(programId);
 	}
 
+
+
+	@Override
+	public void destroy() {
+
+
+	}
+
+
+
 	@Override
 	public void bind() {
-		GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT);
 		GL20.glUseProgram(programId);
 
 		uploadMatrices(getProjectionMatrix(), projectionMatrixLocation);
@@ -94,6 +120,5 @@ public class SimpleShader extends AbstractShader{
 	public int getInTexCoord() {
 		return inTexCoord;
 	}
-
 
 }
