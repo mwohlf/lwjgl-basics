@@ -14,19 +14,18 @@ import net.wohlfart.tools.Pool;
 import net.wohlfart.tools.Pool.IPoolable;
 
 
-// read: http://stackoverflow.com/questions/10617589/why-would-it-be-beneficial-to-have-a-separate-projection-matrix-yet-combine-mod
-// and: http://www.arcsynthesis.org/gltut/Positioning/Tut07%20The%20Perils%20of%20World%20Space.html
-public class Quad implements IDrawable, IPoolable {
+// see: http://lwjgl.blogspot.de/2012/04/chapter-one-triangle.html
+public class Triangle implements IDrawable, IPoolable {
 
-	private static final Pool<Quad> pool = new Pool<Quad>() {
+	private static final Pool<Triangle> pool = new Pool<Triangle>() {
 		@Override
-		protected Quad newObject () {
-			return new Quad();
+		protected Triangle newObject () {
+			return new Triangle();
 		}
 	};
 
-	private int vaoId;
-	private int vboId;
+	private int vaoId;   // Vertex Array Object  
+	private int vboId;   // Our Vertex Buffer Object 
 
 	private int vertexCount;
 	private int indicesCount;
@@ -35,37 +34,31 @@ public class Quad implements IDrawable, IPoolable {
 	/**
 	 * only callec created by the pool
 	 */
-	private Quad() {}
+	private Triangle() {}
 
 	/**
 	 * @return a new object possibly from the pool
 	 */
-	public static Quad create() {
-		return create( new Vector3f(+0.5f,+0.5f,+0.0f),
-				       new Vector3f(-0.5f,+0.5f,+0.0f),
+	public static Triangle create() {
+		return create( new Vector3f(+0.0f,+0.5f,+0.0f),
 				       new Vector3f(-0.5f,-0.5f,+0.0f),
 				       new Vector3f(+0.5f,-0.5f,+0.0f));
 	}
 
-	public static Quad create(final Vector3f tr,
-			                  final Vector3f tl,
-			                  final Vector3f bl,
-			                  final Vector3f br) {
-		Quad result = pool.obtain();
+	public static Triangle create(final Vector3f tm,
+            				      final Vector3f bl,
+                                  final Vector3f br) {
+		Triangle result = pool.obtain();
 
 		float[] vertices = new float[] {
-				tr.x, tr.y, tr.z,
-				tl.x, tl.y, tl.z,
+				tm.x, tm.y, tm.z,
 				bl.x, bl.y, bl.z,
 				br.x, br.y, br.z};
-		result.vertexCount = 4;
-
-		byte[] indices = {
-				// top left
-				0, 1, 2,
-				// bottom right
-				2, 3, 0};
+		result.vertexCount = 3;
+		
+		byte[] indices = {0, 1, 2};
 		result.indicesCount = indices.length;
+
 
 		// Create a new Vertex Array Object in memory and select it (bind)
 		// A VAO can have up to 16 attributes (VBO's) assigned to it by default
@@ -103,18 +96,13 @@ public class Quad implements IDrawable, IPoolable {
 		return result;
 	}
 
-
-
-
-
-
-
 	/**
 	 * free the object for reuse
 	 */
 	public void free() {
 		pool.free(this);
 	}
+
 
 	/**
 	 * called by the pool when the object is freed

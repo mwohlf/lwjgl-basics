@@ -79,6 +79,8 @@ public class Game {
 		GL11.glViewport(0, 0, settings.width, settings.height);
 		// used for GL11.glClear(GL11.GL_COLOR_BUFFER_BIT);
 		GL11.glClearColor(0.4f, 0.1f, 0.1f, 0f);
+		// turn culling off so it will be drawn regardless of what way it is facing
+		GL11.glDisable(GL11.GL_CULL_FACE);  
 
 	}
 
