@@ -52,7 +52,6 @@ public class Triangle implements IDrawable, IPoolable {
             				      final Vector4f bl,
                                   final Vector4f br) {
 		final Triangle result = pool.obtain();
-
 		result.shader = shader;
 
 		float[] vertices = new float[] {
@@ -77,12 +76,12 @@ public class Triangle implements IDrawable, IPoolable {
 		// set the size and data of the VBO and set it to STATIC_DRAW
 		GL15.glBufferData(GL15.GL_ARRAY_BUFFER, verticesBuffer, GL15.GL_STATIC_DRAW);
 
-		// assign vertex VBO to slot 0 of the VAO
+		// enable the position shader attribute
+		GL20.glEnableVertexAttribArray(shader.getInPosition());
+		// setup the OpenGL pipeline, refers to whatever is bound using the GL_ARRAY_BUFFER
+		// VECTOR_SIZE size of a single vertex, float values, 0 space between the vertices, 0 offset from the buffer start
 		GL20.glVertexAttribPointer(shader.getInPosition(), VECTOR_SIZE, GL11.GL_FLOAT, false, 0, 0);
 
-		// unbind VBO
-		GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, 0);
-		// disable VAO
 		GL30.glBindVertexArray(0);
 
 		return result;
@@ -93,6 +92,14 @@ public class Triangle implements IDrawable, IPoolable {
 	 */
 	public void free() {
 		pool.free(this);
+	}
+
+
+	@Override
+	public void draw() {
+		GL30.glBindVertexArray(vaoHandle);                         // bind to the VAO
+		GL11.glDrawArrays(GL11.GL_TRIANGLES, 0, vertexCount);      // draw triangles, start at 0, do use vertexCount vertices
+		GL30.glBindVertexArray(0);                                 // unbind the VAO
 	}
 
 
@@ -111,20 +118,6 @@ public class Triangle implements IDrawable, IPoolable {
 		// Delete the VAO
 		GL30.glBindVertexArray(0);
 		GL30.glDeleteVertexArrays(vaoHandle);
-	}
-
-
-
-	@Override
-	public void draw() {
-		// bind to the VAO
-		GL30.glBindVertexArray(vaoHandle);
-		GL20.glEnableVertexAttribArray(shader.getInPosition());
-		// draw some triangles, startIndex: 0, count
-		GL11.glDrawArrays(GL11.GL_TRIANGLES, 0, vertexCount);
-		GL20.glDisableVertexAttribArray(0);
-		// unbind the VAO
-		GL30.glBindVertexArray(0);
 	}
 
 }

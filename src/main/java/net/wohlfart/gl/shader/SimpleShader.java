@@ -87,7 +87,6 @@ public class SimpleShader extends AbstractShader{
 	@Override
 	public void bind() {
 		GL20.glUseProgram(programId);
-
 		uploadMatrices(getProjectionMatrix(), projectionMatrixLocation);
 		uploadMatrices(getViewMatrix(), viewMatrixLocation);
 		uploadMatrices(getModelMatrix(), modelMatrixLocation);
@@ -96,6 +95,7 @@ public class SimpleShader extends AbstractShader{
 
 	@Override
 	public void unbind() {
+
 		GL20.glUseProgram(0);
 	}
 

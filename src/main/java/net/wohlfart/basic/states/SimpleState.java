@@ -1,12 +1,12 @@
 package net.wohlfart.basic.states;
 
-import java.awt.Font;
 import java.util.HashSet;
 import java.util.Set;
 
 import net.wohlfart.basic.Game;
 import net.wohlfart.gl.CanMoveImpl;
 import net.wohlfart.gl.CanRotateImpl;
+import net.wohlfart.gl.elements.Arrow;
 import net.wohlfart.gl.elements.IDrawable;
 import net.wohlfart.gl.elements.Quad;
 import net.wohlfart.gl.elements.Triangle;
@@ -15,7 +15,6 @@ import net.wohlfart.gl.input.KeyPressedEvent;
 import net.wohlfart.gl.shader.SimpleShader;
 import net.wohlfart.model.Avatar;
 import net.wohlfart.tools.SimpleMatrix4f;
-import net.wohlfart.tools.TrueTypeFont;
 
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.Display;
@@ -48,7 +47,8 @@ public class SimpleState implements IGameState {
 		shader.setModelMatrix(new Matrix4f());
 		//shader.bind();
 
-		drawables.add(Quad.create(shader));
+		drawables.add(Arrow.create(shader));
+		//drawables.add(Quad.create(shader));
 		//drawables.add(Triangle.create(shader));
 
 		//shader.unbind();
