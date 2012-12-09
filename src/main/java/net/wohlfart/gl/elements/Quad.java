@@ -30,7 +30,8 @@ public class Quad implements IDrawable, IPoolable {
 
     private IShader shader;
     private int vaoHandle;
-    private int vboHandle;
+    private int vboVerticesHandle;
+    private int vboIndicesHandle;
 
     private int vertexCount;
     private int indicesCount;
@@ -80,9 +81,9 @@ public class Quad implements IDrawable, IPoolable {
         GL30.glBindVertexArray(result.vaoHandle);
 
         // create a new VBO for the vertices
-        result.vboHandle = GL15.glGenBuffers();
+        result.vboVerticesHandle = GL15.glGenBuffers();
         // and select it
-        GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, result.vboHandle);
+        GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, result.vboVerticesHandle);
         // sending data to OpenGL requires the usage of (flipped) byte buffers
         FloatBuffer verticesBuffer = BufferUtils.createFloatBuffer(result.vertexCount * VECTOR_SIZE);
         verticesBuffer.put(vertices);
@@ -91,9 +92,9 @@ public class Quad implements IDrawable, IPoolable {
         GL15.glBufferData(GL15.GL_ARRAY_BUFFER, verticesBuffer, GL15.GL_STATIC_DRAW);		// Deselect (bind to 0) the VBO
 
         // create a new VBO for the indices
-        result.vboHandle = GL15.glGenBuffers();
+        result.vboIndicesHandle = GL15.glGenBuffers();
         // and select it
-        GL15.glBindBuffer(GL15.GL_ELEMENT_ARRAY_BUFFER, result.vboHandle);
+        GL15.glBindBuffer(GL15.GL_ELEMENT_ARRAY_BUFFER, result.vboIndicesHandle);
         // setup the indices buffer
         ByteBuffer indicesBuffer = BufferUtils.createByteBuffer(result.indicesCount);
         indicesBuffer.put(indices);
@@ -142,11 +143,11 @@ public class Quad implements IDrawable, IPoolable {
 
         // Delete the vertex VBO
         GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, 0);
-        GL15.glDeleteBuffers(vboHandle);
+        GL15.glDeleteBuffers(vboVerticesHandle);
 
         // Delete the index VBO
         GL15.glBindBuffer(GL15.GL_ELEMENT_ARRAY_BUFFER, 0);
-        GL15.glDeleteBuffers(vboHandle);
+        GL15.glDeleteBuffers(vboIndicesHandle);
 
         // Delete the VAO
         GL30.glBindVertexArray(0);

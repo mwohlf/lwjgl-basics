@@ -1,5 +1,6 @@
 package net.wohlfart.gl.elements;
 
+import java.nio.ByteBuffer;
 import java.nio.FloatBuffer;
 
 import org.lwjgl.BufferUtils;
@@ -24,7 +25,22 @@ public class Arrow implements IDrawable, IPoolable {
         +0.00f, +0.05f, +0.90f, +1.00f, // tip top
         +0.00f, -0.05f, +0.90f, +1.00f, // tip bottom
     };
-    private static final int verticesCount = 6;
+    private static final int verticesCount = vertices.length / VECTOR_SIZE;
+
+    private static final byte[] indices = {
+            // shaft
+            0, 1,
+            // tip1
+            2, 1,
+            // tip2
+            3, 1,
+            // tip3
+            4, 1,
+            // tip4
+            5, 1,
+    };
+    //private static final int indicesCount = vertiindicesces.length / VECTOR_SIZE;
+
 
 
     private static final Pool<Arrow> pool = new Pool<Arrow>() {
@@ -36,7 +52,8 @@ public class Arrow implements IDrawable, IPoolable {
 
     private IShader shader;
     private int vaoHandle;
-    private int vboHandle;
+    private int vboVerticesHandle;
+    private int vboIndicesHandle;
 
 
     /**
@@ -62,23 +79,34 @@ public class Arrow implements IDrawable, IPoolable {
 		// select/bind the VAO
 		GL30.glBindVertexArray(result.vaoHandle);
 
-		// create a VBO in the VAO
-		result.vboHandle = GL15.glGenBuffers();
+		// create a VBO or the vertices in the VAO
+		result.vboVerticesHandle = GL15.glGenBuffers();
 		// select/bind the VBO
-		GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, result.vboHandle);
+		GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, result.vboVerticesHandle);
 		// create & flip a buffer for the vertices
-		FloatBuffer verticesBuffer = BufferUtils.createFloatBuffer(Arrow.verticesCount * VECTOR_SIZE);
+		FloatBuffer verticesBuffer = BufferUtils.createFloatBuffer(Arrow.vertices.length);
 		verticesBuffer.put(vertices);
 		verticesBuffer.flip();
 		// set the size and data of the VBO and set it to STATIC_DRAW
 		GL15.glBufferData(GL15.GL_ARRAY_BUFFER, verticesBuffer, GL15.GL_STATIC_DRAW);
 
+        // create a new VBO for the indices
+        result.vboIndicesHandle = GL15.glGenBuffers();
+        // and select it
+        GL15.glBindBuffer(GL15.GL_ELEMENT_ARRAY_BUFFER, result.vboIndicesHandle);
+        // setup the indices buffer
+        ByteBuffer indicesBuffer = BufferUtils.createByteBuffer(Arrow.indices.length);
+        indicesBuffer.put(indices);
+        indicesBuffer.flip();
+        // push the data to the VBO
+        GL15.glBufferData(GL15.GL_ELEMENT_ARRAY_BUFFER, indicesBuffer, GL15.GL_STATIC_DRAW);
+
+        GL20.glEnableVertexAttribArray(shader.getInPosition());
 		// enable shader attribute
 		GL20.glVertexAttribPointer(shader.getInPosition(), VECTOR_SIZE, GL11.GL_FLOAT, false, 0, 0);
+;
+		GL11.glLineWidth(3f);
 
-		// unbind VBO
-		GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, 0);
-		// disable VAO
 		GL30.glBindVertexArray(0);
 
     	return result;
@@ -97,11 +125,8 @@ public class Arrow implements IDrawable, IPoolable {
 	public void draw() {
 		// bind to the VAO
 		GL30.glBindVertexArray(vaoHandle);
-		GL20.glEnableVertexAttribArray(shader.getInPosition());
-		GL11.glLineWidth(3f);
-		// draw some triangles, startIndex: 0, count
-		GL11.glDrawArrays(GL11.GL_LINE_STRIP, 0, Arrow.verticesCount);
-		GL20.glDisableVertexAttribArray(0);
+		// draw the line strips according to the indices
+        GL11.glDrawElements(GL11.GL_LINE_STRIP, Arrow.indices.length, GL11.GL_UNSIGNED_BYTE, 0);
 		// unbind the VAO
 		GL30.glBindVertexArray(0);
 	}
@@ -117,7 +142,11 @@ public class Arrow implements IDrawable, IPoolable {
 
 		// Delete the vertex VBO
 		GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, 0);
-		GL15.glDeleteBuffers(vboHandle);
+		GL15.glDeleteBuffers(vboIndicesHandle);
+
+		// Delete the index VBO
+		GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, 0);
+		GL15.glDeleteBuffers(vboVerticesHandle);
 
 		// Delete the VAO
 		GL30.glBindVertexArray(0);
