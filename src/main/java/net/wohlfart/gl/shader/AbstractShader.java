@@ -10,6 +10,7 @@ import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.ARBShaderObjects;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL20;
+import org.lwjgl.util.glu.GLU;
 import org.lwjgl.util.vector.Matrix4f;
 
 
@@ -21,10 +22,6 @@ import org.lwjgl.util.vector.Matrix4f;
  */
 public abstract class AbstractShader implements IShader {
 
-	private Matrix4f projectionMatrix;
-	private Matrix4f viewMatrix;
-	private Matrix4f modelMatrix;
-		
 	protected int loadShader(final String filename, int shaderType) {
 		int shader = 0;
 		Scanner scanner = null;
@@ -37,7 +34,7 @@ public abstract class AbstractShader implements IShader {
 			}
 			shader = ARBShaderObjects.glCreateShaderObjectARB(shaderType);
 			if (shader == 0) {
-				throw new ShaderException("returned 0");
+				throw new ShaderException("glCreateShaderObjectARB returned 0");
 			}
 			ARBShaderObjects.glShaderSourceARB(shader, scanner.next());
 			ARBShaderObjects.glCompileShaderARB(shader);
@@ -58,6 +55,41 @@ public abstract class AbstractShader implements IShader {
 		}
 	}
 
+
+	/**
+	 * attach, link and validate the shaders into a shader program
+	 * @param handles the shaders
+	 * @return
+	 */
+	protected int linkAndValidate(int... handles ) {
+
+		int programId = GL20.glCreateProgram();
+		for (int handle : handles) {
+			GL20.glAttachShader(programId, handle);
+		}
+		GL20.glLinkProgram(programId);
+
+		GL20.glValidateProgram(programId);
+		int error = GL11.glGetError();
+		if (error != GL11.GL_NO_ERROR) {
+			throw new ShaderException("error validating shader: " + GLU.gluErrorString(error));
+		}
+
+		return programId;
+	}
+
+	protected void unlink(int programId, int... handles) {
+		GL20.glUseProgram(0);
+		for (int handle : handles) {
+			GL20.glDetachShader(programId, handle);
+		}
+		for (int handle : handles) {
+			GL20.glDeleteShader(handle);
+		}
+		GL20.glDeleteProgram(programId);
+	}
+
+
 	protected void uploadMatrices(final Matrix4f matrix, final int location) {
 		FloatBuffer matrix44Buffer = BufferUtils.createFloatBuffer(16);
 		matrix.store(matrix44Buffer);
@@ -65,39 +97,10 @@ public abstract class AbstractShader implements IShader {
 		GL20.glUniformMatrix4(location, false, matrix44Buffer);
 	}
 
+
 	protected String getLogInfo(int obj) {
 		return ARBShaderObjects.glGetInfoLogARB(obj,
 				ARBShaderObjects.glGetObjectParameteriARB(obj, ARBShaderObjects.GL_OBJECT_INFO_LOG_LENGTH_ARB));
 	}
-
-
-	protected Matrix4f getProjectionMatrix() {
-		return projectionMatrix;
-	}
-	
-	public void setProjectionMatrix(final Matrix4f projectionMatrix) {
-		this.projectionMatrix = projectionMatrix;
-	}
-
-	
-	protected Matrix4f getViewMatrix() {
-		return viewMatrix;
-	}
-
-	public void setViewMatrix(final Matrix4f viewMatrix) {
-		this.viewMatrix = viewMatrix;
-	}
-
-	
-	protected Matrix4f getModelMatrix() {
-		return modelMatrix;
-	}
-
-	public void setModelMatrix(final Matrix4f modelMatrix) {
-		this.modelMatrix = modelMatrix;
-	}
-
-
-
 
 }

@@ -45,13 +45,10 @@ public class SimpleState implements IGameState {
 		shader.setProjectionMatrix(projectionMatrix);
 		shader.setViewMatrix(new Matrix4f());
 		shader.setModelMatrix(new Matrix4f());
-		//shader.bind();
 
 		drawables.add(Arrow.create(shader));
 		//drawables.add(Quad.create(shader));
 		//drawables.add(Triangle.create(shader));
-
-		//shader.unbind();
 
 		InputSource.INSTANCE.register(new KeyPressedEvent.Listener(){
 			@Override

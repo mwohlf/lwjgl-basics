@@ -12,5 +12,4 @@ public class ShaderException extends RuntimeException {
 		super(string, ex);
 	}
 
-
 }

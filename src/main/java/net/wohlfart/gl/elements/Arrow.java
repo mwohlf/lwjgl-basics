@@ -20,27 +20,19 @@ public class Arrow implements IDrawable, IPoolable {
     private static final float[] vertices = new float[]{
         +0.00f, +0.00f, +0.00f, +1.00f, // base
         +0.00f, +0.00f, +1.00f, +1.00f, // tip
-        +0.05f, +0.00f, +0.90f, +1.00f, // tip right
-        -0.05f, +0.00f, +0.90f, +1.00f, // tip left
-        +0.00f, +0.05f, +0.90f, +1.00f, // tip top
-        +0.00f, -0.05f, +0.90f, +1.00f, // tip bottom
+        +0.10f, +0.00f, +0.90f, +1.00f, // tip right
+        -0.10f, +0.00f, +0.90f, +1.00f, // tip left
+        +0.00f, +0.10f, +0.90f, +1.00f, // tip top
+        +0.00f, -0.10f, +0.90f, +1.00f, // tip bottom
     };
-    private static final int verticesCount = vertices.length / VECTOR_SIZE;
 
     private static final byte[] indices = {
-            // shaft
-            0, 1,
-            // tip1
-            2, 1,
-            // tip2
-            3, 1,
-            // tip3
-            4, 1,
-            // tip4
-            5, 1,
+            0, 1,  // shaft
+            2, 1,  // tip1
+            3, 1,  // tip2
+            4, 1,  // tip3
+            5, 1,  // tip4
     };
-    //private static final int indicesCount = vertiindicesces.length / VECTOR_SIZE;
-
 
 
     private static final Pool<Arrow> pool = new Pool<Arrow>() {
@@ -152,18 +144,5 @@ public class Arrow implements IDrawable, IPoolable {
 		GL30.glBindVertexArray(0);
 		GL30.glDeleteVertexArrays(vaoHandle);
 	}
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 }
