@@ -56,7 +56,7 @@ public class Array<T> implements Iterable<T> {
 	/** Creates a new array containing the elements in the specified array. The new array will have the same type of backing array
 	 * and will be ordered if the specified array is ordered. The capacity is set to the number of elements, so any subsequent
 	 * elements added will cause the backing array to be grown. */
-	public Array (Array array) {
+	public Array (Array<T> array) {
 		this(array.ordered, array.size, (Class<T>)array.items.getClass().getComponentType());
 		size = array.size;
 		System.arraycopy(array.items, 0, items, 0, size);
@@ -74,7 +74,7 @@ public class Array<T> implements Iterable<T> {
 	 * @param ordered If false, methods that remove elements may change the order of other elements in the array, which avoids a
 	 *           memory copy. */
 	public Array (boolean ordered, T[] array) {
-		this(ordered, array.length, (Class)array.getClass().getComponentType());
+		this(ordered, array.length, (Class<T>)array.getClass().getComponentType());
 		size = array.length;
 		System.arraycopy(array, 0, items, 0, size);
 	}
@@ -85,14 +85,14 @@ public class Array<T> implements Iterable<T> {
 		items[size++] = value;
 	}
 
-	public void addAll (Array array) {
+	public void addAll (Array<T> array) {
 		addAll(array, 0, array.size);
 	}
 
-	public void addAll (Array array, int offset, int length) {
+	public void addAll (Array<T> array, int offset, int length) {
 		if (offset + length > array.size)
 			throw new IllegalArgumentException("offset + length must be <= size: " + offset + " + " + length + " <= " + array.size);
-		addAll((T[])array.items, offset, length);
+		addAll(array.items, offset, length);
 	}
 
 	public void addAll (T[] array) {
@@ -199,7 +199,7 @@ public class Array<T> implements Iterable<T> {
 	public T removeIndex (int index) {
 		if (index >= size) throw new IndexOutOfBoundsException(String.valueOf(index));
 		T[] items = this.items;
-		T value = (T)items[index];
+		T value = items[index];
 		size--;
 		if (ordered)
 			System.arraycopy(items, index + 1, items, index, size - index);
@@ -289,9 +289,10 @@ public class Array<T> implements Iterable<T> {
 
 	/** Returns an iterator for the items in the array. Remove is supported. Note that the same iterator instance is returned each
 	 * time this method is called. Use the {@link ArrayIterator} constructor for nested or multithreaded iteration. */
+	@Override
 	public Iterator<T> iterator () {
 		if (iterator == null)
-			iterator = new ArrayIterator(this);
+			iterator = new ArrayIterator<T>(this);
 		else
 			iterator.index = 0;
 		return iterator;
@@ -322,10 +323,11 @@ public class Array<T> implements Iterable<T> {
 		return result;
 	}
 
+	@Override
 	public boolean equals (Object object) {
 		if (object == this) return true;
 		if (!(object instanceof Array)) return false;
-		Array array = (Array)object;
+		Array<T> array = (Array<T>)object;
 		int n = size;
 		if (n != array.size) return false;
 		Object[] items1 = this.items;
@@ -338,6 +340,7 @@ public class Array<T> implements Iterable<T> {
 		return true;
 	}
 
+	@Override
 	public String toString () {
 		if (size == 0) return "[]";
 		T[] items = this.items;
@@ -372,15 +375,18 @@ public class Array<T> implements Iterable<T> {
 			this.array = array;
 		}
 
+		@Override
 		public boolean hasNext () {
 			return index < array.size;
 		}
 
+		@Override
 		public T next () {
 			if (index >= array.size) throw new NoSuchElementException(String.valueOf(index));
 			return array.items[index++];
 		}
 
+		@Override
 		public void remove () {
 			index--;
 			array.removeIndex(index);
@@ -392,7 +398,7 @@ public class Array<T> implements Iterable<T> {
 	}
 
 	static public class ArrayIterable<T> implements Iterable<T> {
-		private ArrayIterator<T> iterator;
+		private final ArrayIterator<T> iterator;
 
 		public ArrayIterable (Array<T> array) {
 			iterator = new ArrayIterator<T>(array);

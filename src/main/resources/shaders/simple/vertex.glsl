@@ -41,7 +41,7 @@ void main(void) {
     gl_Position = cameraToClipMatrix * cameraPos;
 
 
-    //pass_Color = in_Color;
-    pass_Color = vec4(1.0f, 1.0f, 0.0f, 1.0f);
+    pass_Color = in_Color;
+    //pass_Color = vec4(1.0f, 1.0f, 0.0f, 1.0f);
     pass_TextureCoord = in_TexCoord;
 }

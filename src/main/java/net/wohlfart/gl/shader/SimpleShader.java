@@ -29,9 +29,9 @@ public class SimpleShader extends AbstractShader{
 	private static final String VERTEX_SHADER_FILE = "/shaders/simple/vertex.glsl";
 	private static final String FRAGMENT_SHADER_FILE = "/shaders/simple/fragment.glsl";
 
-	private int programId;
-	private int vertexShaderId;
-	private int fragmentShaderId;
+	private int programId = -1;
+	private int vertexShaderId = -1;
+	private int fragmentShaderId = -1;
 
 	private int inPosition = -1;
 	private int inColor = -1;

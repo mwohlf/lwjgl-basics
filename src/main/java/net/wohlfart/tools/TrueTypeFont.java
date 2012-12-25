@@ -11,6 +11,7 @@ import java.awt.image.DataBufferByte;
 import java.awt.image.DataBufferInt;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
+import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
 import java.util.HashMap;
 import java.util.Map;
@@ -18,6 +19,8 @@ import java.awt.GraphicsEnvironment;
 
 import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL11;
+import org.lwjgl.opengl.GL15;
+import org.lwjgl.opengl.GL30;
 import org.lwjgl.util.glu.GLU;
 
 
@@ -33,9 +36,9 @@ import org.lwjgl.util.glu.GLU;
 public class TrueTypeFont {
 
 	public final static int
-		ALIGN_LEFT = 0,
-		ALIGN_RIGHT = 1,
-		ALIGN_CENTER = 2;
+	ALIGN_LEFT = 0,
+	ALIGN_RIGHT = 1,
+	ALIGN_CENTER = 2;
 
 	/** Array that holds necessary information about the font characters */
 	private IntObject[] charArray = new IntObject[256];
@@ -246,18 +249,18 @@ public class TrueTypeFont {
 		/*
 		GL11.glTexCoord2f(TextureSrcX, TextureSrcY);
 		GL11.glVertex2f(drawX, drawY);
-		
+
 		GL11.glTexCoord2f(TextureSrcX, TextureSrcY + RenderHeight);
 		GL11.glVertex2f(drawX, drawY + DrawHeight);
-		
+
 		GL11.glTexCoord2f(TextureSrcX + RenderWidth, TextureSrcY + RenderHeight);
 		GL11.glVertex2f(drawX + DrawWidth, drawY + DrawHeight);
-		
+
 		GL11.glTexCoord2f(TextureSrcX + RenderWidth, TextureSrcY);
 		GL11.glVertex2f(drawX + DrawWidth, drawY);
-		*/
-		
-		
+		 */
+
+
 	}
 
 	public int getWidth(String whatchars) {
@@ -318,40 +321,55 @@ public class TrueTypeFont {
 
 
 		switch (format) {
-			case ALIGN_RIGHT: {
-				d = -1;
-				c = correctR;
+		case ALIGN_RIGHT: {
+			d = -1;
+			c = correctR;
 
-				while (i < endIndex) {
-					if (whatchars.charAt(i) == '\n') startY -= fontHeight;
-					i++;
+			while (i < endIndex) {
+				if (whatchars.charAt(i) == '\n') startY -= fontHeight;
+				i++;
+			}
+			break;
+		}
+		case ALIGN_CENTER: {
+			for (int l = startIndex; l <= endIndex; l++) {
+				charCurrent = whatchars.charAt(l);
+				if (charCurrent == '\n') break;
+				if (charCurrent < 256) {
+					intObject = charArray[charCurrent];
+				} else {
+					intObject = (IntObject)customChars.get( new Character( (char) charCurrent ) );
 				}
-				break;
+				totalwidth += intObject.width-correctL;
 			}
-			case ALIGN_CENTER: {
-				for (int l = startIndex; l <= endIndex; l++) {
-					charCurrent = whatchars.charAt(l);
-					if (charCurrent == '\n') break;
-					if (charCurrent < 256) {
-						intObject = charArray[charCurrent];
-					} else {
-						intObject = (IntObject)customChars.get( new Character( (char) charCurrent ) );
-					}
-					totalwidth += intObject.width-correctL;
-				}
-				totalwidth /= -2;
-			}
-			case ALIGN_LEFT:
-			default: {
-				d = 1;
-				c = correctL;
-				break;
-			}
+			totalwidth /= -2;
+		}
+		case ALIGN_LEFT:
+		default: {
+			d = 1;
+			c = correctL;
+			break;
+		}
 
 		}
 
 		GL11.glBindTexture(GL11.GL_TEXTURE_2D, fontTextureID);
-		GL11.glBegin(GL11.GL_QUADS);
+		//GL11.glBegin(GL11.GL_QUADS);
+
+		// create a VAO in memory
+		int vaoHandle = GL30.glGenVertexArrays();
+		// select/bind the VAO
+		GL30.glBindVertexArray(vaoHandle);
+
+		int vectorSite = 3;
+		// create a new VBO for the vertices
+		int vboVerticesHandle = GL15.glGenBuffers();
+		// and select it
+		GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, vboVerticesHandle);
+		// sending data to OpenGL requires the usage of (flipped) byte buffers
+		//int bufferSi
+		FloatBuffer verticesBuffer = BufferUtils.createFloatBuffer( (endIndex - startIndex) * vectorSite * 4);
+
 
 		while (i >= startIndex && i <= endIndex) {
 
@@ -364,74 +382,88 @@ public class TrueTypeFont {
 
 			if( intObject != null ) {
 				if (d < 0) totalwidth += (intObject.width-c) * d;
-					if (charCurrent == '\n') {
-						startY -= fontHeight * d;
-						totalwidth = 0;
-						if (format == ALIGN_CENTER) {
-							for (int l = i+1; l <= endIndex; l++) {
-								charCurrent = whatchars.charAt(l);
-								if (charCurrent == '\n') break;
-								if (charCurrent < 256) {
-									intObject = charArray[charCurrent];
-								} else {
-									intObject = (IntObject)customChars.get( new Character( (char) charCurrent ) );
-								}
-								totalwidth += intObject.width-correctL;
+				if (charCurrent == '\n') {
+					startY -= fontHeight * d;
+					totalwidth = 0;
+					if (format == ALIGN_CENTER) {
+						for (int l = i+1; l <= endIndex; l++) {
+							charCurrent = whatchars.charAt(l);
+							if (charCurrent == '\n') break;
+							if (charCurrent < 256) {
+								intObject = charArray[charCurrent];
+							} else {
+								intObject = (IntObject)customChars.get( new Character( (char) charCurrent ) );
 							}
-							totalwidth /= -2;
+							totalwidth += intObject.width-correctL;
 						}
-						//if center get next lines total width/2;
+						totalwidth /= -2;
 					}
-					else {
-						drawQuad((totalwidth + intObject.width) * scaleX + x, startY * scaleY + y,
+					//if center get next lines total width/2;
+				}
+				else {
+
+
+
+					drawQuad(
+							(totalwidth + intObject.width) * scaleX + x,
+							startY * scaleY + y,
 							totalwidth * scaleX + x,
-							(startY + intObject.height) * scaleY + y, intObject.storedX + intObject.width,
-							intObject.storedY + intObject.height,intObject.storedX,
+							(startY + intObject.height) * scaleY + y,
+
+							intObject.storedX + intObject.width,
+							intObject.storedY + intObject.height,
+							intObject.storedX,
 							intObject.storedY);
-						if (d > 0) totalwidth += (intObject.width-c) * d ;
-					}
-					i += d;
+
+					if (d > 0) totalwidth += (intObject.width-c) * d ;
+				}
+				i += d;
 
 			}
 		}
-		GL11.glEnd();
+
+
+		GL30.glBindVertexArray(0);
 	}
+
+
+
 	public static int loadImage(BufferedImage bufferedImage) {
-	    try {
-		    short width       = (short)bufferedImage.getWidth();
-		    short height      = (short)bufferedImage.getHeight();
-		    //textureLoader.bpp = bufferedImage.getColorModel().hasAlpha() ? (byte)32 : (byte)24;
-		    int bpp = (byte)bufferedImage.getColorModel().getPixelSize();
-		    ByteBuffer byteBuffer;
-		    DataBuffer db = bufferedImage.getData().getDataBuffer();
-		    if (db instanceof DataBufferInt) {
-		    	int intI[] = ((DataBufferInt)(bufferedImage.getData().getDataBuffer())).getData();
-		    	byte newI[] = new byte[intI.length * 4];
-		    	for (int i = 0; i < intI.length; i++) {
-		    		byte b[] = intToByteArray(intI[i]);
-		    		int newIndex = i*4;
+		try {
+			short width       = (short)bufferedImage.getWidth();
+			short height      = (short)bufferedImage.getHeight();
+			//textureLoader.bpp = bufferedImage.getColorModel().hasAlpha() ? (byte)32 : (byte)24;
+			int bpp = (byte)bufferedImage.getColorModel().getPixelSize();
+			ByteBuffer byteBuffer;
+			DataBuffer db = bufferedImage.getData().getDataBuffer();
+			if (db instanceof DataBufferInt) {
+				int intI[] = ((DataBufferInt)(bufferedImage.getData().getDataBuffer())).getData();
+				byte newI[] = new byte[intI.length * 4];
+				for (int i = 0; i < intI.length; i++) {
+					byte b[] = intToByteArray(intI[i]);
+					int newIndex = i*4;
 
-		    		newI[newIndex]   = b[1];
-		    		newI[newIndex+1] = b[2];
-		    		newI[newIndex+2] = b[3];
-		    		newI[newIndex+3] = b[0];
-		    	}
+					newI[newIndex]   = b[1];
+					newI[newIndex+1] = b[2];
+					newI[newIndex+2] = b[3];
+					newI[newIndex+3] = b[0];
+				}
 
-		    	byteBuffer  = ByteBuffer.allocateDirect(
-		    			width*height*(bpp/8))
-			                           .order(ByteOrder.nativeOrder())
-			                            .put(newI);
-		    } else {
-		    	byteBuffer  = ByteBuffer.allocateDirect(
-		    			width*height*(bpp/8))
-			                           .order(ByteOrder.nativeOrder())
-			                            .put(((DataBufferByte)(bufferedImage.getData().getDataBuffer())).getData());
-		    }
-		    byteBuffer.flip();
+				byteBuffer  = ByteBuffer.allocateDirect(
+						width*height*(bpp/8))
+						.order(ByteOrder.nativeOrder())
+						.put(newI);
+			} else {
+				byteBuffer  = ByteBuffer.allocateDirect(
+						width*height*(bpp/8))
+						.order(ByteOrder.nativeOrder())
+						.put(((DataBufferByte)(bufferedImage.getData().getDataBuffer())).getData());
+			}
+			byteBuffer.flip();
 
 
-		    int internalFormat = GL11.GL_RGBA8,
-			format = GL11.GL_RGBA;
+			int internalFormat = GL11.GL_RGBA8,
+					format = GL11.GL_RGBA;
 			IntBuffer textureId = BufferUtils.createIntBuffer(1);;
 			GL11.glGenTextures(textureId);
 			GL11.glBindTexture(GL11.GL_TEXTURE_2D, textureId.get(0));
@@ -448,18 +480,18 @@ public class TrueTypeFont {
 
 
 			GLU.gluBuild2DMipmaps(GL11.GL_TEXTURE_2D,
-			      internalFormat,
-			      width,
-			      height,
-			      format,
-			      GL11.GL_UNSIGNED_BYTE,
-			      byteBuffer);
+					internalFormat,
+					width,
+					height,
+					format,
+					GL11.GL_UNSIGNED_BYTE,
+					byteBuffer);
 			return textureId.get(0);
 
 		} catch (Exception e) {
-	    	e.printStackTrace();
-	    	System.exit(-1);
-	    }
+			e.printStackTrace();
+			System.exit(-1);
+		}
 
 		return -1;
 	}
@@ -475,11 +507,11 @@ public class TrueTypeFont {
 		return GraphicsEnvironment.getLocalGraphicsEnvironment().getAllFonts();
 	}
 	public static byte[] intToByteArray(int value) {
-        return new byte[] {
-                (byte)(value >>> 24),
-                (byte)(value >>> 16),
-                (byte)(value >>> 8),
-                (byte)value};
+		return new byte[] {
+				(byte)(value >>> 24),
+				(byte)(value >>> 16),
+				(byte)(value >>> 8),
+				(byte)value};
 	}
 
 	public void destroy() {

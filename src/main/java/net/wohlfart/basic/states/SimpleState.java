@@ -1,5 +1,6 @@
 package net.wohlfart.basic.states;
 
+import java.awt.Font;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -15,6 +16,7 @@ import net.wohlfart.gl.input.KeyPressedEvent;
 import net.wohlfart.gl.shader.SimpleShader;
 import net.wohlfart.model.Avatar;
 import net.wohlfart.tools.SimpleMatrix4f;
+import net.wohlfart.tools.TrueTypeFont;
 
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.Display;
@@ -30,6 +32,7 @@ public class SimpleState implements IGameState {
 	private final Avatar avatar = new Avatar(canRotate, canMove);
 
 	private Set<IDrawable> drawables = new HashSet<IDrawable>();
+	//private TrueTypeFont trueTypeFont;
 
 	// package private
 	SimpleState() {}
@@ -46,9 +49,9 @@ public class SimpleState implements IGameState {
 		shader.setViewMatrix(new Matrix4f());
 		shader.setModelMatrix(new Matrix4f());
 
-		drawables.add(Arrow.create(shader));
-		//drawables.add(Quad.create(shader));
-		//drawables.add(Triangle.create(shader));
+		drawables.add(new Arrow(shader));
+		// drawables.add(new Quad(shader));
+		// drawables.add(new Triangle(shader));
 
 		InputSource.INSTANCE.register(new KeyPressedEvent.Listener(){
 			@Override
@@ -59,6 +62,8 @@ public class SimpleState implements IGameState {
 			}
 		});
 
+		//Font awtFont = new Font("Times New Roman", Font.PLAIN, 24);
+		//trueTypeFont = new TrueTypeFont(awtFont, false);
 	}
 
 
