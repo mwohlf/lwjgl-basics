@@ -1,6 +1,5 @@
 package net.wohlfart.basic.states;
 
-import java.awt.Font;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -8,30 +7,35 @@ import net.wohlfart.basic.Game;
 import net.wohlfart.gl.CanMoveImpl;
 import net.wohlfart.gl.CanRotateImpl;
 import net.wohlfart.gl.elements.Arrow;
-import net.wohlfart.gl.elements.IDrawable;
-import net.wohlfart.gl.elements.Quad;
-import net.wohlfart.gl.elements.Triangle;
+import net.wohlfart.gl.elements.Circle;
+import net.wohlfart.gl.elements.Cube;
+import net.wohlfart.gl.elements.Icosphere;
+import net.wohlfart.gl.elements.Renderable;
+import net.wohlfart.gl.elements.Tetrahedron;
 import net.wohlfart.gl.input.InputSource;
 import net.wohlfart.gl.input.KeyPressedEvent;
-import net.wohlfart.gl.shader.SimpleShader;
+import net.wohlfart.gl.renderer.DefaultRenderer;
+import net.wohlfart.gl.renderer.Renderer;
+import net.wohlfart.gl.shader.UniformHandle;
 import net.wohlfart.model.Avatar;
 import net.wohlfart.tools.SimpleMatrix4f;
-import net.wohlfart.tools.TrueTypeFont;
 
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.Display;
+import org.lwjgl.util.ReadableColor;
 import org.lwjgl.util.vector.Matrix4f;
+import org.lwjgl.util.vector.Vector3f;
 
-public class SimpleState implements IGameState {
+public class SimpleState implements GameState {
 
-	private SimpleShader shader;
+	private Renderer renderer;
 	private boolean quit = false;
 
-	private CanMoveImpl canMove = new CanMoveImpl();
-	private CanRotateImpl canRotate = new CanRotateImpl();
+	private final CanMoveImpl canMove = new CanMoveImpl();
+	private final CanRotateImpl canRotate = new CanRotateImpl();
 	private final Avatar avatar = new Avatar(canRotate, canMove);
 
-	private Set<IDrawable> drawables = new HashSet<IDrawable>();
+	private final Set<Renderable> renderables = new HashSet<Renderable>();
 	//private TrueTypeFont trueTypeFont;
 
 	// package private
@@ -39,17 +43,29 @@ public class SimpleState implements IGameState {
 
 
 	@Override
-	public void setup(final Game game, final Matrix4f projectionMatrix) {
+	public void setup(final Game game) {
 
 		avatar.setInputSource(InputSource.INSTANCE);
 
-		shader = new SimpleShader();
-		shader.init();
-		shader.setProjectionMatrix(projectionMatrix);
-		shader.setViewMatrix(new Matrix4f());
-		shader.setModelMatrix(new Matrix4f());
+		renderer = new DefaultRenderer();
+		renderer.setup();
+		renderer.set(UniformHandle.CAM_TO_CLIP, game.getProjectionMatrix());
 
-		drawables.add(new Arrow(shader));
+
+		renderables.add(new Arrow(new Vector3f(1,0,0), ReadableColor.RED));
+		renderables.add(new Arrow(new Vector3f(0,1,0), ReadableColor.GREEN));
+		renderables.add(new Arrow(new Vector3f(0,0,1), ReadableColor.BLUE));
+
+
+		renderables.add(new Circle(1, new Vector3f(0,1,0)));
+		renderables.add(new Cube(1));
+		renderables.add(new Tetrahedron(3));
+		renderables.add(new Icosphere(1));
+
+
+
+
+
 		// drawables.add(new Quad(shader));
 		// drawables.add(new Triangle(shader));
 
@@ -57,7 +73,7 @@ public class SimpleState implements IGameState {
 			@Override
 			public void keyEvent(KeyPressedEvent evt) {
 				if (Keyboard.KEY_ESCAPE == evt.getKey()) {
-					quit = true;
+					quit();
 				}
 			}
 		});
@@ -67,31 +83,37 @@ public class SimpleState implements IGameState {
 	}
 
 
+	public synchronized void quit() {
+		quit = true;
+	}
+
+
 	@Override
 	public void update(float tpf) {
 
 		// rotate the view
 		Matrix4f viewMatrix = SimpleMatrix4f.create(canRotate);
-		shader.setViewMatrix(viewMatrix);
+		renderer.set(UniformHandle.WORLD_TO_CAM, viewMatrix);
 
 		// move the object
 		Matrix4f modelMatrix = SimpleMatrix4f.create(canMove);
-		shader.setModelMatrix(modelMatrix);
+		renderer.set(UniformHandle.MODEL_TO_WORLD, modelMatrix);
+
+
+		/*
+		Matrix4f result = new Matrix4f();
+		Matrix4f.mul(modelMatrix, viewMatrix, result);
+		renderer.set(MatrixHandle.MODEL_TO_WORLD, result);
+		*/
+
 	}
 
 
 	@Override
 	public void render() {
-
-		shader.bind();
-
-		for (IDrawable drawable : drawables) {
-			drawable.draw();
+		for (Renderable renderable : renderables) {
+			renderable.render(renderer);
 		}
-
-		//trueTypeFont.drawString(20.0f, 20.0f, "Slick displaying True Type Fonts", 0.5f, 0.5f, TrueTypeFont.ALIGN_CENTER);
-
-		shader.unbind();
 	}
 
 
@@ -103,8 +125,8 @@ public class SimpleState implements IGameState {
 
 
 	@Override
-	public void teardown(Game game) {
-		// nothing to do yet
+	public void dispose(Game game) {
+		renderer.dispose();
 	}
 
 }

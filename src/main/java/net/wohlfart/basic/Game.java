@@ -1,12 +1,14 @@
 package net.wohlfart.basic;
 
-import net.wohlfart.basic.states.GameStates;
-import net.wohlfart.basic.states.IGameState;
+import net.wohlfart.basic.states.GameState;
+import net.wohlfart.basic.states.GameStateEnum;
+import net.wohlfart.basic.time.DefaultLwjglClockImpl;
+import net.wohlfart.basic.time.Timer;
+import net.wohlfart.basic.time.TimerImpl;
 import net.wohlfart.gl.input.InputSource;
 import net.wohlfart.tools.SimpleMath;
 
 import org.lwjgl.LWJGLException;
-import org.lwjgl.Sys;
 import org.lwjgl.opengl.ContextAttribs;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.DisplayMode;
@@ -22,12 +24,9 @@ public class Game {
 	protected static final Logger LOGGER = LoggerFactory.getLogger(Game.class);
 
 	protected InputSource inputProcessor = InputSource.INSTANCE;
-	protected IGameState currentState = GameStates.NULL.getValue();
+	protected GameState currentState = GameStateEnum.NULL.getValue();
+	protected Timer timer = new TimerImpl(new DefaultLwjglClockImpl());
 	protected Settings settings = new Settings(); // default in case nothing gets injected
-
-	private long now;
-	private long lastTimestamp;
-	private float delta; // in [s]
 
 	private Matrix4f projectionMatrix;
 
@@ -36,10 +35,9 @@ public class Game {
 	 */
 	public void start() {
 		try {
-			lastTimestamp = Sys.getTime();
 			projectionMatrix = createProjectionMatrix();
 			bootupOpenGL();
-			setCurrentState(GameStates.SIMPLE);
+			setCurrentState(GameStateEnum.SIMPLE);
 			runApplicationLoop();
 			shutdownOpenGL();
 		} catch (LWJGLException ex) {
@@ -51,11 +49,9 @@ public class Game {
 	 * this is the main loop that does all the work
 	 */
 	private void runApplicationLoop() {
+		float delta;
 		while (!currentState.isDone()) {
-			// calculate the time since last loop
-			now = Sys.getTime();
-			delta = (now - lastTimestamp) / (float)Sys.getTimerResolution();
-			lastTimestamp = now;
+			delta = timer.getDelta();
 			LOGGER.debug("[ms]/frame: {} ; frame/[s]: {}", delta, 1f/delta);
 			// call the model to do their things
 			currentState.update(delta);
@@ -67,7 +63,7 @@ public class Game {
 			// draw the (double-)buffer to the screen, trigger input
 			Display.update();
 			// triggers the callbacks for user input
-			inputProcessor.process();
+			inputProcessor.process(delta);
 		}
 	}
 
@@ -110,7 +106,7 @@ public class Game {
 	 * see: http://www.lwjgl.org/wiki/index.php?title=The_Quad_with_Projection,_View_and_Model_matrices
 	 * @return  our projection matrix
 	 */
-	public Matrix4f createProjectionMatrix() {
+	private Matrix4f createProjectionMatrix() {
 		// Setup projection matrix
 		Matrix4f matrix = new Matrix4f();
 		float fieldOfView = settings.getFieldOfView();
@@ -131,15 +127,19 @@ public class Game {
 		return matrix;
 	}
 
+	public Matrix4f getProjectionMatrix() {
+		return projectionMatrix;
+	}
+
 
 	private void shutdownOpenGL() {
 		Display.destroy();
 	}
 
-	public void setCurrentState(final GameStates newState) {
-		currentState.teardown(this);
+	public void setCurrentState(final GameStateEnum newState) {
+		currentState.dispose(this);
 		currentState = newState.getValue();
-		currentState.setup(this, projectionMatrix);
+		currentState.setup(this);
 	}
 
 	public void setGameSettings(final Settings settings) {

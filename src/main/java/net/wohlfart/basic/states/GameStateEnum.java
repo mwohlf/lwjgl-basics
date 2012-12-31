@@ -2,18 +2,18 @@ package net.wohlfart.basic.states;
 
 
 // wrapper for state objects
-public enum GameStates {
+public enum GameStateEnum {
 	NULL(new NullState()),
 	SIMPLE(new SimpleState()),
 	CELESTIAL(new CelestialState());
 	
-	private IGameState state;
+	private GameState state;
 	
-	GameStates(IGameState state) {
+	GameStateEnum(GameState state) {
 		this.state = state;
 	}
 	
-	public IGameState getValue() {
+	public GameState getValue() {
 		return state;
 	}
 

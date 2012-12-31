@@ -1,11 +1,13 @@
-package net.wohlfart.tools;
+package net.wohlfart.gl.shader.mesh;
 
 import java.nio.ByteBuffer;
 import java.nio.FloatBuffer;
 import java.util.ArrayList;
 import java.util.List;
 
-import net.wohlfart.gl.shader.IShader;
+import net.wohlfart.gl.renderer.Renderer;
+import net.wohlfart.gl.shader.AttributeHandle;
+import net.wohlfart.tools.SimpleMath;
 
 import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL11;
@@ -17,7 +19,7 @@ import org.lwjgl.util.vector.Quaternion;
 import org.lwjgl.util.vector.Vector3f;
 
 // see: http://www.arcsynthesis.org/gltut/Positioning/Tutorial%2005.html
-public class VertexArrayObject {
+public class VertexArrayObject implements IMeshData {
 
 	private final int vaoHandle;
 	private final int indicesCount;
@@ -28,9 +30,9 @@ public class VertexArrayObject {
 
 	private VertexArrayObject(final Builder builder) {
 
-		if (builder.quaternion != null) {
+		if (builder.rotation != null) {
 			for (Vector3f vec : builder.vertices) {
-				SimpleMath.mul(builder.quaternion, vec, vec);
+				SimpleMath.mul(builder.rotation, vec, vec);
 			}
 		}
 		if (builder.translation != null) {
@@ -39,10 +41,8 @@ public class VertexArrayObject {
 			}
 		}
 
-
 		vaoHandle = GL30.glGenVertexArrays();
 		GL30.glBindVertexArray(vaoHandle);
-
 
 		// color
 		vboColorHandle = GL15.glGenBuffers();
@@ -53,8 +53,9 @@ public class VertexArrayObject {
 		colorBuffer.flip();
 		GL15.glBufferData(GL15.GL_ARRAY_BUFFER, colorBuffer, GL15.GL_STATIC_DRAW);
 
-		GL20.glEnableVertexAttribArray(builder.shader.getInColor());
-		GL20.glVertexAttribPointer(builder.shader.getInColor(), Builder.COLOR_SIZE, GL11.GL_FLOAT, false, 0, 0);
+		int colorAttrib = builder.renderer.getVertexAttrib(AttributeHandle.COLOR);
+		GL20.glEnableVertexAttribArray(colorAttrib);
+		GL20.glVertexAttribPointer(colorAttrib, Builder.COLOR_SIZE, GL11.GL_FLOAT, false, 0, 0);
 
 
 		// vertices
@@ -66,10 +67,9 @@ public class VertexArrayObject {
 		verticesBuffer.flip();
 		GL15.glBufferData(GL15.GL_ARRAY_BUFFER, verticesBuffer, GL15.GL_STATIC_DRAW);
 
-		GL20.glEnableVertexAttribArray(builder.shader.getInPosition());
-		GL20.glVertexAttribPointer(builder.shader.getInPosition(), Builder.VERTEX_SIZE, GL11.GL_FLOAT, false, 0, 0);
-
-
+		int positionAttrib = builder.renderer.getVertexAttrib(AttributeHandle.POSITION);
+		GL20.glEnableVertexAttribArray(positionAttrib);
+		GL20.glVertexAttribPointer(positionAttrib, Builder.VERTEX_SIZE, GL11.GL_FLOAT, false, 0, 0);
 
 
 		// indices
@@ -95,9 +95,9 @@ public class VertexArrayObject {
 		private final List<Vector3f> vertices = new ArrayList<Vector3f>();
 		private List<ReadableColor> colors = new ArrayList<ReadableColor>();
 		private final List<Byte> indices = new ArrayList<Byte>();
-		private IShader shader;
+		private Renderer renderer;
 		private Vector3f translation;
-		private Quaternion quaternion;
+		private Quaternion rotation;
 
 		public VertexArrayObject build() {
 			return new VertexArrayObject(this);
@@ -111,12 +111,12 @@ public class VertexArrayObject {
 			this.indices.addAll(indices);
 		}
 
-		public void setShader(final IShader shader) {
-			this.shader = shader;
+		public void setRenderer(final Renderer renderer) {
+			this.renderer = renderer;
 		}
 
 		public void setRotation(final Quaternion quaternion) {
-			this.quaternion = quaternion;
+			this.rotation = quaternion;
 		}
 
 		public void setTranslation(final Vector3f translation) {
@@ -164,12 +164,15 @@ public class VertexArrayObject {
 
 	}
 
+
+	@Override
 	public void draw() {
 		GL30.glBindVertexArray(vaoHandle);
 		GL11.glDrawElements(GL11.GL_LINE_STRIP, indicesCount, GL11.GL_UNSIGNED_BYTE, 0);
 		GL30.glBindVertexArray(0);
 	}
 
+	@Override
 	public void dispose() {
 		// Disable the VBO index from the VAO attributes list
 		GL20.glDisableVertexAttribArray(0);
@@ -185,7 +188,7 @@ public class VertexArrayObject {
 		// Delete the VAO
 		GL30.glBindVertexArray(0);
 		GL30.glDeleteVertexArrays(vaoHandle);
-
 	}
+
 
 }

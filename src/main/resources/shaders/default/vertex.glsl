@@ -5,13 +5,16 @@
 // see: http://arcsynthesis.org/gltut/Basics/Tut01%20Dissecting%20Display.html
 
 // location might affect glVertexAttribPointer & glEnableVertexAttribArray
-layout (location = 1) in vec4 in_Position;   // the variable names are looked up in the Shader class
-layout (location = 0) in vec4 in_Color;
+layout (location = 0) in vec4 in_Position;   // the variable names are looked up in the Shader class
+layout (location = 1) in vec4 in_Color;
 layout (location = 2) in vec2 in_TexCoord;
 
 uniform mat4 modelToWorldMatrix;     // modelMatrix
 uniform mat4 worldToCameraMatrix;    // viewMatrix
 uniform mat4 cameraToClipMatrix;     // projectionMatrix
+
+uniform vec4 uni_Color;
+
 
 out vec4 pass_Color;
 out vec2 pass_TextureCoord;

@@ -3,24 +3,22 @@ package net.wohlfart.gl.shader;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
-import java.nio.FloatBuffer;
 import java.util.Scanner;
 
-import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.ARBShaderObjects;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL20;
 import org.lwjgl.util.glu.GLU;
-import org.lwjgl.util.vector.Matrix4f;
 
 
 /**
- * handle the basic shader stuff
- * - matrices
- * - error detection
- *
+ * the class for dealing with the basic shader stuff and keeping the shader program id
+ * 
  */
-public abstract class AbstractShader implements IShader {
+public class ShaderProgram implements IShaderProgram {
+
+	private int programId = -1;
+
 
 	protected int loadShader(final String filename, int shaderType) {
 		int shader = 0;
@@ -55,15 +53,13 @@ public abstract class AbstractShader implements IShader {
 		}
 	}
 
-
 	/**
 	 * attach, link and validate the shaders into a shader program
 	 * @param handles the shaders
 	 * @return
 	 */
-	protected int linkAndValidate(int... handles ) {
-
-		int programId = GL20.glCreateProgram();
+	protected void linkAndValidate(int... handles ) {
+		programId = GL20.glCreateProgram();
 		for (int handle : handles) {
 			GL20.glAttachShader(programId, handle);
 		}
@@ -74,11 +70,9 @@ public abstract class AbstractShader implements IShader {
 		if (error != GL11.GL_NO_ERROR) {
 			throw new ShaderException("error validating shader: " + GLU.gluErrorString(error));
 		}
-
-		return programId;
 	}
 
-	protected void unlink(int programId, int... handles) {
+	protected void unlink(int... handles) {
 		GL20.glUseProgram(0);
 		for (int handle : handles) {
 			GL20.glDetachShader(programId, handle);
@@ -86,21 +80,37 @@ public abstract class AbstractShader implements IShader {
 		for (int handle : handles) {
 			GL20.glDeleteShader(handle);
 		}
-		GL20.glDeleteProgram(programId);
 	}
-
-
-	protected void uploadMatrices(final Matrix4f matrix, final int location) {
-		FloatBuffer matrix44Buffer = BufferUtils.createFloatBuffer(16);
-		matrix.store(matrix44Buffer);
-		matrix44Buffer.flip();
-		GL20.glUniformMatrix4(location, false, matrix44Buffer);
-	}
-
 
 	protected String getLogInfo(int obj) {
 		return ARBShaderObjects.glGetInfoLogARB(obj,
 				ARBShaderObjects.glGetObjectParameteriARB(obj, ARBShaderObjects.GL_OBJECT_INFO_LOG_LENGTH_ARB));
+	}
+
+	// package private
+	int getProgramId() {
+		return programId;
+	}
+
+
+	@Override
+	public void setup() {
+		//
+	}
+
+	@Override
+	public void bind() {
+		GL20.glUseProgram(programId);
+	}
+
+	@Override
+	public void unbind() {
+		GL20.glUseProgram(0);
+	}
+
+	@Override
+	public void dispose() {
+		GL20.glDeleteProgram(programId);
 	}
 
 }

@@ -11,9 +11,8 @@ import net.wohlfart.widgets.Screen;
 
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.Display;
-import org.lwjgl.util.vector.Matrix4f;
 
-public class CelestialState implements IGameState {
+public class CelestialState implements GameState {
 
 	protected InputSource inputProcessor;
 	protected CelestialScene scene;
@@ -33,7 +32,7 @@ public class CelestialState implements IGameState {
 	// ui, sounds, cam
 
 	@Override
-	public void setup(final Game game, final Matrix4f matrix) {
+	public void setup(final Game game) {
 		camera = new Camera();
 		scene = new CelestialScene();
 		avatar = new Avatar(camera, scene);
@@ -75,7 +74,7 @@ public class CelestialState implements IGameState {
 
 
 	@Override
-	public void teardown(final Game game) {
+	public void dispose(final Game game) {
 		scene.teardown();
 	}
 

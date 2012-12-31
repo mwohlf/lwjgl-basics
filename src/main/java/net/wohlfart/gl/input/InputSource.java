@@ -19,25 +19,25 @@ public enum InputSource {
 		Keyboard.enableRepeatEvents(true);
 	}
 
-	private Collection<KeyPressedEvent.Listener> keyPressedListener = new HashSet<KeyPressedEvent.Listener>();
-	private Collection<KeyReleasedEvent.Listener> keyReleasedListener = new HashSet<KeyReleasedEvent.Listener>();
-	private Collection<KeyTypedEvent.Listener> keyTypedListener = new HashSet<KeyTypedEvent.Listener>();
-	private Collection<MousePressedEvent.Listener> mousePressedListener = new HashSet<MousePressedEvent.Listener>();
-	private Collection<MouseReleasedEvent.Listener> mouseReleasedListener = new HashSet<MouseReleasedEvent.Listener>();
-	private Collection<MouseMotionEvent.Listener> mouseMotionListener = new HashSet<MouseMotionEvent.Listener>();
-	private Collection<MouseWheelEvent.Listener> mouseWheelListener = new HashSet<MouseWheelEvent.Listener>();
+	private final Collection<KeyPressedEvent.Listener> keyPressedListener = new HashSet<KeyPressedEvent.Listener>();
+	private final Collection<KeyReleasedEvent.Listener> keyReleasedListener = new HashSet<KeyReleasedEvent.Listener>();
+	private final Collection<KeyTypedEvent.Listener> keyTypedListener = new HashSet<KeyTypedEvent.Listener>();
+	private final Collection<MousePressedEvent.Listener> mousePressedListener = new HashSet<MousePressedEvent.Listener>();
+	private final Collection<MouseReleasedEvent.Listener> mouseReleasedListener = new HashSet<MouseReleasedEvent.Listener>();
+	private final Collection<MouseMotionEvent.Listener> mouseMotionListener = new HashSet<MouseMotionEvent.Listener>();
+	private final Collection<MouseWheelEvent.Listener> mouseWheelListener = new HashSet<MouseWheelEvent.Listener>();
 
 
 
 	// called from the main loop
-	public void process() {
-		processKeyboard();
-		processMouse();
+	public void process(final float delta) {
+		processKeyboard(delta);
+		processMouse(delta);
 	}
 
 
 	// note that no new events are created as long as a key stays pressed
-	private void processKeyboard() {
+	private void processKeyboard(final float delta) {
 		while (Keyboard.next()) {
 			boolean pressed = Keyboard.getEventKeyState();
 			if (pressed) {
@@ -51,7 +51,7 @@ public enum InputSource {
 
 
 
-	private void processMouse() {
+	private void processMouse(final float delta) {
 		while (Mouse.next()) {
 			int buttonChanged = Mouse.getEventButton();
 			if (buttonChanged != -1) {
