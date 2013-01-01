@@ -8,7 +8,6 @@ import java.util.List;
 
 import net.wohlfart.gl.renderer.Renderer;
 import net.wohlfart.gl.shader.AttributeHandle;
-import net.wohlfart.gl.shader.UniformHandle;
 import net.wohlfart.tools.SimpleMath;
 
 import org.lwjgl.BufferUtils;
@@ -48,16 +47,18 @@ public class MeshBuilder {
 
 
 		int vboColorHandle = -1;
+		int colorAttrib = renderer.getVertexAttrib(AttributeHandle.COLOR);
 		if (colors.size() == 0) {
 			LOGGER.debug("no color found, fallback to grey");
 			ReadableColor grey = ReadableColor.GREY;
-			GL20.glDisableVertexAttribArray(renderer.getVertexAttrib(AttributeHandle.COLOR));
-			//GL11.glColor4f(grey.getRed()/255f, grey.getGreen()/255f, grey.getBlue()/255f, grey.getAlpha()/255f);
+			GL20.glDisableVertexAttribArray(colorAttrib);
+			GL20.glVertexAttrib4f(colorAttrib, grey.getRed()/255f, grey.getGreen()/255f, grey.getBlue()/255f, grey.getAlpha()/255f);
 		} else if (colors.size() == 1) {
-			renderer.set(UniformHandle.WORLD_TO_CAM, colors.get(0));
-			GL20.glDisableVertexAttribArray(renderer.getVertexAttrib(AttributeHandle.COLOR));
-			//GL11.glColor4f(color.getRed()/255f, color.getGreen()/255f, color.getBlue()/255f, color.getAlpha()/255f);
+			ReadableColor color = colors.get(0);
+			GL20.glDisableVertexAttribArray(colorAttrib);
+			GL20.glVertexAttrib4f(colorAttrib, color.getRed()/255f, color.getGreen()/255f, color.getBlue()/255f, color.getAlpha()/255f);
 		} else {
+			GL20.glEnableVertexAttribArray(colorAttrib);
 			vboColorHandle = createVboColorHandle(renderer);
 		}
 

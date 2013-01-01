@@ -91,7 +91,7 @@ public class Game {
 		contextAtributes.withForwardCompatible(true);
 		contextAtributes.withProfileCore(true);
 		Display.setDisplayMode(new DisplayMode(settings.getWidth(), settings.getHeight()));
-		Display.setResizable(false); // doesn't work anyways
+		Display.setResizable(false);
 		Display.setTitle(settings.getTitle());
 		//Display.setVSyncEnabled(true);
 		Display.create(pixelFormat, contextAtributes); // creates the GL context

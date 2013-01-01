@@ -3,6 +3,7 @@
 // see: http://www.lighthouse3d.com/cg-topics/code-samples/opengl-3-3-glsl-1-5-sample/
 // see: http://www.arcsynthesis.org/gltut/Basics/Tut02%20Vertex%20Attributes.html
 // see: http://arcsynthesis.org/gltut/Basics/Tut01%20Dissecting%20Display.html
+// see: http://zach.in.tu-clausthal.de/teaching/cg_literatur/glsl_tutorial/index.html
 
 // location might affect glVertexAttribPointer & glEnableVertexAttribArray
 layout (location = 0) in vec4 in_Position;   // the variable names are looked up in the Shader class
@@ -13,7 +14,7 @@ uniform mat4 modelToWorldMatrix;     // modelMatrix
 uniform mat4 worldToCameraMatrix;    // viewMatrix
 uniform mat4 cameraToClipMatrix;     // projectionMatrix
 
-uniform vec4 uni_Color;
+// uniform vec4 uni_Color;
 
 
 out vec4 pass_Color;

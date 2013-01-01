@@ -15,6 +15,9 @@ import org.lwjgl.util.ReadableColor;
 import org.lwjgl.util.vector.Quaternion;
 import org.lwjgl.util.vector.Vector3f;
 
+
+
+// see: http://blog.andreaskahler.com/2009/06/creating-icosphere-mesh-in-code.html
 public class Icosphere extends LazyRenderable {
 
     private final Vector3f translation = new Vector3f(0, 0, 0);
