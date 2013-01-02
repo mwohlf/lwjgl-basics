@@ -21,9 +21,23 @@ import org.lwjgl.util.vector.Vector3f;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class MeshBuilder {
-	protected static final Logger LOGGER = LoggerFactory.getLogger(MeshBuilder.class);
 
+
+/**
+ * this class creates all kind of meshes depending on the available data when the build method is called
+ *
+ * GL_POINTS,
+ * GL_LINE_STRIP,
+ * GL_LINE_LOOP,
+ * GL_LINES
+ * GL_TRIANGLE_STRIP,
+ * GL_TRIANGLE_FAN,
+ * GL_TRIANGLES
+ *
+ *
+ */
+public class WireframeMeshBuilder {
+	protected static final Logger LOGGER = LoggerFactory.getLogger(WireframeMeshBuilder.class);
 
 	private static int VERTEX_SIZE = 4;
 	private static int COLOR_SIZE = 4;
@@ -45,20 +59,9 @@ public class MeshBuilder {
 		int vaoHandle = GL30.glGenVertexArrays();
 		GL30.glBindVertexArray(vaoHandle);
 
-
+		// colors
 		int vboColorHandle = -1;
-		int colorAttrib = renderer.getVertexAttrib(AttributeHandle.COLOR);
-		if (colors.size() == 0) {
-			LOGGER.debug("no color found, fallback to grey");
-			ReadableColor grey = ReadableColor.GREY;
-			GL20.glDisableVertexAttribArray(colorAttrib);
-			GL20.glVertexAttrib4f(colorAttrib, grey.getRed()/255f, grey.getGreen()/255f, grey.getBlue()/255f, grey.getAlpha()/255f);
-		} else if (colors.size() == 1) {
-			ReadableColor color = colors.get(0);
-			GL20.glDisableVertexAttribArray(colorAttrib);
-			GL20.glVertexAttrib4f(colorAttrib, color.getRed()/255f, color.getGreen()/255f, color.getBlue()/255f, color.getAlpha()/255f);
-		} else {
-			GL20.glEnableVertexAttribArray(colorAttrib);
+		if (colors.size() > 1) {
 			vboColorHandle = createVboColorHandle(renderer);
 		}
 
@@ -78,9 +81,16 @@ public class MeshBuilder {
 		IMeshData result = null;
 		switch (indexType) {
 			case GL11.GL_LINE_STRIP:
-				result = new LineStripMesh(vaoHandle, vboVerticesHandle, vboColorHandle, vboIndicesHandle, indicesCount);
+				int colorAttrib = renderer.getVertexAttrib(AttributeHandle.COLOR);
+				LOGGER.debug("creating line strip");
+				result = new WireframeMesh(
+						vaoHandle, vboVerticesHandle, vboIndicesHandle,
+						colors.isEmpty()?null:colors.get(0),
+						colorAttrib,
+						indicesCount);
 				break;
 			case GL11.GL_TRIANGLE_STRIP:
+				LOGGER.debug("creating triangle strip");
 				result = new TriangleStripMesh(vaoHandle, vboVerticesHandle, vboColorHandle, vboIndicesHandle, indicesCount);
 				break;
 			default:
@@ -173,7 +183,7 @@ public class MeshBuilder {
 		float[] result = new float[colors.size() * COLOR_SIZE];
 		int i = 0;
 		for (ReadableColor c : colors) {
-			result[i++] = c.getRed() / 256f;
+			result[i++] = c.getRed() / 256f;  // FIXME: 255 or 256 ???
 			result[i++] = c.getGreen() / 256f;
 			result[i++] = c.getBlue() / 256f;
 			result[i++] = c.getAlpha() / 256f;

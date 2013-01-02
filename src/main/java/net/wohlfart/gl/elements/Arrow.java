@@ -5,7 +5,7 @@ import java.util.Arrays;
 import net.wohlfart.gl.renderer.Renderer;
 import net.wohlfart.gl.shader.mesh.ByteLines;
 import net.wohlfart.gl.shader.mesh.IMeshData;
-import net.wohlfart.gl.shader.mesh.MeshBuilder;
+import net.wohlfart.gl.shader.mesh.WireframeMeshBuilder;
 import net.wohlfart.tools.SimpleMath;
 
 import org.lwjgl.util.ReadableColor;
@@ -32,21 +32,12 @@ public class Arrow extends LazyRenderable {
 			5, 0, // tip4
 	};
 
-	private ReadableColor color;
-
-	/*
-	private final ReadableColor[] colors = new ReadableColor[] {
-			Color.BLUE,
-			Color.BLUE,
-			Color.BLUE,
-			Color.BLUE,
-			Color.BLUE,
-			Color.BLUE, };
-	*/
 
 	private final Vector3f translation = new Vector3f(0, 0, 0);
 
 	private final Quaternion rotation = new Quaternion();
+
+	private ReadableColor color;
 
 
 	public Arrow() {
@@ -65,7 +56,7 @@ public class Arrow extends LazyRenderable {
 
 	@Override
 	protected IMeshData setupMesh(final Renderer renderer) {
-		MeshBuilder builder = new MeshBuilder();
+		WireframeMeshBuilder builder = new WireframeMeshBuilder();
 		builder.setVertices(Arrays.<Vector3f> asList(vertices));
 		builder.setIndices(new ByteLines(indices));
 		builder.setColor(color);

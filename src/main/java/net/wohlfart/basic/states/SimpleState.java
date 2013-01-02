@@ -7,11 +7,8 @@ import net.wohlfart.basic.Game;
 import net.wohlfart.gl.CanMoveImpl;
 import net.wohlfart.gl.CanRotateImpl;
 import net.wohlfart.gl.elements.Arrow;
-import net.wohlfart.gl.elements.Circle;
-import net.wohlfart.gl.elements.Cube;
 import net.wohlfart.gl.elements.Icosphere;
 import net.wohlfart.gl.elements.Renderable;
-import net.wohlfart.gl.elements.Tetrahedron;
 import net.wohlfart.gl.input.InputSource;
 import net.wohlfart.gl.input.KeyPressedEvent;
 import net.wohlfart.gl.renderer.DefaultRenderer;
@@ -51,15 +48,17 @@ public class SimpleState implements GameState {
 		renderer.setup();
 		renderer.set(UniformHandle.CAM_TO_CLIP, game.getProjectionMatrix());
 
-
 		renderables.add(new Arrow(new Vector3f(1,0,0), ReadableColor.RED));
 		renderables.add(new Arrow(new Vector3f(0,1,0), ReadableColor.GREEN));
 		renderables.add(new Arrow(new Vector3f(0,0,1), ReadableColor.BLUE));
+
+		/*
 
 
 		renderables.add(new Circle(1, new Vector3f(0,1,0)));
 		renderables.add(new Cube(1));
 		renderables.add(new Tetrahedron(3));
+		*/
 		renderables.add(new Icosphere(1));
 
 
