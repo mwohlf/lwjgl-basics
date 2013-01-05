@@ -56,23 +56,16 @@ public class Circle extends LazyRenderable {
         return new ByteLines(result);
     }
 
-    protected List<ReadableColor> createColors() {
-        List<ReadableColor> result = new ArrayList<ReadableColor>(pieces);
-        for (int i = 0; i < pieces; i++) {
-        	result.add(i, ReadableColor.BLUE);
-        }
-        return result;
-    }
-
     @Override
     protected IMeshData setupMesh(Renderer renderer) {
         WireframeMeshBuilder builder = new WireframeMeshBuilder();
         builder.setVertices(createVertices());
         builder.setIndices(createIndices());
-        builder.setColor(createColors());
+        builder.setColor(ReadableColor.BLUE);
         builder.setRotation(rotation);
         builder.setTranslation(translation);
-        return builder.build(renderer);
+        builder.setRenderer(renderer);
+        return builder.build();
     }
 
 }

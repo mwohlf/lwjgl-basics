@@ -7,6 +7,8 @@ public interface Indices<T> {
 
 	List<T> getContent();
 
-	int getType();
+	int getStructure();  //
+
+	int getElemSize();  // size of a single index element
 
 }

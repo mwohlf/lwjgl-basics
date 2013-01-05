@@ -3,7 +3,6 @@ package net.wohlfart.gl.shader.mesh;
 import java.nio.ByteBuffer;
 import java.nio.FloatBuffer;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import net.wohlfart.gl.renderer.Renderer;
@@ -39,65 +38,50 @@ import org.slf4j.LoggerFactory;
 public class WireframeMeshBuilder {
 	protected static final Logger LOGGER = LoggerFactory.getLogger(WireframeMeshBuilder.class);
 
+	private static float DEFAULT_LINE_WIDTH = 1f;
+
+
 	private static int VERTEX_SIZE = 4;
-	private static int COLOR_SIZE = 4;
-	private static float LINE_WIDTH = 5f;
+
+
+	private float lineWidth = DEFAULT_LINE_WIDTH;
 
 	private final List<Vector3f> vertices = new ArrayList<Vector3f>();
-	private List<ReadableColor> colors = new ArrayList<ReadableColor>();
+	private ReadableColor color = ReadableColor.GREY;
 
 	private final List<Byte> indices = new ArrayList<Byte>();
-	private int indexType;
+	private int indexStructure;
+	private int indexElemSize = GL11.GL_UNSIGNED_BYTE;
 
 	private Vector3f translation;
 	private Quaternion rotation;
 
-	public IMeshData build(final Renderer renderer) {
+	private Renderer renderer;
+
+
+	public IMeshData build() {
 
 		applyRotationAndTranslation();
 
 		int vaoHandle = GL30.glGenVertexArrays();
 		GL30.glBindVertexArray(vaoHandle);
-
-		// colors
-		int vboColorHandle = -1;
-		if (colors.size() > 1) {
-			vboColorHandle = createVboColorHandle(renderer);
-		}
-
-		// vertices
-		int vboVerticesHandle = createVboVerticesHandle(renderer);
-
-		// indices
+		int vboVerticesHandle = createVboHandle(getVertices(), renderer, AttributeHandle.POSITION);
 		int vboIndicesHandle = createElementArrayBuffer(renderer);
 
-		GL11.glLineWidth(LINE_WIDTH);
+		GL11.glLineWidth(lineWidth);
 
 		GL30.glBindVertexArray(0);
 
 		int indicesCount = getIndices().length;
 
 
-		IMeshData result = null;
-		switch (indexType) {
-			case GL11.GL_LINE_STRIP:
-				int colorAttrib = renderer.getVertexAttrib(AttributeHandle.COLOR);
-				LOGGER.debug("creating line strip");
-				result = new WireframeMesh(
-						vaoHandle, vboVerticesHandle, vboIndicesHandle,
-						colors.isEmpty()?null:colors.get(0),
-						colorAttrib,
-						indicesCount);
-				break;
-			case GL11.GL_TRIANGLE_STRIP:
-				LOGGER.debug("creating triangle strip");
-				result = new TriangleStripMesh(vaoHandle, vboVerticesHandle, vboColorHandle, vboIndicesHandle, indicesCount);
-				break;
-			default:
-				LOGGER.error("unknown index type: {}", indexType);
-		}
+		int colorAttrib = renderer.getVertexAttrib(AttributeHandle.COLOR);
 
-		return result;
+		return new IndexedLinesMesh(
+				vaoHandle,
+				vboVerticesHandle,
+				vboIndicesHandle, indexStructure, indexElemSize, indicesCount, 0,
+				colorAttrib, color);
 	}
 
 
@@ -126,37 +110,19 @@ public class WireframeMeshBuilder {
 		}
 	}
 
-	private int createVboVerticesHandle(final Renderer renderer) {
+	private int createVboHandle(float[] floatBuff, final Renderer renderer, final AttributeHandle attrHandle) {
 		int vboVerticesHandle = GL15.glGenBuffers();
 		GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, vboVerticesHandle);
-		float[] floatBuff = getVertices();
 		FloatBuffer verticesBuffer = BufferUtils.createFloatBuffer(floatBuff.length);
 		verticesBuffer.put(floatBuff);
 		verticesBuffer.flip();
 		GL15.glBufferData(GL15.GL_ARRAY_BUFFER, verticesBuffer, GL15.GL_STATIC_DRAW);
 
-		int positionAttrib = renderer.getVertexAttrib(AttributeHandle.POSITION);
+		int positionAttrib = renderer.getVertexAttrib(attrHandle);
 		GL20.glEnableVertexAttribArray(positionAttrib);
 		GL20.glVertexAttribPointer(positionAttrib, VERTEX_SIZE, GL11.GL_FLOAT, false, 0, 0);
 		return vboVerticesHandle;
 	}
-
-	private int createVboColorHandle(final Renderer renderer) {
-		int vboColorHandle = GL15.glGenBuffers();
-		GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, vboColorHandle);
-		float[] colorBuff = getColors();
-		FloatBuffer colorBuffer = BufferUtils.createFloatBuffer(colorBuff.length);
-		colorBuffer.put(colorBuff);
-		colorBuffer.flip();
-		GL15.glBufferData(GL15.GL_ARRAY_BUFFER, colorBuffer, GL15.GL_STATIC_DRAW);
-
-		int colorAttrib = renderer.getVertexAttrib(AttributeHandle.COLOR);
-		GL20.glEnableVertexAttribArray(colorAttrib);
-		GL20.glVertexAttribPointer(colorAttrib, COLOR_SIZE, GL11.GL_FLOAT, false, 0, 0);
-		return vboColorHandle;
-	}
-
-
 
 	private float[] getVertices() {
 		float[] result = new float[vertices.size() * VERTEX_SIZE];
@@ -179,18 +145,6 @@ public class WireframeMeshBuilder {
 		return result;
 	}
 
-	private float[] getColors() {
-		float[] result = new float[colors.size() * COLOR_SIZE];
-		int i = 0;
-		for (ReadableColor c : colors) {
-			result[i++] = c.getRed() / 256f;  // FIXME: 255 or 256 ???
-			result[i++] = c.getGreen() / 256f;
-			result[i++] = c.getBlue() / 256f;
-			result[i++] = c.getAlpha() / 256f;
-		}
-		return result;
-	}
-
 	// --
 
 	public void setVertices(final List<Vector3f> vertices) {
@@ -198,7 +152,8 @@ public class WireframeMeshBuilder {
 	}
 
 	public void setIndices(final Indices<Byte> indices) {
-		this.indexType = indices.getType();
+		this.indexStructure = indices.getStructure();
+		this.indexElemSize = indices.getElemSize();
 		this.indices.addAll(indices.getContent());
 	}
 
@@ -210,12 +165,17 @@ public class WireframeMeshBuilder {
 		this.translation = translation;
 	}
 
-	public void setColor(final List<ReadableColor> colors) {
-		this.colors = colors;
+	public void setColor(final ReadableColor color) {
+		this.color = color;
 	}
 
-	public void setColor(final ReadableColor color) {
-		this.colors = Collections.singletonList(color);
+	public void setRenderer(Renderer renderer) {
+		this.renderer = renderer;
+	}
+
+
+	public void setLineWidth(float lineWidth) {
+		this.lineWidth = lineWidth;
 	}
 
 }

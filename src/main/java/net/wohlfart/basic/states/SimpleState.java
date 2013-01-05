@@ -6,8 +6,7 @@ import java.util.Set;
 import net.wohlfart.basic.Game;
 import net.wohlfart.gl.CanMoveImpl;
 import net.wohlfart.gl.CanRotateImpl;
-import net.wohlfart.gl.elements.Arrow;
-import net.wohlfart.gl.elements.Icosphere;
+import net.wohlfart.gl.elements.IcosphereWire;
 import net.wohlfart.gl.elements.Renderable;
 import net.wohlfart.gl.input.InputSource;
 import net.wohlfart.gl.input.KeyPressedEvent;
@@ -19,9 +18,7 @@ import net.wohlfart.tools.SimpleMatrix4f;
 
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.Display;
-import org.lwjgl.util.ReadableColor;
 import org.lwjgl.util.vector.Matrix4f;
-import org.lwjgl.util.vector.Vector3f;
 
 public class SimpleState implements GameState {
 
@@ -48,18 +45,17 @@ public class SimpleState implements GameState {
 		renderer.setup();
 		renderer.set(UniformHandle.CAM_TO_CLIP, game.getProjectionMatrix());
 
+		/*
 		renderables.add(new Arrow(new Vector3f(1,0,0), ReadableColor.RED));
 		renderables.add(new Arrow(new Vector3f(0,1,0), ReadableColor.GREEN));
 		renderables.add(new Arrow(new Vector3f(0,0,1), ReadableColor.BLUE));
-
-		/*
-
 
 		renderables.add(new Circle(1, new Vector3f(0,1,0)));
 		renderables.add(new Cube(1));
 		renderables.add(new Tetrahedron(3));
 		*/
-		renderables.add(new Icosphere(1));
+
+		renderables.add(new IcosphereWire(3));
 
 
 
@@ -93,6 +89,7 @@ public class SimpleState implements GameState {
 		// rotate the view
 		Matrix4f viewMatrix = SimpleMatrix4f.create(canRotate);
 		renderer.set(UniformHandle.WORLD_TO_CAM, viewMatrix);
+		//renderer.set(UniformHandle.MODEL_TO_WORLD, viewMatrix);
 
 		// move the object
 		Matrix4f modelMatrix = SimpleMatrix4f.create(canMove);

@@ -5,15 +5,15 @@ import java.util.List;
 
 import org.lwjgl.opengl.GL11;
 
-public class ByteLines implements Indices<Byte> {
+public class ByteTriangles implements Indices<Byte> {
 
 	private final List<Byte> content;
 
-	public ByteLines(final Byte[] content) {
+	public ByteTriangles(final Byte[] content) {
 		this.content = Arrays.asList(content);
 	}
 
-	public ByteLines(List<Byte> content) {
+	public ByteTriangles(List<Byte> content) {
 		this.content = content;
 	}
 
@@ -24,12 +24,13 @@ public class ByteLines implements Indices<Byte> {
 
 	@Override
 	public int getStructure() {
-		return GL11.GL_LINES;
+		return GL11.GL_TRIANGLE_STRIP;
 	}
 
 	@Override
 	public int getElemSize() {
-		return GL11.GL_UNSIGNED_BYTE;
+		// TODO Auto-generated method stub
+		return 0;
 	}
 
 }

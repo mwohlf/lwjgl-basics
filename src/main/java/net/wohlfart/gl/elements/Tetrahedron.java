@@ -1,7 +1,6 @@
 package net.wohlfart.gl.elements;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import net.wohlfart.gl.renderer.Renderer;
@@ -11,7 +10,6 @@ import net.wohlfart.gl.shader.mesh.WireframeMeshBuilder;
 import net.wohlfart.tools.SimpleMath;
 
 import org.lwjgl.util.Color;
-import org.lwjgl.util.ReadableColor;
 import org.lwjgl.util.vector.Quaternion;
 import org.lwjgl.util.vector.Vector3f;
 
@@ -47,8 +45,6 @@ public class Tetrahedron extends LazyRenderable {
     	this.length = length;
     }
 
-	private final ReadableColor[] colors = new ReadableColor[] {
-			Color.BLUE, Color.BLUE, Color.BLUE, Color.BLUE,};
 
     protected List<Vector3f> createVertices() {
     	float h = +SimpleMath.sqrt(2f/3f) * length;
@@ -66,10 +62,11 @@ public class Tetrahedron extends LazyRenderable {
 		WireframeMeshBuilder builder = new WireframeMeshBuilder();
 		builder.setVertices(createVertices());
 		builder.setIndices(new ByteLines(indices));
-		builder.setColor(Arrays.<ReadableColor> asList(colors));
+		builder.setColor(Color.BLUE);
 		builder.setRotation(rotation);
 		builder.setTranslation(translation);
-		return builder.build(renderer);
+		builder.setRenderer(renderer);
+		return builder.build();
 	}
 
 

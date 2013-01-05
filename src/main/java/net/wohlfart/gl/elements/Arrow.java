@@ -62,7 +62,8 @@ public class Arrow extends LazyRenderable {
 		builder.setColor(color);
 		builder.setRotation(rotation);
 		builder.setTranslation(translation);
-		return builder.build(renderer);
+		builder.setRenderer(renderer);
+		return builder.build();
 	}
 
 }

@@ -6,43 +6,55 @@ import org.lwjgl.opengl.GL20;
 import org.lwjgl.opengl.GL30;
 import org.lwjgl.util.ReadableColor;
 
-public class WireframeMesh implements IMeshData {
+
+// see: http://code.google.com/p/open-docs/wiki/LWJGL_5_Weitere_Vielecke
+public class IndexedLinesMesh implements IMeshData {
 
     private final int vaoHandle;
     private final int vboVerticesHandle;
     private final int vboIndicesHandle;
+	private final int indexType;
 
     private final ReadableColor color;  // single color
     private final int colorAttrib;
     private final int indicesCount;
     private final int indexOffset;
+	private final Object indexSize;
 
-    // package private
-    WireframeMesh(
-    		      final int vaoHandle,
-                  final int vboVerticesHandle,
-                  final int vboIndicesHandle,
-                  final ReadableColor color,
-                  final int colorAttrib,
-                  final int indicesCount) {
+    // package private, created by the builder
+    IndexedLinesMesh(int vaoHandle,
+                  int vboVerticesHandle,
+
+                  int vboIndicesHandle,
+                  int indexType,
+                  int indexSize,
+                  int indicesCount,
+                  int indexOffset,
+
+                  int colorAttrib,
+                  ReadableColor color) {
 
         this.vaoHandle = vaoHandle;
         this.vboVerticesHandle = vboVerticesHandle;
         this.vboIndicesHandle = vboIndicesHandle;
-        this.color = color;
+        this.indexType = indexType;                    // GL11.GL_LINE_STRIP, GL11.GL11.GL_LINES, GL11.GL_LINE_LOOP
+        this.indexSize = indexSize;                    // GL11.GL_UNSIGNED_BYTE
         this.colorAttrib = colorAttrib;
+        this.color = color;
         this.indicesCount = indicesCount;
-        this.indexOffset = 0;
+        this.indexOffset = indexOffset;
     }
 
     @Override
     public void draw() {
         GL30.glBindVertexArray(vaoHandle);
-		ReadableColor c = this.color==null?ReadableColor.GREY:this.color;
 		GL20.glDisableVertexAttribArray(colorAttrib);
-		GL20.glVertexAttrib4f(colorAttrib, c.getRed()/255f, c.getGreen()/255f, c.getBlue()/255f, c.getAlpha()/255f);
-
-        GL11.glDrawElements(GL11.GL_LINE_STRIP, indicesCount, GL11.GL_UNSIGNED_BYTE, indexOffset);
+		GL20.glVertexAttrib4f(colorAttrib,
+				color.getRed()/255f,
+				color.getGreen()/255f,
+				color.getBlue()/255f,
+				color.getAlpha()/255f);
+        GL11.glDrawElements(indexType, indicesCount, GL11.GL_UNSIGNED_BYTE, indexOffset);
         GL30.glBindVertexArray(0);
     }
 
