@@ -16,11 +16,9 @@ public interface Renderer {
 
 	public abstract void setup();
 
-
 	public abstract void dispose();
 
 	public abstract IShaderProgram getShaderProgram();
-
 
 	public abstract int getVertexAttrib(AttributeHandle handle);
 

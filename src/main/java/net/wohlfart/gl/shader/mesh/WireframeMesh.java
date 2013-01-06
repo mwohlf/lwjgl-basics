@@ -8,53 +8,66 @@ import org.lwjgl.util.ReadableColor;
 
 
 // see: http://code.google.com/p/open-docs/wiki/LWJGL_5_Weitere_Vielecke
-public class IndexedLinesMesh implements IMeshData {
+public class WireframeMesh implements IMeshData {
 
     private final int vaoHandle;
     private final int vboVerticesHandle;
     private final int vboIndicesHandle;
-	private final int indexType;
+	private final int indicesType;
 
     private final ReadableColor color;  // single color
     private final int colorAttrib;
     private final int indicesCount;
     private final int indexOffset;
-	private final Object indexSize;
+	private final int indexElemSize;
+
+	private final float lineWidth;
 
     // package private, created by the builder
-    IndexedLinesMesh(int vaoHandle,
+    WireframeMesh(int vaoHandle,
                   int vboVerticesHandle,
 
                   int vboIndicesHandle,
-                  int indexType,
-                  int indexSize,
+                  int indicesType,
+                  int indexElemSize,
                   int indicesCount,
                   int indexOffset,
 
                   int colorAttrib,
-                  ReadableColor color) {
+                  ReadableColor color,
+
+                  float lineWidth) {
 
         this.vaoHandle = vaoHandle;
         this.vboVerticesHandle = vboVerticesHandle;
+
         this.vboIndicesHandle = vboIndicesHandle;
-        this.indexType = indexType;                    // GL11.GL_LINE_STRIP, GL11.GL11.GL_LINES, GL11.GL_LINE_LOOP
-        this.indexSize = indexSize;                    // GL11.GL_UNSIGNED_BYTE
-        this.colorAttrib = colorAttrib;
-        this.color = color;
+        this.indicesType = indicesType;                    // GL11.GL_LINE_STRIP, GL11.GL11.GL_LINES, GL11.GL_LINE_LOOP
+        this.indexElemSize = indexElemSize;                // GL11.GL_UNSIGNED_BYTE
         this.indicesCount = indicesCount;
         this.indexOffset = indexOffset;
+
+        this.colorAttrib = colorAttrib;
+        this.color = color;
+
+        this.lineWidth = lineWidth;
     }
+
 
     @Override
     public void draw() {
         GL30.glBindVertexArray(vaoHandle);
+		// wire width
+		GL11.glLineWidth(lineWidth);
+        // color is not indexed
 		GL20.glDisableVertexAttribArray(colorAttrib);
 		GL20.glVertexAttrib4f(colorAttrib,
 				color.getRed()/255f,
 				color.getGreen()/255f,
 				color.getBlue()/255f,
 				color.getAlpha()/255f);
-        GL11.glDrawElements(indexType, indicesCount, GL11.GL_UNSIGNED_BYTE, indexOffset);
+		// vertices are indexed
+        GL11.glDrawElements(indicesType, indicesCount, indexElemSize, indexOffset);
         GL30.glBindVertexArray(0);
     }
 

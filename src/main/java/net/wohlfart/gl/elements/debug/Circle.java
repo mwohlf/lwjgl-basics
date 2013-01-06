@@ -1,40 +1,28 @@
-package net.wohlfart.gl.elements;
+package net.wohlfart.gl.elements.debug;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import net.wohlfart.gl.renderer.Renderer;
-import net.wohlfart.gl.shader.mesh.ByteLines;
 import net.wohlfart.gl.shader.mesh.IMeshData;
 import net.wohlfart.gl.shader.mesh.WireframeMeshBuilder;
 import net.wohlfart.tools.SimpleMath;
 
-import org.lwjgl.util.ReadableColor;
-import org.lwjgl.util.vector.Quaternion;
+import org.lwjgl.opengl.GL11;
 import org.lwjgl.util.vector.Vector3f;
 
 
-public class Circle extends LazyRenderable {
+public class Circle extends RenderableWireMesh {
 
-    private final Vector3f translation = new Vector3f(0, 0, 0);
-    private final Quaternion rotation = new Quaternion();
     private final int pieces = 15; // LOD
     private float radius = 1;
-    private Vector3f normal = new Vector3f(0, 0, 1);
 
 
+    public Circle() {}
 
-    public Circle() {
-
-    }
-
-    public Circle(float radius, Vector3f normal) {
+    public Circle(float radius) {
     	this.radius = radius;
-    	SimpleMath.createQuaternion(this.normal, normal, rotation);
-    	this.normal = normal;
     }
-
-
 
     protected List<Vector3f> createVertices() {
         List<Vector3f> result = new ArrayList<Vector3f>(pieces);
@@ -47,13 +35,13 @@ public class Circle extends LazyRenderable {
         return result;
     }
 
-    protected ByteLines createIndices() {
-        List<Byte> result = new ArrayList<Byte>(pieces * 2);
-        for (byte i = 0; i < pieces; i++) {
+    protected Integer[] createIndices() {
+        List<Integer> result = new ArrayList<Integer>(pieces * 2);
+        for (int i = 0; i < pieces; i++) {
         	result.add(i * 2, i);
-        	result.add(i * 2 + 1, (byte)((i + 1)%pieces));
+        	result.add(i * 2 + 1, ((i + 1)%pieces));
         }
-        return new ByteLines(result);
+        return result.toArray(new Integer[result.size()]);
     }
 
     @Override
@@ -61,8 +49,11 @@ public class Circle extends LazyRenderable {
         WireframeMeshBuilder builder = new WireframeMeshBuilder();
         builder.setVertices(createVertices());
         builder.setIndices(createIndices());
-        builder.setColor(ReadableColor.BLUE);
-        builder.setRotation(rotation);
+		builder.setIndicesStructure(GL11.GL_LINE_LOOP);  // loop!
+		builder.setIndexElemSize(GL11.GL_UNSIGNED_INT);
+		builder.setColor(color);
+		builder.setLineWidth(lineWidth);
+		builder.setRotation(rotation);
         builder.setTranslation(translation);
         builder.setRenderer(renderer);
         return builder.build();

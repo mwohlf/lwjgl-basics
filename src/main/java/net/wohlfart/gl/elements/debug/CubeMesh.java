@@ -1,16 +1,14 @@
-package net.wohlfart.gl.elements;
+package net.wohlfart.gl.elements.debug;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
 import net.wohlfart.gl.renderer.Renderer;
-import net.wohlfart.gl.shader.mesh.ByteLines;
 import net.wohlfart.gl.shader.mesh.IMeshData;
 import net.wohlfart.gl.shader.mesh.WireframeMeshBuilder;
 
-import org.lwjgl.util.ReadableColor;
-import org.lwjgl.util.vector.Quaternion;
+import org.lwjgl.opengl.GL11;
 import org.lwjgl.util.vector.Vector3f;
 
 
@@ -27,17 +25,14 @@ import org.lwjgl.util.vector.Vector3f;
  *   |/        |/
  *   2-------- 3
  */
-public class Cube extends LazyRenderable {
+public class CubeMesh extends RenderableWireMesh {
 
-    private final Vector3f translation = new Vector3f(0, 0, 0);
-    private final Quaternion rotation = new Quaternion();
+
     private float length = 1;
 
-    public Cube() {
+    public CubeMesh() {}
 
-    }
-
-    public Cube(final float length) {
+    public CubeMesh(float length) {
     	this.length = length;
     }
 
@@ -55,23 +50,28 @@ public class Cube extends LazyRenderable {
         return result;
     }
 
-    protected ByteLines createIndices() {
-        List<Byte> result = new ArrayList<Byte>(6 * 2 * 3);
-        result.addAll(createIndices((byte)0, (byte)1, (byte)2, (byte)3));
-        result.addAll(createIndices((byte)4, (byte)0, (byte)3, (byte)7));
-        result.addAll(createIndices((byte)5, (byte)4, (byte)7, (byte)6));
-        result.addAll(createIndices((byte)1, (byte)5, (byte)6, (byte)2));
-        result.addAll(createIndices((byte)0, (byte)4, (byte)5, (byte)1));
-        result.addAll(createIndices((byte)3, (byte)2, (byte)6, (byte)7));
-        return new ByteLines(result);
+    protected Integer[] createIndices() {
+        List<Integer> result = new ArrayList<Integer>(6 * 2 * 3);
+        result.addAll(createIndices(0, 1, 2, 3));
+        result.addAll(createIndices(4, 0, 3, 7));
+        result.addAll(createIndices(5, 4, 7, 6));
+        result.addAll(createIndices(1, 5, 6, 2));
+        result.addAll(createIndices(0, 4, 5, 1));
+        result.addAll(createIndices(3, 2, 6, 7));
+        return result.toArray(new Integer[result.size()]);
     }
 
-    protected Collection<Byte> createIndices(byte i1, byte i2, byte i3, byte i4) {
-    	List<Byte> result = new ArrayList<Byte>();
+    protected Collection<Integer> createIndices(int i1, int i2, int i3, int i4) {
+    	List<Integer> result = new ArrayList<Integer>();
     	result.add(i1);
     	result.add(i2);
+
+    	result.add(i2);
     	result.add(i3);
+
     	result.add(i3);
+    	result.add(i4);
+
     	result.add(i4);
     	result.add(i1);
     	return result;
@@ -83,7 +83,10 @@ public class Cube extends LazyRenderable {
         WireframeMeshBuilder builder = new WireframeMeshBuilder();
         builder.setVertices(createVertices());
         builder.setIndices(createIndices());
-        builder.setColor(ReadableColor.BLUE);
+		builder.setIndicesStructure(GL11.GL_LINES);
+		builder.setIndexElemSize(GL11.GL_UNSIGNED_INT);
+        builder.setColor(color);
+        builder.setLineWidth(lineWidth);
         builder.setRotation(rotation);
         builder.setTranslation(translation);
         builder.setRenderer(renderer);

@@ -1,39 +1,23 @@
-package net.wohlfart.gl.elements;
+package net.wohlfart.gl.elements.debug;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 import net.wohlfart.gl.renderer.Renderer;
-import net.wohlfart.gl.shader.mesh.ByteLines;
 import net.wohlfart.gl.shader.mesh.IMeshData;
 import net.wohlfart.gl.shader.mesh.WireframeMeshBuilder;
 import net.wohlfart.tools.SimpleMath;
 
-import org.lwjgl.util.Color;
-import org.lwjgl.util.ReadableColor;
-import org.lwjgl.util.vector.Quaternion;
+import org.lwjgl.opengl.GL11;
 import org.lwjgl.util.vector.Vector3f;
 
-
-
 // see: http://blog.andreaskahler.com/2009/06/creating-icosphere-mesh-in-code.html
-public class IcosphereWire extends LazyRenderable {
+public class IcosphereMesh extends RenderableWireMesh {
 
-    private final Vector3f translation = new Vector3f(0, 0, 0);
-    private final Quaternion rotation = new Quaternion();
     private int lod = 0;
+    private float radius = 1;
 
-    private static final float h = SimpleMath.sqrt(2f/3f);
-    /*
-	private final List<Vector3f> vertices
-		= new ArrayList<Vector3f>(Arrays.<Vector3f> asList(new Vector3f[] {
-			new Vector3f(+0.0f, +h/2f, +0.0f),     // top
-			new Vector3f(-0.5f, -h/2f, +h/2f),     // front left
-			new Vector3f(+0.5f, -h/2f, +h/2f),     // front right
-			new Vector3f(+0.0f, -h/2f, -h/2f),     // back
-		}));
-	*/
 	private final List<Vector3f> vertices
 	= new ArrayList<Vector3f>(Arrays.<Vector3f> asList(new Vector3f[] {
 		new Vector3f(+1.0f,  0f, -1/SimpleMath.sqrt(2f)),     // top
@@ -42,30 +26,32 @@ public class IcosphereWire extends LazyRenderable {
 		new Vector3f(   0f, -1f, +1/SimpleMath.sqrt(2f)),     // back
 	}));
 
-	private Byte[] indices = new Byte[] {
+	private Integer[] indices = new Integer[] {
 			0, 1, 1, 2, 2, 0,
 			0, 2, 2, 3, 3, 0,
 			0, 3, 3, 1, 1, 0,
 			3, 2, 2, 1, 1, 3,
 	};
 
-	private final ReadableColor color = Color.BLUE;
 
-
-	public IcosphereWire() {
-		this.lod = 0;
-		normalize();
+	public IcosphereMesh() {
+		this(0);
 	}
 
+	public IcosphereMesh(int lod) {
+		this(lod, 1f);
+	}
 
-	public IcosphereWire(final int lod) {
+	public IcosphereMesh(int lod, float radius) {
 		this.lod = lod;
+		this.radius = radius;
 		normalize();
 	}
 
 	private void normalize() {
 		for (Vector3f vec : vertices) {
-			vec.normalise();
+			float l = vec.length();
+			vec.scale(radius/l);
 		}
 	}
 
@@ -77,7 +63,7 @@ public class IcosphereWire extends LazyRenderable {
 
 	private void splitPlanes() {
 		// for each side we have 4 new smaller sides now
-		Byte[] indices2 = new Byte[indices.length * 4];
+		Integer[] indices2 = new Integer[indices.length * 4];
 		int indicesPerSide = 6;
 		int newIndices = indicesPerSide * 4;
 
@@ -93,9 +79,10 @@ public class IcosphereWire extends LazyRenderable {
 			Vector3f n2 = splitLine(v2, v3);  // mid-bottom
 			Vector3f n3 = splitLine(v3, v1);  // mid-right
 
-			n1.normalise();
-			n2.normalise();
-			n3.normalise();
+			// to keep them on the sphere
+			n1.scale(radius/n1.length());
+			n2.scale(radius/n2.length());
+			n3.scale(radius/n3.length());
 
 			int offset = vertices.size();
 			vertices.add(n1);  // offset + 0
@@ -105,33 +92,35 @@ public class IcosphereWire extends LazyRenderable {
 			// top triangle
 			int j = (i/indicesPerSide) * newIndices;
 			indices2[j + 0] = indices[i + 0];        // top
-			indices2[j + 1] = (byte) (offset + 0);
-			indices2[j + 2] = (byte) (offset + 0);   // mid-left
-			indices2[j + 3] = (byte) (offset + 2);
-			indices2[j + 4] = (byte) (offset + 2);   // mid-right
+			indices2[j + 1] = (offset + 0);
+			indices2[j + 2] = (offset + 0);   // mid-left
+			indices2[j + 3] = (offset + 2);
+			indices2[j + 4] = (offset + 2);   // mid-right
 			indices2[j + 5] = indices[i + 0];
 
-			indices2[j + 6] = (byte) (offset + 0);   // mid-left
+			// left triangle
+			indices2[j + 6] = (offset + 0);   // mid-left
 			indices2[j + 7] = indices[i + 2];
 			indices2[j + 8] = indices[i + 2];        // left
-			indices2[j + 9] = (byte) (offset + 1);
-			indices2[j +10] = (byte) (offset + 1);   // mid-bottom
-			indices2[j +11] = (byte) (offset + 0);
+			indices2[j + 9] = (offset + 1);
+			indices2[j +10] = (offset + 1);   // mid-bottom
+			indices2[j +11] = (offset + 0);
 
-			indices2[j +12] = (byte) (offset + 2);   // mid-right
-			indices2[j +13] = (byte) (offset + 1);
-			indices2[j +14] = (byte) (offset + 1);   // mid-bottom
+			// right triangle
+			indices2[j +12] = (offset + 2);   // mid-right
+			indices2[j +13] = (offset + 1);
+			indices2[j +14] = (offset + 1);   // mid-bottom
 			indices2[j +15] = indices[i + 4];
 			indices2[j +16] = indices[i + 4];        // right
-			indices2[j +17] = (byte) (offset + 2);
+			indices2[j +17] = (offset + 2);
 
-			// center
-			indices2[j +18] = (byte) (offset + 0);   // mid-left
-			indices2[j +19] = (byte) (offset + 1);
-			indices2[j +20] = (byte) (offset + 1);   // mid-bottom
-			indices2[j +21] = (byte) (offset + 2);
-			indices2[j +22] = (byte) (offset + 2);   // mid-right
-			indices2[j +23] = (byte) (offset + 0);
+			// center triangle
+			indices2[j +18] = (offset + 0);   // mid-left
+			indices2[j +19] = (offset + 1);
+			indices2[j +20] = (offset + 1);   // mid-bottom
+			indices2[j +21] = (offset + 2);
+			indices2[j +22] = (offset + 2);   // mid-right
+			indices2[j +23] = (offset + 0);
 		}
 		indices = indices2;
 	}
@@ -150,12 +139,14 @@ public class IcosphereWire extends LazyRenderable {
 		splitPlanes(lod);
 		WireframeMeshBuilder builder = new WireframeMeshBuilder();
 		builder.setVertices(vertices);
-		builder.setIndices(new ByteLines(indices));
+		builder.setIndices(indices);
+		builder.setIndicesStructure(GL11.GL_LINES);
+		builder.setIndexElemSize(GL11.GL_UNSIGNED_INT);
 		builder.setColor(color);
 		builder.setRotation(rotation);
 		builder.setTranslation(translation);
 		builder.setRenderer(renderer);
-		builder.setLineWidth(1);
+		builder.setLineWidth(lineWidth);
 		return builder.build();
 	}
 

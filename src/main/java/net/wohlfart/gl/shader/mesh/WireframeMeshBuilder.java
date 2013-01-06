@@ -1,8 +1,9 @@
 package net.wohlfart.gl.shader.mesh;
 
-import java.nio.ByteBuffer;
 import java.nio.FloatBuffer;
+import java.nio.IntBuffer;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import net.wohlfart.gl.renderer.Renderer;
@@ -22,36 +23,18 @@ import org.slf4j.LoggerFactory;
 
 
 
-/**
- * this class creates all kind of meshes depending on the available data when the build method is called
- *
- * GL_POINTS,
- * GL_LINE_STRIP,
- * GL_LINE_LOOP,
- * GL_LINES
- * GL_TRIANGLE_STRIP,
- * GL_TRIANGLE_FAN,
- * GL_TRIANGLES
- *
- *
- */
 public class WireframeMeshBuilder {
 	protected static final Logger LOGGER = LoggerFactory.getLogger(WireframeMeshBuilder.class);
 
-	private static float DEFAULT_LINE_WIDTH = 1f;
-
-
-	private static int VERTEX_SIZE = 4;
-
-
-	private float lineWidth = DEFAULT_LINE_WIDTH;
-
 	private final List<Vector3f> vertices = new ArrayList<Vector3f>();
+
+	private final List<Integer> indices = new ArrayList<Integer>();
+	private int indicesStructure;
+	private int indexElemSize;
+
+	private float lineWidth = 1f;
 	private ReadableColor color = ReadableColor.GREY;
 
-	private final List<Byte> indices = new ArrayList<Byte>();
-	private int indexStructure;
-	private int indexElemSize = GL11.GL_UNSIGNED_BYTE;
 
 	private Vector3f translation;
 	private Quaternion rotation;
@@ -64,33 +47,33 @@ public class WireframeMeshBuilder {
 		applyRotationAndTranslation();
 
 		int vaoHandle = GL30.glGenVertexArrays();
+
 		GL30.glBindVertexArray(vaoHandle);
 		int vboVerticesHandle = createVboHandle(getVertices(), renderer, AttributeHandle.POSITION);
 		int vboIndicesHandle = createElementArrayBuffer(renderer);
 
-		GL11.glLineWidth(lineWidth);
-
 		GL30.glBindVertexArray(0);
 
 		int indicesCount = getIndices().length;
-
-
 		int colorAttrib = renderer.getVertexAttrib(AttributeHandle.COLOR);
+		int offset = 0;
 
-		return new IndexedLinesMesh(
+		return new WireframeMesh(
 				vaoHandle,
 				vboVerticesHandle,
-				vboIndicesHandle, indexStructure, indexElemSize, indicesCount, 0,
-				colorAttrib, color);
+				vboIndicesHandle, indicesStructure, indexElemSize, indicesCount, offset,
+				colorAttrib, color,
+				lineWidth);
 	}
 
 
 	private int createElementArrayBuffer(Renderer renderer) {
 		int vboIndicesHandle = GL15.glGenBuffers();
 		GL15.glBindBuffer(GL15.GL_ELEMENT_ARRAY_BUFFER, vboIndicesHandle);
-		byte[] byteBuff = getIndices();
-		ByteBuffer indicesBuffer = BufferUtils.createByteBuffer(byteBuff.length);
-		indicesBuffer.put(byteBuff);
+		// FIXME: check the vertex count and use a byte or short buffer here if the number of vertices is low enough
+		int[] buffer = getIndices();
+		IntBuffer indicesBuffer = BufferUtils.createIntBuffer(buffer.length);
+		indicesBuffer.put(buffer);
 		indicesBuffer.flip();
 		GL15.glBufferData(GL15.GL_ELEMENT_ARRAY_BUFFER, indicesBuffer, GL15.GL_STATIC_DRAW);
 		return vboIndicesHandle;
@@ -120,12 +103,16 @@ public class WireframeMeshBuilder {
 
 		int positionAttrib = renderer.getVertexAttrib(attrHandle);
 		GL20.glEnableVertexAttribArray(positionAttrib);
-		GL20.glVertexAttribPointer(positionAttrib, VERTEX_SIZE, GL11.GL_FLOAT, false, 0, 0);
+		GL20.glVertexAttribPointer(positionAttrib, attrHandle.getSize(), GL11.GL_FLOAT, false, 0, 0);
 		return vboVerticesHandle;
 	}
 
 	private float[] getVertices() {
-		float[] result = new float[vertices.size() * VERTEX_SIZE];
+		int posSize = AttributeHandle.POSITION.getSize();
+		if (posSize < 4) {
+			throw new IllegalArgumentException("vertex position size should be 4");
+		}
+		float[] result = new float[vertices.size() * AttributeHandle.POSITION.getSize()];
 		int i = 0;
 		for (Vector3f v : vertices) {
 			result[i++] = v.x;
@@ -136,10 +123,10 @@ public class WireframeMeshBuilder {
 		return result;
 	}
 
-	private byte[] getIndices() {
-		byte[] result = new byte[indices.size()];
+	private int[] getIndices() {
+		int[] result = new int[indices.size()];
 		int i = 0;
-		for (Byte b : indices) {
+		for (Integer b : indices) {
 			result[i++] = b;
 		}
 		return result;
@@ -151,10 +138,8 @@ public class WireframeMeshBuilder {
 		this.vertices.addAll(vertices);
 	}
 
-	public void setIndices(final Indices<Byte> indices) {
-		this.indexStructure = indices.getStructure();
-		this.indexElemSize = indices.getElemSize();
-		this.indices.addAll(indices.getContent());
+	public void setIndices(final Integer[] indices) {
+		this.indices.addAll(Arrays.asList(indices));
 	}
 
 	public void setRotation(final Quaternion quaternion) {
@@ -173,9 +158,16 @@ public class WireframeMeshBuilder {
 		this.renderer = renderer;
 	}
 
-
 	public void setLineWidth(float lineWidth) {
 		this.lineWidth = lineWidth;
+	}
+
+	public void setIndicesStructure(int indicesStructure) {
+		this.indicesStructure = indicesStructure;
+	}
+
+	public void setIndexElemSize(int indexElemSize) {
+		this.indexElemSize = indexElemSize;
 	}
 
 }

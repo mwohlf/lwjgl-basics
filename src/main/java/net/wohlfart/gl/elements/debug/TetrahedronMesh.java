@@ -1,16 +1,14 @@
-package net.wohlfart.gl.elements;
+package net.wohlfart.gl.elements.debug;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import net.wohlfart.gl.renderer.Renderer;
-import net.wohlfart.gl.shader.mesh.ByteLines;
 import net.wohlfart.gl.shader.mesh.IMeshData;
 import net.wohlfart.gl.shader.mesh.WireframeMeshBuilder;
 import net.wohlfart.tools.SimpleMath;
 
-import org.lwjgl.util.Color;
-import org.lwjgl.util.vector.Quaternion;
+import org.lwjgl.opengl.GL11;
 import org.lwjgl.util.vector.Vector3f;
 
 
@@ -25,26 +23,21 @@ import org.lwjgl.util.vector.Vector3f;
  *     1 --------- 2
  *
  */
-public class Tetrahedron extends LazyRenderable {
+public class TetrahedronMesh extends RenderableWireMesh {
 
-    private final Vector3f translation = new Vector3f(0, 0, 0);
-    private final Quaternion rotation = new Quaternion();
     private float length = 1;
 
-	private final Byte[] indices = new Byte[] {
-			0, 1, 2,
-			0, 2, 3,
-			0, 3, 1,
+	private final Integer[] indices = new Integer[] {
+			0, 1, 1, 2, 2, 0,
+			0, 2, 2, 3, 3, 0,
+			0, 3, 3, 1, 1, 0,
 	};
 
-    public Tetrahedron() {
+    public TetrahedronMesh() {}
 
-    }
-
-    public Tetrahedron(final float length) {
+    public TetrahedronMesh(float length) {
     	this.length = length;
     }
-
 
     protected List<Vector3f> createVertices() {
     	float h = +SimpleMath.sqrt(2f/3f) * length;
@@ -56,18 +49,19 @@ public class Tetrahedron extends LazyRenderable {
         return result;
     }
 
-
 	@Override
 	protected IMeshData setupMesh(final Renderer renderer) {
 		WireframeMeshBuilder builder = new WireframeMeshBuilder();
 		builder.setVertices(createVertices());
-		builder.setIndices(new ByteLines(indices));
-		builder.setColor(Color.BLUE);
+		builder.setIndices(indices);
+		builder.setIndicesStructure(GL11.GL_LINES);
+		builder.setIndexElemSize(GL11.GL_UNSIGNED_INT);
+		builder.setColor(color);
+		builder.setLineWidth(lineWidth);
 		builder.setRotation(rotation);
 		builder.setTranslation(translation);
 		builder.setRenderer(renderer);
 		return builder.build();
 	}
-
 
 }

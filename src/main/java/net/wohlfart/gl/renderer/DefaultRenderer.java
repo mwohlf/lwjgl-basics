@@ -46,7 +46,7 @@ public class DefaultRenderer implements Renderer {
 		for (AttributeHandle attributeHandle : AttributeHandle.values()) {
 			int location = attributeHandle.getLocation(shaderProgram);
 			if (location < 0) {
-				LOGGER.warn("location for AttributeHandle '{}' is <0, value was '{}'",
+				LOGGER.warn("location for AttributeHandle '{}' is <0, the value was '{}', the attribute might be optimized out during compile",
 						new Object[] {attributeHandle, location});
 			}
 			attributeMap.put(attributeHandle, location);
@@ -54,7 +54,7 @@ public class DefaultRenderer implements Renderer {
 		for (UniformHandle matrixHandle : UniformHandle.values()) {
 			int location = matrixHandle.getLocation(shaderProgram);
 			if (location < 0) {
-				LOGGER.warn("location for MatrixHandle '{}' is <0, value was '{}'",
+				LOGGER.warn("location for UniformHandle '{}' is <0, the value was '{}'",
 						new Object[] {matrixHandle, location});
 			}
 			matrixMap.put(matrixHandle, location);
