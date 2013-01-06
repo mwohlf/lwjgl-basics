@@ -6,6 +6,7 @@ public interface Clock {
 
 	long getTicksPerSecond();
 
-	long getWrapAroundCount();
+	// last count that is still valid
+	long getMaxValidCount();
 
 }

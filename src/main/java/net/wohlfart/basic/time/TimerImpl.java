@@ -4,20 +4,21 @@ package net.wohlfart.basic.time;
 public class TimerImpl implements Timer {
 
 	private final Clock clock;
-	private final long wrapAroundCount;
+	private final long maxValidCount;
 	private long lastTickCount;
 
-	public TimerImpl(final Clock clock) {
+	public TimerImpl(Clock clock) {
 		this.clock = clock;
 		this.lastTickCount = clock.getTicks();
-		this.wrapAroundCount = clock.getWrapAroundCount();
+		this.maxValidCount = clock.getMaxValidCount();
 	}
 
 	@Override
 	public float getDelta() {
 		long now = clock.getTicks();
-		if (now < lastTickCount) { // wrap around
-			lastTickCount -= wrapAroundCount;
+		if (now < lastTickCount) { // we have a wrap around
+			lastTickCount -= maxValidCount;
+			lastTickCount -= 1;
 		}
 		float delta = (now - lastTickCount) / (float) clock.getTicksPerSecond();
 		lastTickCount = now;

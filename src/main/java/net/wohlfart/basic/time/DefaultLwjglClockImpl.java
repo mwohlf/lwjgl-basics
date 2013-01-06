@@ -7,7 +7,7 @@ public class DefaultLwjglClockImpl implements Clock {
 
 	@Override
 	public long getTicks() {
-		return Sys.getTime(); // wraps around
+		return Sys.getTime(); // this wraps around
 	}
 
 	@Override
@@ -16,7 +16,7 @@ public class DefaultLwjglClockImpl implements Clock {
 	}
 
 	@Override
-	public long getWrapAroundCount() {
+	public long getMaxValidCount() {
 		return Long.MAX_VALUE;
 	}
 
