@@ -11,6 +11,7 @@ import net.wohlfart.gl.elements.debug.Arrow;
 import net.wohlfart.gl.elements.debug.Circle;
 import net.wohlfart.gl.elements.debug.CubeMesh;
 import net.wohlfart.gl.elements.debug.IcosphereMesh;
+import net.wohlfart.gl.elements.debug.TerahedronRefinedMesh;
 import net.wohlfart.gl.elements.debug.TetrahedronMesh;
 import net.wohlfart.gl.input.InputSource;
 import net.wohlfart.gl.input.KeyPressedEvent;
@@ -58,33 +59,46 @@ public class SimpleState implements GameState {
 		renderables.add(new Arrow(new Vector3f(0,1,0)).color(ReadableColor.GREEN));
 		renderables.add(new Arrow(new Vector3f(0,0,1)).color(ReadableColor.BLUE));
 
-		renderables.add(new IcosphereMesh(2, 1)
-			.lineWidth(1)
-			.color(ReadableColor.RED)
-			.translate(new Vector3f(3,5,0)));
-		renderables.add(new IcosphereMesh(2, 2)
-			.lineWidth(2)
-			.color(ReadableColor.GREEN)
-			.translate(new Vector3f(0,5,0)) );
-		renderables.add(new IcosphereMesh(2, 1)
-		    .lineWidth(2)
-		    .color(ReadableColor.BLUE)
-		    .translate(new Vector3f(-3,5,0)) );
+		renderables.add(new TerahedronRefinedMesh(2, 1)
+		.lineWidth(1)
+		.color(ReadableColor.RED)
+		.translate(new Vector3f(3,5,0)));
+		renderables.add(new TerahedronRefinedMesh(2, 2)
+		.lineWidth(2)
+		.color(ReadableColor.GREEN)
+		.translate(new Vector3f(0,5,0)) );
+		renderables.add(new TerahedronRefinedMesh(2, 1)
+		.lineWidth(2)
+		.color(ReadableColor.BLUE)
+		.translate(new Vector3f(-3,5,0)) );
 
 		renderables.add(new TetrahedronMesh(3)
-			.lineWidth(2)
-		    .color(ReadableColor.WHITE)
-		    .translate(new Vector3f(-3,-5,0)) );
+		.lineWidth(2)
+		.color(ReadableColor.WHITE)
+		.translate(new Vector3f(-3,-5,0)) );
 
 		renderables.add(new CubeMesh(1)
-			.lineWidth(1)
-			.color(ReadableColor.ORANGE)
-			.translate(new Vector3f(-3,-2,0))
-			.rotate(SimpleMath.createQuaternion(new Vector3f(1,0,-1), new Vector3f(0,1,0), new Quaternion())));
+		.lineWidth(1)
+		.color(ReadableColor.ORANGE)
+		.translate(new Vector3f(-3,-2,0))
+		.rotate(SimpleMath.createQuaternion(new Vector3f(1,0,-1), new Vector3f(0,1,0), new Quaternion())));
 
 		renderables.add(new Circle(1)
-			.lineWidth(2)
-		    .translate(new Vector3f(3,2,0)));
+		.lineWidth(2)
+		.translate(new Vector3f(3,2,0)));
+
+		renderables.add(new IcosphereMesh(1, 1)
+		.lineWidth(1)
+		.color(ReadableColor.RED)
+		.translate(new Vector3f(5,-7,0)));
+		renderables.add(new IcosphereMesh(1, 2)
+		.lineWidth(2)
+		.color(ReadableColor.GREEN)
+		.translate(new Vector3f(0,-7,0)) );
+		renderables.add(new IcosphereMesh(1, 1)
+		.lineWidth(2)
+		.color(ReadableColor.BLUE)
+		.translate(new Vector3f(-5,-7,0)) );
 
 
 		InputSource.INSTANCE.register(new KeyPressedEvent.Listener(){
@@ -123,7 +137,7 @@ public class SimpleState implements GameState {
 		Matrix4f result = new Matrix4f();
 		Matrix4f.mul(modelMatrix, viewMatrix, result);
 		renderer.set(MatrixHandle.MODEL_TO_WORLD, result);
-		*/
+		 */
 
 	}
 

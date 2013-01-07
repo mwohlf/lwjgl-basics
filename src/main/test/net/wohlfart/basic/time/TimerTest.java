@@ -55,7 +55,6 @@ public class TimerTest {
 		}
 
 		Timer timer = new TimerImpl(new TestClock(1, max, ticks));
-
 		assertEquals(5f, timer.getDelta(), 0.00001f);
 		assertEquals(5f, timer.getDelta(), 0.00001f);
 		assertEquals(5f, timer.getDelta(), 0.00001f);
@@ -68,7 +67,6 @@ public class TimerTest {
 		assertEquals(5f, timer.getDelta(), 0.00001f);
 		assertEquals(5f, timer.getDelta(), 0.00001f);
 		assertEquals(5f, timer.getDelta(), 0.00001f);
-
 	}
 
 
@@ -87,7 +85,6 @@ public class TimerTest {
 		}
 
 		Timer timer = new TimerImpl(new TestClock(2, max, ticks));
-
 		assertEquals(2.5f, timer.getDelta(), 0.00001f);
 		assertEquals(2.5f, timer.getDelta(), 0.00001f);
 		assertEquals(2.5f, timer.getDelta(), 0.00001f);
@@ -100,8 +97,34 @@ public class TimerTest {
 		assertEquals(2.5f, timer.getDelta(), 0.00001f);
 		assertEquals(2.5f, timer.getDelta(), 0.00001f);
 		assertEquals(2.5f, timer.getDelta(), 0.00001f);
-
 	}
 
+	@Test
+	public void longWrapAround() {
+
+		List<Long> ticks = new ArrayList<Long>();
+		long max = Long.MAX_VALUE;  // = = 0x7fffffffffffffffL;
+		long tick = Long.MAX_VALUE-17;
+		long tickdelta = 5;
+		ticks.add(tick);
+		for ( int i = 0; i < 15 ; i++) {
+			tick = (tick + tickdelta) & Long.MAX_VALUE;
+			ticks.add(tick);
+		}
+
+		Timer timer = new TimerImpl(new TestClock(2, max, ticks));
+		assertEquals(2.5f, timer.getDelta(), 0.00001f);
+		assertEquals(2.5f, timer.getDelta(), 0.00001f);
+		assertEquals(2.5f, timer.getDelta(), 0.00001f);
+		assertEquals(2.5f, timer.getDelta(), 0.00001f);
+		assertEquals(2.5f, timer.getDelta(), 0.00001f);
+		assertEquals(2.5f, timer.getDelta(), 0.00001f);
+		assertEquals(2.5f, timer.getDelta(), 0.00001f);
+		assertEquals(2.5f, timer.getDelta(), 0.00001f);
+		assertEquals(2.5f, timer.getDelta(), 0.00001f);
+		assertEquals(2.5f, timer.getDelta(), 0.00001f);
+		assertEquals(2.5f, timer.getDelta(), 0.00001f);
+		assertEquals(2.5f, timer.getDelta(), 0.00001f);
+	}
 
 }

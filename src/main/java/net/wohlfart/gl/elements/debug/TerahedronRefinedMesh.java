@@ -13,74 +13,40 @@ import org.lwjgl.opengl.GL11;
 import org.lwjgl.util.vector.Vector3f;
 
 // see: http://blog.andreaskahler.com/2009/06/creating-icosphere-mesh-in-code.html
-public class IcosphereMesh extends RenderableWireMesh {
+public class TerahedronRefinedMesh extends RenderableWireMesh {
 
     private int lod = 0;
     private float radius = 1;
 
-    float t = (1.0f + SimpleMath.sqrt(5.0f)) / 2.0f;
 	private final List<Vector3f> vertices
 	= new ArrayList<Vector3f>(Arrays.<Vector3f> asList(new Vector3f[] {
-		new Vector3f( -1f,  t, 0),
-		new Vector3f( +1f,  t, 0),
-		new Vector3f( -1f, -t, 0),
-		new Vector3f( +1f, -t, 0),
-
-		new Vector3f(  0f, -1, t),
-		new Vector3f(  0f,  1, t),
-		new Vector3f(  0f, -1,-t),
-		new Vector3f(  0f,  1,-t),
-
-		new Vector3f(   t,  0,-1),
-		new Vector3f(   t,  0, 1),
-		new Vector3f(  -t,  0,-1),
-		new Vector3f(  -t,  0, 1),
+		new Vector3f(+1.0f,  0f, -1/SimpleMath.sqrt(2f)),     // top
+		new Vector3f(-1.0f,  0f, -1/SimpleMath.sqrt(2f)),     // front left
+		new Vector3f(   0f, +1f, +1/SimpleMath.sqrt(2f)),     // front right
+		new Vector3f(   0f, -1f, +1/SimpleMath.sqrt(2f)),     // back
 	}));
 
 	private Integer[] indices = new Integer[] {
-
-			0, 11, 11, 5, 5, 0,
-			0, 5, 5, 1, 1, 0,
-			0, 1, 1, 7, 7, 0,
-			0, 7, 7, 10, 10, 0,
-			0, 10, 10, 11, 11, 0,
-
-			1, 5, 5, 9, 9, 1,
-			5, 11, 11, 4, 4, 5,
-			11, 10, 10, 2, 2, 11,
-			10, 7, 7, 6, 6, 10,
-			7, 1, 1, 8, 8, 7,
-
-			3, 9, 9, 4, 4, 3,
-			3, 4, 4, 2, 2, 3,
-			3, 2, 2, 6, 6, 3,
-			3, 6, 6, 8, 8, 3,
-			3, 8, 8, 9, 9, 3,
-
-			4, 9, 9, 5, 5, 4,
-			2, 4, 4, 11, 11, 2,
-			6, 2, 2, 10, 10, 6,
-			8, 6, 6, 7, 7, 8,
-			9, 8, 8, 1, 1, 9,
-
+			0, 1, 1, 2, 2, 0,
+			0, 2, 2, 3, 3, 0,
+			0, 3, 3, 1, 1, 0,
+			3, 2, 2, 1, 1, 3,
 	};
 
 
-	public IcosphereMesh() {
+	public TerahedronRefinedMesh() {
 		this(0);
 	}
 
-	public IcosphereMesh(int lod) {
+	public TerahedronRefinedMesh(int lod) {
 		this(lod, 1f);
 	}
 
-	public IcosphereMesh(int lod, float radius) {
+	public TerahedronRefinedMesh(int lod, float radius) {
 		this.lod = lod;
 		this.radius = radius;
 		normalize();
 	}
-
-
 
 	private void normalize() {
 		for (Vector3f vec : vertices) {
