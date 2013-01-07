@@ -10,11 +10,6 @@ public interface IShaderProgram  {
 	public static final String PROJECTION_MATRIX = "cameraToClipMatrix";
 	public static final String UNI_COLOR = "uni_Color";
 
-	public static final String POSITION = "in_Position";
-	public static final String COLOR = "in_Color";
-	public static final String TEXTURE_COORD = "in_TexCoord";
-
-
 	// called when the shader in created
 	public abstract void setup();
 

@@ -5,9 +5,9 @@ import org.lwjgl.opengl.GL20;
 
 // handler for vertex attributes used in the shader
 public enum AttributeHandle {
-	COLOR(IShaderProgram.COLOR, 4),
-	POSITION(IShaderProgram.POSITION, 4),
-	TEXTURE_COORD(IShaderProgram.TEXTURE_COORD, 2);
+	COLOR("in_Color", 4),
+	POSITION("in_Position", 4),
+	TEXTURE_COORD("in_TexCoord", 2);
 
 	private final String lookupString;
 	private final int size;

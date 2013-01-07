@@ -14,7 +14,6 @@ public abstract class RenderableWireMesh implements Renderable {
 
 	private IMeshData mesh;
 
-
 	protected final Vector3f translation = new Vector3f();
 	protected final Quaternion rotation = new Quaternion();
 	protected ReadableColor color = Color.BLUE;
