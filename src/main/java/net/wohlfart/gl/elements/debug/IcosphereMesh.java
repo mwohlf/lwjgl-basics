@@ -5,7 +5,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import net.wohlfart.gl.renderer.Renderer;
-import net.wohlfart.gl.shader.mesh.IMeshData;
+import net.wohlfart.gl.shader.mesh.IMesh;
 import net.wohlfart.gl.shader.mesh.WireframeMeshBuilder;
 import net.wohlfart.tools.SimpleMath;
 
@@ -13,7 +13,7 @@ import org.lwjgl.opengl.GL11;
 import org.lwjgl.util.vector.Vector3f;
 
 // see: http://blog.andreaskahler.com/2009/06/creating-icosphere-mesh-in-code.html
-public class IcosphereMesh extends RenderableWireMesh {
+public class IcosphereMesh extends RenderableGrid {
 
     private int lod = 0;
     private float radius = 1;
@@ -169,7 +169,7 @@ public class IcosphereMesh extends RenderableWireMesh {
 
 
 	@Override
-	protected IMeshData setupMesh(final Renderer renderer) {
+	protected IMesh setupMesh(final Renderer renderer) {
 		splitPlanes(lod);
 		WireframeMeshBuilder builder = new WireframeMeshBuilder();
 		builder.setVertices(vertices);

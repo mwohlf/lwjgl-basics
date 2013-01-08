@@ -19,7 +19,7 @@ import org.lwjgl.util.vector.Quaternion;
 import org.lwjgl.util.vector.Vector3f;
 
 // see: http://www.arcsynthesis.org/gltut/Positioning/Tutorial%2005.html
-public class VertexArrayObject implements IMeshData {
+public class VertexArrayObject implements IMesh {
 
 	private final int vaoHandle;
 	private final int indicesCount;

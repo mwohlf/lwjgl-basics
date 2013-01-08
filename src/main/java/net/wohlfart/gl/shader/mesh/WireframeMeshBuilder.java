@@ -42,7 +42,7 @@ public class WireframeMeshBuilder {
 	private Renderer renderer;
 
 
-	public IMeshData build() {
+	public IMesh build() {
 
 		applyRotationAndTranslation();
 

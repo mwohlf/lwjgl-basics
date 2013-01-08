@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import net.wohlfart.gl.renderer.Renderer;
-import net.wohlfart.gl.shader.mesh.IMeshData;
+import net.wohlfart.gl.shader.mesh.IMesh;
 import net.wohlfart.gl.shader.mesh.WireframeMeshBuilder;
 import net.wohlfart.tools.SimpleMath;
 
@@ -23,7 +23,7 @@ import org.lwjgl.util.vector.Vector3f;
  *     1 --------- 2
  *
  */
-public class TetrahedronMesh extends RenderableWireMesh {
+public class TetrahedronMesh extends RenderableGrid {
 
     private float length = 1;
 
@@ -50,7 +50,7 @@ public class TetrahedronMesh extends RenderableWireMesh {
     }
 
 	@Override
-	protected IMeshData setupMesh(final Renderer renderer) {
+	protected IMesh setupMesh(final Renderer renderer) {
 		WireframeMeshBuilder builder = new WireframeMeshBuilder();
 		builder.setVertices(createVertices());
 		builder.setIndices(indices);

@@ -5,7 +5,7 @@ import java.util.Collection;
 import java.util.List;
 
 import net.wohlfart.gl.renderer.Renderer;
-import net.wohlfart.gl.shader.mesh.IMeshData;
+import net.wohlfart.gl.shader.mesh.IMesh;
 import net.wohlfart.gl.shader.mesh.WireframeMeshBuilder;
 
 import org.lwjgl.opengl.GL11;
@@ -25,7 +25,7 @@ import org.lwjgl.util.vector.Vector3f;
  *   |/        |/
  *   2-------- 3
  */
-public class CubeMesh extends RenderableWireMesh {
+public class CubeMesh extends RenderableGrid {
 
 
     private float length = 1;
@@ -79,7 +79,7 @@ public class CubeMesh extends RenderableWireMesh {
 
 
     @Override
-    protected IMeshData setupMesh(Renderer renderer) {
+    protected IMesh setupMesh(Renderer renderer) {
         WireframeMeshBuilder builder = new WireframeMeshBuilder();
         builder.setVertices(createVertices());
         builder.setIndices(createIndices());

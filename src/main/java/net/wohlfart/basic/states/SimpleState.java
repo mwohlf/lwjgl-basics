@@ -6,28 +6,19 @@ import java.util.Set;
 import net.wohlfart.basic.Game;
 import net.wohlfart.gl.CanMoveImpl;
 import net.wohlfart.gl.CanRotateImpl;
+import net.wohlfart.gl.elements.ColoredQuad;
 import net.wohlfart.gl.elements.Renderable;
-import net.wohlfart.gl.elements.debug.Arrow;
-import net.wohlfart.gl.elements.debug.Circle;
-import net.wohlfart.gl.elements.debug.CubeMesh;
-import net.wohlfart.gl.elements.debug.IcosphereMesh;
-import net.wohlfart.gl.elements.debug.TerahedronRefinedMesh;
-import net.wohlfart.gl.elements.debug.TetrahedronMesh;
 import net.wohlfart.gl.input.InputSource;
 import net.wohlfart.gl.input.KeyPressedEvent;
 import net.wohlfart.gl.renderer.DefaultRenderer;
 import net.wohlfart.gl.renderer.Renderer;
 import net.wohlfart.gl.shader.UniformHandle;
 import net.wohlfart.model.Avatar;
-import net.wohlfart.tools.SimpleMath;
 import net.wohlfart.tools.SimpleMatrix4f;
 
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.Display;
-import org.lwjgl.util.ReadableColor;
 import org.lwjgl.util.vector.Matrix4f;
-import org.lwjgl.util.vector.Quaternion;
-import org.lwjgl.util.vector.Vector3f;
 
 public class SimpleState implements GameState {
 
@@ -55,6 +46,7 @@ public class SimpleState implements GameState {
 		renderer.set(UniformHandle.CAM_TO_CLIP, game.getProjectionMatrix());
 
 
+		/*
 		renderables.add(new Arrow(new Vector3f(1,0,0)).color(ReadableColor.RED));
 		renderables.add(new Arrow(new Vector3f(0,1,0)).color(ReadableColor.GREEN));
 		renderables.add(new Arrow(new Vector3f(0,0,1)).color(ReadableColor.BLUE));
@@ -99,7 +91,9 @@ public class SimpleState implements GameState {
 		.lineWidth(2)
 		.color(ReadableColor.BLUE)
 		.translate(new Vector3f(-5,-7,0)) );
+		*/
 
+		renderables.add(new ColoredQuad());
 
 		InputSource.INSTANCE.register(new KeyPressedEvent.Listener(){
 			@Override

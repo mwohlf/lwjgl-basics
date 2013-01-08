@@ -2,7 +2,7 @@ package net.wohlfart.gl.shader.mesh;
 
 
 
-public interface IMeshData {
+public interface IMesh {
 
 	public abstract void draw();
 

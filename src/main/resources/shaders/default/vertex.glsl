@@ -6,6 +6,7 @@
 // see: http://zach.in.tu-clausthal.de/teaching/cg_literatur/glsl_tutorial/index.html
 
 // location might affect glVertexAttribPointer & glEnableVertexAttribArray
+// the location is relevant when using Interleaved VBOs!
 layout (location = 0) in vec4 in_Position;   // the variable names are looked up in the Shader class
 layout (location = 1) in vec4 in_Color;
 layout (location = 2) in vec2 in_TexCoord;

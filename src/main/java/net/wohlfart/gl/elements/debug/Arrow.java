@@ -3,14 +3,14 @@ package net.wohlfart.gl.elements.debug;
 import java.util.Arrays;
 
 import net.wohlfart.gl.renderer.Renderer;
-import net.wohlfart.gl.shader.mesh.IMeshData;
+import net.wohlfart.gl.shader.mesh.IMesh;
 import net.wohlfart.gl.shader.mesh.WireframeMeshBuilder;
 import net.wohlfart.tools.SimpleMath;
 
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.util.vector.Vector3f;
 
-public class Arrow extends RenderableWireMesh {
+public class Arrow extends RenderableGrid {
 
 	// vertices[0] is the direction of the arrow
 	private final Vector3f[] vertices = new Vector3f[] {
@@ -40,7 +40,7 @@ public class Arrow extends RenderableWireMesh {
 	}
 
 	@Override
-	protected IMeshData setupMesh(final Renderer renderer) {
+	protected IMesh setupMesh(final Renderer renderer) {
 		WireframeMeshBuilder builder = new WireframeMeshBuilder();
 		builder.setVertices(Arrays.<Vector3f> asList(vertices));
 		builder.setIndices(indices);
