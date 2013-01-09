@@ -52,14 +52,18 @@ public class ColoredMeshBuilder {
 		int vaoHandle = GL30.glGenVertexArrays();
 		GL30.glBindVertexArray(vaoHandle);
 
-		// Create a new Vertex Buffer Object in memory and select it (bind)
+		int positionAttrib = renderer.getVertexAttrib(AttributeHandle.POSITION);
+		int colorAttrib = renderer.getVertexAttrib(AttributeHandle.COLOR);
+
+		// Create a new Vertex Buffer Object in memory and bind it
 		int vboVerticesHandle = GL15.glGenBuffers();
 		GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, vboVerticesHandle);
 		GL15.glBufferData(GL15.GL_ARRAY_BUFFER, verticesBuffer, GL15.GL_STATIC_DRAW);
 		// Put the positions in attribute list 0
-		GL20.glVertexAttribPointer(0, 4, GL11.GL_FLOAT, false, Vertex.sizeInBytes, 0);
+		GL20.glVertexAttribPointer(positionAttrib, 4, GL11.GL_FLOAT, false, Vertex.colorByteCount + Vertex.positionBytesCount, Vertex.positionByteOffset);
 		// Put the colors in attribute list 1
-		GL20.glVertexAttribPointer(1, 4, GL11.GL_FLOAT, false, Vertex.sizeInBytes, Vertex.elementBytes * 4);
+		GL20.glVertexAttribPointer(colorAttrib, 4, GL11.GL_FLOAT, false, Vertex.colorByteCount + Vertex.positionBytesCount, Vertex.colorByteOffset);
+		// unbind
 		GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, 0);
 
 		// Deselect (bind to 0) the VAO
@@ -70,9 +74,6 @@ public class ColoredMeshBuilder {
 		GL15.glBindBuffer(GL15.GL_ELEMENT_ARRAY_BUFFER, vboIndicesHandle);
 		GL15.glBufferData(GL15.GL_ELEMENT_ARRAY_BUFFER, indicesBuffer, GL15.GL_STATIC_DRAW);
 		GL15.glBindBuffer(GL15.GL_ELEMENT_ARRAY_BUFFER, 0);
-
-		int colorAttrib = renderer.getVertexAttrib(AttributeHandle.COLOR);
-		int positionAttrib = renderer.getVertexAttrib(AttributeHandle.POSITION);
 
 
 		return new ColoredFragmentMesh(vaoHandle, vboVerticesHandle, vboIndicesHandle,
