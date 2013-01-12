@@ -38,6 +38,7 @@ public class CelestialTexture implements ITexture {
 	}
 
 
+	@Override
 	public void init() {
 
 		// random for texture variation
@@ -77,7 +78,7 @@ public class CelestialTexture implements ITexture {
 
 
 	/**
-	 * 0/0 is top left, the whole texture is wrapped around the planet
+	 * 0/0 is top left, the whole texture is wrapped around the celestial object
 	 *
 	 * @return a vector with each element [0..1]
 	 */

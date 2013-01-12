@@ -10,6 +10,8 @@ public class TexturedQuad extends RenderableImpl {
 	protected IMesh setupMesh(Renderer renderer) {
 		TexturedMeshBuilder builder = new TexturedMeshBuilder();
 		builder.setRenderer(renderer);
+		builder.setTranslation(translation);
+		builder.setRotation(rotation);
 		builder.setTextureFilename("/images/ash_uvgrid01.png");
 		return builder.build();
 	}

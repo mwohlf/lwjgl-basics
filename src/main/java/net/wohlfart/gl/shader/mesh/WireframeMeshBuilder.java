@@ -56,13 +56,15 @@ public class WireframeMeshBuilder {
 
 		int indicesCount = getIndices().length;
 		int colorAttrib = renderer.getVertexAttrib(AttributeHandle.COLOR);
+		int positionAttrib = renderer.getVertexAttrib(AttributeHandle.POSITION);
+		int textureAttrib = renderer.getVertexAttrib(AttributeHandle.TEXTURE_COORD);
 		int offset = 0;
 
 		return new WireframeMesh(
 				vaoHandle,
 				vboVerticesHandle,
 				vboIndicesHandle, indicesStructure, indexElemSize, indicesCount, offset,
-				colorAttrib, color,
+				colorAttrib, positionAttrib, textureAttrib, color,
 				lineWidth);
 	}
 

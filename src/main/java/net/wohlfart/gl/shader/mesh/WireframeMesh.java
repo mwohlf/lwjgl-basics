@@ -19,7 +19,10 @@ public class WireframeMesh implements IMesh {
 	private final int indicesType;
 
     private final ReadableColor color;  // single color
-    private final int colorAttrib;
+
+	private final int colorAttrib;
+	private final int positionAttrib;
+	private final int textureAttrib;
 
 	private final float lineWidth;
 
@@ -34,6 +37,8 @@ public class WireframeMesh implements IMesh {
                   int indexOffset,
                   // color
                   int colorAttrib,
+                  int positionAttrib,
+                  int textureAttrib,
                   ReadableColor color,
                   // width
                   float lineWidth) {
@@ -48,6 +53,8 @@ public class WireframeMesh implements IMesh {
         this.indexOffset = indexOffset;
         // color
         this.colorAttrib = colorAttrib;
+        this.positionAttrib = positionAttrib;
+        this.textureAttrib =textureAttrib;
         this.color = color;
         // width
         this.lineWidth = lineWidth;
@@ -61,6 +68,8 @@ public class WireframeMesh implements IMesh {
 		GL11.glLineWidth(lineWidth);
         // color is not indexed
 		GL20.glDisableVertexAttribArray(colorAttrib);
+		GL20.glEnableVertexAttribArray(positionAttrib);
+
 		GL20.glVertexAttrib4f(colorAttrib,
 				color.getRed()/255f,
 				color.getGreen()/255f,

@@ -18,6 +18,8 @@ import org.lwjgl.opengl.GL13;
 import org.lwjgl.opengl.GL15;
 import org.lwjgl.opengl.GL20;
 import org.lwjgl.opengl.GL30;
+import org.lwjgl.util.vector.Quaternion;
+import org.lwjgl.util.vector.Vector3f;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -26,6 +28,10 @@ public class TexturedMeshBuilder {
 
 	private Renderer renderer;
 	private String textureFilename;
+
+	private Quaternion rotation;
+
+	private Vector3f translation;
 
 
 	public IMesh build() {
@@ -152,6 +158,19 @@ public class TexturedMeshBuilder {
 		return texId;
 	}
 
+	private void applyRotationAndTranslation() {
+/*		if (rotation != null) {
+			for (Vector3f vec : vertices) {
+				SimpleMath.mul(rotation, vec, vec);
+			}
+		}
+		if (translation != null) {
+			for (Vector3f vec : vertices) {
+				SimpleMath.add(translation, vec, vec);
+			}
+		}
+*/	}
+
 
 
 	public void setRenderer(Renderer renderer) {
@@ -161,6 +180,14 @@ public class TexturedMeshBuilder {
 
 	public void setTextureFilename(final String textureFilename) {
 		this.textureFilename = textureFilename;
+	}
+
+	public void setRotation(Quaternion rotation) {
+		this.rotation = rotation;
+	}
+
+	public void setTranslation(Vector3f translation) {
+		this.translation = translation;
 	}
 
 }

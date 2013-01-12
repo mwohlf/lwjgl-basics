@@ -103,9 +103,11 @@ public class SimpleState implements GameState {
 		.translate(new Vector3f(-5,-7,0)) );
 
 
-		// renderables.add(new ColoredQuad());
+	//	renderables.add(new ColoredQuad()
+	//	.translate(new Vector3f(-1,5,0)));
 
-		renderables.add(new TexturedQuad());
+	renderables.add(new TexturedQuad()
+	.translate(new Vector3f(-1,5,0)));
 
 
 		InputSource.INSTANCE.register(new KeyPressedEvent.Listener(){
