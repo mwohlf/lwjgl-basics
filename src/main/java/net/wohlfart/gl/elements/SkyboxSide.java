@@ -26,46 +26,53 @@ import org.lwjgl.util.vector.Vector3f;
 public enum SkyboxSide {
 	PLUS_Y {
 		{
-			translation = new Vector3f(0, +1, 0);
-			rotation = SimpleMath.createQuaternion(new Vector3f(0, 0, -1),
+			translation = new Vector3f(0, +dist, 0);
+			rotation = SimpleMath.createQuaternion(new Vector3f(0, 0, -dist),
 					translation, new Quaternion());
 		}
 	},
 	MINUS_Y {
 		{
-			translation = new Vector3f(0, -1, 0);
-			rotation = SimpleMath.createQuaternion(new Vector3f(0, 0, -1),
+			translation = new Vector3f(0, -dist, 0);
+			rotation = SimpleMath.createQuaternion(new Vector3f(0, 0, -dist),
 					translation, new Quaternion());
 		}
 	},
 	PLUS_X {
 		{
-			translation = new Vector3f(+1, 0, 0);
-			rotation = SimpleMath.createQuaternion(new Vector3f(0, 0, -1),
+			translation = new Vector3f(+dist, 0, 0);
+			rotation = SimpleMath.createQuaternion(new Vector3f(0, 0, -dist),
 					translation, new Quaternion());
 		}
 	},
 	MINUS_X {
 		{
-			translation = new Vector3f(-1, 0, 0);
-			rotation = SimpleMath.createQuaternion(new Vector3f(0, 0, -1),
+			translation = new Vector3f(-dist, 0, 0);
+			rotation = SimpleMath.createQuaternion(new Vector3f(0, 0, -dist),
 					translation, new Quaternion());
 		}
 	},
 	PLUS_Z {
 		{
-			translation = new Vector3f(0, 0, +1);
-			rotation = SimpleMath.createQuaternion(new Vector3f(0, 0, -1),
+			translation = new Vector3f(0, 0, +dist);
+			rotation = SimpleMath.createQuaternion(new Vector3f(0, 0, -dist),
 					translation, new Quaternion());
 		}
 	},
 	MINUS_Z {
 		{
-			translation = new Vector3f(0, 0, -1);
-			rotation = SimpleMath.createQuaternion(new Vector3f(0, 0, -1),
+			translation = new Vector3f(0, 0, -dist);
+			rotation = SimpleMath.createQuaternion(new Vector3f(0, 0, -dist),
 					translation, new Quaternion());
 		}
 	};
+
+	private static final float dist = 1f; // distance from the origin to the wall of the skybox
+	private static final int octaves = 5;
+	private static final float persistence = 0.5f;
+	private static final float w = 0.5f;
+	private static final ColorGradient gradient = new ColorGradient(Color.BLACK,Color.BLACK,Color.BLUE);
+
 
 	Quaternion rotation;
 	Vector3f translation;
@@ -78,22 +85,22 @@ public enum SkyboxSide {
 
 		// We'll define our quad using 4 vertices of the custom 'Vertex' class
 		Vertex v0 = new Vertex();
-		v0.setXYZ(rotate(new Vector3f(-0.5f, 0.5f, 0f)));
+		v0.setXYZ(translate(rotate(new Vector3f(-dist, +dist, 0f))));
 		v0.setRGB(1, 0, 0);
 		v0.setST(0, 0);
 
 		Vertex v1 = new Vertex();
-		v1.setXYZ(rotate(new Vector3f(-0.5f, -0.5f, 0f)));
+		v1.setXYZ(translate(rotate(new Vector3f(-dist, -dist, 0f))));
 		v1.setRGB(0, 1, 0);
 		v1.setST(0, 1);
 
 		Vertex v2 = new Vertex();
-		v2.setXYZ(rotate(new Vector3f(0.5f, -0.5f, 0f)));
+		v2.setXYZ(translate(rotate(new Vector3f(+dist, -dist, 0f))));
 		v2.setRGB(0, 0, 1);
 		v2.setST(1, 1);
 
 		Vertex v3 = new Vertex();
-		v3.setXYZ(rotate(new Vector3f(0.5f, 0.5f, 0f)));
+		v3.setXYZ(translate(rotate(new Vector3f(+dist, +dist, 0f))));
 		v3.setRGB(1, 1, 1);
 		v3.setST(1, 0);
 
@@ -162,7 +169,7 @@ public enum SkyboxSide {
 	int createAndLoadTexture(int textureUnit, int width, int height) {
 
 		IntBuffer buffer = BufferUtils.createIntBuffer(width * height);
-		buffer.put(create(width, height, 0.5f, 0.5f, 6, new ColorGradient(Color.WHITE,Color.BLUE)));
+		buffer.put(create(width, height, 0.5f, persistence, octaves, gradient));
 		buffer.rewind();
 
 		// Create a new texture object in memory and bind it
@@ -205,8 +212,8 @@ public enum SkyboxSide {
 
 	protected Vector3f getVector(int x, int y, int width, int height) {
 		// normalize
-		float xx = -(x / (width / 2f) - 1f);
-		float yy = +(y / (height / 2f) - 1f);
+		float xx = +(x / (width / (dist * 2f)) - dist);
+		float yy = -(y / (height / (dist * 2f)) - dist);
 		// need to normalize to stay on the sphere
 		return rotate(new Vector3f(xx, yy, -1).normalise(new Vector3f()));
 	}
