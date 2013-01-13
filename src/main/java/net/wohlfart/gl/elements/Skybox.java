@@ -6,14 +6,24 @@ import net.wohlfart.gl.shader.mesh.IMesh;
 public class Skybox implements Renderable {
 
 
-	IMesh side;
+	IMesh[] sides;
 
 	@Override
 	public void render(final Renderer renderer) {
-		if (side == null) {
-			side = SkyboxSide.MINUS_X.build(renderer, 100, 100);
+		if (sides == null) {
+			sides = new IMesh[] {
+					SkyboxSide.MINUS_X.build(renderer, 100, 100),
+					SkyboxSide.PLUS_X.build(renderer, 100, 100),
+					SkyboxSide.MINUS_Y.build(renderer, 100, 100),
+					SkyboxSide.PLUS_Y.build(renderer, 100, 100),
+					SkyboxSide.MINUS_Z.build(renderer, 100, 100),
+					SkyboxSide.PLUS_Z.build(renderer, 100, 100),
+			};
 		}
-		side.draw();
+
+		for (IMesh side : sides) {
+			side.draw();
+		}
 	}
 
 	@Override

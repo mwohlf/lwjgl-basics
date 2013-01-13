@@ -26,42 +26,49 @@ import org.lwjgl.util.vector.Vector3f;
 public enum SkyboxSide {
 	PLUS_Y {
 		{
+			translation = new Vector3f(0, +1, 0);
 			rotation = SimpleMath.createQuaternion(new Vector3f(0, 0, -1),
-					new Vector3f(0, +1, 0), new Quaternion());
+					translation, new Quaternion());
 		}
 	},
-	MINS_Y {
+	MINUS_Y {
 		{
+			translation = new Vector3f(0, -1, 0);
 			rotation = SimpleMath.createQuaternion(new Vector3f(0, 0, -1),
-					new Vector3f(0, -1, 0), new Quaternion());
+					translation, new Quaternion());
 		}
 	},
 	PLUS_X {
 		{
+			translation = new Vector3f(+1, 0, 0);
 			rotation = SimpleMath.createQuaternion(new Vector3f(0, 0, -1),
-					new Vector3f(+1, 0, 0), new Quaternion());
+					translation, new Quaternion());
 		}
 	},
 	MINUS_X {
 		{
+			translation = new Vector3f(-1, 0, 0);
 			rotation = SimpleMath.createQuaternion(new Vector3f(0, 0, -1),
-					new Vector3f(-1, 0, 0), new Quaternion());
+					translation, new Quaternion());
 		}
 	},
 	PLUS_Z {
 		{
+			translation = new Vector3f(0, 0, +1);
 			rotation = SimpleMath.createQuaternion(new Vector3f(0, 0, -1),
-					new Vector3f(0, 0, +1), new Quaternion());
+					translation, new Quaternion());
 		}
 	},
 	MINUS_Z {
 		{
+			translation = new Vector3f(0, 0, -1);
 			rotation = SimpleMath.createQuaternion(new Vector3f(0, 0, -1),
-					new Vector3f(0, 0, -1), new Quaternion());
+					translation, new Quaternion());
 		}
 	};
 
 	Quaternion rotation;
+	Vector3f translation;
 
 	// main entry point
 	public IMesh build(Renderer renderer, int width, int height) {
@@ -209,6 +216,13 @@ public enum SkyboxSide {
 		SimpleMath.mul(rotation, in, result);
 		return result;
 	}
+
+	protected Vector3f translate(Vector3f in) {
+		Vector3f result = new Vector3f();
+		SimpleMath.add(translation, in, result);
+		return result;
+	}
+
 
 	protected double createNoise(final float x, final float y, final float z, final float w, final float persistence, final int octaves) {
 		double result = 0;
