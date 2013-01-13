@@ -105,12 +105,15 @@ public class BufferFrame extends JFrame {
 		wSlider.setValue((int)(textureBuffer.getW()*maxW));
 		wSlider.addChangeListener(new ChangeListener() {
 			@Override
-			public void stateChanged(ChangeEvent e) {
+			public void stateChanged(ChangeEvent evt) {
+				EventQueue.invokeLater(new Runnable(){
+					@Override
+					public void run() {
 				textureBuffer.setW(wSlider.getValue()/maxW);
 				textureBuffer.init();
 				repaint();
+					}});
 			}});
-
 
 		final float maxPersistence = 100;
 		persistenceSlider.setMaximum((int)maxW);
@@ -118,12 +121,15 @@ public class BufferFrame extends JFrame {
 		persistenceSlider.setValue((int)(textureBuffer.getPersistence()*maxPersistence));
 		persistenceSlider.addChangeListener(new ChangeListener() {
 			@Override
-			public void stateChanged(ChangeEvent e) {
+			public void stateChanged(ChangeEvent evt) {
+				EventQueue.invokeLater(new Runnable(){
+					@Override
+					public void run() {
 				textureBuffer.setPersistence(persistenceSlider.getValue()/maxPersistence);
 				textureBuffer.init();
 				repaint();
+					}});
 			}});
-
 
 		return result;
 	}

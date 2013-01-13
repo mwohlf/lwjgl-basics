@@ -9,7 +9,7 @@ import org.lwjgl.util.vector.Vector3f;
 
 public class SimplexProcTexture extends ProceduralTexture {
 
-	private final ColorGradient gradient = new ColorGradient(Color.WHITE, Color.BLACK);
+	private final ColorGradient gradient = new ColorGradient(Color.WHITE, Color.BLACK, Color.BLACK);
 	private int octaves = 5;
 	private float persistence = 0.5f;
 	private float w = 5;

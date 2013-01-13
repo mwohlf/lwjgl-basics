@@ -57,7 +57,8 @@ public abstract class ProceduralTexture implements TextureBuffer {
 		value = value | ( 0xff & color.getGreen());
 		value = value << 8;
 		value = value | ( 0xff & color.getBlue());
-		data[i] =  color.getRGB();
+		//data[i] =  color.getRGB();
+		data[i] =  value;
 	}
 
 	/**

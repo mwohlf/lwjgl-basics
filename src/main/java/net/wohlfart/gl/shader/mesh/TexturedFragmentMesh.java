@@ -23,7 +23,7 @@ public class TexturedFragmentMesh implements IMesh {
 	private final int textureId;
 
     // package private, created by the builder
-	TexturedFragmentMesh(int vaoHandle,
+	public TexturedFragmentMesh(int vaoHandle,
                         int vboVerticesHandle,
                         // index
                         int vboIndicesHandle,

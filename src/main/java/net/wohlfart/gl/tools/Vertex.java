@@ -1,5 +1,7 @@
 package net.wohlfart.gl.tools;
 
+import org.lwjgl.util.vector.Vector3f;
+
 
 // see: http://www.lwjgl.org/wiki/index.php?title=The_Quad_interleaved
 public class Vertex {
@@ -35,6 +37,10 @@ public class Vertex {
 	// Setters
 	public void setXYZ(float x, float y, float z) {
 		this.setXYZW(x, y, z, 1f);
+	}
+
+	public void setXYZ(Vector3f vec) {
+		this.setXYZW(vec.x, vec.y, vec.z, 1f);
 	}
 
 	public void setRGB(float r, float g, float b) {
