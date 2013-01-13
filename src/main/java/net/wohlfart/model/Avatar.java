@@ -16,7 +16,7 @@ import org.lwjgl.util.vector.Vector3f;
 // configurable key/mouse actions instead of hardcoded ones
 public class Avatar {
 	// used for key triggered rotations
-	private final float ROT_KEY_SPEED = 0.01f;
+	private final float ROT_KEY_SPEED = 0.1f;
 	// used for mouse movement triggered rotations
 	private final float ROT_MOUSE_SPEED = 0.005f;
 	// used for mouse wheel triggered moves
@@ -87,9 +87,9 @@ public class Avatar {
 				int wheel = evt.getWheel();
 				Vector3f pos = position.getPos();
 				Vector3f move = rotation.getDir(new Vector3f());
-				move.x *= (float)wheel * MOVE_WHEEL_SPEED;
-				move.y *= (float)wheel * MOVE_WHEEL_SPEED;
-				move.z *= (float)wheel * MOVE_WHEEL_SPEED;
+				move.x *= wheel * MOVE_WHEEL_SPEED;
+				move.y *= wheel * MOVE_WHEEL_SPEED;
+				move.z *= wheel * MOVE_WHEEL_SPEED;
 				Vector3f.sub(pos, move, pos);
 				position.setPos(pos);
 			}

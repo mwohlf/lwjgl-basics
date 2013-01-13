@@ -201,8 +201,7 @@ public enum SkyboxSide {
 		for (int x = 0; x < width; x++) {
 			for (int y = 0; y < height; y++) {
 				Vector3f vector = getVector(x, y, width, height);
-				double noise = createNoise(vector.x, vector.y, vector.z, w,
-						persistence, octaves);
+				double noise = createNoise(vector.x, vector.y, vector.z, w, persistence, octaves);
 				Color color = gradient.getColor(noise);
 				data[x + y * width] = color.getRGB();
 			}
