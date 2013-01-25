@@ -2,6 +2,7 @@ package net.wohlfart.tools;
 
 import java.util.Random;
 
+import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Quaternion;
 import org.lwjgl.util.vector.Vector3f;
 import org.lwjgl.util.vector.Vector4f;
@@ -20,6 +21,8 @@ public final class SimpleMath {
 	public static final Vector3f X_AXIS = new Vector3f(1,0,0);
 	public static final Vector3f Y_AXIS = new Vector3f(0,1,0);
 	public static final Vector3f Z_AXIS = new Vector3f(0,0,1);
+
+	public static final Matrix4f UNION_MATRIX = new Matrix4f();
 
 
 	// --------- trigeometric stuff
@@ -67,7 +70,7 @@ public final class SimpleMath {
 
 	/**
 	 * rotate the vector by a rotation defined by the quaternion
-	 * 
+	 *
 	 * @param q
 	 * @param vec
 	 */
@@ -109,7 +112,7 @@ public final class SimpleMath {
 
 	/**
 	 * add one vector to another vecto
-	 * 
+	 *
 	 * @param translation
 	 * @param vec
 	 * @param result
@@ -123,10 +126,10 @@ public final class SimpleMath {
 	/**
 	 * create a rotation quaternion defined by a start and an end vector, the rotation will be the
 	 * rotation needed to transform the first vector into the second
-	 * 
+	 *
 	 * taken from:
 	 * https://bitbucket.org/sinbad/ogre/src/9db75e3ba05c/OgreMain/include/OgreVector3.h#cl-651
-	 * 
+	 *
 	 * @param start
 	 * @param end
 	 * @param result
