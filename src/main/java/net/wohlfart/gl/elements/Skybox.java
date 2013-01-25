@@ -7,7 +7,7 @@ public class Skybox implements Renderable {
 
 
 	IMesh[] sides;
-	int size = 400;
+	int size = 1024;
 
 
 	@Override

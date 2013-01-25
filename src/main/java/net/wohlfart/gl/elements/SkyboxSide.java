@@ -16,6 +16,7 @@ import net.wohlfart.tools.SimpleMath;
 
 import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL11;
+import org.lwjgl.opengl.GL12;
 import org.lwjgl.opengl.GL13;
 import org.lwjgl.opengl.GL15;
 import org.lwjgl.opengl.GL20;
@@ -71,7 +72,6 @@ public enum SkyboxSide {
 	private static final int octaves = 5;
 	private static final float persistence = 0.5f;
 	private static final float w = 0.5f;
-	private static final ColorGradient gradient = new ColorGradient(Color.BLACK,Color.BLACK,Color.BLUE);
 
 
 	Quaternion rotation;
@@ -86,17 +86,17 @@ public enum SkyboxSide {
 		// We'll define our quad using 4 vertices of the custom 'Vertex' class
 		Vertex v0 = new Vertex();
 		v0.setXYZ(translate(rotate(new Vector3f(-dist, +dist, 0f))));
-		v0.setRGB(1, 0, 0);
+		v0.setRGB(1, 1, 1);
 		v0.setST(0, 0);
 
 		Vertex v1 = new Vertex();
 		v1.setXYZ(translate(rotate(new Vector3f(-dist, -dist, 0f))));
-		v1.setRGB(0, 1, 0);
+		v1.setRGB(1, 1, 1);
 		v1.setST(0, 1);
 
 		Vertex v2 = new Vertex();
 		v2.setXYZ(translate(rotate(new Vector3f(+dist, -dist, 0f))));
-		v2.setRGB(0, 0, 1);
+		v2.setRGB(1, 1, 1);
 		v2.setST(1, 1);
 
 		Vertex v3 = new Vertex();
@@ -105,10 +105,7 @@ public enum SkyboxSide {
 		v3.setST(1, 0);
 
 		Vertex[] vertices = new Vertex[] { v0, v1, v2, v3 };
-		// Put each 'Vertex' in one FloatBuffer the order depends on the shaders
-		// positions!
-		FloatBuffer verticesBuffer = BufferUtils
-				.createFloatBuffer(vertices.length * Vertex.elementCount);
+		FloatBuffer verticesBuffer = BufferUtils.createFloatBuffer(vertices.length * Vertex.elementCount);
 		for (int i = 0; i < vertices.length; i++) {
 			verticesBuffer.put(vertices[i].getXYZW());
 			verticesBuffer.put(vertices[i].getRGBA());
@@ -129,24 +126,19 @@ public enum SkyboxSide {
 
 		int positionAttrib = renderer.getVertexAttrib(AttributeHandle.POSITION);
 		int colorAttrib = renderer.getVertexAttrib(AttributeHandle.COLOR);
-		int textureAttrib = renderer
-				.getVertexAttrib(AttributeHandle.TEXTURE_COORD);
+		int textureAttrib = renderer.getVertexAttrib(AttributeHandle.TEXTURE_COORD);
 
 		// Create a new Vertex Buffer Object in memory and select it (bind)
 		int vboVerticesHandle = GL15.glGenBuffers();
 		GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, vboVerticesHandle);
-		GL15.glBufferData(GL15.GL_ARRAY_BUFFER, verticesBuffer,
-				GL15.GL_STATIC_DRAW);
+		GL15.glBufferData(GL15.GL_ARRAY_BUFFER, verticesBuffer, GL15.GL_STATIC_DRAW);
 
 		// Put the positions in attribute list 0
-		GL20.glVertexAttribPointer(positionAttrib, Vertex.positionElementCount,
-				GL11.GL_FLOAT, false, Vertex.stride, Vertex.positionByteOffset);
+		GL20.glVertexAttribPointer(positionAttrib, Vertex.positionElementCount, GL11.GL_FLOAT, false, Vertex.stride, Vertex.positionByteOffset);
 		// Put the colors in attribute list 1
-		GL20.glVertexAttribPointer(colorAttrib, Vertex.colorElementCount,
-				GL11.GL_FLOAT, false, Vertex.stride, Vertex.colorByteOffset);
+		GL20.glVertexAttribPointer(colorAttrib, Vertex.colorElementCount, GL11.GL_FLOAT, false, Vertex.stride, Vertex.colorByteOffset);
 		// Put the texture in attribute list 2
-		GL20.glVertexAttribPointer(textureAttrib, Vertex.textureElementCount,
-				GL11.GL_FLOAT, false, Vertex.stride, Vertex.textureByteOffset);
+		GL20.glVertexAttribPointer(textureAttrib, Vertex.textureElementCount, GL11.GL_FLOAT, false, Vertex.stride, Vertex.textureByteOffset);
 		// unbind
 		GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, 0);
 
@@ -156,8 +148,7 @@ public enum SkyboxSide {
 		// Create a new VBO for the indices and select it (bind) - INDICES
 		int vboIndicesHandle = GL15.glGenBuffers();
 		GL15.glBindBuffer(GL15.GL_ELEMENT_ARRAY_BUFFER, vboIndicesHandle);
-		GL15.glBufferData(GL15.GL_ELEMENT_ARRAY_BUFFER, indicesBuffer,
-				GL15.GL_STATIC_DRAW);
+		GL15.glBufferData(GL15.GL_ELEMENT_ARRAY_BUFFER, indicesBuffer, GL15.GL_STATIC_DRAW);
 		GL15.glBindBuffer(GL15.GL_ELEMENT_ARRAY_BUFFER, 0);
 
 		return new TexturedFragmentMesh(vaoHandle, vboVerticesHandle,
@@ -166,44 +157,57 @@ public enum SkyboxSide {
 				textureId);
 	}
 
-	int createAndLoadTexture(int textureUnit, int width, int height) {
+	protected int createAndLoadTexture(int textureUnit, int width, int height) {
+		int[] canvas = new int[width * height];
+		createClouds(canvas, width, height, w, persistence, octaves);
+		createStars(canvas, width, height);
 
 		IntBuffer buffer = BufferUtils.createIntBuffer(width * height);
-		buffer.put(create(width, height, 0.5f, persistence, octaves, gradient));
+		buffer.put(canvas);
 		buffer.rewind();
 
-		// Create a new texture object in memory and bind it
 		int texId = GL11.glGenTextures();
 		GL13.glActiveTexture(textureUnit);
 		GL11.glBindTexture(GL11.GL_TEXTURE_2D, texId);
-		// All RGB bytes are aligned to each other and each component is 1 byte
 		GL11.glPixelStorei(GL11.GL_UNPACK_ALIGNMENT, 1);
-		// Upload the texture data and generate mip maps (for scaling)
-		GL11.glTexImage2D(GL11.GL_TEXTURE_2D, 0, GL11.GL_RGB, width, height,
-				0, GL11.GL_RGBA, GL11.GL_UNSIGNED_BYTE, buffer);
+		GL11.glTexImage2D(GL11.GL_TEXTURE_2D, 0, GL11.GL_RGBA8, width, height, 0, GL11.GL_RGBA, GL12.GL_UNSIGNED_INT_8_8_8_8, buffer);
 		GL30.glGenerateMipmap(GL11.GL_TEXTURE_2D);
-		// Setup the ST coordinate system
-		GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_S,
-				GL11.GL_REPEAT);
-		GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_T,
-				GL11.GL_REPEAT);
-		// Setup what to do when the texture has to be scaled
-		GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER,
-				GL11.GL_NEAREST);
-		GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER,
-				GL11.GL_LINEAR_MIPMAP_LINEAR);
-
+		GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_S, GL12.GL_CLAMP_TO_EDGE);
+		GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_T, GL12.GL_CLAMP_TO_EDGE);
+		GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_LINEAR);
+		GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER, GL11.GL_LINEAR_MIPMAP_LINEAR);
 		return texId;
 	}
 
-	protected int[] create(int width, int height, float w, float persistence, int octaves, ColorGradient gradient) {
-		int[] data = new int[width * height];
+	protected int[] createClouds(int[] data, int width, int height, float w, float persistence, int octaves) {
+		final ColorGradient gradient = new ColorGradient(Color.BLACK, Color.BLACK, Color.GRAY);
 		for (int x = 0; x < width; x++) {
 			for (int y = 0; y < height; y++) {
 				Vector3f vector = getVector(x, y, width, height);
 				double noise = createNoise(vector.x, vector.y, vector.z, w, persistence, octaves);
 				Color color = gradient.getColor(noise);
-				data[x + y * width] = color.getRGB();
+				data[x + y * width] = color.getRGB() << 8;
+			}
+		}
+		return data;
+	}
+
+	protected int[] createStars(int[] data, int width, int height) {
+		final int o = 5;         // octaves   ~5
+		final float p = 0.7f;    // persistence
+		final float f = 3f;      // frequency   ~3
+		final float w = 1;       // 4d
+
+		for (int x = 0; x < width; x++) {
+			for (int y = 0; y < height; y++) {
+				Vector3f vector = getVector(x, y, width, height);
+				double noise = createNoise(vector.x * f, vector.y * f, vector.z * f, w * f, p, o);
+
+					if ((noise > -0.0001) && (noise < +0.0001)) {
+						Color color = Color.WHITE;
+						data[x + y * width] = color.getRGB() << 8;
+					}
+
 			}
 		}
 		return data;
@@ -230,7 +234,8 @@ public enum SkyboxSide {
 	}
 
 
-	protected double createNoise(final float x, final float y, final float z, final float w, final float persistence, final int octaves) {
+	protected double createNoise(final float x, final float y, final float z, final float w,
+			final float persistence, final int octaves) {
 		double result = 0;
 		float max = 0;
 		for (int i = 0; i < octaves; i++) {
@@ -242,7 +247,8 @@ public enum SkyboxSide {
 		return result / max;
 	}
 
-	protected double createNoise(final float x, final float y, final float z, final float w, final float amplitude, final float frequency) {
+	protected double createNoise(final float x, final float y, final float z, final float w,
+			final float amplitude, final float frequency) {
 		// the noise returns [-1 .. +1]
 		double noise = SimplexNoise.noise(x * frequency, y * frequency, z * frequency, w * frequency);
 		return amplitude * noise;
