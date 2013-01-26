@@ -11,14 +11,15 @@ import org.lwjgl.util.vector.Matrix4f;
 public enum GraphicContextManager {
 	INSTANCE;
 
-	private GraphicContext currentGraphicContext;
+	private IGraphicContext currentGraphicContext;
 
 	// the projection matrix defines the lens of the camera, e.g. view angle
 	private Matrix4f projectionMatrix;
 
-	public void setCurrentGraphicContext(GraphicContext graphicContext) {
+	public void setCurrentGraphicContext(IGraphicContext graphicContext) {
 		this.currentGraphicContext = graphicContext;
 	}
+
 
 	public void setProjectionMatrix(Matrix4f projectionMatrix) {
 		this.projectionMatrix = projectionMatrix;
@@ -29,12 +30,10 @@ public enum GraphicContextManager {
 	}
 
 
-	// package private only called by ShaderAttributeHandle
 	int getLocation(ShaderAttributeHandle shaderAttributeHandle) {
 		return currentGraphicContext.getLocation(shaderAttributeHandle);
 	}
 
-	// package private only called by ShaderUniformHandle
 	int getLocation(ShaderUniformHandle shaderUniformHandle) {
 		return currentGraphicContext.getLocation(shaderUniformHandle);
 	}

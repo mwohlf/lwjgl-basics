@@ -15,8 +15,8 @@ import org.slf4j.LoggerFactory;
  *
  * see: http://www.opengl.org/wiki/OpenGL_Context
  */
-public class GraphicContext {
-	protected static final Logger LOGGER = LoggerFactory.getLogger(GraphicContext.class);
+public class DefaultGraphicContext implements IGraphicContext {
+	protected static final Logger LOGGER = LoggerFactory.getLogger(DefaultGraphicContext.class);
 
 	private final IShaderProgram shaderProgram;
 
@@ -24,8 +24,8 @@ public class GraphicContext {
 	private final int[] matrixMap = new int[ShaderUniformHandle.values().length];
 
 
-	public GraphicContext(IShaderProgram shaderProgram) {
-		this.shaderProgram = shaderProgram;
+	public DefaultGraphicContext() {
+		this.shaderProgram = new DefaultShaderProgram();
 		init();
 	}
 
@@ -65,10 +65,12 @@ public class GraphicContext {
 
 	}
 
+	@Override
 	public int getLocation(ShaderAttributeHandle shaderAttributeHandle) {
 		return attributeMap[shaderAttributeHandle.ordinal()];
 	}
 
+	@Override
 	public int getLocation(ShaderUniformHandle shaderUniformHandle) {
 		return matrixMap[shaderUniformHandle.ordinal()];
 	}

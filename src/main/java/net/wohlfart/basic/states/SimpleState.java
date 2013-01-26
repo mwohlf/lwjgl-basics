@@ -17,8 +17,8 @@ import net.wohlfart.gl.elements.debug.TetrahedronMesh;
 import net.wohlfart.gl.input.InputSource;
 import net.wohlfart.gl.input.KeyPressedEvent;
 import net.wohlfart.gl.renderer.Renderable;
+import net.wohlfart.gl.shader.DefaultGraphicContext;
 import net.wohlfart.gl.shader.DefaultShaderProgram;
-import net.wohlfart.gl.shader.GraphicContext;
 import net.wohlfart.gl.shader.GraphicContextManager;
 import net.wohlfart.gl.shader.ShaderUniformHandle;
 import net.wohlfart.model.Avatar;
@@ -35,7 +35,7 @@ import org.lwjgl.util.vector.Vector3f;
 public class SimpleState implements GameState {
 
 	private DefaultShaderProgram shaderProgram;
-	private GraphicContext graphicContext;
+	private DefaultGraphicContext graphicContext;
 
 	private boolean quit = false;
 
@@ -56,8 +56,7 @@ public class SimpleState implements GameState {
 
 		avatar.setInputSource(InputSource.INSTANCE);
 
-		shaderProgram = new DefaultShaderProgram();
-		graphicContext = new GraphicContext(shaderProgram);
+		graphicContext = new DefaultGraphicContext();
 		GraphicContextManager.INSTANCE.setCurrentGraphicContext(graphicContext);
 
 		ShaderUniformHandle.CAM_TO_CLIP.set(GraphicContextManager.INSTANCE.getProjectionMatrix());
