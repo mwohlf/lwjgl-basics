@@ -5,11 +5,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 
-public class DefaultShaderProgram extends AbstractShaderProgram {
-	protected static final Logger LOGGER = LoggerFactory.getLogger(DefaultShaderProgram.class);
+public class WireframeShaderProgram extends AbstractShaderProgram {
+	protected static final Logger LOGGER = LoggerFactory.getLogger(WireframeShaderProgram.class);
 
-	private static final String VERTEX_SHADER_FILE = "/shaders/default/vertex.glsl";
-	private static final String FRAGMENT_SHADER_FILE = "/shaders/default/fragment.glsl";
+	private static final String VERTEX_SHADER_FILE = "/shaders/wireframe/vertex.glsl";
+	private static final String FRAGMENT_SHADER_FILE = "/shaders/wireframe/fragment.glsl";
 
 	private int vertexShaderId = -1;
 	private int fragmentShaderId = -1;

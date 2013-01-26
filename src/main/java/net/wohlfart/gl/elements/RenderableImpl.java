@@ -1,5 +1,6 @@
 package net.wohlfart.gl.elements;
 
+import net.wohlfart.gl.renderer.Renderable;
 import net.wohlfart.gl.renderer.Renderer;
 import net.wohlfart.gl.shader.mesh.IMesh;
 

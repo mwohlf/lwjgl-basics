@@ -3,6 +3,7 @@ package net.wohlfart.gl.shader;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Arrays;
 import java.util.Scanner;
 
 import org.lwjgl.opengl.ARBShaderObjects;
@@ -13,9 +14,8 @@ import org.lwjgl.util.glu.GLU;
 
 /**
  * the class for dealing with the basic shader stuff and keeping the shader program id
- * 
  */
-public class ShaderProgram implements IShaderProgram {
+public class AbstractShaderProgram implements IShaderProgram {
 
 	private int programId = -1;
 
@@ -68,7 +68,10 @@ public class ShaderProgram implements IShaderProgram {
 		GL20.glValidateProgram(programId);
 		int error = GL11.glGetError();
 		if (error != GL11.GL_NO_ERROR) {
-			throw new ShaderException("error validating shader: " + GLU.gluErrorString(error));
+			throw new ShaderException(""
+						+ "error validating shader, error string is '" + GLU.gluErrorString(error) + "' \n"
+						+ "programmId is '" + programId + "' \n"
+						+ "handles are: " + Arrays.toString(handles));
 		}
 	}
 
@@ -87,11 +90,10 @@ public class ShaderProgram implements IShaderProgram {
 				ARBShaderObjects.glGetObjectParameteriARB(obj, ARBShaderObjects.GL_OBJECT_INFO_LOG_LENGTH_ARB));
 	}
 
-	// package private
-	int getProgramId() {
+	@Override
+	public int getProgramId() {
 		return programId;
 	}
-
 
 	@Override
 	public void setup() {

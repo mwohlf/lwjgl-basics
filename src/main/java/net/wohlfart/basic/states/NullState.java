@@ -1,16 +1,13 @@
 package net.wohlfart.basic.states;
 
-import net.wohlfart.basic.Game;
 
 public class NullState implements GameState {
 
 	NullState() {
-
 	}
 
-
 	@Override
-	public void setup(final Game game) {
+	public void setup() {
 	}
 
 	@Override
@@ -27,7 +24,7 @@ public class NullState implements GameState {
 	}
 
 	@Override
-	public void dispose(final Game gameContext) {
+	public void dispose() {
 	}
 
 }

@@ -6,7 +6,7 @@ import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
 
 import net.wohlfart.gl.renderer.Renderer;
-import net.wohlfart.gl.shader.AttributeHandle;
+import net.wohlfart.gl.shader.ShaderAttributeHandle;
 import net.wohlfart.gl.shader.mesh.IMesh;
 import net.wohlfart.gl.shader.mesh.TexturedFragmentMesh;
 import net.wohlfart.gl.tools.ColorGradient;
@@ -124,9 +124,9 @@ public enum SkyboxSide {
 		int vaoHandle = GL30.glGenVertexArrays();
 		GL30.glBindVertexArray(vaoHandle);
 
-		int positionAttrib = renderer.getVertexAttrib(AttributeHandle.POSITION);
-		int colorAttrib = renderer.getVertexAttrib(AttributeHandle.COLOR);
-		int textureAttrib = renderer.getVertexAttrib(AttributeHandle.TEXTURE_COORD);
+		int positionAttrib = renderer.getVertexAttrib(ShaderAttributeHandle.POSITION);
+		int colorAttrib = renderer.getVertexAttrib(ShaderAttributeHandle.COLOR);
+		int textureAttrib = renderer.getVertexAttrib(ShaderAttributeHandle.TEXTURE_COORD);
 
 		// Create a new Vertex Buffer Object in memory and select it (bind)
 		int vboVerticesHandle = GL15.glGenBuffers();

@@ -1,6 +1,5 @@
 package net.wohlfart.basic.states;
 
-import net.wohlfart.basic.Game;
 import net.wohlfart.gl.Camera;
 import net.wohlfart.gl.input.InputSource;
 import net.wohlfart.gl.input.KeyTypedEvent;
@@ -32,7 +31,7 @@ public class CelestialState implements GameState {
 	// ui, sounds, cam
 
 	@Override
-	public void setup(final Game game) {
+	public void setup() {
 		camera = new Camera();
 		scene = new CelestialScene();
 		avatar = new Avatar(camera, scene);
@@ -74,7 +73,7 @@ public class CelestialState implements GameState {
 
 
 	@Override
-	public void dispose(final Game game) {
+	public void dispose() {
 		scene.teardown();
 	}
 

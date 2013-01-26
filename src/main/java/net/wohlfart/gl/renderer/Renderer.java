@@ -1,8 +1,7 @@
 package net.wohlfart.gl.renderer;
 
-import net.wohlfart.gl.shader.AttributeHandle;
-import net.wohlfart.gl.shader.IShaderProgram;
-import net.wohlfart.gl.shader.UniformHandle;
+import net.wohlfart.gl.shader.ShaderAttributeHandle;
+import net.wohlfart.gl.shader.ShaderUniformHandle;
 
 import org.lwjgl.util.ReadableColor;
 import org.lwjgl.util.vector.Matrix4f;
@@ -16,14 +15,14 @@ public interface Renderer {
 
 	public abstract void setup();
 
-	public abstract void dispose();
+	//public abstract void dispose();
 
-	public abstract IShaderProgram getShaderProgram();
+	//public abstract IShaderProgram getShaderProgram();
 
-	public abstract int getVertexAttrib(AttributeHandle handle);
+	public abstract int getVertexAttrib(ShaderAttributeHandle handle);
 
-	public abstract void set(UniformHandle handle, Matrix4f matrix);
+	public abstract void set(ShaderUniformHandle handle, Matrix4f matrix);
 
-	public abstract void set(UniformHandle handle, ReadableColor readableColor);
+	public abstract void set(ShaderUniformHandle handle, ReadableColor readableColor);
 
 }

@@ -7,7 +7,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import net.wohlfart.gl.renderer.Renderer;
-import net.wohlfart.gl.shader.AttributeHandle;
+import net.wohlfart.gl.shader.ShaderAttributeHandle;
 import net.wohlfart.tools.SimpleMath;
 
 import org.lwjgl.BufferUtils;
@@ -49,15 +49,15 @@ public class WireframeMeshBuilder {
 		int vaoHandle = GL30.glGenVertexArrays();
 
 		GL30.glBindVertexArray(vaoHandle);
-		int vboVerticesHandle = createVboHandle(getVertices(), renderer, AttributeHandle.POSITION);
+		int vboVerticesHandle = createVboHandle(getVertices(), renderer, ShaderAttributeHandle.POSITION);
 		int vboIndicesHandle = createElementArrayBuffer(renderer);
 
 		GL30.glBindVertexArray(0);
 
 		int indicesCount = getIndices().length;
-		int colorAttrib = renderer.getVertexAttrib(AttributeHandle.COLOR);
-		int positionAttrib = renderer.getVertexAttrib(AttributeHandle.POSITION);
-		int textureAttrib = renderer.getVertexAttrib(AttributeHandle.TEXTURE_COORD);
+		int colorAttrib = renderer.getVertexAttrib(ShaderAttributeHandle.COLOR);
+		int positionAttrib = renderer.getVertexAttrib(ShaderAttributeHandle.POSITION);
+		int textureAttrib = renderer.getVertexAttrib(ShaderAttributeHandle.TEXTURE_COORD);
 		int offset = 0;
 
 		return new WireframeMesh(
@@ -95,7 +95,7 @@ public class WireframeMeshBuilder {
 		}
 	}
 
-	private int createVboHandle(float[] floatBuff, final Renderer renderer, final AttributeHandle attrHandle) {
+	private int createVboHandle(float[] floatBuff, final Renderer renderer, final ShaderAttributeHandle attrHandle) {
 		int vboVerticesHandle = GL15.glGenBuffers();
 		GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, vboVerticesHandle);
 		FloatBuffer verticesBuffer = BufferUtils.createFloatBuffer(floatBuff.length);
@@ -110,11 +110,11 @@ public class WireframeMeshBuilder {
 	}
 
 	private float[] getVertices() {
-		int posSize = AttributeHandle.POSITION.getSize();
+		int posSize = ShaderAttributeHandle.POSITION.getSize();
 		if (posSize < 4) {
 			throw new IllegalArgumentException("vertex position size should be 4");
 		}
-		float[] result = new float[vertices.size() * AttributeHandle.POSITION.getSize()];
+		float[] result = new float[vertices.size() * ShaderAttributeHandle.POSITION.getSize()];
 		int i = 0;
 		for (Vector3f v : vertices) {
 			result[i++] = v.x;

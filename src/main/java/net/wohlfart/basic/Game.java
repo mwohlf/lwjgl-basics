@@ -6,6 +6,7 @@ import net.wohlfart.basic.time.DefaultLwjglClockImpl;
 import net.wohlfart.basic.time.Timer;
 import net.wohlfart.basic.time.TimerImpl;
 import net.wohlfart.gl.input.InputSource;
+import net.wohlfart.gl.shader.GraphicContextManager;
 import net.wohlfart.tools.SimpleMath;
 
 import org.lwjgl.LWJGLException;
@@ -23,19 +24,21 @@ import org.slf4j.LoggerFactory;
 public class Game {
 	protected static final Logger LOGGER = LoggerFactory.getLogger(Game.class);
 
-	protected InputSource inputProcessor = InputSource.INSTANCE;
-	protected GameState currentState = GameStateEnum.NULL.getValue();
+	protected Settings settings = new Settings(); // just a default in case nothing gets injected
 	protected Timer timer = new TimerImpl(new DefaultLwjglClockImpl());
-	protected Settings settings = new Settings(); // default in case nothing gets injected
+	protected GameState currentState = GameStateEnum.NULL.getValue();
+	protected GraphicContextManager contextManager = GraphicContextManager.INSTANCE;
 
-	private Matrix4f projectionMatrix;
+	// need to be refactored:
+	protected InputSource inputProcessor = InputSource.INSTANCE;
+
 
 	/**
 	 * set the initial state and fire up the main loop
 	 */
 	public void start() {
 		try {
-			projectionMatrix = createProjectionMatrix();
+			contextManager.setProjectionMatrix(createProjectionMatrix());
 			bootupOpenGL();
 			setCurrentState(GameStateEnum.SIMPLE);
 			runApplicationLoop();
@@ -127,19 +130,15 @@ public class Game {
 		return matrix;
 	}
 
-	public Matrix4f getProjectionMatrix() {
-		return projectionMatrix;
-	}
-
 
 	private void shutdownOpenGL() {
 		Display.destroy();
 	}
 
 	public void setCurrentState(final GameStateEnum newState) {
-		currentState.dispose(this);
+		currentState.dispose();
 		currentState = newState.getValue();
-		currentState.setup(this);
+		currentState.setup();
 	}
 
 	public void setGameSettings(final Settings settings) {

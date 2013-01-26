@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import net.wohlfart.gl.renderer.Renderer;
-import net.wohlfart.gl.shader.AttributeHandle;
+import net.wohlfart.gl.shader.ShaderAttributeHandle;
 import net.wohlfart.tools.SimpleMath;
 
 import org.lwjgl.BufferUtils;
@@ -53,7 +53,7 @@ public class VertexArrayObject implements IMesh {
 		colorBuffer.flip();
 		GL15.glBufferData(GL15.GL_ARRAY_BUFFER, colorBuffer, GL15.GL_STATIC_DRAW);
 
-		int colorAttrib = builder.renderer.getVertexAttrib(AttributeHandle.COLOR);
+		int colorAttrib = builder.renderer.getVertexAttrib(ShaderAttributeHandle.COLOR);
 		GL20.glEnableVertexAttribArray(colorAttrib);
 		GL20.glVertexAttribPointer(colorAttrib, Builder.COLOR_SIZE, GL11.GL_FLOAT, false, 0, 0);
 
@@ -67,7 +67,7 @@ public class VertexArrayObject implements IMesh {
 		verticesBuffer.flip();
 		GL15.glBufferData(GL15.GL_ARRAY_BUFFER, verticesBuffer, GL15.GL_STATIC_DRAW);
 
-		int positionAttrib = builder.renderer.getVertexAttrib(AttributeHandle.POSITION);
+		int positionAttrib = builder.renderer.getVertexAttrib(ShaderAttributeHandle.POSITION);
 		GL20.glEnableVertexAttribArray(positionAttrib);
 		GL20.glVertexAttribPointer(positionAttrib, Builder.VERTEX_SIZE, GL11.GL_FLOAT, false, 0, 0);
 
