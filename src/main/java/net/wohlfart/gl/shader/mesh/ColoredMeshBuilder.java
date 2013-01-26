@@ -3,7 +3,6 @@ package net.wohlfart.gl.shader.mesh;
 import java.nio.ByteBuffer;
 import java.nio.FloatBuffer;
 
-import net.wohlfart.gl.renderer.Renderer;
 import net.wohlfart.gl.shader.ShaderAttributeHandle;
 import net.wohlfart.gl.tools.Vertex;
 
@@ -19,8 +18,6 @@ import org.slf4j.LoggerFactory;
 
 public class ColoredMeshBuilder {
 	protected static final Logger LOGGER = LoggerFactory.getLogger(WireframeMeshBuilder.class);
-
-	private Renderer renderer;
 
 	private Vector3f translation;
 	private Quaternion rotation;
@@ -57,8 +54,8 @@ public class ColoredMeshBuilder {
 		int vaoHandle = GL30.glGenVertexArrays();
 		GL30.glBindVertexArray(vaoHandle);
 
-		int positionAttrib = renderer.getVertexAttrib(ShaderAttributeHandle.POSITION);
-		int colorAttrib = renderer.getVertexAttrib(ShaderAttributeHandle.COLOR);
+		int positionAttrib = ShaderAttributeHandle.POSITION.getLocation();
+		int colorAttrib = ShaderAttributeHandle.COLOR.getLocation();
 
 		// Create a new Vertex Buffer Object in memory and bind it
 		int vboVerticesHandle = GL15.glGenBuffers();
@@ -83,12 +80,6 @@ public class ColoredMeshBuilder {
 
 		return new ColoredFragmentMesh(vaoHandle, vboVerticesHandle, vboIndicesHandle,
 				GL11.GL_TRIANGLES, GL11.GL_UNSIGNED_BYTE, indicesCount, 0, colorAttrib, positionAttrib);
-	}
-
-
-
-	public void setRenderer(Renderer renderer) {
-		this.renderer = renderer;
 	}
 
 }

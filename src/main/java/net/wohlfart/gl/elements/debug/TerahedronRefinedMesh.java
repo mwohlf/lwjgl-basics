@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import net.wohlfart.gl.renderer.Renderer;
 import net.wohlfart.gl.shader.mesh.IMesh;
 import net.wohlfart.gl.shader.mesh.WireframeMeshBuilder;
 import net.wohlfart.tools.SimpleMath;
@@ -135,7 +134,7 @@ public class TerahedronRefinedMesh extends RenderableGrid {
 
 
 	@Override
-	protected IMesh setupMesh(final Renderer renderer) {
+	protected IMesh setupMesh() {
 		splitPlanes(lod);
 		WireframeMeshBuilder builder = new WireframeMeshBuilder();
 		builder.setVertices(vertices);
@@ -145,7 +144,6 @@ public class TerahedronRefinedMesh extends RenderableGrid {
 		builder.setColor(color);
 		builder.setRotation(rotation);
 		builder.setTranslation(translation);
-		builder.setRenderer(renderer);
 		builder.setLineWidth(lineWidth);
 		return builder.build();
 	}

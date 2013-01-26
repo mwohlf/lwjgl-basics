@@ -6,7 +6,6 @@ import java.io.InputStream;
 import java.nio.ByteBuffer;
 import java.nio.FloatBuffer;
 
-import net.wohlfart.gl.renderer.Renderer;
 import net.wohlfart.gl.shader.ShaderAttributeHandle;
 import net.wohlfart.gl.tools.Vertex;
 import net.wohlfart.tools.PNGDecoder;
@@ -26,7 +25,6 @@ import org.slf4j.LoggerFactory;
 public class TexturedMeshBuilder {
 	protected static final Logger LOGGER = LoggerFactory.getLogger(TexturedMeshBuilder.class);
 
-	private Renderer renderer;
 	private String textureFilename;
 
 	private Quaternion rotation;
@@ -85,9 +83,9 @@ public class TexturedMeshBuilder {
 		int vaoHandle = GL30.glGenVertexArrays();
 		GL30.glBindVertexArray(vaoHandle);
 
-		int positionAttrib = renderer.getVertexAttrib(ShaderAttributeHandle.POSITION);
-		int colorAttrib = renderer.getVertexAttrib(ShaderAttributeHandle.COLOR);
-		int textureAttrib = renderer.getVertexAttrib(ShaderAttributeHandle.TEXTURE_COORD);
+		int positionAttrib = ShaderAttributeHandle.POSITION.getLocation();
+		int colorAttrib = ShaderAttributeHandle.COLOR.getLocation();
+		int textureAttrib = ShaderAttributeHandle.TEXTURE_COORD.getLocation();
 
 		// Create a new Vertex Buffer Object in memory and select it (bind)
 		int vboVerticesHandle = GL15.glGenBuffers();
@@ -172,10 +170,6 @@ public class TexturedMeshBuilder {
 */	}
 
 
-
-	public void setRenderer(Renderer renderer) {
-		this.renderer = renderer;
-	}
 
 
 	public void setTextureFilename(final String textureFilename) {

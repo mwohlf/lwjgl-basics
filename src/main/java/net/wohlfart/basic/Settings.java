@@ -1,6 +1,5 @@
 package net.wohlfart.basic;
 
-import org.lwjgl.opengl.DisplayMode;
 
 public class Settings {
 

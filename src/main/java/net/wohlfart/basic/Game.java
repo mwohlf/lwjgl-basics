@@ -27,7 +27,7 @@ public class Game {
 	protected Settings settings = new Settings(); // just a default in case nothing gets injected
 	protected Timer timer = new TimerImpl(new DefaultLwjglClockImpl());
 	protected GameState currentState = GameStateEnum.NULL.getValue();
-	protected GraphicContextManager contextManager = GraphicContextManager.INSTANCE;
+	protected GraphicContextManager graphContext = GraphicContextManager.INSTANCE;
 
 	// need to be refactored:
 	protected InputSource inputProcessor = InputSource.INSTANCE;
@@ -38,7 +38,7 @@ public class Game {
 	 */
 	public void start() {
 		try {
-			contextManager.setProjectionMatrix(createProjectionMatrix());
+			graphContext.setProjectionMatrix(createProjectionMatrix());
 			bootupOpenGL();
 			setCurrentState(GameStateEnum.SIMPLE);
 			runApplicationLoop();
@@ -82,8 +82,6 @@ public class Game {
 		// turn culling off so it will be drawn regardless of what way it is facing
 		GL11.glDisable(GL11.GL_CULL_FACE);
 		//GL11.glEnable(GL11.GL_CULL_FACE);
-
-
 	}
 
 	// see: http://lwjgl.org/forum/index.php/topic,2951.0.html
@@ -96,7 +94,7 @@ public class Game {
 		Display.setDisplayMode(new DisplayMode(settings.getWidth(), settings.getHeight()));
 		Display.setResizable(false);
 		Display.setTitle(settings.getTitle());
-		//Display.setVSyncEnabled(true);
+		Display.setVSyncEnabled(true);
 		Display.create(pixelFormat, contextAtributes); // creates the GL context
 		LOGGER.info("Vendor: " + GL11.glGetString(GL11.GL_VENDOR));
 		LOGGER.info("Version: " + GL11.glGetString(GL11.GL_VERSION));

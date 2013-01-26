@@ -16,9 +16,7 @@ import net.wohlfart.gl.elements.debug.TerahedronRefinedMesh;
 import net.wohlfart.gl.elements.debug.TetrahedronMesh;
 import net.wohlfart.gl.input.InputSource;
 import net.wohlfart.gl.input.KeyPressedEvent;
-import net.wohlfart.gl.renderer.DefaultRenderer;
 import net.wohlfart.gl.renderer.Renderable;
-import net.wohlfart.gl.renderer.Renderer;
 import net.wohlfart.gl.shader.DefaultShaderProgram;
 import net.wohlfart.gl.shader.GraphicContext;
 import net.wohlfart.gl.shader.GraphicContextManager;
@@ -36,7 +34,6 @@ import org.lwjgl.util.vector.Vector3f;
 
 public class SimpleState implements GameState {
 
-	private Renderer renderer;
 	private DefaultShaderProgram shaderProgram;
 	private GraphicContext graphicContext;
 
@@ -65,12 +62,7 @@ public class SimpleState implements GameState {
 		graphicContext = new GraphicContext(shaderProgram);
 		GraphicContextManager.INSTANCE.setCurrentGraphicContext(graphicContext);
 
-		// setup the Graphic context
-		renderer = new DefaultRenderer();
-
-		renderer.setup();
-		renderer.set(ShaderUniformHandle.CAM_TO_CLIP,
-				GraphicContextManager.INSTANCE.getProjectionMatrix());
+		ShaderUniformHandle.CAM_TO_CLIP.set(GraphicContextManager.INSTANCE.getProjectionMatrix());
 
 		// render the skybox first
 		skyboxBucket.add(new Skybox());
@@ -135,12 +127,12 @@ public class SimpleState implements GameState {
 
 		// rotate the view
 		Matrix4f viewMatrix = SimpleMatrix4f.create(canRotate);
-		renderer.set(ShaderUniformHandle.WORLD_TO_CAM, viewMatrix);
+		ShaderUniformHandle.WORLD_TO_CAM.set(viewMatrix);
 		// renderer.set(UniformHandle.MODEL_TO_WORLD, viewMatrix);
 
 		// move the object
 		Matrix4f modelMatrix = SimpleMatrix4f.create(canMove);
-		renderer.set(ShaderUniformHandle.MODEL_TO_WORLD, modelMatrix);
+		ShaderUniformHandle.MODEL_TO_WORLD.set(modelMatrix);
 
 		/*
 		 * Matrix4f result = new Matrix4f(); Matrix4f.mul(modelMatrix,
@@ -153,20 +145,20 @@ public class SimpleState implements GameState {
 	@Override
 	public void render() {
 
-		renderer.set(ShaderUniformHandle.MODEL_TO_WORLD, SimpleMath.UNION_MATRIX); // no move
+		ShaderUniformHandle.MODEL_TO_WORLD.set(SimpleMath.UNION_MATRIX); // no move
 		for (Renderable renderable : skyboxBucket) {
-			renderable.render(renderer);
+			renderable.render();
 		}
 
 		// move the object
 		Matrix4f modelMatrix = SimpleMatrix4f.create(canMove);
-		renderer.set(ShaderUniformHandle.MODEL_TO_WORLD, modelMatrix);
+		ShaderUniformHandle.MODEL_TO_WORLD.set(modelMatrix);
 		for (Renderable renderable : elemBucket) {
-			renderable.render(renderer);
+			renderable.render();
 		}
 
 		for (Renderable renderable : uiBucket) {
-			renderable.render(renderer);
+			renderable.render();
 		}
 
 	}

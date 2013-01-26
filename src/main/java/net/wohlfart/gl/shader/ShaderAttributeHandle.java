@@ -1,7 +1,6 @@
 package net.wohlfart.gl.shader;
 
 
-import org.lwjgl.opengl.GL20;
 
 
 // handler for vertex attributes used in the shader
@@ -18,10 +17,11 @@ public enum ShaderAttributeHandle {
 		this.size = size;
 	}
 
-	// FIXME: this method has to be removed
-	public int getLocation(final IShaderProgram shaderProgram) {
-		return GL20.glGetAttribLocation(shaderProgram.getProgramId(), lookupString);
+	String getLookupString() {
+		return lookupString;
 	}
+
+
 
 	public int getSize() {
 		return size;

@@ -34,7 +34,8 @@ public class GraphicContext {
 	private void init() {
 
 		for (ShaderAttributeHandle attributeHandle : ShaderAttributeHandle.values()) {
-			int location = attributeHandle.getLocation(shaderProgram);
+			//int location = attributeHandle.getLocation(shaderProgram);
+			int location = GL20.glGetAttribLocation(shaderProgram.getProgramId(), attributeHandle.getLookupString());
 			LOGGER.debug("attributeMap lookup: '{}({})' to '{}'",
 					new Object[] {attributeHandle.name(), attributeHandle.ordinal(), location});
 			if (location < 0) {
@@ -48,7 +49,7 @@ public class GraphicContext {
 
 		for (ShaderUniformHandle matrixHandle : ShaderUniformHandle.values()) {
 			//int location = matrixHandle.getLocation(shaderProgram);
-			int location = GL20.glGetUniformLocation(shaderProgram.getProgramId(), matrixHandle.lookupString);
+			int location = GL20.glGetUniformLocation(shaderProgram.getProgramId(), matrixHandle.getLookupString());
 			LOGGER.debug("matrixMap lookup: '{}({})' to '{}'",
 					new Object[] {matrixHandle.name(), matrixHandle.ordinal(), location});
 			if (location < 0) {

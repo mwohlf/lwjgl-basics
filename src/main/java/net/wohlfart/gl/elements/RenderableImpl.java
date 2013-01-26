@@ -1,7 +1,6 @@
 package net.wohlfart.gl.elements;
 
 import net.wohlfart.gl.renderer.Renderable;
-import net.wohlfart.gl.renderer.Renderer;
 import net.wohlfart.gl.shader.mesh.IMesh;
 
 import org.lwjgl.util.vector.Quaternion;
@@ -15,7 +14,7 @@ public abstract class RenderableImpl implements Renderable {
 	protected final Vector3f translation = new Vector3f();
 	protected final Quaternion rotation = new Quaternion();
 
-	protected abstract IMesh setupMesh(Renderer renderer);
+	protected abstract IMesh setupMesh();
 
 	protected void resetMeshData() {
 		meshData = null;
@@ -35,9 +34,9 @@ public abstract class RenderableImpl implements Renderable {
 
 
 	@Override
-	public void render(final Renderer renderer) {
+	public void render() {
 		if (meshData == null) {
-			meshData = setupMesh(renderer);
+			meshData = setupMesh();
 		}
 		meshData.draw();
 	}

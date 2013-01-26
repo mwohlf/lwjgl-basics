@@ -6,7 +6,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import net.wohlfart.gl.renderer.Renderer;
 import net.wohlfart.gl.shader.ShaderAttributeHandle;
 import net.wohlfart.tools.SimpleMath;
 
@@ -39,8 +38,6 @@ public class WireframeMeshBuilder {
 	private Vector3f translation;
 	private Quaternion rotation;
 
-	private Renderer renderer;
-
 
 	public IMesh build() {
 
@@ -49,15 +46,15 @@ public class WireframeMeshBuilder {
 		int vaoHandle = GL30.glGenVertexArrays();
 
 		GL30.glBindVertexArray(vaoHandle);
-		int vboVerticesHandle = createVboHandle(getVertices(), renderer, ShaderAttributeHandle.POSITION);
-		int vboIndicesHandle = createElementArrayBuffer(renderer);
+		int vboVerticesHandle = createVboHandle(getVertices(), ShaderAttributeHandle.POSITION);
+		int vboIndicesHandle = createElementArrayBuffer();
 
 		GL30.glBindVertexArray(0);
 
 		int indicesCount = getIndices().length;
-		int colorAttrib = renderer.getVertexAttrib(ShaderAttributeHandle.COLOR);
-		int positionAttrib = renderer.getVertexAttrib(ShaderAttributeHandle.POSITION);
-		int textureAttrib = renderer.getVertexAttrib(ShaderAttributeHandle.TEXTURE_COORD);
+		int colorAttrib = ShaderAttributeHandle.COLOR.getLocation();
+		int positionAttrib = ShaderAttributeHandle.POSITION.getLocation();
+		int textureAttrib = ShaderAttributeHandle.TEXTURE_COORD.getLocation();
 		int offset = 0;
 
 		return new WireframeMesh(
@@ -69,7 +66,7 @@ public class WireframeMeshBuilder {
 	}
 
 
-	private int createElementArrayBuffer(Renderer renderer) {
+	private int createElementArrayBuffer() {
 		int vboIndicesHandle = GL15.glGenBuffers();
 		GL15.glBindBuffer(GL15.GL_ELEMENT_ARRAY_BUFFER, vboIndicesHandle);
 		// FIXME: check the vertex count and use a byte or short buffer here if the number of vertices is low enough
@@ -95,7 +92,7 @@ public class WireframeMeshBuilder {
 		}
 	}
 
-	private int createVboHandle(float[] floatBuff, final Renderer renderer, final ShaderAttributeHandle attrHandle) {
+	private int createVboHandle(float[] floatBuff, final ShaderAttributeHandle attrHandle) {
 		int vboVerticesHandle = GL15.glGenBuffers();
 		GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, vboVerticesHandle);
 		FloatBuffer verticesBuffer = BufferUtils.createFloatBuffer(floatBuff.length);
@@ -103,7 +100,7 @@ public class WireframeMeshBuilder {
 		verticesBuffer.flip();
 		GL15.glBufferData(GL15.GL_ARRAY_BUFFER, verticesBuffer, GL15.GL_STATIC_DRAW);
 
-		int positionAttrib = renderer.getVertexAttrib(attrHandle);
+		int positionAttrib = attrHandle.getLocation();
 		GL20.glEnableVertexAttribArray(positionAttrib);
 		GL20.glVertexAttribPointer(positionAttrib, attrHandle.getSize(), GL11.GL_FLOAT, false, 0, 0);
 		return vboVerticesHandle;
@@ -154,10 +151,6 @@ public class WireframeMeshBuilder {
 
 	public void setColor(final ReadableColor color) {
 		this.color = color;
-	}
-
-	public void setRenderer(Renderer renderer) {
-		this.renderer = renderer;
 	}
 
 	public void setLineWidth(float lineWidth) {

@@ -10,7 +10,6 @@ public class Start {
 		ApplicationContext appContext = new ClassPathXmlApplicationContext(CONFIG_FILE);
 		GameContext context = new GameContext(appContext);
 		Game game = context.getBeanOfType(Game.class);
-		//game.setContext(context);
 		game.start();
 	}
 

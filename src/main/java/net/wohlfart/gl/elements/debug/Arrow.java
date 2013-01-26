@@ -2,7 +2,6 @@ package net.wohlfart.gl.elements.debug;
 
 import java.util.Arrays;
 
-import net.wohlfart.gl.renderer.Renderer;
 import net.wohlfart.gl.shader.mesh.IMesh;
 import net.wohlfart.gl.shader.mesh.WireframeMeshBuilder;
 import net.wohlfart.tools.SimpleMath;
@@ -40,7 +39,7 @@ public class Arrow extends RenderableGrid {
 	}
 
 	@Override
-	protected IMesh setupMesh(final Renderer renderer) {
+	protected IMesh setupMesh() {
 		WireframeMeshBuilder builder = new WireframeMeshBuilder();
 		builder.setVertices(Arrays.<Vector3f> asList(vertices));
 		builder.setIndices(indices);
@@ -50,7 +49,6 @@ public class Arrow extends RenderableGrid {
 		builder.setLineWidth(lineWidth);
 		builder.setRotation(rotation);
 		builder.setTranslation(translation);
-		builder.setRenderer(renderer);
 		return builder.build();
 	}
 

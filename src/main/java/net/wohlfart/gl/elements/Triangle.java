@@ -3,7 +3,6 @@ package net.wohlfart.gl.elements;
 import java.nio.FloatBuffer;
 
 import net.wohlfart.gl.renderer.Renderable;
-import net.wohlfart.gl.renderer.Renderer;
 import net.wohlfart.gl.shader.IShaderProgram;
 
 import org.lwjgl.BufferUtils;
@@ -72,7 +71,7 @@ public class Triangle implements Renderable {
 
 
 	@Override
-	public void render(Renderer renderer) {
+	public void render() {
 		GL30.glBindVertexArray(vaoHandle);                         // bind to the VAO
 		GL11.glDrawArrays(GL11.GL_TRIANGLES, 0, vertexCount);      // draw triangles, start at 0, do use vertexCount vertices
 		GL30.glBindVertexArray(0);                                 // unbind the VAO

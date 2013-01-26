@@ -1,7 +1,6 @@
 package net.wohlfart.gl.elements;
 
 import net.wohlfart.gl.renderer.Renderable;
-import net.wohlfart.gl.renderer.Renderer;
 import net.wohlfart.gl.shader.mesh.IMesh;
 
 public class Skybox implements Renderable {
@@ -10,21 +9,21 @@ public class Skybox implements Renderable {
 	int size = 1024;
 
 
-	public void init(final Renderer renderer) {
+	public void init() {
 		sides = new IMesh[] {
-				SkyboxSide.MINUS_X.build(renderer, size, size),
-				SkyboxSide.PLUS_X.build(renderer, size, size),
-				SkyboxSide.MINUS_Y.build(renderer, size, size),
-				SkyboxSide.PLUS_Y.build(renderer, size, size),
-				SkyboxSide.MINUS_Z.build(renderer, size, size),
-				SkyboxSide.PLUS_Z.build(renderer, size, size),
+				SkyboxSide.MINUS_X.build(size, size),
+				SkyboxSide.PLUS_X.build(size, size),
+				SkyboxSide.MINUS_Y.build(size, size),
+				SkyboxSide.PLUS_Y.build(size, size),
+				SkyboxSide.MINUS_Z.build(size, size),
+				SkyboxSide.PLUS_Z.build(size, size),
 		};
 	}
 
 	@Override
-	public void render(final Renderer renderer) {
+	public void render() {
 		if (sides == null) {
-			init(renderer);
+			init();
 		}
 
 		for (IMesh side : sides) {

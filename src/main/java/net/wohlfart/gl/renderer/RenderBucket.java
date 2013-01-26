@@ -17,9 +17,9 @@ public class RenderBucket implements Renderable {
 	}
 
 	@Override
-	public void render(Renderer renderer) {
+	public void render() {
 		for (Renderable renderable : container) {
-			renderable.render(renderer);
+			renderable.render();
 		}
 	}
 

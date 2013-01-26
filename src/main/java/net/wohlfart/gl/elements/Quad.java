@@ -4,7 +4,6 @@ import java.nio.ByteBuffer;
 import java.nio.FloatBuffer;
 
 import net.wohlfart.gl.renderer.Renderable;
-import net.wohlfart.gl.renderer.Renderer;
 import net.wohlfart.gl.shader.IShaderProgram;
 
 import org.lwjgl.BufferUtils;
@@ -115,7 +114,7 @@ public class Quad implements Renderable {
 
 
 	@Override
-	public void render(final Renderer renderer) {
+	public void render() {
 		// bind to the VAO that has all the information about the vertices
 		GL30.glBindVertexArray(vaoHandle);
 		// draw the vertices refered to by the indices (index drawing)

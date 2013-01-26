@@ -5,7 +5,6 @@ import java.nio.FloatBuffer;
 import java.util.ArrayList;
 import java.util.List;
 
-import net.wohlfart.gl.renderer.Renderer;
 import net.wohlfart.gl.shader.ShaderAttributeHandle;
 import net.wohlfart.tools.SimpleMath;
 
@@ -53,7 +52,7 @@ public class VertexArrayObject implements IMesh {
 		colorBuffer.flip();
 		GL15.glBufferData(GL15.GL_ARRAY_BUFFER, colorBuffer, GL15.GL_STATIC_DRAW);
 
-		int colorAttrib = builder.renderer.getVertexAttrib(ShaderAttributeHandle.COLOR);
+		int colorAttrib = ShaderAttributeHandle.COLOR.getLocation();
 		GL20.glEnableVertexAttribArray(colorAttrib);
 		GL20.glVertexAttribPointer(colorAttrib, Builder.COLOR_SIZE, GL11.GL_FLOAT, false, 0, 0);
 
@@ -67,7 +66,7 @@ public class VertexArrayObject implements IMesh {
 		verticesBuffer.flip();
 		GL15.glBufferData(GL15.GL_ARRAY_BUFFER, verticesBuffer, GL15.GL_STATIC_DRAW);
 
-		int positionAttrib = builder.renderer.getVertexAttrib(ShaderAttributeHandle.POSITION);
+		int positionAttrib = ShaderAttributeHandle.POSITION.getLocation();
 		GL20.glEnableVertexAttribArray(positionAttrib);
 		GL20.glVertexAttribPointer(positionAttrib, Builder.VERTEX_SIZE, GL11.GL_FLOAT, false, 0, 0);
 
@@ -95,7 +94,6 @@ public class VertexArrayObject implements IMesh {
 		private final List<Vector3f> vertices = new ArrayList<Vector3f>();
 		private List<ReadableColor> colors = new ArrayList<ReadableColor>();
 		private final List<Byte> indices = new ArrayList<Byte>();
-		private Renderer renderer;
 		private Vector3f translation;
 		private Quaternion rotation;
 
@@ -109,10 +107,6 @@ public class VertexArrayObject implements IMesh {
 
 		public void setIndices(final List<Byte> indices) {
 			this.indices.addAll(indices);
-		}
-
-		public void setRenderer(final Renderer renderer) {
-			this.renderer = renderer;
 		}
 
 		public void setRotation(final Quaternion quaternion) {
