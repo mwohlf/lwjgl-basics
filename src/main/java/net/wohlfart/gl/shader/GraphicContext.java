@@ -33,6 +33,9 @@ public class GraphicContext {
 	// read uniforms and attribute locations and buffer them
 	private void init() {
 
+		shaderProgram.setup();
+		shaderProgram.bind();
+
 		for (ShaderAttributeHandle attributeHandle : ShaderAttributeHandle.values()) {
 			//int location = attributeHandle.getLocation(shaderProgram);
 			int location = GL20.glGetAttribLocation(shaderProgram.getProgramId(), attributeHandle.getLookupString());

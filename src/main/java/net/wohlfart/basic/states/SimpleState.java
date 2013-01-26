@@ -57,8 +57,6 @@ public class SimpleState implements GameState {
 		avatar.setInputSource(InputSource.INSTANCE);
 
 		shaderProgram = new DefaultShaderProgram();
-		shaderProgram.setup();
-		shaderProgram.bind();
 		graphicContext = new GraphicContext(shaderProgram);
 		GraphicContextManager.INSTANCE.setCurrentGraphicContext(graphicContext);
 
@@ -128,29 +126,23 @@ public class SimpleState implements GameState {
 		// rotate the view
 		Matrix4f viewMatrix = SimpleMatrix4f.create(canRotate);
 		ShaderUniformHandle.WORLD_TO_CAM.set(viewMatrix);
-		// renderer.set(UniformHandle.MODEL_TO_WORLD, viewMatrix);
 
 		// move the object
 		Matrix4f modelMatrix = SimpleMatrix4f.create(canMove);
 		ShaderUniformHandle.MODEL_TO_WORLD.set(modelMatrix);
-
-		/*
-		 * Matrix4f result = new Matrix4f(); Matrix4f.mul(modelMatrix,
-		 * viewMatrix, result); renderer.set(MatrixHandle.MODEL_TO_WORLD,
-		 * result);
-		 */
 
 	}
 
 	@Override
 	public void render() {
 
-		ShaderUniformHandle.MODEL_TO_WORLD.set(SimpleMath.UNION_MATRIX); // no move
+		// no move for the skybox
+		ShaderUniformHandle.MODEL_TO_WORLD.set(SimpleMath.UNION_MATRIX);
 		for (Renderable renderable : skyboxBucket) {
 			renderable.render();
 		}
 
-		// move the object
+		// move the objects
 		Matrix4f modelMatrix = SimpleMatrix4f.create(canMove);
 		ShaderUniformHandle.MODEL_TO_WORLD.set(modelMatrix);
 		for (Renderable renderable : elemBucket) {

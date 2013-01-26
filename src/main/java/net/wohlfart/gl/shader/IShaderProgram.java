@@ -9,13 +9,13 @@ public interface IShaderProgram  {
 	public static final String UNI_COLOR = "uni_Color";
 
 	// to id the shader
-	public abstract int getProgramId();
+	abstract int getProgramId();
 
 	// called when the shader in created
-	public abstract void setup();
+	abstract void setup();
 
 	// called when the shader program is about to be used
-	public abstract void bind();
+	abstract void bind();
 
 	// called when the shader is no longer used
 	public abstract void unbind();
