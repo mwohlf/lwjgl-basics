@@ -24,45 +24,68 @@ public class DefaultGraphicContext implements IGraphicContext {
 	private final int[] matrixMap = new int[ShaderUniformHandle.values().length];
 
 
-	public DefaultGraphicContext() {
-		this.shaderProgram = new DefaultShaderProgram();
+	public DefaultGraphicContext(IShaderProgram shaderProgram) {
+		this.shaderProgram = shaderProgram;
+		this.shaderProgram.setup();
+		this.shaderProgram.bind();
 		init();
+		this.shaderProgram.unbind();
 	}
-
 
 	// read uniforms and attribute locations and buffer them
 	private void init() {
-
-		shaderProgram.setup();
-		shaderProgram.bind();
+		int programId = shaderProgram.getProgramId();
+		LOGGER.debug("init gfx context, shader.programId: '{}'", programId);
 
 		for (ShaderAttributeHandle attributeHandle : ShaderAttributeHandle.values()) {
 			//int location = attributeHandle.getLocation(shaderProgram);
-			int location = GL20.glGetAttribLocation(shaderProgram.getProgramId(), attributeHandle.getLookupString());
-			LOGGER.debug("attributeMap lookup: '{}({})' to '{}'",
-					new Object[] {attributeHandle.name(), attributeHandle.ordinal(), location});
+			int location = GL20.glGetAttribLocation(programId, attributeHandle.getLookupString());
+			attributeMap[attributeHandle.ordinal()] = location;
 			if (location < 0) {
 				LOGGER.warn("location for AttributeHandle '{}' is '{}' wich is <0, the programId is '{}'",
-						new Object[] {attributeHandle, location, shaderProgram.getProgramId()});
+						new Object[] {attributeHandle, location, programId});
+			} else {
+				LOGGER.debug("attributeMap lookup: '{}({})' to '{}'",
+						new Object[] {attributeHandle.name(), attributeHandle.ordinal(), location});
 			}
-			attributeMap[attributeHandle.ordinal()] = location;
 		}
 		LOGGER.debug("attributeMap setup: '{}'", Arrays.toString(attributeMap));
 
-
 		for (ShaderUniformHandle matrixHandle : ShaderUniformHandle.values()) {
 			//int location = matrixHandle.getLocation(shaderProgram);
-			int location = GL20.glGetUniformLocation(shaderProgram.getProgramId(), matrixHandle.getLookupString());
-			LOGGER.debug("matrixMap lookup: '{}({})' to '{}'",
-					new Object[] {matrixHandle.name(), matrixHandle.ordinal(), location});
+			int location = GL20.glGetUniformLocation(programId, matrixHandle.getLookupString());
+			matrixMap[matrixHandle.ordinal()] = location;
 			if (location < 0) {
 				LOGGER.warn("location for UniformHandle '{}' is '{}' wich is <0, the programId is '{}'",
-						new Object[] {matrixHandle, location, shaderProgram.getProgramId()});
+						new Object[] {matrixHandle, location, programId});
+			} else {
+				LOGGER.debug("matrixMap lookup: '{}({})' to '{}'",
+						new Object[] {matrixHandle.name(), matrixHandle.ordinal(), location});
 			}
-			matrixMap[matrixHandle.ordinal()] = location;
 		}
 		LOGGER.debug("matrixMap setup: '{}'", Arrays.toString(matrixMap));
+	}
 
+	@Override
+	public String toString() {
+		return "DefaultGraphicContext with shader: " + shaderProgram;
+	}
+
+
+	@Override
+	public void bind() {
+		shaderProgram.bind();
+	}
+
+	@Override
+	public void unbind() {
+		shaderProgram.unbind();
+	}
+
+	@Override
+	public void dispose() {
+		shaderProgram.unbind();
+		shaderProgram.dispose();
 	}
 
 	@Override

@@ -6,4 +6,10 @@ public interface IGraphicContext {
 
 	int getLocation(ShaderUniformHandle shaderUniformHandle);
 
+	void bind();
+
+	void unbind();
+
+	void dispose();
+
 }

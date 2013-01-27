@@ -8,12 +8,11 @@ import org.lwjgl.util.ReadableColor;
 import org.lwjgl.util.vector.Matrix4f;
 
 
-
-// handlers for matrices used in the shader
+// handlers for uniforms used in the shader
 public enum ShaderUniformHandle {
-	MODEL_TO_WORLD(IShaderProgram.MODEL_MATRIX),
-	WORLD_TO_CAM(IShaderProgram.VIEW_MATRIX),
-	CAM_TO_CLIP(IShaderProgram.PROJECTION_MATRIX);
+	MODEL_TO_WORLD("modelToWorldMatrix"),
+	WORLD_TO_CAM("worldToCameraMatrix"),
+	CAM_TO_CLIP("cameraToClipMatrix");
 
 	private final String lookupString;
 
@@ -39,8 +38,6 @@ public enum ShaderUniformHandle {
 		FloatBuffer matrix44Buffer = BufferUtils.createFloatBuffer(16);
 		matrix.store(matrix44Buffer);
 		matrix44Buffer.flip();
-		//GL20.glUniformMatrix4(matrixMap.get(handle), false, matrix44Buffer);
-		//handle.setValue(matrix44Buffer);
 		GL20.glUniformMatrix4(getLocation(), false, matrix44Buffer);
 	}
 
@@ -53,10 +50,7 @@ public enum ShaderUniformHandle {
 				readableColor.getAlpha()/255f,
 		});
 		colorBuffer.flip();
-		//GL20.glUniform4(matrixMap.get(handle), colorBuffer);
-		//handle.setValue(colorBuffer);
 		GL20.glUniform4(getLocation(), colorBuffer);
 	}
-
 
 }

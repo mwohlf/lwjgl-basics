@@ -14,6 +14,12 @@ public class WireframeShaderProgram extends AbstractShaderProgram {
 	private int vertexShaderId = -1;
 	private int fragmentShaderId = -1;
 
+	@Override
+	public String toString() {
+		return "WireframeShaderProgram loaded from: \n"
+				+ VERTEX_SHADER_FILE + "\n"
+				+ FRAGMENT_SHADER_FILE;
+	}
 
 	@Override
 	public void setup() {
@@ -22,7 +28,6 @@ public class WireframeShaderProgram extends AbstractShaderProgram {
 		fragmentShaderId = loadShader(FRAGMENT_SHADER_FILE, GL20.GL_FRAGMENT_SHADER);
 		linkAndValidate(vertexShaderId, fragmentShaderId);
 	}
-
 
 	@Override
 	public void dispose() {

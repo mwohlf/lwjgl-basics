@@ -16,13 +16,19 @@ public class DefaultShaderProgram extends AbstractShaderProgram {
 
 
 	@Override
+	public String toString() {
+		return "DefaultShaderProgram loaded from: \n"
+				+ VERTEX_SHADER_FILE + "\n"
+				+ FRAGMENT_SHADER_FILE;
+	}
+
+	@Override
 	public void setup() {
 		super.setup();
 		vertexShaderId = loadShader(VERTEX_SHADER_FILE, GL20.GL_VERTEX_SHADER);
 		fragmentShaderId = loadShader(FRAGMENT_SHADER_FILE, GL20.GL_FRAGMENT_SHADER);
 		linkAndValidate(vertexShaderId, fragmentShaderId);
 	}
-
 
 	@Override
 	public void dispose() {

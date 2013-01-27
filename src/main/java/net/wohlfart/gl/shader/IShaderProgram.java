@@ -3,11 +3,6 @@ package net.wohlfart.gl.shader;
 
 public interface IShaderProgram  {
 
-	public static final String MODEL_MATRIX = "modelToWorldMatrix";
-	public static final String VIEW_MATRIX = "worldToCameraMatrix";
-	public static final String PROJECTION_MATRIX = "cameraToClipMatrix";
-	public static final String UNI_COLOR = "uni_Color";
-
 	// to id the shader
 	abstract int getProgramId();
 

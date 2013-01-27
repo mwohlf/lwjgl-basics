@@ -1,8 +1,5 @@
 package net.wohlfart.basic.states;
 
-import java.util.HashSet;
-import java.util.Set;
-
 import net.wohlfart.gl.CanMoveImpl;
 import net.wohlfart.gl.CanRotateImpl;
 import net.wohlfart.gl.elements.ColoredQuad;
@@ -16,11 +13,13 @@ import net.wohlfart.gl.elements.debug.TerahedronRefinedMesh;
 import net.wohlfart.gl.elements.debug.TetrahedronMesh;
 import net.wohlfart.gl.input.InputSource;
 import net.wohlfart.gl.input.KeyPressedEvent;
-import net.wohlfart.gl.renderer.Renderable;
+import net.wohlfart.gl.renderer.RenderBucket;
 import net.wohlfart.gl.shader.DefaultGraphicContext;
 import net.wohlfart.gl.shader.DefaultShaderProgram;
 import net.wohlfart.gl.shader.GraphicContextManager;
+import net.wohlfart.gl.shader.IGraphicContext;
 import net.wohlfart.gl.shader.ShaderUniformHandle;
+import net.wohlfart.gl.shader.WireframeShaderProgram;
 import net.wohlfart.model.Avatar;
 import net.wohlfart.tools.SimpleMath;
 import net.wohlfart.tools.SimpleMatrix4f;
@@ -28,14 +27,16 @@ import net.wohlfart.tools.SimpleMatrix4f;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.util.ReadableColor;
-import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Quaternion;
 import org.lwjgl.util.vector.Vector3f;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class SimpleState implements GameState {
+	protected static final Logger LOGGER = LoggerFactory.getLogger(SimpleState.class);
 
-	private DefaultShaderProgram shaderProgram;
-	private DefaultGraphicContext graphicContext;
+	private IGraphicContext defaultGraphicContext;
+	private IGraphicContext wireframeGraphicContext;
 
 	private boolean quit = false;
 
@@ -43,9 +44,9 @@ public class SimpleState implements GameState {
 	private final CanRotateImpl canRotate = new CanRotateImpl();
 	private final Avatar avatar = new Avatar(canRotate, canMove);
 
-	private final Set<Renderable> skyboxBucket = new HashSet<Renderable>();
-	private final Set<Renderable> elemBucket = new HashSet<Renderable>();
-	private final Set<Renderable> uiBucket = new HashSet<Renderable>();
+	private final RenderBucket skyboxBucket = new RenderBucket();
+	private final RenderBucket elemBucket = new RenderBucket();
+	private final RenderBucket uiBucket = new RenderBucket();
 
 
 	SimpleState() {
@@ -56,10 +57,12 @@ public class SimpleState implements GameState {
 
 		avatar.setInputSource(InputSource.INSTANCE);
 
-		graphicContext = new DefaultGraphicContext();
-		GraphicContextManager.INSTANCE.setCurrentGraphicContext(graphicContext);
 
-		ShaderUniformHandle.CAM_TO_CLIP.set(GraphicContextManager.INSTANCE.getProjectionMatrix());
+		wireframeGraphicContext = new DefaultGraphicContext(new WireframeShaderProgram());
+		GraphicContextManager.INSTANCE.setCurrentGraphicContext(wireframeGraphicContext);
+
+		defaultGraphicContext = new DefaultGraphicContext(new DefaultShaderProgram());
+		GraphicContextManager.INSTANCE.setCurrentGraphicContext(defaultGraphicContext);
 
 		// render the skybox first
 		skyboxBucket.add(new Skybox());
@@ -121,37 +124,30 @@ public class SimpleState implements GameState {
 
 	@Override
 	public void update(float tpf) {
-
-		// rotate the view
-		Matrix4f viewMatrix = SimpleMatrix4f.create(canRotate);
-		ShaderUniformHandle.WORLD_TO_CAM.set(viewMatrix);
-
-		// move the object
-		Matrix4f modelMatrix = SimpleMatrix4f.create(canMove);
-		ShaderUniformHandle.MODEL_TO_WORLD.set(modelMatrix);
-
+		// todo:
+		//   poll the user input
+		//   move the models
+		//   calculate the world translation and rotation
 	}
+
+
 
 	@Override
 	public void render() {
 
-		// no move for the skybox
+		GraphicContextManager.INSTANCE.setCurrentGraphicContext(defaultGraphicContext);
 		ShaderUniformHandle.MODEL_TO_WORLD.set(SimpleMath.UNION_MATRIX);
-		for (Renderable renderable : skyboxBucket) {
-			renderable.render();
-		}
+		ShaderUniformHandle.WORLD_TO_CAM.set(SimpleMatrix4f.create(canRotate));
+		ShaderUniformHandle.CAM_TO_CLIP.set(GraphicContextManager.INSTANCE.getProjectionMatrix());
+		skyboxBucket.render();
 
-		// move the objects
-		Matrix4f modelMatrix = SimpleMatrix4f.create(canMove);
-		ShaderUniformHandle.MODEL_TO_WORLD.set(modelMatrix);
-		for (Renderable renderable : elemBucket) {
-			renderable.render();
-		}
+		GraphicContextManager.INSTANCE.setCurrentGraphicContext(wireframeGraphicContext);
+		ShaderUniformHandle.MODEL_TO_WORLD.set(SimpleMatrix4f.create(canMove));
+		ShaderUniformHandle.WORLD_TO_CAM.set(SimpleMatrix4f.create(canRotate));
+		ShaderUniformHandle.CAM_TO_CLIP.set(GraphicContextManager.INSTANCE.getProjectionMatrix());
+		elemBucket.render();
 
-		for (Renderable renderable : uiBucket) {
-			renderable.render();
-		}
-
+		uiBucket.render();
 	}
 
 	@Override
@@ -161,10 +157,8 @@ public class SimpleState implements GameState {
 
 	@Override
 	public void dispose() {
-		//renderer.dispose();
-		shaderProgram.unbind();
-		shaderProgram.dispose();
-		//graphicContext.dispose();
+		defaultGraphicContext.dispose();
+		wireframeGraphicContext.dispose();
 	}
 
 }
