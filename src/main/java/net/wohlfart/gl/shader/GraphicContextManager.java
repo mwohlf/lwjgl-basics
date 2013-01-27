@@ -1,8 +1,6 @@
 package net.wohlfart.gl.shader;
 
 
-import net.wohlfart.basic.states.SimpleState;
-
 import org.lwjgl.util.vector.Matrix4f;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,7 +16,22 @@ import org.slf4j.LoggerFactory;
 public enum GraphicContextManager {
 	INSTANCE;
 
-	protected static final Logger LOGGER = LoggerFactory.getLogger(SimpleState.class);
+	public interface IGraphicContext {
+
+		int getLocation(ShaderAttributeHandle shaderAttributeHandle);
+
+		int getLocation(ShaderUniformHandle shaderUniformHandle);
+
+		void bind();
+
+		void unbind();
+
+		void dispose();
+
+	}
+
+
+	protected static final Logger LOGGER = LoggerFactory.getLogger(GraphicContextManager.class);
 
 	private IGraphicContext currentGraphicContext;
 
@@ -38,6 +51,7 @@ public enum GraphicContextManager {
 	}
 
 
+	// can also be set with a uniform handle
 	public void setProjectionMatrix(Matrix4f projectionMatrix) {
 		this.projectionMatrix = projectionMatrix;
 	}
@@ -47,6 +61,11 @@ public enum GraphicContextManager {
 	}
 
 
+	IGraphicContext getCurrentGraphicContext() {
+		return currentGraphicContext;
+	}
+
+	/*
 	int getLocation(ShaderAttributeHandle shaderAttributeHandle) {
 		return currentGraphicContext.getLocation(shaderAttributeHandle);
 	}
@@ -54,5 +73,6 @@ public enum GraphicContextManager {
 	int getLocation(ShaderUniformHandle shaderUniformHandle) {
 		return currentGraphicContext.getLocation(shaderUniformHandle);
 	}
+	*/
 
 }

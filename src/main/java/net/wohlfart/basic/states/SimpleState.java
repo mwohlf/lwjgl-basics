@@ -17,7 +17,6 @@ import net.wohlfart.gl.renderer.RenderBucket;
 import net.wohlfart.gl.shader.DefaultGraphicContext;
 import net.wohlfart.gl.shader.DefaultShaderProgram;
 import net.wohlfart.gl.shader.GraphicContextManager;
-import net.wohlfart.gl.shader.IGraphicContext;
 import net.wohlfart.gl.shader.ShaderUniformHandle;
 import net.wohlfart.gl.shader.WireframeShaderProgram;
 import net.wohlfart.model.Avatar;
@@ -32,11 +31,11 @@ import org.lwjgl.util.vector.Vector3f;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class SimpleState implements GameState {
+class SimpleState implements GameState {
 	protected static final Logger LOGGER = LoggerFactory.getLogger(SimpleState.class);
 
-	private IGraphicContext defaultGraphicContext;
-	private IGraphicContext wireframeGraphicContext;
+	private GraphicContextManager.IGraphicContext defaultGraphicContext;
+	private GraphicContextManager.IGraphicContext wireframeGraphicContext;
 
 	private boolean quit = false;
 
@@ -56,7 +55,6 @@ public class SimpleState implements GameState {
 	public void setup() {
 
 		avatar.setInputSource(InputSource.INSTANCE);
-
 
 		wireframeGraphicContext = new DefaultGraphicContext(new WireframeShaderProgram());
 		GraphicContextManager.INSTANCE.setCurrentGraphicContext(wireframeGraphicContext);
@@ -124,6 +122,7 @@ public class SimpleState implements GameState {
 
 	@Override
 	public void update(float tpf) {
+		LOGGER.debug("update called with tpf {}", tpf);
 		// todo:
 		//   poll the user input
 		//   move the models
@@ -136,7 +135,7 @@ public class SimpleState implements GameState {
 	public void render() {
 
 		GraphicContextManager.INSTANCE.setCurrentGraphicContext(defaultGraphicContext);
-		ShaderUniformHandle.MODEL_TO_WORLD.set(SimpleMath.UNION_MATRIX);
+		ShaderUniformHandle.MODEL_TO_WORLD.set(SimpleMath.UNION_MATRIX); // no move
 		ShaderUniformHandle.WORLD_TO_CAM.set(SimpleMatrix4f.create(canRotate));
 		ShaderUniformHandle.CAM_TO_CLIP.set(GraphicContextManager.INSTANCE.getProjectionMatrix());
 		skyboxBucket.render();

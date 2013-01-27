@@ -1,7 +1,6 @@
 package net.wohlfart.gl.shader;
 
-
-
+import static net.wohlfart.gl.shader.GraphicContextManager.INSTANCE;
 
 // handler for vertex attributes used in the shader
 public enum ShaderAttributeHandle {
@@ -28,7 +27,7 @@ public enum ShaderAttributeHandle {
 	}
 
 	public int getLocation() {
-		return GraphicContextManager.INSTANCE.getLocation(this);
+		return INSTANCE.getCurrentGraphicContext().getLocation(this);
 	}
 
 }

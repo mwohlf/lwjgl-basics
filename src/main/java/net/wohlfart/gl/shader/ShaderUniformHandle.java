@@ -1,5 +1,7 @@
 package net.wohlfart.gl.shader;
 
+import static net.wohlfart.gl.shader.GraphicContextManager.INSTANCE;
+
 import java.nio.FloatBuffer;
 
 import org.lwjgl.BufferUtils;
@@ -26,13 +28,11 @@ public enum ShaderUniformHandle {
 
 
 
-	public void setValue(final FloatBuffer colorBuffer) {
-		GL20.glUniform4(GraphicContextManager.INSTANCE.getLocation(this), colorBuffer);
-	}
 
 	public int getLocation() {
-		return GraphicContextManager.INSTANCE.getLocation(this);
+		return INSTANCE.getCurrentGraphicContext().getLocation(this);
 	}
+
 
 	public void set(Matrix4f matrix) {
 		FloatBuffer matrix44Buffer = BufferUtils.createFloatBuffer(16);
@@ -44,13 +44,18 @@ public enum ShaderUniformHandle {
 	public void set(ReadableColor readableColor) {
 		FloatBuffer colorBuffer = BufferUtils.createFloatBuffer(4);
 		colorBuffer.put(new float[] {
-				readableColor.getRed()/255f,
-				readableColor.getGreen()/255f,
-				readableColor.getBlue()/255f,
-				readableColor.getAlpha()/255f,
+		    readableColor.getRed()/255f,
+			readableColor.getGreen()/255f,
+			readableColor.getBlue()/255f,
+			readableColor.getAlpha()/255f,
 		});
 		colorBuffer.flip();
+		set(colorBuffer);
+	}
+
+	public void set(final FloatBuffer colorBuffer) {
 		GL20.glUniform4(getLocation(), colorBuffer);
 	}
+
 
 }

@@ -15,25 +15,25 @@ import org.slf4j.LoggerFactory;
  *
  * see: http://www.opengl.org/wiki/OpenGL_Context
  */
-public class DefaultGraphicContext implements IGraphicContext {
+public class DefaultGraphicContext implements GraphicContextManager.IGraphicContext {
 	protected static final Logger LOGGER = LoggerFactory.getLogger(DefaultGraphicContext.class);
 
 	private final IShaderProgram shaderProgram;
 
 	private final int[] attributeMap = new int[ShaderAttributeHandle.values().length];
-	private final int[] matrixMap = new int[ShaderUniformHandle.values().length];
+	private final int[] uniformMap = new int[ShaderUniformHandle.values().length];
 
 
 	public DefaultGraphicContext(IShaderProgram shaderProgram) {
 		this.shaderProgram = shaderProgram;
 		this.shaderProgram.setup();
 		this.shaderProgram.bind();
-		init();
+		initMaps();
 		this.shaderProgram.unbind();
 	}
 
 	// read uniforms and attribute locations and buffer them
-	private void init() {
+	private void initMaps() {
 		int programId = shaderProgram.getProgramId();
 		LOGGER.debug("init gfx context, shader.programId: '{}'", programId);
 
@@ -54,7 +54,7 @@ public class DefaultGraphicContext implements IGraphicContext {
 		for (ShaderUniformHandle matrixHandle : ShaderUniformHandle.values()) {
 			//int location = matrixHandle.getLocation(shaderProgram);
 			int location = GL20.glGetUniformLocation(programId, matrixHandle.getLookupString());
-			matrixMap[matrixHandle.ordinal()] = location;
+			uniformMap[matrixHandle.ordinal()] = location;
 			if (location < 0) {
 				LOGGER.warn("location for UniformHandle '{}' is '{}' wich is <0, the programId is '{}'",
 						new Object[] {matrixHandle, location, programId});
@@ -63,7 +63,7 @@ public class DefaultGraphicContext implements IGraphicContext {
 						new Object[] {matrixHandle.name(), matrixHandle.ordinal(), location});
 			}
 		}
-		LOGGER.debug("matrixMap setup: '{}'", Arrays.toString(matrixMap));
+		LOGGER.debug("matrixMap setup: '{}'", Arrays.toString(uniformMap));
 	}
 
 	@Override
@@ -95,7 +95,7 @@ public class DefaultGraphicContext implements IGraphicContext {
 
 	@Override
 	public int getLocation(ShaderUniformHandle shaderUniformHandle) {
-		return matrixMap[shaderUniformHandle.ordinal()];
+		return uniformMap[shaderUniformHandle.ordinal()];
 	}
 
 }
