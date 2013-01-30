@@ -1,8 +1,9 @@
 package net.wohlfart.basic.states;
 
 import net.wohlfart.gl.Camera;
-import net.wohlfart.gl.input.InputSource;
+import net.wohlfart.gl.input.DefaultLwjglInputSource;
 import net.wohlfart.gl.input.KeyTypedEvent;
+import net.wohlfart.gl.shader.GraphicContextManager;
 import net.wohlfart.model.Avatar;
 import net.wohlfart.model.CelestialScene;
 import net.wohlfart.widgets.Renderer;
@@ -11,9 +12,9 @@ import net.wohlfart.widgets.Screen;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.Display;
 
-public class CelestialState implements GameState {
+class CelestialState implements GameState {
 
-	protected InputSource inputProcessor;
+	protected DefaultLwjglInputSource inputProcessor;
 	protected CelestialScene scene;
 	protected Camera camera;
 	protected Avatar avatar;
@@ -24,9 +25,6 @@ public class CelestialState implements GameState {
 	protected boolean escPressed = false;
 
 
-	CelestialState() {
-	}
-
 
 	// ui, sounds, cam
 
@@ -35,8 +33,8 @@ public class CelestialState implements GameState {
 		camera = new Camera();
 		scene = new CelestialScene();
 		avatar = new Avatar(camera, scene);
-		avatar.setInputSource(InputSource.INSTANCE);
-		InputSource.INSTANCE.register(new KeyTypedEvent.Listener() {
+		avatar.setInputSource(GraphicContextManager.INSTANCE.getInputSource());
+		GraphicContextManager.INSTANCE.getInputSource().register(new KeyTypedEvent.Listener() {
 			@Override
 			public void keyEvent(KeyTypedEvent evt) {
 				if (evt.getKey() == Keyboard.KEY_ESCAPE) {

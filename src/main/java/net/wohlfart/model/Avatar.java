@@ -2,7 +2,7 @@ package net.wohlfart.model;
 
 import net.wohlfart.gl.CanMove;
 import net.wohlfart.gl.CanRotate;
-import net.wohlfart.gl.input.InputSource;
+import net.wohlfart.gl.input.InputProcessor;
 import net.wohlfart.gl.input.KeyPressedEvent;
 import net.wohlfart.gl.input.MouseMotionEvent;
 import net.wohlfart.gl.input.MouseWheelEvent;
@@ -24,7 +24,7 @@ public class Avatar {
 	// used for key triggered moves
 	private final float MOVE_KEY_SPEED = 0.5f;
 
-	private InputSource inputSource;
+	private InputProcessor inputSource;
 	private final CanRotate rotation;
 	private final CanMove position;
 
@@ -35,7 +35,7 @@ public class Avatar {
 	}
 
 
-	public void setInputSource(InputSource inputSource) {
+	public void setInputSource(InputProcessor inputSource) {
 		this.inputSource = inputSource;
 		registerMoves();
 		registerRotations();

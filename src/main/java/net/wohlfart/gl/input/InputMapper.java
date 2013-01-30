@@ -1,6 +1,5 @@
 package net.wohlfart.gl.input;
 
-public class Command {
-
+public class InputMapper {
 
 }

@@ -1,6 +1,8 @@
 package net.wohlfart.gl.shader;
 
 
+import net.wohlfart.gl.input.InputProcessor;
+
 import org.lwjgl.util.vector.Matrix4f;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -38,6 +40,8 @@ public enum GraphicContextManager {
 	// the projection matrix defines the lens of the camera, e.g. view angle
 	private Matrix4f projectionMatrix;
 
+	private InputProcessor inputSource;
+
 	public void setCurrentGraphicContext(IGraphicContext graphicContext) {
 		LOGGER.debug("setting gfx context to '{}'", graphicContext);
 
@@ -50,6 +54,11 @@ public enum GraphicContextManager {
 		}
 	}
 
+	IGraphicContext getCurrentGraphicContext() {
+		return currentGraphicContext;
+	}
+
+
 
 	// can also be set with a uniform handle
 	public void setProjectionMatrix(Matrix4f projectionMatrix) {
@@ -61,18 +70,12 @@ public enum GraphicContextManager {
 	}
 
 
-	IGraphicContext getCurrentGraphicContext() {
-		return currentGraphicContext;
+	public void setInputSource(InputProcessor inputSource) {
+		this.inputSource = inputSource;
 	}
 
-	/*
-	int getLocation(ShaderAttributeHandle shaderAttributeHandle) {
-		return currentGraphicContext.getLocation(shaderAttributeHandle);
+	public InputProcessor getInputSource() {
+		return inputSource;
 	}
-
-	int getLocation(ShaderUniformHandle shaderUniformHandle) {
-		return currentGraphicContext.getLocation(shaderUniformHandle);
-	}
-	*/
 
 }

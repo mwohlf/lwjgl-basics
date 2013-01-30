@@ -11,7 +11,6 @@ import net.wohlfart.gl.elements.debug.CubeMesh;
 import net.wohlfart.gl.elements.debug.IcosphereMesh;
 import net.wohlfart.gl.elements.debug.TerahedronRefinedMesh;
 import net.wohlfart.gl.elements.debug.TetrahedronMesh;
-import net.wohlfart.gl.input.InputSource;
 import net.wohlfart.gl.input.KeyPressedEvent;
 import net.wohlfart.gl.renderer.RenderBucket;
 import net.wohlfart.gl.shader.DefaultGraphicContext;
@@ -37,24 +36,22 @@ class SimpleState implements GameState {
 	private GraphicContextManager.IGraphicContext defaultGraphicContext;
 	private GraphicContextManager.IGraphicContext wireframeGraphicContext;
 
+	private final RenderBucket skyboxBucket = new RenderBucket();
+	private final RenderBucket elemBucket = new RenderBucket();
+	private final RenderBucket uiBucket = new RenderBucket();
+
 	private boolean quit = false;
 
 	private final CanMoveImpl canMove = new CanMoveImpl();
 	private final CanRotateImpl canRotate = new CanRotateImpl();
 	private final Avatar avatar = new Avatar(canRotate, canMove);
 
-	private final RenderBucket skyboxBucket = new RenderBucket();
-	private final RenderBucket elemBucket = new RenderBucket();
-	private final RenderBucket uiBucket = new RenderBucket();
 
-
-	SimpleState() {
-	}
 
 	@Override
 	public void setup() {
 
-		avatar.setInputSource(InputSource.INSTANCE);
+		avatar.setInputSource(GraphicContextManager.INSTANCE.getInputSource());
 
 		wireframeGraphicContext = new DefaultGraphicContext(new WireframeShaderProgram());
 		GraphicContextManager.INSTANCE.setCurrentGraphicContext(wireframeGraphicContext);
@@ -103,7 +100,7 @@ class SimpleState implements GameState {
 
 		elemBucket.add(new ColoredQuad().translate(new Vector3f(-1, 5, 0)));
 
-		InputSource.INSTANCE.register(new KeyPressedEvent.Listener() {
+		GraphicContextManager.INSTANCE.getInputSource().register(new KeyPressedEvent.Listener() {
 			@Override
 			public void keyEvent(KeyPressedEvent evt) {
 				if (Keyboard.KEY_ESCAPE == evt.getKey()) {
@@ -122,7 +119,7 @@ class SimpleState implements GameState {
 
 	@Override
 	public void update(float tpf) {
-		LOGGER.debug("update called with tpf {}", tpf);
+		LOGGER.debug("update called with tpf/fps {}/{}", tpf, 1f/tpf);
 		// todo:
 		//   poll the user input
 		//   move the models

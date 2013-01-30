@@ -13,6 +13,8 @@
 
   <logger name="net.wohlfart" level="DEBUG" />
   <logger name="net.wohlfart.basic.Game" level="INFO" />
+  <logger name="net.wohlfart.gl.shader.GraphicContextManager" level="INFO" />
+  <logger name="net.wohlfart.basic.states.SimpleState" level="DEBUG" />
 
   <root level="INFO">
     <appender-ref ref="STDOUT" />

@@ -8,5 +8,13 @@ package net.wohlfart.basic.time;
  * Just create a timer implementation with a clock and call
  * the getDelta() to get the time in seconds since the last
  * call of getDelta().
+ *
+ *
+ * for lwjgl this looks like:
+ *
+ *  timer = new TimerImpl(DefaultLwjglClockImpl());
+ *  interval = timer.getDelta();
+ *
+ *
  */
 

@@ -5,7 +5,7 @@ import java.util.Set;
 
 import org.springframework.context.ApplicationContext;
 
-public class GameContext implements IGameContext {
+class GameContext implements IGameContext {
 	private final ApplicationContext delegate;
 
 	GameContext(final ApplicationContext context) {

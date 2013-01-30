@@ -1,10 +1,8 @@
 package net.wohlfart.basic.states;
 
 
-public class NullState implements GameState {
+class NullState implements GameState {
 
-	NullState() {
-	}
 
 	@Override
 	public void setup() {
