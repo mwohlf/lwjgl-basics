@@ -14,10 +14,10 @@ import com.google.common.eventbus.Subscribe;
 
 
 public class Avatar {
-	// used for key triggered rotations
-	private final float ROT_SPEED = 0.003f;
-	// used for key triggered moves
-	private final float MOVE_SPEED = 0.05f;
+	// used for key triggered rotations, default rotation speed is one rotation per second
+	private final float ROT_SPEED = 0.1f;
+	// used for key triggered moves, default move is 100 units per second
+	private final float MOVE_SPEED = 0.1f;
 
 	private final CanRotate rotation;
 	private final CanMove movement;
@@ -55,68 +55,68 @@ public class Avatar {
 	@Subscribe
 	public void moveForward(CommandEvent.MoveForward evt) {
 		Vector3f pos = movement.getPosition();
-		Vector3f.sub(pos, (Vector3f)rotation.getDir(new Vector3f()).scale(evt.getSpeed() * MOVE_SPEED), pos);
+		Vector3f.sub(pos, (Vector3f)rotation.getDir(new Vector3f()).scale(evt.getDelta() * MOVE_SPEED), pos);
 	}
 
 	@Subscribe
 	public void moveBackward(CommandEvent.MoveBackward evt) {
 		Vector3f pos = movement.getPosition();
-		Vector3f.add(pos, (Vector3f)rotation.getDir(new Vector3f()).scale(evt.getSpeed() * MOVE_SPEED), pos);
+		Vector3f.add(pos, (Vector3f)rotation.getDir(new Vector3f()).scale(evt.getDelta() * MOVE_SPEED), pos);
 	}
 
 	@Subscribe
 	public void moveLeft(CommandEvent.MoveLeft evt) {
 		Vector3f pos = movement.getPosition();
-		Vector3f.sub(pos, (Vector3f)rotation.getRght(new Vector3f()).scale(evt.getSpeed() * MOVE_SPEED), pos);
+		Vector3f.sub(pos, (Vector3f)rotation.getRght(new Vector3f()).scale(evt.getDelta() * MOVE_SPEED), pos);
 	}
 
 	@Subscribe
 	public void moveRight(CommandEvent.MoveRight evt) {
 		Vector3f pos = movement.getPosition();
-		Vector3f.add(pos, (Vector3f)rotation.getRght(new Vector3f()).scale(evt.getSpeed() * MOVE_SPEED), pos);
+		Vector3f.add(pos, (Vector3f)rotation.getRght(new Vector3f()).scale(evt.getDelta() * MOVE_SPEED), pos);
 	}
 
 	@Subscribe
 	public void moveUp(CommandEvent.MoveUp evt) {
 		Vector3f pos = movement.getPosition();
-		Vector3f.sub(pos, (Vector3f)rotation.getUp(new Vector3f()).scale(evt.getSpeed() * MOVE_SPEED), pos);
+		Vector3f.sub(pos, (Vector3f)rotation.getUp(new Vector3f()).scale(evt.getDelta() * MOVE_SPEED), pos);
 	}
 
 	@Subscribe
 	public void moveDown(CommandEvent.MoveDown evt) {
 		Vector3f pos = movement.getPosition();
-		Vector3f.add(pos, (Vector3f)rotation.getUp(new Vector3f()).scale(evt.getSpeed() * MOVE_SPEED), pos);
+		Vector3f.add(pos, (Vector3f)rotation.getUp(new Vector3f()).scale(evt.getDelta() * MOVE_SPEED), pos);
 	}
 
 
 	@Subscribe
-	public void rotateUp(CommandEvent.TurnUp evt) {
-		rotation.rotate(evt.getSpeed() * ROT_SPEED, new Vector3f(+1,0,0));
+	public void rotateUp(CommandEvent.RotateUp evt) {
+		rotation.rotate(evt.getDelta() * ROT_SPEED, new Vector3f(+1,0,0));
 	}
 
 	@Subscribe
-	public void rotateDown(CommandEvent.TurnDown evt) {
-		rotation.rotate(evt.getSpeed() * ROT_SPEED, new Vector3f(-1,0,0));
+	public void rotateDown(CommandEvent.RotateDown evt) {
+		rotation.rotate(evt.getDelta() * ROT_SPEED, new Vector3f(-1,0,0));
 	}
 
 	@Subscribe
-	public void rotateLeft(CommandEvent.TurnLeft evt) {
-		rotation.rotate(evt.getSpeed() * ROT_SPEED, new Vector3f(0,+1,0));
+	public void rotateLeft(CommandEvent.RotateLeft evt) {
+		rotation.rotate(evt.getDelta() * ROT_SPEED, new Vector3f(0,+1,0));
 	}
 
 	@Subscribe
-	public void rotateRight(CommandEvent.TurnRight evt) {
-		rotation.rotate(evt.getSpeed() * ROT_SPEED, new Vector3f(0,-1,0));
+	public void rotateRight(CommandEvent.RotateRight evt) {
+		rotation.rotate(evt.getDelta() * ROT_SPEED, new Vector3f(0,-1,0));
 	}
 
 	@Subscribe
-	public void rotateClockwise(CommandEvent.TurnClockwise evt) {
-		rotation.rotate(evt.getSpeed() * ROT_SPEED, new Vector3f(0,0,+1));
+	public void rotateClockwise(CommandEvent.RotateClockwise evt) {
+		rotation.rotate(evt.getDelta() * ROT_SPEED, new Vector3f(0,0,+1));
 	}
 
 	@Subscribe
-	public void rotateCounterClockwise(CommandEvent.TurnCounterClockwise evt) {
-		rotation.rotate(evt.getSpeed() * ROT_SPEED, new Vector3f(0,0,-1));
+	public void rotateCounterClockwise(CommandEvent.RotateCounterClockwise evt) {
+		rotation.rotate(evt.getDelta() * ROT_SPEED, new Vector3f(0,0,-1));
 	}
 
 }

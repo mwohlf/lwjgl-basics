@@ -50,7 +50,7 @@ public class LwjglInputSource implements InputSource {
 		while (it.hasNext()) {
 			int keyCode = it.next();
 			if (Keyboard.isKeyDown(keyCode)) {
-				keyboardDevice.pressed(keyCode);
+				keyboardDevice.pressed(keyCode, delta);
 			} else {
 				it.remove();
 			}

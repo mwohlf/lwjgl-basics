@@ -21,7 +21,7 @@ public interface InputAdaptor {
 
 		void down(int key);
 
-		void pressed(int keyCode);
+		void pressed(int key, float time);
 
 		void up(int key);
 

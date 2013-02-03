@@ -11,17 +11,17 @@ public class LwjglInputAdaptor implements InputAdaptor {
 	private final InputDispatcher inputDispatcher;
 
 
-	// core of the adaptor
+	// core of the adaptor, mapping platform keys to command events
 	@SuppressWarnings("serial")
 	private final HashMap<Integer, CommandEvent> keyMap = new HashMap<Integer, CommandEvent>() {{
 		put(Keyboard.KEY_ESCAPE, new CommandEvent.Exit());
 		// turning
-		put(Keyboard.KEY_LEFT, new CommandEvent.TurnLeft());
-		put(Keyboard.KEY_RIGHT, new CommandEvent.TurnRight());
-		put(Keyboard.KEY_UP, new CommandEvent.TurnUp());
-		put(Keyboard.KEY_DOWN, new CommandEvent.TurnDown());
-		put(Keyboard.KEY_PRIOR, new CommandEvent.TurnClockwise());
-		put(Keyboard.KEY_NEXT, new CommandEvent.TurnCounterClockwise());
+		put(Keyboard.KEY_LEFT, new CommandEvent.RotateLeft());
+		put(Keyboard.KEY_RIGHT, new CommandEvent.RotateRight());
+		put(Keyboard.KEY_UP, new CommandEvent.RotateUp());
+		put(Keyboard.KEY_DOWN, new CommandEvent.RotateDown());
+		put(Keyboard.KEY_PRIOR, new CommandEvent.RotateClockwise());
+		put(Keyboard.KEY_NEXT, new CommandEvent.RotateCounterClockwise());
 		// moving
 		put(Keyboard.KEY_W, new CommandEvent.MoveForward());
 		put(Keyboard.KEY_Y, new CommandEvent.MoveBackward());
@@ -29,7 +29,6 @@ public class LwjglInputAdaptor implements InputAdaptor {
 		put(Keyboard.KEY_S, new CommandEvent.MoveRight());
 		put(Keyboard.KEY_Q, new CommandEvent.MoveUp());
 		put(Keyboard.KEY_X, new CommandEvent.MoveDown());
-
 	}};
 
 
@@ -50,8 +49,9 @@ public class LwjglInputAdaptor implements InputAdaptor {
 		}
 
 		@Override
-		public void pressed(int key) {
+		public void pressed(int key, float time) {
 			CommandEvent command = keyMap.get(key);
+			command.setTime(time);
 			if (command != null) {
 				inputDispatcher.post(command);
 			}
@@ -70,7 +70,7 @@ public class LwjglInputAdaptor implements InputAdaptor {
 		}
 
 		@Override
-		public void pressed(int keyCode) {
+		public void pressed(int key, float time) {
 		}
 
 	};
