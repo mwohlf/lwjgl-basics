@@ -19,6 +19,9 @@ import org.slf4j.LoggerFactory;
 public enum GraphicContextManager {
 	INSTANCE;
 
+	protected static final Logger LOGGER = LoggerFactory.getLogger(GraphicContextManager.class);
+
+
 	public interface IGraphicContext {
 
 		int getLocation(ShaderAttributeHandle shaderAttributeHandle);
@@ -33,8 +36,6 @@ public enum GraphicContextManager {
 
 	}
 
-
-	protected static final Logger LOGGER = LoggerFactory.getLogger(GraphicContextManager.class);
 
 	private IGraphicContext currentGraphicContext;
 
@@ -55,13 +56,13 @@ public enum GraphicContextManager {
 		}
 	}
 
+	// package private for ShaderAttributeHandle and ShaderUniformHandle
 	IGraphicContext getCurrentGraphicContext() {
 		return currentGraphicContext;
 	}
 
 
 
-	// FIXME: this can also be set with a uniform handle
 	public void setProjectionMatrix(Matrix4f projectionMatrix) {
 		this.projectionMatrix = projectionMatrix;
 	}

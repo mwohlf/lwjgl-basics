@@ -15,9 +15,9 @@ import com.google.common.eventbus.Subscribe;
 
 public class Avatar {
 	// used for key triggered rotations
-	private final float ROT_SPEED = 0.001f;
+	private final float ROT_SPEED = 0.003f;
 	// used for key triggered moves
-	private final float MOVE_SPEED = 0.005f;
+	private final float MOVE_SPEED = 0.05f;
 
 	private final CanRotate rotation;
 	private final CanMove movement;

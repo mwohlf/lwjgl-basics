@@ -1,6 +1,7 @@
 package net.wohlfart.gl.input;
 
 import java.util.HashSet;
+import java.util.Iterator;
 
 import net.wohlfart.gl.input.InputAdaptor.DigitalEventDispatcher;
 
@@ -44,10 +45,16 @@ public class LwjglInputSource implements InputSource {
 
 	private void processKeyboardState(float delta) {
 		DigitalEventDispatcher keyboardDevice = inputAdaptor.getKeyboardDigitalDevice();
-		for (int keyCode : pressedKeys) {
-			keyboardDevice.pressed(keyCode);
+		Keyboard.poll();
+		Iterator<Integer> it = pressedKeys.iterator();
+		while (it.hasNext()) {
+			int keyCode = it.next();
+			if (Keyboard.isKeyDown(keyCode)) {
+				keyboardDevice.pressed(keyCode);
+			} else {
+				it.remove();
+			}
 		}
-
 	}
 
 /*

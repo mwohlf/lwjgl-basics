@@ -22,6 +22,7 @@ import net.wohlfart.tools.SimpleMatrix4f;
 
 import org.lwjgl.opengl.Display;
 import org.lwjgl.util.ReadableColor;
+import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Quaternion;
 import org.lwjgl.util.vector.Vector3f;
 import org.slf4j.Logger;
@@ -47,18 +48,12 @@ class SimpleState implements GameState {
 
 	@Override
 	public void setup() {
-
 		avatar.setup();
-
-		// FIXME: we dont need to set them both here
 		wireframeGraphicContext = new DefaultGraphicContext(new WireframeShaderProgram());
-		GraphicContextManager.INSTANCE.setCurrentGraphicContext(wireframeGraphicContext);
-
 		defaultGraphicContext = new DefaultGraphicContext(new DefaultShaderProgram());
-		GraphicContextManager.INSTANCE.setCurrentGraphicContext(defaultGraphicContext);
 
-		// render the skybox first
 		skyboxBucket.add(new Skybox());
+
 
 		elemBucket.add(new Arrow(new Vector3f(1, 0, 0))
 				.color(ReadableColor.RED));
@@ -94,14 +89,22 @@ class SimpleState implements GameState {
 		elemBucket.add(new IcosphereMesh(1, 1).lineWidth(2)
 				.color(ReadableColor.BLUE).translate(new Vector3f(-5, -7, 0)));
 
+
+		for (int i = 0; i < 10000 ; i++) {
+			int x = SimpleMath.random(-2000, 2000);
+			int y = SimpleMath.random(-2000, 2000);
+			int z = SimpleMath.random(-2000, 2000);
+			elemBucket.add(new IcosphereMesh(1, 1).lineWidth(1)
+					.color(ReadableColor.RED).translate(new Vector3f(x, y, z)));
+		}
+
+
 		elemBucket.add(new TexturedQuad().translate(new Vector3f(-1, 5, 0)));
 
 		elemBucket.add(new ColoredQuad().translate(new Vector3f(-1, 5, 0)));
 
 		GraphicContextManager.INSTANCE.getInputDispatcher().register(this);
 
-		// Font awtFont = new Font("Times New Roman", Font.PLAIN, 24);
-		// trueTypeFont = new TrueTypeFont(awtFont, false);
 	}
 
 	@Subscribe
@@ -123,16 +126,24 @@ class SimpleState implements GameState {
 	@Override
 	public void render() {
 
+		Matrix4f camViewMatrix = GraphicContextManager.INSTANCE.getProjectionMatrix();
+
+		Matrix4f posMatrix = SimpleMatrix4f.create(avatar.getPosition().negate(null));
+		Matrix4f rotMatrix = SimpleMatrix4f.create(avatar.getRotation());
+		Matrix4f rotPosMatrix = Matrix4f.mul(rotMatrix, posMatrix, new Matrix4f());
+
 		GraphicContextManager.INSTANCE.setCurrentGraphicContext(defaultGraphicContext);
-		ShaderUniformHandle.MODEL_TO_WORLD.set(SimpleMath.UNION_MATRIX); // no move
-		ShaderUniformHandle.WORLD_TO_CAM.set(SimpleMatrix4f.create(avatar.getRotation()));
-		ShaderUniformHandle.CAM_TO_CLIP.set(GraphicContextManager.INSTANCE.getProjectionMatrix());
+		ShaderUniformHandle.MODEL_TO_WORLD.set(SimpleMath.UNION_MATRIX);
+		ShaderUniformHandle.WORLD_TO_CAM.set(rotMatrix);
+		ShaderUniformHandle.CAM_TO_CLIP.set(camViewMatrix);
 		skyboxBucket.render();
 
+		//SimpleMatrix4f matrix = SimpleMatrix4f.create(avatar.getPosition(), avatar.getRotation());
+
 		GraphicContextManager.INSTANCE.setCurrentGraphicContext(wireframeGraphicContext);
-		ShaderUniformHandle.MODEL_TO_WORLD.set(SimpleMatrix4f.create(avatar.getPosition()));
-		ShaderUniformHandle.WORLD_TO_CAM.set(SimpleMatrix4f.create(avatar.getRotation()));
-		ShaderUniformHandle.CAM_TO_CLIP.set(GraphicContextManager.INSTANCE.getProjectionMatrix());
+		ShaderUniformHandle.MODEL_TO_WORLD.set(SimpleMath.UNION_MATRIX);
+		ShaderUniformHandle.WORLD_TO_CAM.set(rotPosMatrix);
+		ShaderUniformHandle.CAM_TO_CLIP.set(camViewMatrix);
 		elemBucket.render();
 
 		uiBucket.render();
