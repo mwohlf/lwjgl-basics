@@ -17,17 +17,19 @@ public class CelestialScene implements CanMove {
 
 	public CelestialScene() {
 		//celestials.add(new Celestial(){{position.set(new Vector3f(0,0,-40f));}});
-		addRandomPlanets(13);
 	}
 
+	public void setup() {
+		addRandomPlanets(13);
+	}
 
 	private void addRandomPlanets(final int planetCount) {
 		final Random random = new Random(1);
 		for (int i = 1; i <= planetCount; i++) {
 			final Celestial celestial = new Celestial(random.nextLong());
 			celestials.add(celestial);
-			final float rad = ((float)(2f * Math.PI) / (float) planetCount) * (float) i;
-			celestial.setPosition((float)Math.sin(rad) * 200, (float)0, (float)Math.cos(rad) * 200);
+			final float rad = ((float)(2f * Math.PI) / planetCount) * i;
+			celestial.setPosition((float)Math.sin(rad) * 200, 0, (float)Math.cos(rad) * 200);
 		}
 	}
 
@@ -48,12 +50,12 @@ public class CelestialScene implements CanMove {
 	}
 
 	@Override
-	public Vector3f getPos() {
+	public Vector3f getPosition() {
 		return position;
 	}
 
 	@Override
-	public void setPos(Vector3f pos) {
+	public void setPosition(Vector3f pos) {
 		position.set(pos);
 		for (Celestial celestial : celestials) {
 			celestial.position.set(

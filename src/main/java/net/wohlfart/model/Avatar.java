@@ -1,132 +1,122 @@
 package net.wohlfart.model;
 
 import net.wohlfart.gl.CanMove;
+import net.wohlfart.gl.CanMoveImpl;
 import net.wohlfart.gl.CanRotate;
-import net.wohlfart.gl.input.InputProcessor;
-import net.wohlfart.gl.input.KeyPressedEvent;
-import net.wohlfart.gl.input.MouseMotionEvent;
-import net.wohlfart.gl.input.MouseWheelEvent;
+import net.wohlfart.gl.CanRotateImpl;
+import net.wohlfart.gl.input.CommandEvent;
+import net.wohlfart.gl.shader.GraphicContextManager;
 
-import org.lwjgl.input.Keyboard;
+import org.lwjgl.util.vector.Quaternion;
 import org.lwjgl.util.vector.Vector3f;
 
+import com.google.common.eventbus.Subscribe;
 
-// this is a class that handles a canRotate and a canMove object
-// FIXME: remove the dependency to the InputSource singleton and add
-// configurable key/mouse actions instead of hardcoded ones
+
 public class Avatar {
 	// used for key triggered rotations
-	private final float ROT_KEY_SPEED = 0.1f;
-	// used for mouse movement triggered rotations
-	private final float ROT_MOUSE_SPEED = 0.005f;
-	// used for mouse wheel triggered moves
-	private final float MOVE_WHEEL_SPEED = 0.005f;
+	private final float ROT_SPEED = 0.001f;
 	// used for key triggered moves
-	private final float MOVE_KEY_SPEED = 0.5f;
+	private final float MOVE_SPEED = 0.005f;
 
-	private InputProcessor inputSource;
 	private final CanRotate rotation;
-	private final CanMove position;
+	private final CanMove movement;
+
+
+	public Avatar() {
+		this(new CanRotateImpl(), new CanMoveImpl());
+	}
 
 	public Avatar(final CanRotate rotation,
-			      final CanMove position) {
+			      final CanMove movement) {
 		this.rotation = rotation;
-		this.position = position;
+		this.movement = movement;
 	}
 
 
-	public void setInputSource(InputProcessor inputSource) {
-		this.inputSource = inputSource;
-		registerMoves();
-		registerRotations();
+	public Quaternion getRotation() {
+		return rotation.getRotation();
+	}
+
+	public Vector3f getPosition() {
+		return movement.getPosition();
 	}
 
 
-	private void registerRotations() {
-		inputSource.register(new KeyPressedEvent.Listener() {
-			@Override
-			public void keyEvent(KeyPressedEvent evt) {
-				switch (evt.getKey()) {
-				case Keyboard.KEY_UP:
-					rotation.rotate(ROT_KEY_SPEED, new Vector3f(1,0,0));//camera.getRght(new Vector3f()));
-					break;
-				case Keyboard.KEY_DOWN:
-					rotation.rotate(-ROT_KEY_SPEED, new Vector3f(1,0,0));//camera.getRght(new Vector3f()));
-					break;
-				case Keyboard.KEY_LEFT:
-					rotation.rotate(ROT_KEY_SPEED, new Vector3f(0,1,0));//camera.getUp(new Vector3f()));
-					break;
-				case Keyboard.KEY_RIGHT:
-					rotation.rotate(-ROT_KEY_SPEED, new Vector3f(0,1,0));//camera.getUp(new Vector3f()));
-					break;
-				case Keyboard.KEY_PRIOR:
-					rotation.rotate(ROT_KEY_SPEED, new Vector3f(0,0,1));//camera.getDir(new Vector3f()));
-					break;
-				case Keyboard.KEY_NEXT:
-					rotation.rotate(-ROT_KEY_SPEED, new Vector3f(0,0,1));//camera.getDir(new Vector3f()));
-					break;
-				}
-			}
-		});
+	public void setup() {
+		GraphicContextManager.INSTANCE.getInputDispatcher().register(this);
+	}
 
-		inputSource.register(new MouseMotionEvent.Listener() {
-			@Override
-			public void keyEvent(MouseMotionEvent evt) {
-				if (evt.isLeftButtonPressed()) {
-					int dx = evt.getDx();
-					int dy = evt.getDy();
-					rotation.rotate(-(float)dy * ROT_MOUSE_SPEED, new Vector3f(1,0,0));
-					rotation.rotate(+(float)dx * ROT_MOUSE_SPEED, new Vector3f(0,1,0));
-				}
-			}
-		});
-
-		inputSource.register(new MouseWheelEvent.Listener() {
-			@Override
-			public void keyEvent(MouseWheelEvent evt) {
-				int wheel = evt.getWheel();
-				Vector3f pos = position.getPos();
-				Vector3f move = rotation.getDir(new Vector3f());
-				move.x *= wheel * MOVE_WHEEL_SPEED;
-				move.y *= wheel * MOVE_WHEEL_SPEED;
-				move.z *= wheel * MOVE_WHEEL_SPEED;
-				Vector3f.sub(pos, move, pos);
-				position.setPos(pos);
-			}
-		});
-	};
-
-
-	private void registerMoves() {
-		inputSource.register(new KeyPressedEvent.Listener() {
-			@Override
-			public void keyEvent(KeyPressedEvent evt) {
-				Vector3f pos = position.getPos();  // this is actually the pos itself not a copy!
-				switch (evt.getKey()) {
-				case Keyboard.KEY_W:
-					Vector3f.sub(pos, (Vector3f)rotation.getDir(new Vector3f()).scale(MOVE_KEY_SPEED), pos);
-					break;
-				case Keyboard.KEY_Y:
-					Vector3f.add(pos, (Vector3f)rotation.getDir(new Vector3f()).scale(MOVE_KEY_SPEED), pos);
-					break;
-				case Keyboard.KEY_A:
-					Vector3f.sub(pos, (Vector3f)rotation.getRght(new Vector3f()).scale(MOVE_KEY_SPEED), pos);
-					break;
-				case Keyboard.KEY_S:
-					Vector3f.add(pos, (Vector3f)rotation.getRght(new Vector3f()).scale(MOVE_KEY_SPEED), pos);
-					break;
-				case Keyboard.KEY_Q:
-					Vector3f.add(pos, (Vector3f)rotation.getUp(new Vector3f()).scale(MOVE_KEY_SPEED), pos);
-					break;
-				case Keyboard.KEY_X:
-					Vector3f.sub(pos, (Vector3f)rotation.getUp(new Vector3f()).scale(MOVE_KEY_SPEED), pos);
-					break;
-				}
-				position.setPos(pos);
-			}
-		});
+	public void dispose() {
+		GraphicContextManager.INSTANCE.getInputDispatcher().unregister(this);
 	}
 
 
+	@Subscribe
+	public void moveForward(CommandEvent.MoveForward evt) {
+		Vector3f pos = movement.getPosition();
+		Vector3f.sub(pos, (Vector3f)rotation.getDir(new Vector3f()).scale(evt.getSpeed() * MOVE_SPEED), pos);
+	}
+
+	@Subscribe
+	public void moveBackward(CommandEvent.MoveBackward evt) {
+		Vector3f pos = movement.getPosition();
+		Vector3f.add(pos, (Vector3f)rotation.getDir(new Vector3f()).scale(evt.getSpeed() * MOVE_SPEED), pos);
+	}
+
+	@Subscribe
+	public void moveLeft(CommandEvent.MoveLeft evt) {
+		Vector3f pos = movement.getPosition();
+		Vector3f.sub(pos, (Vector3f)rotation.getRght(new Vector3f()).scale(evt.getSpeed() * MOVE_SPEED), pos);
+	}
+
+	@Subscribe
+	public void moveRight(CommandEvent.MoveRight evt) {
+		Vector3f pos = movement.getPosition();
+		Vector3f.add(pos, (Vector3f)rotation.getRght(new Vector3f()).scale(evt.getSpeed() * MOVE_SPEED), pos);
+	}
+
+	@Subscribe
+	public void moveUp(CommandEvent.MoveUp evt) {
+		Vector3f pos = movement.getPosition();
+		Vector3f.sub(pos, (Vector3f)rotation.getUp(new Vector3f()).scale(evt.getSpeed() * MOVE_SPEED), pos);
+	}
+
+	@Subscribe
+	public void moveDown(CommandEvent.MoveDown evt) {
+		Vector3f pos = movement.getPosition();
+		Vector3f.add(pos, (Vector3f)rotation.getUp(new Vector3f()).scale(evt.getSpeed() * MOVE_SPEED), pos);
+	}
+
+
+	@Subscribe
+	public void rotateUp(CommandEvent.TurnUp evt) {
+		rotation.rotate(evt.getSpeed() * ROT_SPEED, new Vector3f(+1,0,0));
+	}
+
+	@Subscribe
+	public void rotateDown(CommandEvent.TurnDown evt) {
+		rotation.rotate(evt.getSpeed() * ROT_SPEED, new Vector3f(-1,0,0));
+	}
+
+	@Subscribe
+	public void rotateLeft(CommandEvent.TurnLeft evt) {
+		rotation.rotate(evt.getSpeed() * ROT_SPEED, new Vector3f(0,+1,0));
+	}
+
+	@Subscribe
+	public void rotateRight(CommandEvent.TurnRight evt) {
+		rotation.rotate(evt.getSpeed() * ROT_SPEED, new Vector3f(0,-1,0));
+	}
+
+	@Subscribe
+	public void rotateClockwise(CommandEvent.TurnClockwise evt) {
+		rotation.rotate(evt.getSpeed() * ROT_SPEED, new Vector3f(0,0,+1));
+	}
+
+	@Subscribe
+	public void rotateCounterClockwise(CommandEvent.TurnCounterClockwise evt) {
+		rotation.rotate(evt.getSpeed() * ROT_SPEED, new Vector3f(0,0,-1));
+	}
 
 }

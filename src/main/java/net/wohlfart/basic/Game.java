@@ -2,11 +2,13 @@ package net.wohlfart.basic;
 
 import net.wohlfart.basic.states.GameState;
 import net.wohlfart.basic.states.GameStateEnum;
-import net.wohlfart.basic.time.DefaultLwjglClockImpl;
+import net.wohlfart.basic.time.LwjglClockImpl;
 import net.wohlfart.basic.time.Timer;
 import net.wohlfart.basic.time.TimerImpl;
-import net.wohlfart.gl.input.DefaultLwjglInputSource;
-import net.wohlfart.gl.input.InputProcessor;
+import net.wohlfart.gl.input.DefaultInputDispatcher;
+import net.wohlfart.gl.input.InputSource;
+import net.wohlfart.gl.input.LwjglInputAdaptor;
+import net.wohlfart.gl.input.LwjglInputSource;
 import net.wohlfart.gl.shader.GraphicContextManager;
 import net.wohlfart.tools.SimpleMath;
 
@@ -26,11 +28,12 @@ class Game {
 	protected static final Logger LOGGER = LoggerFactory.getLogger(Game.class);
 
 	protected Settings settings = new Settings(); // just a default in case nothing gets injected
-	protected Timer timer = new TimerImpl(new DefaultLwjglClockImpl());
+	protected Timer timer = new TimerImpl(new LwjglClockImpl());
 	protected GameState currentState = GameStateEnum.NULL.getValue();
 	protected GraphicContextManager graphContext = GraphicContextManager.INSTANCE;
-	protected InputProcessor inputProcessor = new InputProcessor(new DefaultLwjglInputSource());
-	//protected InputProcessor inputProcessor = new DefaultLwjglInputSource();
+
+	protected DefaultInputDispatcher inputDispatcher = new DefaultInputDispatcher();
+	protected InputSource inputSource = new LwjglInputSource(new LwjglInputAdaptor(inputDispatcher));
 
 
 	/**
@@ -39,7 +42,7 @@ class Game {
 	void start() {
 		try {
 			graphContext.setProjectionMatrix(createProjectionMatrix());
-			graphContext.setInputSource(inputProcessor);
+			graphContext.setInputDispatcher(inputDispatcher);
 			bootupOpenGL();
 			setCurrentState(GameStateEnum.SIMPLE);
 			runApplicationLoop();
@@ -67,7 +70,7 @@ class Game {
 			// draw the (double-)buffer to the screen, trigger input
 			Display.update();
 			// triggers the callbacks for user input
-			inputProcessor.process(delta);
+			inputSource.createInputEvents(delta);
 		}
 	}
 

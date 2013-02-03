@@ -3,7 +3,7 @@ package net.wohlfart.basic.time;
 import org.lwjgl.Sys;
 
 
-public class DefaultLwjglClockImpl implements Clock {
+public class LwjglClockImpl implements Clock {
 
 	@Override
 	public long getTicks() {

@@ -1,9 +1,10 @@
 package net.wohlfart.gl;
 
-import net.wohlfart.tools.SimpleQuaternion;
 import net.wohlfart.tools.SimpleMath;
+import net.wohlfart.tools.SimpleQuaternion;
 
 import org.lwjgl.opengl.GL11;
+import org.lwjgl.util.vector.Quaternion;
 import org.lwjgl.util.vector.Vector3f;
 
 
@@ -20,6 +21,11 @@ import org.lwjgl.util.vector.Vector3f;
 public class Camera implements CanRotate {
 	private final SimpleQuaternion q  = new SimpleQuaternion();
 
+
+	@Override
+	public Quaternion getRotation() {
+		return q;
+	}
 
 	// the (1,0,0) vector / X axis
 	@Override
@@ -53,6 +59,7 @@ public class Camera implements CanRotate {
 	 * @param angle rotation in rad
 	 * @param axis rotation axis, must be in the cam's coord system e.g. use (0,1,0)
 	 */
+	@Override
 	public void rotate(final float angle, final Vector3f axis){
 		axis.normalise();
 		SimpleQuaternion rot = new SimpleQuaternion();
@@ -90,6 +97,7 @@ public class Camera implements CanRotate {
 	}
 
 
+	@Override
 	public String toString() {
 		Vector3f up = getUp(new Vector3f());
 		Vector3f dir = getDir(new Vector3f());

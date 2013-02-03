@@ -1,26 +1,28 @@
 package net.wohlfart.basic.states;
 
 import net.wohlfart.gl.Camera;
-import net.wohlfart.gl.input.DefaultLwjglInputSource;
-import net.wohlfart.gl.input.KeyTypedEvent;
+import net.wohlfart.gl.input.CommandEvent;
+import net.wohlfart.gl.input.LwjglInputSource;
 import net.wohlfart.gl.shader.GraphicContextManager;
 import net.wohlfart.model.Avatar;
 import net.wohlfart.model.CelestialScene;
 import net.wohlfart.widgets.Renderer;
 import net.wohlfart.widgets.Screen;
 
-import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.Display;
+
+import com.google.common.eventbus.Subscribe;
 
 class CelestialState implements GameState {
 
-	protected DefaultLwjglInputSource inputProcessor;
-	protected CelestialScene scene;
-	protected Camera camera;
-	protected Avatar avatar;
+	protected LwjglInputSource inputProcessor;
+	protected CelestialScene scene = new CelestialScene();
+	protected Camera camera = new Camera();
+	protected Avatar avatar = new Avatar(camera, scene);
 
-	protected Renderer renderer;
-	protected Screen widgetSet;
+
+	protected Renderer renderer = new Renderer();
+	protected Screen widgetSet = new Screen();
 
 	protected boolean escPressed = false;
 
@@ -30,20 +32,13 @@ class CelestialState implements GameState {
 
 	@Override
 	public void setup() {
-		camera = new Camera();
-		scene = new CelestialScene();
-		avatar = new Avatar(camera, scene);
-		avatar.setInputSource(GraphicContextManager.INSTANCE.getInputSource());
-		GraphicContextManager.INSTANCE.getInputSource().register(new KeyTypedEvent.Listener() {
-			@Override
-			public void keyEvent(KeyTypedEvent evt) {
-				if (evt.getKey() == Keyboard.KEY_ESCAPE) {
-					escPressed = true;
-				}
-			}
-		});
-		widgetSet = new Screen();
-		renderer = new Renderer();
+		GraphicContextManager.INSTANCE.getInputDispatcher().register(this);
+		avatar.setup();
+	}
+
+	@Subscribe
+	public void onExitTriggered(CommandEvent.Exit exitEvent) {
+		escPressed = true;
 	}
 
 

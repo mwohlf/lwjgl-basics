@@ -1,11 +1,17 @@
 package net.wohlfart.gl;
 
-import org.lwjgl.util.vector.Vector3f;
-
 import net.wohlfart.tools.SimpleQuaternion;
 
+import org.lwjgl.util.vector.Quaternion;
+import org.lwjgl.util.vector.Vector3f;
+
 @SuppressWarnings("serial")
-public class CanRotateImpl extends SimpleQuaternion  implements CanRotate {
+public class CanRotateImpl extends SimpleQuaternion implements CanRotate {
+
+	@Override
+	public Quaternion getRotation() {
+		return this;
+	}
 
 	@Override
 	public void rotate(float angle, Vector3f axis) {

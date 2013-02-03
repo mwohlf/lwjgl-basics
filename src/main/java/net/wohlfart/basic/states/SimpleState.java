@@ -1,7 +1,5 @@
 package net.wohlfart.basic.states;
 
-import net.wohlfart.gl.CanMoveImpl;
-import net.wohlfart.gl.CanRotateImpl;
 import net.wohlfart.gl.elements.ColoredQuad;
 import net.wohlfart.gl.elements.Skybox;
 import net.wohlfart.gl.elements.TexturedQuad;
@@ -11,7 +9,7 @@ import net.wohlfart.gl.elements.debug.CubeMesh;
 import net.wohlfart.gl.elements.debug.IcosphereMesh;
 import net.wohlfart.gl.elements.debug.TerahedronRefinedMesh;
 import net.wohlfart.gl.elements.debug.TetrahedronMesh;
-import net.wohlfart.gl.input.KeyPressedEvent;
+import net.wohlfart.gl.input.CommandEvent;
 import net.wohlfart.gl.renderer.RenderBucket;
 import net.wohlfart.gl.shader.DefaultGraphicContext;
 import net.wohlfart.gl.shader.DefaultShaderProgram;
@@ -22,13 +20,14 @@ import net.wohlfart.model.Avatar;
 import net.wohlfart.tools.SimpleMath;
 import net.wohlfart.tools.SimpleMatrix4f;
 
-import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.util.ReadableColor;
 import org.lwjgl.util.vector.Quaternion;
 import org.lwjgl.util.vector.Vector3f;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import com.google.common.eventbus.Subscribe;
 
 class SimpleState implements GameState {
 	protected static final Logger LOGGER = LoggerFactory.getLogger(SimpleState.class);
@@ -42,17 +41,16 @@ class SimpleState implements GameState {
 
 	private boolean quit = false;
 
-	private final CanMoveImpl canMove = new CanMoveImpl();
-	private final CanRotateImpl canRotate = new CanRotateImpl();
-	private final Avatar avatar = new Avatar(canRotate, canMove);
+	private final Avatar avatar = new Avatar();
 
 
 
 	@Override
 	public void setup() {
 
-		avatar.setInputSource(GraphicContextManager.INSTANCE.getInputSource());
+		avatar.setup();
 
+		// FIXME: we dont need to set them both here
 		wireframeGraphicContext = new DefaultGraphicContext(new WireframeShaderProgram());
 		GraphicContextManager.INSTANCE.setCurrentGraphicContext(wireframeGraphicContext);
 
@@ -100,20 +98,14 @@ class SimpleState implements GameState {
 
 		elemBucket.add(new ColoredQuad().translate(new Vector3f(-1, 5, 0)));
 
-		GraphicContextManager.INSTANCE.getInputSource().register(new KeyPressedEvent.Listener() {
-			@Override
-			public void keyEvent(KeyPressedEvent evt) {
-				if (Keyboard.KEY_ESCAPE == evt.getKey()) {
-					quit();
-				}
-			}
-		});
+		GraphicContextManager.INSTANCE.getInputDispatcher().register(this);
 
 		// Font awtFont = new Font("Times New Roman", Font.PLAIN, 24);
 		// trueTypeFont = new TrueTypeFont(awtFont, false);
 	}
 
-	public synchronized void quit() {
+	@Subscribe
+	public synchronized void onExitTriggered(CommandEvent.Exit exitEvent) {
 		quit = true;
 	}
 
@@ -133,13 +125,13 @@ class SimpleState implements GameState {
 
 		GraphicContextManager.INSTANCE.setCurrentGraphicContext(defaultGraphicContext);
 		ShaderUniformHandle.MODEL_TO_WORLD.set(SimpleMath.UNION_MATRIX); // no move
-		ShaderUniformHandle.WORLD_TO_CAM.set(SimpleMatrix4f.create(canRotate));
+		ShaderUniformHandle.WORLD_TO_CAM.set(SimpleMatrix4f.create(avatar.getRotation()));
 		ShaderUniformHandle.CAM_TO_CLIP.set(GraphicContextManager.INSTANCE.getProjectionMatrix());
 		skyboxBucket.render();
 
 		GraphicContextManager.INSTANCE.setCurrentGraphicContext(wireframeGraphicContext);
-		ShaderUniformHandle.MODEL_TO_WORLD.set(SimpleMatrix4f.create(canMove));
-		ShaderUniformHandle.WORLD_TO_CAM.set(SimpleMatrix4f.create(canRotate));
+		ShaderUniformHandle.MODEL_TO_WORLD.set(SimpleMatrix4f.create(avatar.getPosition()));
+		ShaderUniformHandle.WORLD_TO_CAM.set(SimpleMatrix4f.create(avatar.getRotation()));
 		ShaderUniformHandle.CAM_TO_CLIP.set(GraphicContextManager.INSTANCE.getProjectionMatrix());
 		elemBucket.render();
 
@@ -155,6 +147,7 @@ class SimpleState implements GameState {
 	public void dispose() {
 		defaultGraphicContext.dispose();
 		wireframeGraphicContext.dispose();
+		avatar.dispose();
 	}
 
 }

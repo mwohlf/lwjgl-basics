@@ -12,7 +12,7 @@ package net.wohlfart.basic.time;
  *
  * for lwjgl this looks like:
  *
- *  timer = new TimerImpl(DefaultLwjglClockImpl());
+ *  timer = new TimerImpl(LwjglClockImpl());
  *  interval = timer.getDelta();
  *
  *

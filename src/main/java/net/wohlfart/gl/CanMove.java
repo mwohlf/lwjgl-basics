@@ -4,8 +4,8 @@ import org.lwjgl.util.vector.Vector3f;
 
 public interface CanMove {
 	
-	public Vector3f getPos();
+	public Vector3f getPosition();
 	
-	public void setPos(final Vector3f vector);
+	public void setPosition(final Vector3f vector);
 
 }
