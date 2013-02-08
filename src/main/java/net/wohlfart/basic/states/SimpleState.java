@@ -49,12 +49,16 @@ class SimpleState implements GameState {
 	@Override
 	public void setup() {
 		avatar.setup();
+		GraphicContextManager.INSTANCE.getInputDispatcher().register(this);
 		wireframeGraphicContext = new DefaultGraphicContext(new WireframeShaderProgram());
 		defaultGraphicContext = new DefaultGraphicContext(new DefaultShaderProgram());
 
 		skyboxBucket.add(new Skybox());
+	//	setupElementBucket();
+	}
 
 
+	private void setupElementBucket() {
 		elemBucket.add(new Arrow(new Vector3f(1, 0, 0))
 				.color(ReadableColor.RED));
 		elemBucket.add(new Arrow(new Vector3f(0, 1, 0))
@@ -91,20 +95,16 @@ class SimpleState implements GameState {
 
 
 		for (int i = 0; i < 10000 ; i++) {
-			int x = SimpleMath.random(-2000, 2000);
-			int y = SimpleMath.random(-2000, 2000);
-			int z = SimpleMath.random(-2000, 2000);
+			int x = SimpleMath.random(-200, 200);
+			int y = SimpleMath.random(-200, 200);
+			int z = SimpleMath.random(-200, 200);
 			elemBucket.add(new IcosphereMesh(1, 1).lineWidth(1)
 					.color(ReadableColor.RED).translate(new Vector3f(x, y, z)));
 		}
 
-
 		elemBucket.add(new TexturedQuad().translate(new Vector3f(-1, 5, 0)));
 
 		elemBucket.add(new ColoredQuad().translate(new Vector3f(-1, 5, 0)));
-
-		GraphicContextManager.INSTANCE.getInputDispatcher().register(this);
-
 	}
 
 	@Subscribe
