@@ -1,7 +1,6 @@
 package net.wohlfart.basic.states;
 
 import net.wohlfart.gl.elements.ColoredQuad;
-import net.wohlfart.gl.elements.Skybox;
 import net.wohlfart.gl.elements.TexturedQuad;
 import net.wohlfart.gl.elements.debug.Arrow;
 import net.wohlfart.gl.elements.debug.Circle;
@@ -9,6 +8,7 @@ import net.wohlfart.gl.elements.debug.CubeMesh;
 import net.wohlfart.gl.elements.debug.IcosphereMesh;
 import net.wohlfart.gl.elements.debug.TerahedronRefinedMesh;
 import net.wohlfart.gl.elements.debug.TetrahedronMesh;
+import net.wohlfart.gl.elements.skybox.Skybox;
 import net.wohlfart.gl.input.CommandEvent;
 import net.wohlfart.gl.renderer.RenderBucket;
 import net.wohlfart.gl.shader.DefaultGraphicContext;
@@ -54,14 +54,12 @@ class SimpleState implements GameState {
 		GraphicContextManager.INSTANCE.getInputDispatcher().register(avatar);
 		GraphicContextManager.INSTANCE.getInputDispatcher().register(this);
 
-
 		wireframeGraphicContext = new DefaultGraphicContext(new WireframeShaderProgram());
 		defaultGraphicContext = new DefaultGraphicContext(new DefaultShaderProgram());
 
-
-
-
 		skybox.init(avatar, defaultGraphicContext);
+
+
 	//	skyboxBucket.add(new Skybox());
 	//	setupElementBucket();
 	}
@@ -134,16 +132,13 @@ class SimpleState implements GameState {
 
 	@Override
 	public void render() {
+		skybox.render();
 
 		Matrix4f camViewMatrix = GraphicContextManager.INSTANCE.getProjectionMatrix();
 
 		Matrix4f posMatrix = SimpleMatrix4f.create(avatar.getPosition().negate(null));
 		Matrix4f rotMatrix = SimpleMatrix4f.create(avatar.getRotation());
 		Matrix4f rotPosMatrix = Matrix4f.mul(rotMatrix, posMatrix, new Matrix4f());
-
-		skybox.render();
-
-		//SimpleMatrix4f matrix = SimpleMatrix4f.create(avatar.getPosition(), avatar.getRotation());
 
 		GraphicContextManager.INSTANCE.setCurrentGraphicContext(wireframeGraphicContext);
 		ShaderUniformHandle.MODEL_TO_WORLD.set(SimpleMath.UNION_MATRIX);
@@ -163,6 +158,7 @@ class SimpleState implements GameState {
 	public void dispose() {
 		defaultGraphicContext.dispose();
 		wireframeGraphicContext.dispose();
+		// event bus unregistration
 		GraphicContextManager.INSTANCE.getInputDispatcher().unregister(avatar);
 		GraphicContextManager.INSTANCE.getInputDispatcher().unregister(this);
 	}

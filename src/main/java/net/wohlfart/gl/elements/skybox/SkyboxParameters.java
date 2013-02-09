@@ -1,4 +1,4 @@
-package net.wohlfart.gl.elements;
+package net.wohlfart.gl.elements.skybox;
 
 public interface SkyboxParameters {
 

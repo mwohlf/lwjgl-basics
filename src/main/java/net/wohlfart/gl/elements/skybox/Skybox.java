@@ -1,4 +1,4 @@
-package net.wohlfart.gl.elements;
+package net.wohlfart.gl.elements.skybox;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,11 +18,13 @@ public class Skybox implements Renderable, SkyboxParameters {
 
 	private static final int SIZE = 1024;
 
-	private static final float DOT_PROD_LIMIT = -0.1f; // this depends on the view angle
+	private static final float DOT_PROD_LIMIT = -0.5f; // this depends on the view angle
 
 	private final Vector3f viewDirection = new Vector3f();
 
-	private MeshWithNormal[] sides;
+
+
+	private BoxSideMesh[] sides;
 
 	private Avatar avatar;
 
@@ -36,12 +38,12 @@ public class Skybox implements Renderable, SkyboxParameters {
 		// in order to build the mesh we need the unions and attribute positions, so we have to switch
 		// to the gfx context used for rendering, maybe we could wait for the render call...
 		GraphicContextManager.INSTANCE.setCurrentGraphicContext(graphicContext);
-		SkyboxSide[] values = SkyboxSide.values();
-		List<MeshWithNormal> array = new ArrayList<MeshWithNormal>(values.length);
-		for (SkyboxSide side : values) {
+		final BoxSide[] values = BoxSide.values();
+		final List<BoxSideMesh> array = new ArrayList<BoxSideMesh>(values.length);
+		for (BoxSide side : values) {
 			array.add(side.build(this));
 		}
-		sides = array.toArray(new MeshWithNormal[values.length]);
+		sides = array.toArray(new BoxSideMesh[values.length]);
 	}
 
 	@Override
@@ -56,6 +58,7 @@ public class Skybox implements Renderable, SkyboxParameters {
 		assert graphicContext != null: "the graphicContext is null, make sure to call the init method";
 
 		avatar.readDirection(viewDirection);
+		viewDirection.normalise(viewDirection);
 
 		Matrix4f camViewMatrix = GraphicContextManager.INSTANCE.getProjectionMatrix();
 		Matrix4f rotMatrix = SimpleMatrix4f.create(avatar.getRotation());
@@ -66,7 +69,7 @@ public class Skybox implements Renderable, SkyboxParameters {
 		ShaderUniformHandle.CAM_TO_CLIP.set(camViewMatrix);
 
 		// draw only the visible sides
-		for (MeshWithNormal side : sides) {
+		for (BoxSideMesh side : sides) {
 			if (Vector3f.dot(viewDirection, side.getNormal()) > DOT_PROD_LIMIT) {
 				side.draw();
 			}

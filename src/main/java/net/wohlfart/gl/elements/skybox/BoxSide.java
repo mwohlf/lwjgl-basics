@@ -1,11 +1,11 @@
-package net.wohlfart.gl.elements;
+package net.wohlfart.gl.elements.skybox;
 
 import java.awt.Color;
 import java.nio.ByteBuffer;
 import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
 
-import net.wohlfart.gl.elements.SkyboxParameters.PerlinNoiseParameters;
+import net.wohlfart.gl.elements.skybox.SkyboxParameters.PerlinNoiseParameters;
 import net.wohlfart.gl.shader.ShaderAttributeHandle;
 import net.wohlfart.gl.tools.ColorGradient;
 import net.wohlfart.gl.tools.SimplexNoise;
@@ -22,7 +22,7 @@ import org.lwjgl.opengl.GL30;
 import org.lwjgl.util.vector.Quaternion;
 import org.lwjgl.util.vector.Vector3f;
 
-public enum SkyboxSide {
+enum BoxSide {
 	PLUS_Y {{
 			translation = new Vector3f(0, +dist, 0);
 			rotation = SimpleMath.createQuaternion(new Vector3f(0, 0, -dist), translation, new Quaternion()); }},
@@ -49,7 +49,7 @@ public enum SkyboxSide {
 
 
 	// main entry point
-	public MeshWithNormal build(SkyboxParameters parameters) {
+	BoxSideMesh build(SkyboxParameters parameters) {
 
 		// load the texture
 		int textureId = createAndLoadTexture(GL13.GL_TEXTURE0, parameters);
@@ -125,7 +125,7 @@ public enum SkyboxSide {
 		GL15.glBufferData(GL15.GL_ELEMENT_ARRAY_BUFFER, indicesBuffer, GL15.GL_STATIC_DRAW);
 		GL15.glBindBuffer(GL15.GL_ELEMENT_ARRAY_BUFFER, 0);
 
-		return new MeshWithNormal(vaoHandle, vboVerticesHandle,
+		return new BoxSideMesh(vaoHandle, vboVerticesHandle,
 				vboIndicesHandle, GL11.GL_TRIANGLES, GL11.GL_UNSIGNED_BYTE,
 				indicesCount, 0, colorAttrib, positionAttrib, textureAttrib,
 				textureId, translation.negate(new Vector3f()));

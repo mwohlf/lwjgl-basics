@@ -1,14 +1,15 @@
-package net.wohlfart.gl.elements;
+package net.wohlfart.gl.elements.skybox;
 
+import net.wohlfart.gl.elements.HasNormal;
 import net.wohlfart.gl.shader.mesh.TexturedFragmentMesh;
 
 import org.lwjgl.util.vector.Vector3f;
 
-public class MeshWithNormal extends TexturedFragmentMesh implements HasNormal {
+public class BoxSideMesh extends TexturedFragmentMesh implements HasNormal {
 
 	private final Vector3f normal;
 
-	public MeshWithNormal(int vaoHandle, int vboVerticesHandle,
+	public BoxSideMesh(int vaoHandle, int vboVerticesHandle,
 			int vboIndicesHandle, int indicesType, int indexElemSize,
 			int indicesCount, int indexOffset, int colorAttrib,
 			int positionAttrib, int textureAttrib, int textureId,
@@ -16,7 +17,7 @@ public class MeshWithNormal extends TexturedFragmentMesh implements HasNormal {
 		super(vaoHandle, vboVerticesHandle, vboIndicesHandle, indicesType,
 				indexElemSize, indicesCount, indexOffset, colorAttrib, positionAttrib,
 				textureAttrib, textureId);
-		this.normal = normal;
+		this.normal = normal.normalise(this.normal);
 	}
 
 	@Override
