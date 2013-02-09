@@ -52,7 +52,7 @@ enum BoxSide {
 	BoxSideMesh build(SkyboxParameters parameters) {
 
 		// load the texture
-		int textureId = createAndLoadTexture(GL13.GL_TEXTURE0, parameters);
+		int textureId = createAndLoadTexture(GL13.GL_TEXTURE0, parameters); // FIXME: check if we coudl use a different texture unit
 
 		Vertex[] vertices = new Vertex[] {
 				// We'll define our quad using 4 vertices of the custom 'Vertex'

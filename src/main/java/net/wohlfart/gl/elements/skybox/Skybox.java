@@ -18,11 +18,9 @@ public class Skybox implements Renderable, SkyboxParameters {
 
 	private static final int SIZE = 1024;
 
-	private static final float DOT_PROD_LIMIT = -0.5f; // this depends on the view angle
+	private static final float DOT_PROD_LIMIT = -0.5f; // FIXME: this depends on the view angle
 
 	private final Vector3f viewDirection = new Vector3f();
-
-
 
 	private BoxSideMesh[] sides;
 
@@ -32,7 +30,7 @@ public class Skybox implements Renderable, SkyboxParameters {
 
 
 
-	public void init(Avatar avatar, IGraphicContext graphicContext) {
+	public void init(IGraphicContext graphicContext, Avatar avatar) {
 		this.avatar = avatar;
 		this.graphicContext = graphicContext;
 		// in order to build the mesh we need the unions and attribute positions, so we have to switch

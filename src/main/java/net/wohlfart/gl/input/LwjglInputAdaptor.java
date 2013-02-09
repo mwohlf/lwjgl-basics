@@ -51,8 +51,8 @@ public class LwjglInputAdaptor implements InputAdaptor {
 		@Override
 		public void pressed(int key, float time) {
 			CommandEvent command = keyMap.get(key);
-			command.setTime(time);
 			if (command != null) {
+				command.setTime(time);
 				inputDispatcher.post(command);
 			}
 		}

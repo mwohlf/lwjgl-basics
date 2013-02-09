@@ -39,7 +39,8 @@ public class AbstractShaderProgram implements IShaderProgram {
 
 			int compileStatus = ARBShaderObjects.glGetObjectParameteriARB(shader, ARBShaderObjects.GL_OBJECT_COMPILE_STATUS_ARB);
 			if (compileStatus == GL11.GL_FALSE) {
-				throw new ShaderException("Error creating shader, couldn't compile, reason: " + getLogInfo(shader));
+				throw new ShaderException("Error creating shader, couldn't compile, reason: " + getLogInfo(shader)
+						+ " the shader file is '" + filename + "', the shaderType is '" + shaderType + "'");
 			}
 			return shader;
 		} catch (FileNotFoundException ex) {

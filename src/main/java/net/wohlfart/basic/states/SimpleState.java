@@ -8,6 +8,7 @@ import net.wohlfart.gl.elements.debug.CubeMesh;
 import net.wohlfart.gl.elements.debug.IcosphereMesh;
 import net.wohlfart.gl.elements.debug.TerahedronRefinedMesh;
 import net.wohlfart.gl.elements.debug.TetrahedronMesh;
+import net.wohlfart.gl.elements.hud.Hud;
 import net.wohlfart.gl.elements.skybox.Skybox;
 import net.wohlfart.gl.input.CommandEvent;
 import net.wohlfart.gl.renderer.RenderBucket;
@@ -15,7 +16,6 @@ import net.wohlfart.gl.shader.DefaultGraphicContext;
 import net.wohlfart.gl.shader.DefaultShaderProgram;
 import net.wohlfart.gl.shader.GraphicContextManager;
 import net.wohlfart.gl.shader.ShaderUniformHandle;
-import net.wohlfart.gl.shader.WireframeShaderProgram;
 import net.wohlfart.model.Avatar;
 import net.wohlfart.tools.SimpleMath;
 import net.wohlfart.tools.SimpleMatrix4f;
@@ -33,19 +33,22 @@ import com.google.common.eventbus.Subscribe;
 class SimpleState implements GameState {
 	protected static final Logger LOGGER = LoggerFactory.getLogger(SimpleState.class);
 
+	private boolean quit = false;
+
 	private GraphicContextManager.IGraphicContext defaultGraphicContext;
 	private GraphicContextManager.IGraphicContext wireframeGraphicContext;
-
-
-	private final Skybox skybox = new Skybox();
-
-	private final RenderBucket elemBucket = new RenderBucket();
-	private final RenderBucket uiBucket = new RenderBucket();
-
-	private boolean quit = false;
+	private GraphicContextManager.IGraphicContext hudGraphicContext;
 
 	private final Avatar avatar = new Avatar();
 
+	private final Skybox skybox = new Skybox();
+	private final RenderBucket elemBucket = new RenderBucket();
+	private final Hud hud = new Hud();
+
+	private final boolean skyboxOn = false
+			;
+	private final boolean elementsOn = false;
+	private final boolean hudOn = true;
 
 
 	@Override
@@ -54,14 +57,28 @@ class SimpleState implements GameState {
 		GraphicContextManager.INSTANCE.getInputDispatcher().register(avatar);
 		GraphicContextManager.INSTANCE.getInputDispatcher().register(this);
 
-		wireframeGraphicContext = new DefaultGraphicContext(new WireframeShaderProgram());
-		defaultGraphicContext = new DefaultGraphicContext(new DefaultShaderProgram());
+		wireframeGraphicContext = new DefaultGraphicContext(
+				new DefaultShaderProgram(
+						DefaultShaderProgram.WIREFRAME_VERTEX_SHADER, DefaultShaderProgram.WIREFRAME_FRAGMENT_SHADER));
+		defaultGraphicContext = new DefaultGraphicContext(
+				new DefaultShaderProgram(
+						DefaultShaderProgram.DEFAULT_VERTEX_SHADER, DefaultShaderProgram.DEFAULT_FRAGMENT_SHADER));
+		hudGraphicContext = new DefaultGraphicContext(
+				new DefaultShaderProgram(
+						DefaultShaderProgram.HUD_VERTEX_SHADER, DefaultShaderProgram.HUD_FRAGMENT_SHADER));
 
-		skybox.init(avatar, defaultGraphicContext);
+		if (skyboxOn) {
+			skybox.init(defaultGraphicContext, avatar);
+		}
 
+		if (elementsOn) {
+			setupElementBucket();
+		}
 
-	//	skyboxBucket.add(new Skybox());
-	//	setupElementBucket();
+		if (hudOn) {
+			hud.init(hudGraphicContext);
+		}
+
 	}
 
 
@@ -123,30 +140,34 @@ class SimpleState implements GameState {
 	public void update(float tpf) {
 		LOGGER.debug("update called with tpf/fps {}/{}", tpf, 1f/tpf);
 		// todo:
-		//   poll the user input
-		//   move the models
-		//   calculate the world translation and rotation
+		//   move the models / actors / perform the actions
 	}
 
 
 
 	@Override
 	public void render() {
-		skybox.render();
+		if (skyboxOn) {
+			skybox.render();
+		}
 
-		Matrix4f camViewMatrix = GraphicContextManager.INSTANCE.getProjectionMatrix();
+		if (elementsOn){
+			Matrix4f camViewMatrix = GraphicContextManager.INSTANCE.getProjectionMatrix();
 
-		Matrix4f posMatrix = SimpleMatrix4f.create(avatar.getPosition().negate(null));
-		Matrix4f rotMatrix = SimpleMatrix4f.create(avatar.getRotation());
-		Matrix4f rotPosMatrix = Matrix4f.mul(rotMatrix, posMatrix, new Matrix4f());
+			Matrix4f posMatrix = SimpleMatrix4f.create(avatar.getPosition().negate(null));
+			Matrix4f rotMatrix = SimpleMatrix4f.create(avatar.getRotation());
+			Matrix4f rotPosMatrix = Matrix4f.mul(rotMatrix, posMatrix, new Matrix4f());
 
-		GraphicContextManager.INSTANCE.setCurrentGraphicContext(wireframeGraphicContext);
-		ShaderUniformHandle.MODEL_TO_WORLD.set(SimpleMath.UNION_MATRIX);
-		ShaderUniformHandle.WORLD_TO_CAM.set(rotPosMatrix);
-		ShaderUniformHandle.CAM_TO_CLIP.set(camViewMatrix);
-		elemBucket.render();
+			GraphicContextManager.INSTANCE.setCurrentGraphicContext(wireframeGraphicContext);
+			ShaderUniformHandle.MODEL_TO_WORLD.set(SimpleMath.UNION_MATRIX);
+			ShaderUniformHandle.WORLD_TO_CAM.set(rotPosMatrix);
+			ShaderUniformHandle.CAM_TO_CLIP.set(camViewMatrix);
+			elemBucket.render();
+		}
 
-		uiBucket.render();
+		if (hudOn) {
+			hud.render();
+		}
 	}
 
 	@Override

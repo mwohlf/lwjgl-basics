@@ -8,25 +8,37 @@ import org.slf4j.LoggerFactory;
 public class DefaultShaderProgram extends AbstractShaderProgram {
 	protected static final Logger LOGGER = LoggerFactory.getLogger(DefaultShaderProgram.class);
 
-	private static final String VERTEX_SHADER_FILE = "/shaders/default/vertex.glsl";
-	private static final String FRAGMENT_SHADER_FILE = "/shaders/default/fragment.glsl";
+	public static final String DEFAULT_VERTEX_SHADER = "/shaders/default/vertex.glsl";
+	public static final String DEFAULT_FRAGMENT_SHADER = "/shaders/default/fragment.glsl";
+
+	public static final String WIREFRAME_VERTEX_SHADER = "/shaders/wireframe/vertex.glsl";
+	public static final String WIREFRAME_FRAGMENT_SHADER = "/shaders/wireframe/fragment.glsl";
+
+	public static final String HUD_VERTEX_SHADER = "/shaders/hud/vertex.glsl";
+	public static final String HUD_FRAGMENT_SHADER = "/shaders/hud/fragment.glsl";
 
 	private int vertexShaderId = -1;
 	private int fragmentShaderId = -1;
 
+	private final String vertexShader;
+	private final String fragmentShader;
+
+
+	public DefaultShaderProgram(String vertexShader, String fragmentShader) {
+		this.vertexShader = vertexShader;
+		this.fragmentShader = fragmentShader;
+	}
 
 	@Override
 	public String toString() {
-		return "DefaultShaderProgram loaded from: \n"
-				+ VERTEX_SHADER_FILE + "\n"
-				+ FRAGMENT_SHADER_FILE;
+		return "DefaultShaderProgram loaded from: \n" + vertexShader + "\n" + fragmentShader;
 	}
 
 	@Override
 	public void setup() {
 		super.setup();
-		vertexShaderId = loadShader(VERTEX_SHADER_FILE, GL20.GL_VERTEX_SHADER);
-		fragmentShaderId = loadShader(FRAGMENT_SHADER_FILE, GL20.GL_FRAGMENT_SHADER);
+		vertexShaderId = loadShader(vertexShader, GL20.GL_VERTEX_SHADER);
+		fragmentShaderId = loadShader(fragmentShader, GL20.GL_FRAGMENT_SHADER);
 		linkAndValidate(vertexShaderId, fragmentShaderId);
 	}
 

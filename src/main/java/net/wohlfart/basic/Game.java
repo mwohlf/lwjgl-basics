@@ -67,7 +67,7 @@ class Game {
 			// do the magic
 			currentState.render();
 			Display.sync(settings.getSync());
-			// draw the (double-)buffer to the screen, trigger input
+			// draw the (double-)buffer to the screen, read user input
 			Display.update();
 			// triggers the callbacks for user input
 			inputSource.createInputEvents(delta);
