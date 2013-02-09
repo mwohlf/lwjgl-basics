@@ -36,7 +36,9 @@ class SimpleState implements GameState {
 	private GraphicContextManager.IGraphicContext defaultGraphicContext;
 	private GraphicContextManager.IGraphicContext wireframeGraphicContext;
 
-	private final RenderBucket skyboxBucket = new RenderBucket();
+
+	private final Skybox skybox = new Skybox();
+
 	private final RenderBucket elemBucket = new RenderBucket();
 	private final RenderBucket uiBucket = new RenderBucket();
 
@@ -48,12 +50,19 @@ class SimpleState implements GameState {
 
 	@Override
 	public void setup() {
-		avatar.setup();
+		// event bus registration
+		GraphicContextManager.INSTANCE.getInputDispatcher().register(avatar);
 		GraphicContextManager.INSTANCE.getInputDispatcher().register(this);
+
+
 		wireframeGraphicContext = new DefaultGraphicContext(new WireframeShaderProgram());
 		defaultGraphicContext = new DefaultGraphicContext(new DefaultShaderProgram());
 
-		skyboxBucket.add(new Skybox());
+
+
+
+		skybox.init(avatar, defaultGraphicContext);
+	//	skyboxBucket.add(new Skybox());
 	//	setupElementBucket();
 	}
 
@@ -132,11 +141,7 @@ class SimpleState implements GameState {
 		Matrix4f rotMatrix = SimpleMatrix4f.create(avatar.getRotation());
 		Matrix4f rotPosMatrix = Matrix4f.mul(rotMatrix, posMatrix, new Matrix4f());
 
-		GraphicContextManager.INSTANCE.setCurrentGraphicContext(defaultGraphicContext);
-		ShaderUniformHandle.MODEL_TO_WORLD.set(SimpleMath.UNION_MATRIX);
-		ShaderUniformHandle.WORLD_TO_CAM.set(rotMatrix);
-		ShaderUniformHandle.CAM_TO_CLIP.set(camViewMatrix);
-		skyboxBucket.render();
+		skybox.render();
 
 		//SimpleMatrix4f matrix = SimpleMatrix4f.create(avatar.getPosition(), avatar.getRotation());
 
@@ -158,7 +163,8 @@ class SimpleState implements GameState {
 	public void dispose() {
 		defaultGraphicContext.dispose();
 		wireframeGraphicContext.dispose();
-		avatar.dispose();
+		GraphicContextManager.INSTANCE.getInputDispatcher().unregister(avatar);
+		GraphicContextManager.INSTANCE.getInputDispatcher().unregister(this);
 	}
 
 }

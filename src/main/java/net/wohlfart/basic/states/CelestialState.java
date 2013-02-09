@@ -33,7 +33,7 @@ class CelestialState implements GameState {
 	@Override
 	public void setup() {
 		GraphicContextManager.INSTANCE.getInputDispatcher().register(this);
-		avatar.setup();
+		GraphicContextManager.INSTANCE.getInputDispatcher().register(avatar);
 	}
 
 	@Subscribe
@@ -67,6 +67,9 @@ class CelestialState implements GameState {
 
 	@Override
 	public void dispose() {
+		GraphicContextManager.INSTANCE.getInputDispatcher().unregister(this);
+		GraphicContextManager.INSTANCE.getInputDispatcher().unregister(avatar);
+
 		scene.teardown();
 	}
 

@@ -5,7 +5,6 @@ import net.wohlfart.gl.CanMoveImpl;
 import net.wohlfart.gl.CanRotate;
 import net.wohlfart.gl.CanRotateImpl;
 import net.wohlfart.gl.input.CommandEvent;
-import net.wohlfart.gl.shader.GraphicContextManager;
 
 import org.lwjgl.util.vector.Quaternion;
 import org.lwjgl.util.vector.Vector3f;
@@ -34,6 +33,10 @@ public class Avatar {
 	}
 
 
+	public Vector3f readDirection(Vector3f vector) {
+		return rotation.getDir(vector);
+	}
+
 	public Quaternion getRotation() {
 		return rotation.getRotation();
 	}
@@ -41,16 +44,6 @@ public class Avatar {
 	public Vector3f getPosition() {
 		return movement.getPosition();
 	}
-
-
-	public void setup() {
-		GraphicContextManager.INSTANCE.getInputDispatcher().register(this);
-	}
-
-	public void dispose() {
-		GraphicContextManager.INSTANCE.getInputDispatcher().unregister(this);
-	}
-
 
 	@Subscribe
 	public void moveForward(CommandEvent.MoveForward evt) {
@@ -87,7 +80,6 @@ public class Avatar {
 		Vector3f pos = movement.getPosition();
 		Vector3f.add(pos, (Vector3f)rotation.getUp(new Vector3f()).scale(evt.getDelta() * MOVE_SPEED), pos);
 	}
-
 
 	@Subscribe
 	public void rotateUp(CommandEvent.RotateUp evt) {

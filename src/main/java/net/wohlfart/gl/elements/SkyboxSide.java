@@ -7,8 +7,6 @@ import java.nio.IntBuffer;
 
 import net.wohlfart.gl.elements.SkyboxParameters.PerlinNoiseParameters;
 import net.wohlfart.gl.shader.ShaderAttributeHandle;
-import net.wohlfart.gl.shader.mesh.IMesh;
-import net.wohlfart.gl.shader.mesh.TexturedFragmentMesh;
 import net.wohlfart.gl.tools.ColorGradient;
 import net.wohlfart.gl.tools.SimplexNoise;
 import net.wohlfart.gl.tools.Vertex;
@@ -49,8 +47,9 @@ public enum SkyboxSide {
 	protected Quaternion rotation;
 	protected Vector3f translation;
 
+
 	// main entry point
-	public IMesh build(SkyboxParameters parameters) {
+	public MeshWithNormal build(SkyboxParameters parameters) {
 
 		// load the texture
 		int textureId = createAndLoadTexture(GL13.GL_TEXTURE0, parameters);
@@ -126,10 +125,10 @@ public enum SkyboxSide {
 		GL15.glBufferData(GL15.GL_ELEMENT_ARRAY_BUFFER, indicesBuffer, GL15.GL_STATIC_DRAW);
 		GL15.glBindBuffer(GL15.GL_ELEMENT_ARRAY_BUFFER, 0);
 
-		return new TexturedFragmentMesh(vaoHandle, vboVerticesHandle,
+		return new MeshWithNormal(vaoHandle, vboVerticesHandle,
 				vboIndicesHandle, GL11.GL_TRIANGLES, GL11.GL_UNSIGNED_BYTE,
 				indicesCount, 0, colorAttrib, positionAttrib, textureAttrib,
-				textureId);
+				textureId, translation.negate(new Vector3f()));
 	}
 
 	protected int createAndLoadTexture(int textureUnit,
