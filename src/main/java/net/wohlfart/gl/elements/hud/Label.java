@@ -13,7 +13,7 @@ public class Label implements Renderable {
     private final int x;
     private final int y;
     private final String string;
-    private LayerImpl layer;
+    private Layer layer;
     private Collection<IMesh> characters;
 
     public Label(int x, int y, String string) {
@@ -40,7 +40,7 @@ public class Label implements Renderable {
         characters = null;
     }
 
-    public void setLayer(LayerImpl layer) {
+    public void setLayer(Layer layer) {
         this.layer = layer;
     }
 

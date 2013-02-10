@@ -4,4 +4,6 @@ import net.wohlfart.gl.renderer.Renderable;
 
 public interface Layer extends Renderable {
 
+    CharacterAtlas getCharacterAtlas();
+
 }
