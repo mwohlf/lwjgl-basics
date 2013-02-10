@@ -19,7 +19,15 @@ import org.slf4j.LoggerFactory;
 public class FontRenderer {
 	protected static final Logger LOGGER = LoggerFactory.getLogger(FontRenderer.class);
 
-	public final static char NULL_CHAR = '_'; // we need this one in any charset
+	public static final char NULL_CHAR = '_';
+	private static final String chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789;:,.-_#+?!\"()";
+	{ if (!(chars.contains(new String("" + NULL_CHAR)))){ throw new IllegalStateException("need NULL_CHAR in char sequence"); };};
+
+	private static final int WIDTH = 512;
+	private static final int HEIGHT = 512;
+
+	private static final boolean borderOn = false;
+
 
 	//private static final String FONT_FILE = "/fonts/alphbeta.ttf";
 	private static final String FONT_FILE = "/fonts/Greyscale_Basic_Regular.ttf";
@@ -27,23 +35,15 @@ public class FontRenderer {
 
 	private CharacterAtlas atlas;
 
-	private final int SIZE = 512;
-
-	private final int WIDTH = SIZE;
-	private final int HEIGHT = SIZE;
-
-	private final String chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789;:,.-_#+?!\"()";
-
 
 	public FontRenderer init() {
 		String filename = FONT_FILE;
 		try (InputStream inputStream = ClassLoader.class.getResourceAsStream(filename);) {
 		    Font font = Font.createFont(Font.TRUETYPE_FONT, inputStream);
-		    font = font.deriveFont(50f);
-		    //font = new java.awt.Font("monospaced", 0, 60);
+		    font = font.deriveFont(16f); // size
 		    atlas = createCharacterAtlas(font);
 		} catch (FontFormatException | IOException ex) {
-			LOGGER.error("init font from '" + filename + "' failed, atlas will be null", ex);
+			LOGGER.error("can't create font from file '" + filename + "', the atlas will be null, expect more errors", ex);
 		}
 		return this;
 	}
@@ -80,15 +80,15 @@ public class FontRenderer {
 			g.setColor(Color.WHITE);
 			g.drawString(String.valueOf(c), x, y + ascent);
 			atlas.put(c, x, y, width, height);
-			g.setColor(Color.RED);
-			g.drawRect((int)x, (int)y, (int)width, (int)height);
+			if (borderOn) {
+				g.setColor(Color.RED);
+				g.drawRect((int)x, (int)y, (int)width, (int)height);
+			}
 			x += width;
 		}
 		atlas.setImage(buffImage);
 		atlas.init();
 		return atlas;
 	}
-
-
 
 }

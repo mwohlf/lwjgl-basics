@@ -77,7 +77,7 @@ class SimpleState implements GameState {
 
 		if (hudOn) {
 			hud.init(hudGraphicContext);
-			hud.add(new Label(50,50,"A"));
+			hud.add(new Label(0, 0, "Hello World"));
 		}
 
 	}

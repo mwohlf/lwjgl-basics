@@ -49,10 +49,17 @@ public class Label implements Renderable {
 
 
 	private void init() {
+		CharacterAtlas atlas = layer.getCharacterAtlas();
+		int d = 0;
 		characters = new HashSet<IMesh>();
 		char[] charArray = string.toCharArray();
 		for (char c : charArray) {
-			IMesh mesh = createMesh(c, layer.getCharacterAtlas());
+			CharInfo info = atlas.getCharInfo(c);
+			if (info == null) {
+				info = atlas.getCharInfo(FontRenderer.NULL_CHAR);
+			}
+			IMesh mesh = createMesh(d, info, atlas);
+			d += info.getWidth();
 			if (mesh != null) {
 				characters.add(mesh);
 			}
@@ -60,15 +67,11 @@ public class Label implements Renderable {
 	}
 
 
-	private IMesh createMesh(char c, CharacterAtlas characterAtlas) {
-		CharInfo info = characterAtlas.getCharInfo(c);
-		if (info == null) {
-			info = characterAtlas.getCharInfo(FontRenderer.NULL_CHAR);
-		}
+	private IMesh createMesh(int d, CharInfo info, CharacterAtlas characterAtlas) {
 		CharacterMeshBuilder builder = new CharacterMeshBuilder();
 		builder.setCharAtlas(characterAtlas);
 		builder.setCharInfo(info);
-		builder.setScreenX(x);
+		builder.setScreenX(x + d);
 		builder.setScreenY(y);
 	    return builder.build();
 	}

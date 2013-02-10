@@ -32,9 +32,7 @@ public class Hud implements Renderable {
 		ShaderUniformHandle.MODEL_TO_WORLD.set(SimpleMath.UNION_MATRIX);
 		ShaderUniformHandle.WORLD_TO_CAM.set(SimpleMath.UNION_MATRIX);
 		ShaderUniformHandle.CAM_TO_CLIP.set(camViewMatrix);
-
 		GL11.glEnable(GL11.GL_BLEND);
-
 		textLayer.render();
 	}
 

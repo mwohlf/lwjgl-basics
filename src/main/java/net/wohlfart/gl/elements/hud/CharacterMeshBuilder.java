@@ -22,33 +22,37 @@ public class CharacterMeshBuilder {
 
 	private CharacterAtlas atlas;
 	private CharInfo info;
-	private int screenX;
-	private int screenY;
+	private float screenX;
+	private float screenY;
 
 	public IMesh build() {
 
-		float x1 = info.getX()/atlas.getImage().getWidth();
-		float x2 = (info.getX() + info.getWidth())/atlas.getImage().getWidth();
+		float x1 = screenX/ 512f;  // assuming a screen size of 1000x1000
+		float y1 = screenY;
+		float x2 = x1 + info.getWidth()/atlas.getImage().getWidth();
+		float y2 = y1 - info.getHeight()/atlas.getImage().getHeight();
 
-		float y1 = info.getY()/atlas.getImage().getHeight();
-		float y2 = (info.getY() + info.getHeight())/atlas.getImage().getHeight();
+		float s1 = info.getX()/atlas.getImage().getWidth();
+		float t1 = info.getY()/atlas.getImage().getHeight();
+		float s2 = (info.getX() + info.getWidth())/atlas.getImage().getWidth();
+		float t2 = (info.getY() + info.getHeight())/atlas.getImage().getHeight();
 
 		// We'll define our quad using 4 vertices of the custom 'Vertex' class
 		Vertex v0 = new Vertex();
-		v0.setXYZ(-0.5f, 0.5f, 0f);
-		v0.setST(x1, y1);
+		v0.setXYZ(x1, y1, 0f);
+		v0.setST(s1, t1);
 
 		Vertex v1 = new Vertex();
-		v1.setXYZ(-0.5f, -0.5f, 0f);
-		v1.setST(x1, y2);
+		v1.setXYZ(x1, y2, 0f);
+		v1.setST(s1, t2);
 
 		Vertex v2 = new Vertex();
-		v2.setXYZ(0.5f, -0.5f, 0f);
-		v2.setST(x2, y2);
+		v2.setXYZ(x2, y2, 0f);
+		v2.setST(s2, t2);
 
 		Vertex v3 = new Vertex();
-		v3.setXYZ(0.5f, 0.5f, 0f);
-		v3.setST(x2, y1);
+		v3.setXYZ(x2, y1, 0f);
+		v3.setST(s2, t1);
 
 		Vertex[] vertices = new Vertex[] {v0, v1, v2, v3};
 		// Put each 'Vertex' in one FloatBuffer the order depends on the shaders positions!
@@ -112,11 +116,11 @@ public class CharacterMeshBuilder {
 		this.atlas = atlas;
 	}
 
-	public void setScreenX(int x) {
+	public void setScreenX(float x) {
 		this.screenX = x;
 	}
 
-	public void setScreenY(int y) {
+	public void setScreenY(float y) {
 		this.screenY = y;
 	}
 
