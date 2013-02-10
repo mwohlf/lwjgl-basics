@@ -17,9 +17,6 @@ import org.lwjgl.util.vector.Vector3f;
 
 public class Skybox implements Renderable, SkyboxParameters {
 
-    private static final int SIZE = 1024;
-
-    private static final float DOT_PROD_LIMIT = -0.5f; // FIXME: this depends on the view angle
 
     private final Vector3f viewDirection = new Vector3f();
 
@@ -44,11 +41,6 @@ public class Skybox implements Renderable, SkyboxParameters {
     }
 
     @Override
-    public int getSize() {
-        return SIZE;
-    }
-
-    @Override
     public void render() {
         assert sides != null : "the skybox sides are null, make sure to call the init method";
         assert avatar != null : "the avatar is null, make sure to call the init method";
@@ -69,7 +61,7 @@ public class Skybox implements Renderable, SkyboxParameters {
 
         // draw only the visible sides
         for (final BoxSideMesh side : sides) {
-            if (Vector3f.dot(viewDirection, side.getNormal()) > DOT_PROD_LIMIT) {
+            if (Vector3f.dot(viewDirection, side.getNormal()) > BoxSide.DOT_PROD_LIMIT) {
                 side.draw();
             }
         }

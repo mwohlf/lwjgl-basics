@@ -47,8 +47,8 @@ class SimpleState implements GameState {
     private final Hud hud = new Hud();
 
     private final boolean skyboxOn = true;
-    private final boolean elementsOn = true;
-    private final boolean hudOn = true;
+    private final boolean elementsOn = false;
+    private final boolean hudOn = false;
 
     @Override
     public void setup() {

@@ -22,80 +22,70 @@ import org.lwjgl.opengl.GL30;
 import org.lwjgl.util.vector.Quaternion;
 import org.lwjgl.util.vector.Vector3f;
 
-enum BoxSide {
-    PLUS_Y {
-        {
+
+// FIXME: no color needed
+enum BoxSide {  // @formatter:off
+    PLUS_Y {{
             translation = new Vector3f(0, +dist, 0);
             rotation = SimpleMath.createQuaternion(new Vector3f(0, 0, -dist), translation, new Quaternion());
-        }
-    },
-    MINUS_Y {
-        {
+        }},
+    MINUS_Y {{
             translation = new Vector3f(0, -dist, 0);
             rotation = SimpleMath.createQuaternion(new Vector3f(0, 0, -dist), translation, new Quaternion());
-        }
-    },
-    PLUS_X {
-        {
+        }},
+    PLUS_X {{
             translation = new Vector3f(+dist, 0, 0);
             rotation = SimpleMath.createQuaternion(new Vector3f(0, 0, -dist), translation, new Quaternion());
-        }
-    },
-    MINUS_X {
-        {
+        }},
+    MINUS_X {{
             translation = new Vector3f(-dist, 0, 0);
             rotation = SimpleMath.createQuaternion(new Vector3f(0, 0, -dist), translation, new Quaternion());
-        }
-    },
-    PLUS_Z {
-        {
+        }},
+    PLUS_Z {{
             translation = new Vector3f(0, 0, +dist);
             rotation = SimpleMath.createQuaternion(new Vector3f(0, 0, -dist), translation, new Quaternion());
-        }
-    },
-    MINUS_Z {
-        {
+        }},
+    MINUS_Z {{
             translation = new Vector3f(0, 0, -dist);
             rotation = SimpleMath.createQuaternion(new Vector3f(0, 0, -dist), translation, new Quaternion());
-        }
-    };
+        }};  // @formatter:on
 
-    private static final float dist = 1f; // distance from the origin to the wall of the skybox
 
-    protected Quaternion rotation;
+    // FIXME: screensize, texture size and dist parameter need to match so we don't cut off the background
+    public static final float DOT_PROD_LIMIT = -0.0f; // FIXME: this depends on the view angle
+    private static final int SIZE = 1024;
+
+    // distance from the origin to the wall of the skybox and also the length of the edge
+    protected float dist = 1f;
     protected Vector3f translation;
+    protected Quaternion rotation;
 
     // main entry point
     BoxSideMesh build(SkyboxParameters parameters) {
 
         final Vertex[] vertices = new Vertex[] {
-                // We'll define our quad using 4 vertices of the custom 'Vertex'
-                // class
-                new Vertex() {
-                    {
+                // @formatter:off
+                new Vertex() {{
                         setXYZ(translate(rotate(new Vector3f(-dist, +dist, 0f))));
                         setRGB(1, 1, 1);
                         setST(0, 0);
-                    }
-                }, new Vertex() {
-                    {
+                    }},
+                new Vertex() {{
                         setXYZ(translate(rotate(new Vector3f(-dist, -dist, 0f))));
                         setRGB(1, 1, 1);
                         setST(0, 1);
-                    }
-                }, new Vertex() {
-                    {
+                    }},
+                new Vertex() {{
                         setXYZ(translate(rotate(new Vector3f(+dist, -dist, 0f))));
                         setRGB(1, 1, 1);
                         setST(1, 1);
-                    }
-                }, new Vertex() {
-                    {
+                    }},
+                new Vertex() {{
                         setXYZ(translate(rotate(new Vector3f(+dist, +dist, 0f))));
                         setRGB(1, 1, 1);
                         setST(1, 0);
-                    }
-                } };
+                    }} // @formatter:on
+        };
 
         final FloatBuffer verticesBuffer = BufferUtils.createFloatBuffer(vertices.length * Vertex.elementCount);
         for (int i = 0; i < vertices.length; i++) {
@@ -144,15 +134,15 @@ enum BoxSide {
         GL15.glBindBuffer(GL15.GL_ELEMENT_ARRAY_BUFFER, 0);
 
         // load the texture
-        final int textureId = createAndLoadTexture(GL13.GL_TEXTURE0, parameters); // FIXME: check if we coudl use a different texture unit
+        final int textureId = createAndLoadTexture(GL13.GL_TEXTURE0, parameters); // FIXME: check if we could use a different texture unit
 
         return new BoxSideMesh(vaoHandle, vboVerticesHandle, vboIndicesHandle, GL11.GL_TRIANGLES, GL11.GL_UNSIGNED_BYTE, indicesCount, 0, colorAttrib,
                 positionAttrib, textureAttrib, textureId, translation.negate(new Vector3f()));
     }
 
     protected int createAndLoadTexture(int textureUnit, SkyboxParameters parameters) {
-        final int width = parameters.getSize();
-        final int height = parameters.getSize();
+        final int width = SIZE;
+        final int height = SIZE;
         final int[] canvas = new int[width * height];
         createClouds(canvas, width, height, parameters.getNoiseParamClouds());
         createStars(canvas, width, height, parameters.getNoiseParamStars());
@@ -219,10 +209,9 @@ enum BoxSide {
 
     // translate from the plane coords to 3d
     protected Vector3f getVector(int x, int y, int width, int height) {
-        // normalize
         final float xx = +(x / (width / (dist * 2f)) - dist);
         final float yy = -(y / (height / (dist * 2f)) - dist);
-        // need to normalize to stay on the sphere
+        // normalize to stay on a sphere
         return rotate(new Vector3f(xx, yy, -dist).normalise(new Vector3f()));
     }
 

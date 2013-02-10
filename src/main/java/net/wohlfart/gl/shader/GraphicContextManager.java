@@ -42,6 +42,7 @@ public enum GraphicContextManager {
     private Settings settings;
 
     private InputDispatcher inputDispatcher;
+    private int screenDiagonal;
 
 
     public void setCurrentGraphicContext(IGraphicContext graphicContext) {
@@ -56,7 +57,17 @@ public enum GraphicContextManager {
         }
     }
 
-    // package private for ShaderAttributeHandle and ShaderUniformHandle
+    public void setSettings(Settings settings) {
+        assert settings == null: "settings is already set";
+        this.settings = settings;
+        assert projectionMatrix == null: "projection matrix is already set";
+        this.projectionMatrix = createProjectionMatrix();
+        int w = settings.getWidth();
+        int h = settings.getHeight();
+        this.screenDiagonal = (int) Math.ceil(Math.sqrt( w * w + h * h));
+    }
+
+    // package private, only used by for ShaderAttributeHandle and ShaderUniformHandle
     IGraphicContext getCurrentGraphicContext() {
         return currentGraphicContext;
     }
@@ -65,17 +76,16 @@ public enum GraphicContextManager {
         return projectionMatrix;
     }
 
+    public int getScreenDiagonal() {
+        return screenDiagonal;
+    }
+
     public void setInputDispatcher(DefaultInputDispatcher inputSource) {
         this.inputDispatcher = inputSource;
     }
 
     public InputDispatcher getInputDispatcher() {
         return inputDispatcher;
-    }
-
-    public void setSettings(Settings settings) {
-        this.settings = settings;
-        this.projectionMatrix = createProjectionMatrix();
     }
 
     /**

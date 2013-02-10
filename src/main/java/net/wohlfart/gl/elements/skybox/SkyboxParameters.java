@@ -14,8 +14,6 @@ public interface SkyboxParameters {
 
     }
 
-    int getSize();
-
     PerlinNoiseParameters getNoiseParamClouds();
 
     PerlinNoiseParameters getNoiseParamStars();
