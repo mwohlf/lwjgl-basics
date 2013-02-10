@@ -2,11 +2,11 @@ package net.wohlfart.basic.time;
 
 public interface Clock {
 
-	long getTicks();
+    long getTicks();
 
-	long getTicksPerSecond();
+    long getTicksPerSecond();
 
-	// last count that is still valid
-	long getMaxValidCount();
+    // last count that is still valid
+    long getMaxValidCount();
 
 }

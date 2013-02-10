@@ -16,11 +16,7 @@ public class TriangleStripMesh implements IMesh {
     private final int indexOffset;
 
     // package private
-    TriangleStripMesh(final int vaoHandle,
-                  final int vboVerticesHandle,
-                  final int vboColorsHandle,
-                  final int vboIndicesHandle,
-                  final int indicesCount) {
+    TriangleStripMesh(final int vaoHandle, final int vboVerticesHandle, final int vboColorsHandle, final int vboIndicesHandle, final int indicesCount) {
         this.vaoHandle = vaoHandle;
         this.vboVerticesHandle = vboVerticesHandle;
         this.vboColorsHandle = vboColorsHandle;
@@ -54,6 +50,5 @@ public class TriangleStripMesh implements IMesh {
         GL30.glBindVertexArray(0);
         GL30.glDeleteVertexArrays(vaoHandle);
     }
-
 
 }

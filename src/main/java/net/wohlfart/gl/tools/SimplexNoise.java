@@ -147,12 +147,12 @@ public class SimplexNoise {
         double n0 = 0, n1 = 0, n2 = 0; // Noise contributions from the three
         // corners
         // Skew the input space to determine which simplex cell we're in
-        double s = (x + y) * F2; // Hairy factor for 2D
-        int i = fastfloor(x + s);
-        int j = fastfloor(y + s);
-        double t = (i + j) * G2;
-        double x0 = x - (i - t); // The x,y distances from the cell origin
-        double y0 = y - (j - t);
+        final double s = (x + y) * F2; // Hairy factor for 2D
+        final int i = fastfloor(x + s);
+        final int j = fastfloor(y + s);
+        final double t = (i + j) * G2;
+        final double x0 = x - (i - t); // The x,y distances from the cell origin
+        final double y0 = y - (j - t);
         // For the 2D case, the simplex shape is an equilateral triangle.
         // Determine which simplex we are in.
         int i1, j1; // Offsets for second (middle) corner of simplex in (i,j)
@@ -167,31 +167,31 @@ public class SimplexNoise {
           // A step of (1,0) in (i,j) means a step of (1-c,-c) in (x,y), and
           // a step of (0,1) in (i,j) means a step of (-c,1-c) in (x,y), where
           // c = (3-sqrt(3))/6
-        double x1 = x0 - i1 + G2; // Offsets for middle corner in (x,y) unskewed
-        double y1 = y0 - j1 + G2;
-        double x2 = x0 + G22; // Offsets for last corner in (x,y) unskewed
-        double y2 = y0 + G22;
+        final double x1 = x0 - i1 + G2; // Offsets for middle corner in (x,y) unskewed
+        final double y1 = y0 - j1 + G2;
+        final double x2 = x0 + G22; // Offsets for last corner in (x,y) unskewed
+        final double y2 = y0 + G22;
         // Work out the hashed gradient indices of the three simplex corners
-        int ii = i & 0xff;
-        int jj = j & 0xff;
+        final int ii = i & 0xff;
+        final int jj = j & 0xff;
         // Calculate the contribution from the three corners
         double t0 = 0.5 - x0 * x0 - y0 * y0;
         if (t0 > 0) {
             t0 *= t0;
-            int gi0 = perm[ii + perm[jj]] % 12;
+            final int gi0 = perm[ii + perm[jj]] % 12;
             n0 = t0 * t0 * dot(grad3[gi0], x0, y0); // (x,y) of grad3 used for
             // 2D gradient
         }
         double t1 = 0.5 - x1 * x1 - y1 * y1;
         if (t1 > 0) {
             t1 *= t1;
-            int gi1 = perm[ii + i1 + perm[jj + j1]] % 12;
+            final int gi1 = perm[ii + i1 + perm[jj + j1]] % 12;
             n1 = t1 * t1 * dot(grad3[gi1], x1, y1);
         }
         double t2 = 0.5 - x2 * x2 - y2 * y2;
         if (t2 > 0) {
             t2 *= t2;
-            int gi2 = perm[ii + 1 + perm[jj + 1]] % 12;
+            final int gi2 = perm[ii + 1 + perm[jj + 1]] % 12;
             n2 = t2 * t2 * dot(grad3[gi2], x2, y2);
         }
         // Add contributions from each corner to get the final noise value.
@@ -216,17 +216,17 @@ public class SimplexNoise {
         // four corners
         // Skew the input space to determine which simplex cell we're in
         // final double F3 = 1.0 / 3.0;
-        double s = (x + y + z) * F3; // Very nice and simple skew factor
+        final double s = (x + y + z) * F3; // Very nice and simple skew factor
         // for 3D
-        int i = fastfloor(x + s);
-        int j = fastfloor(y + s);
-        int k = fastfloor(z + s);
+        final int i = fastfloor(x + s);
+        final int j = fastfloor(y + s);
+        final int k = fastfloor(z + s);
         // final double G3 = 1.0 / 6.0; // Very nice and simple unskew factor,
         // too
-        double t = (i + j + k) * G3;
-        double x0 = x - (i - t); // The x,y,z distances from the cell origin
-        double y0 = y - (j - t);
-        double z0 = z - (k - t);
+        final double t = (i + j + k) * G3;
+        final double x0 = x - (i - t); // The x,y,z distances from the cell origin
+        final double y0 = y - (j - t);
+        final double z0 = z - (k - t);
         // For the 3D case, the simplex shape is a slightly irregular
         // tetrahedron.
         // Determine which simplex we are in.
@@ -290,45 +290,45 @@ public class SimplexNoise {
         // a step of (0,0,1) in (i,j,k) means a step of (-c,-c,1-c) in (x,y,z),
         // where
         // c = 1/6.
-        double x1 = x0 - i1 + G3; // Offsets for second corner in (x,y,z) coords
-        double y1 = y0 - j1 + G3;
-        double z1 = z0 - k1 + G3;
+        final double x1 = x0 - i1 + G3; // Offsets for second corner in (x,y,z) coords
+        final double y1 = y0 - j1 + G3;
+        final double z1 = z0 - k1 + G3;
 
-        double x2 = x0 - i2 + F3; // Offsets for third corner in (x,y,z)
-        double y2 = y0 - j2 + F3;
-        double z2 = z0 - k2 + F3;
+        final double x2 = x0 - i2 + F3; // Offsets for third corner in (x,y,z)
+        final double y2 = y0 - j2 + F3;
+        final double z2 = z0 - k2 + F3;
 
-        double x3 = x0 - 0.5; // Offsets for last corner in (x,y,z)
-        double y3 = y0 - 0.5;
-        double z3 = z0 - 0.5;
+        final double x3 = x0 - 0.5; // Offsets for last corner in (x,y,z)
+        final double y3 = y0 - 0.5;
+        final double z3 = z0 - 0.5;
         // Work out the hashed gradient indices of the four simplex corners
-        int ii = i & 0xff;
-        int jj = j & 0xff;
-        int kk = k & 0xff;
+        final int ii = i & 0xff;
+        final int jj = j & 0xff;
+        final int kk = k & 0xff;
 
         // Calculate the contribution from the four corners
         double t0 = 0.6 - x0 * x0 - y0 * y0 - z0 * z0;
         if (t0 > 0) {
             t0 *= t0;
-            int gi0 = perm[ii + perm[jj + perm[kk]]] % 12;
+            final int gi0 = perm[ii + perm[jj + perm[kk]]] % 12;
             n0 = t0 * t0 * dot(grad3[gi0], x0, y0, z0);
         }
         double t1 = 0.6 - x1 * x1 - y1 * y1 - z1 * z1;
         if (t1 > 0) {
             t1 *= t1;
-            int gi1 = perm[ii + i1 + perm[jj + j1 + perm[kk + k1]]] % 12;
+            final int gi1 = perm[ii + i1 + perm[jj + j1 + perm[kk + k1]]] % 12;
             n1 = t1 * t1 * dot(grad3[gi1], x1, y1, z1);
         }
         double t2 = 0.6 - x2 * x2 - y2 * y2 - z2 * z2;
         if (t2 > 0) {
             t2 *= t2;
-            int gi2 = perm[ii + i2 + perm[jj + j2 + perm[kk + k2]]] % 12;
+            final int gi2 = perm[ii + i2 + perm[jj + j2 + perm[kk + k2]]] % 12;
             n2 = t2 * t2 * dot(grad3[gi2], x2, y2, z2);
         }
         double t3 = 0.6 - x3 * x3 - y3 * y3 - z3 * z3;
         if (t3 > 0) {
             t3 *= t3;
-            int gi3 = perm[ii + 1 + perm[jj + 1 + perm[kk + 1]]] % 12;
+            final int gi3 = perm[ii + 1 + perm[jj + 1 + perm[kk + 1]]] % 12;
             n3 = t3 * t3 * dot(grad3[gi3], x3, y3, z3);
         }
         // Add contributions from each corner to get the final noise value.
@@ -354,16 +354,16 @@ public class SimplexNoise {
         double n0 = 0, n1 = 0, n2 = 0, n3 = 0, n4 = 0; // Noise contributions
         // from the five corners
         // Skew the (x,y,z,w) space to determine which cell of 24 simplices
-        double s = (x + y + z + w) * F4; // Factor for 4D skewing
-        int i = fastfloor(x + s);
-        int j = fastfloor(y + s);
-        int k = fastfloor(z + s);
-        int l = fastfloor(w + s);
-        double t = (i + j + k + l) * G4; // Factor for 4D unskewing
-        double x0 = x - (i - t); // The x,y,z,w distances from the cell origin
-        double y0 = y - (j - t);
-        double z0 = z - (k - t);
-        double w0 = w - (l - t);
+        final double s = (x + y + z + w) * F4; // Factor for 4D skewing
+        final int i = fastfloor(x + s);
+        final int j = fastfloor(y + s);
+        final int k = fastfloor(z + s);
+        final int l = fastfloor(w + s);
+        final double t = (i + j + k + l) * G4; // Factor for 4D unskewing
+        final double x0 = x - (i - t); // The x,y,z,w distances from the cell origin
+        final double y0 = y - (j - t);
+        final double z0 = z - (k - t);
+        final double w0 = w - (l - t);
         // For the 4D case, the simplex is a 4D shape I won't even try to
         // describe.
         // To find out which of the 24 possible simplices we're in, we need to
@@ -401,7 +401,7 @@ public class SimplexNoise {
         // entries make any sense. We use a thresholding to set the coordinates
         // in turn from the largest magnitude. The number 3 in the "simplex"
         // array is at the position of the largest coordinate.
-        int[] sc = simplex[c];
+        final int[] sc = simplex[c];
         i1 = sc[0] >= 3 ? 1 : 0;
         j1 = sc[1] >= 3 ? 1 : 0;
         k1 = sc[2] >= 3 ? 1 : 0;
@@ -420,61 +420,61 @@ public class SimplexNoise {
         l3 = sc[3] >= 1 ? 1 : 0;
         // The fifth corner has all coordinate offsets = 1, so no need to look
         // that up.
-        double x1 = x0 - i1 + G4; // Offsets for second corner in (x,y,z,w)
-        double y1 = y0 - j1 + G4;
-        double z1 = z0 - k1 + G4;
-        double w1 = w0 - l1 + G4;
+        final double x1 = x0 - i1 + G4; // Offsets for second corner in (x,y,z,w)
+        final double y1 = y0 - j1 + G4;
+        final double z1 = z0 - k1 + G4;
+        final double w1 = w0 - l1 + G4;
 
-        double x2 = x0 - i2 + G42; // Offsets for third corner in (x,y,z,w)
-        double y2 = y0 - j2 + G42;
-        double z2 = z0 - k2 + G42;
-        double w2 = w0 - l2 + G42;
+        final double x2 = x0 - i2 + G42; // Offsets for third corner in (x,y,z,w)
+        final double y2 = y0 - j2 + G42;
+        final double z2 = z0 - k2 + G42;
+        final double w2 = w0 - l2 + G42;
 
-        double x3 = x0 - i3 + G43; // Offsets for fourth corner in (x,y,z,w)
-        double y3 = y0 - j3 + G43;
-        double z3 = z0 - k3 + G43;
-        double w3 = w0 - l3 + G43;
+        final double x3 = x0 - i3 + G43; // Offsets for fourth corner in (x,y,z,w)
+        final double y3 = y0 - j3 + G43;
+        final double z3 = z0 - k3 + G43;
+        final double w3 = w0 - l3 + G43;
 
-        double x4 = x0 + G44; // Offsets for last corner in (x,y,z,w)
-        double y4 = y0 + G44;
-        double z4 = z0 + G44;
-        double w4 = w0 + G44;
+        final double x4 = x0 + G44; // Offsets for last corner in (x,y,z,w)
+        final double y4 = y0 + G44;
+        final double z4 = z0 + G44;
+        final double w4 = w0 + G44;
 
         // Work out the hashed gradient indices of the five simplex corners
-        int ii = i & 0xff;
-        int jj = j & 0xff;
-        int kk = k & 0xff;
-        int ll = l & 0xff;
+        final int ii = i & 0xff;
+        final int jj = j & 0xff;
+        final int kk = k & 0xff;
+        final int ll = l & 0xff;
 
         // Calculate the contribution from the five corners
         double t0 = 0.6 - x0 * x0 - y0 * y0 - z0 * z0 - w0 * w0;
         if (t0 > 0) {
             t0 *= t0;
-            int gi0 = perm[ii + perm[jj + perm[kk + perm[ll]]]] % 32;
+            final int gi0 = perm[ii + perm[jj + perm[kk + perm[ll]]]] % 32;
             n0 = t0 * t0 * dot(grad4[gi0], x0, y0, z0, w0);
         }
         double t1 = 0.6 - x1 * x1 - y1 * y1 - z1 * z1 - w1 * w1;
         if (t1 > 0) {
             t1 *= t1;
-            int gi1 = perm[ii + i1 + perm[jj + j1 + perm[kk + k1 + perm[ll + l1]]]] % 32;
+            final int gi1 = perm[ii + i1 + perm[jj + j1 + perm[kk + k1 + perm[ll + l1]]]] % 32;
             n1 = t1 * t1 * dot(grad4[gi1], x1, y1, z1, w1);
         }
         double t2 = 0.6 - x2 * x2 - y2 * y2 - z2 * z2 - w2 * w2;
         if (t2 > 0) {
             t2 *= t2;
-            int gi2 = perm[ii + i2 + perm[jj + j2 + perm[kk + k2 + perm[ll + l2]]]] % 32;
+            final int gi2 = perm[ii + i2 + perm[jj + j2 + perm[kk + k2 + perm[ll + l2]]]] % 32;
             n2 = t2 * t2 * dot(grad4[gi2], x2, y2, z2, w2);
         }
         double t3 = 0.6 - x3 * x3 - y3 * y3 - z3 * z3 - w3 * w3;
         if (t3 > 0) {
             t3 *= t3;
-            int gi3 = perm[ii + i3 + perm[jj + j3 + perm[kk + k3 + perm[ll + l3]]]] % 32;
+            final int gi3 = perm[ii + i3 + perm[jj + j3 + perm[kk + k3 + perm[ll + l3]]]] % 32;
             n3 = t3 * t3 * dot(grad4[gi3], x3, y3, z3, w3);
         }
         double t4 = 0.6 - x4 * x4 - y4 * y4 - z4 * z4 - w4 * w4;
         if (t4 > 0) {
             t4 *= t4;
-            int gi4 = perm[ii + 1 + perm[jj + 1 + perm[kk + 1 + perm[ll + 1]]]] % 32;
+            final int gi4 = perm[ii + 1 + perm[jj + 1 + perm[kk + 1 + perm[ll + 1]]]] % 32;
             n4 = t4 * t4 * dot(grad4[gi4], x4, y4, z4, w4);
         }
         // Sum up and scale the result to cover the range [-1,1]

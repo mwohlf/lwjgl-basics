@@ -2,22 +2,22 @@ package net.wohlfart.gl.elements.skybox;
 
 public interface SkyboxParameters {
 
-	interface PerlinNoiseParameters {
+    interface PerlinNoiseParameters {
 
-		int getOctaves();
+        int getOctaves();
 
-		float getPersistence();
+        float getPersistence();
 
-		float getFrequency();
+        float getFrequency();
 
-		float getW();
+        float getW();
 
-	}
+    }
 
-	int getSize();
+    int getSize();
 
-	PerlinNoiseParameters getNoiseParamClouds();
+    PerlinNoiseParameters getNoiseParamClouds();
 
-	PerlinNoiseParameters getNoiseParamStars();
+    PerlinNoiseParameters getNoiseParamStars();
 
 }

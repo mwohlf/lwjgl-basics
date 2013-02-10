@@ -4,12 +4,12 @@ import java.nio.IntBuffer;
 
 public interface TextureBuffer {
 
-	void init();
+    void init();
 
-	IntBuffer getBuffer();
+    IntBuffer getBuffer();
 
-	int getWidth();
+    int getWidth();
 
-	int getHeight();
+    int getHeight();
 
 }

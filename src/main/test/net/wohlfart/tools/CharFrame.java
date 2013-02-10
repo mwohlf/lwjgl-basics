@@ -10,61 +10,60 @@ import java.lang.reflect.InvocationTargetException;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.WindowConstants;
 
 @SuppressWarnings("serial")
 public class CharFrame extends JFrame {
 
-	public static void main(String[] args) {
-		try {
-			EventQueue.invokeAndWait(new Runnable() {
-				@Override
-				public void run() {
-					new CharFrame().setVisible(true);
-				}
-			});
-		} catch (InvocationTargetException | InterruptedException ex) {
-			ex.printStackTrace();
-		}
-	}
+    public static void main(String[] args) {
+        try {
+            EventQueue.invokeAndWait(new Runnable() {
+                @Override
+                public void run() {
+                    new CharFrame().setVisible(true);
+                }
+            });
+        } catch (InvocationTargetException | InterruptedException ex) {
+            ex.printStackTrace();
+        }
+    }
 
+    CharFrame() {
+        addContent();
+        setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+    }
 
-	CharFrame() {
-		addContent();
-		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-	}
+    private void addContent() {
+        final FontRenderer fontRenderer = new FontRenderer();
+        fontRenderer.init();
+        final Image image = fontRenderer.getCharacterAtlas().getImage();
 
-	private void addContent() {
-		FontRenderer fontRenderer = new FontRenderer();
-		fontRenderer.init();
-		final Image image = fontRenderer.getCharacterAtlas().getImage();
+        final Container content = getContentPane();
 
-		final Container content = getContentPane();
+        content.add(new JPanel() {
 
-		content.add(new JPanel() {
+            @Override
+            public Dimension getPreferredSize() {
+                return new Dimension(image.getWidth(null), image.getHeight(null));
+            }
 
-			@Override
-			public Dimension getPreferredSize() {
-				return new Dimension(image.getWidth(null), image.getHeight(null));
-			}
+            @Override
+            public void paintComponent(Graphics g) {
+                super.paintComponent(g);
+                g.drawImage(image, 0, 0, null);
+            }
 
-		    @Override
-		    public void paintComponent(Graphics g) {
-		        super.paintComponent(g);
-		        g.drawImage(image, 0, 0, null);
-		    }
+        }, BorderLayout.CENTER);
 
-		}, BorderLayout.CENTER);
+    }
 
-	}
-
-
-	@Override
-	public void setVisible(boolean isVisible) {
-		super.setVisible(isVisible);
-		if (isVisible) {
-			pack();
-			setLocationRelativeTo(null);
-		}
-	}
+    @Override
+    public void setVisible(boolean isVisible) {
+        super.setVisible(isVisible);
+        if (isVisible) {
+            pack();
+            setLocationRelativeTo(null);
+        }
+    }
 
 }

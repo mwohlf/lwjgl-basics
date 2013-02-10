@@ -1,7 +1,5 @@
 package net.wohlfart.gl.input;
 
-
-
 /*
  * mapping low level user triggered events to high level commands
  * this is the union set of all possible input devices
@@ -10,48 +8,33 @@ package net.wohlfart.gl.input;
  */
 public interface InputAdaptor {
 
-	DigitalEventDispatcher getKeyboardDigitalDevice();
+    DigitalEventDispatcher getKeyboardDigitalDevice();
 
-	DigitalEventDispatcher getMouseDigitalDevice();
+    DigitalEventDispatcher getMouseDigitalDevice();
 
-	AnalogEventDispatcher getMouseAnalogDevice();
+    AnalogEventDispatcher getMouseAnalogDevice();
 
+    interface DigitalEventDispatcher {
 
-	interface DigitalEventDispatcher {
+        void down(int key);
 
-		void down(int key);
+        void pressed(int key, float time);
 
-		void pressed(int key, float time);
+        void up(int key);
 
-		void up(int key);
+    }
 
-	}
+    interface AnalogEventDispatcher {
 
-
-	interface AnalogEventDispatcher {
-
-		void changed(int axis, int amout);
-	}
-
-
+        void changed(int axis, int amout);
+    }
 
     public enum Command {
-        MOVE_LEFT,
-        MOVE_RIGHT,
-        MOVE_UP,
-        MOVE_DOWN,
-        MOVE_FORWARD,
-        MOVE_BACKWARD,
+        MOVE_LEFT, MOVE_RIGHT, MOVE_UP, MOVE_DOWN, MOVE_FORWARD, MOVE_BACKWARD,
 
-        MOVE_FORWARD_WHEEL,
-        MOVE_BACKWARD_WHEEL,
+        MOVE_FORWARD_WHEEL, MOVE_BACKWARD_WHEEL,
 
-        ROTATE_LEFT,
-        ROTATE_RIGHT,
-        ROTATE_UP,
-        ROTATE_DOWN,
-        ROTATE_CLOCKWISE,
-        ROTATE_COUNTER_CLOCKWISE,
+        ROTATE_LEFT, ROTATE_RIGHT, ROTATE_UP, ROTATE_DOWN, ROTATE_CLOCKWISE, ROTATE_COUNTER_CLOCKWISE,
 
         EXIT,
     }

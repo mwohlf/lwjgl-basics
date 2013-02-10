@@ -1,6 +1,5 @@
 package net.wohlfart.gl.shader;
 
-
 /*
  * content of this package:
  *
@@ -30,10 +29,4 @@ package net.wohlfart.gl.shader;
  *
  *
  */
-
-
-
-
-
-
 

@@ -3,7 +3,6 @@ package net.wohlfart.model;
 import org.lwjgl.util.vector.Vector2f;
 import org.lwjgl.util.vector.Vector3f;
 
-
 public interface IAvatar {
 
     // moving and rotating

@@ -20,7 +20,7 @@ public class ImageTexture implements ITexture {
     protected int id;
 
     public ImageTexture(final InputStream inputStream) throws IOException {
-        BufferedImage image = ImageIO.read(inputStream);
+        final BufferedImage image = ImageIO.read(inputStream);
         width = image.getWidth();
         height = image.getHeight();
 
@@ -29,33 +29,33 @@ public class ImageTexture implements ITexture {
         texture.put(pixels);
         texture.rewind();
     }
-    
+
     // for subclassing
     protected ImageTexture(final IntBuffer texture, final int width, final int height) {
-    	this.width = width;
-    	this.height = height;
-    	this.texture = texture;
+        this.width = width;
+        this.height = height;
+        this.texture = texture;
     }
 
-
-
     protected int getWidth() {
-    	return width;
+        return width;
     }
 
     protected int getHeight() {
-    	return height;
+        return height;
     }
 
     protected IntBuffer getTexture() {
-    	return texture;
+        return texture;
     }
 
-    /* (non-Javadoc)
-	 * @see net.wohlfart.gl.tools.ITextur#init()
-	 */
+    /*
+     * (non-Javadoc)
+     * 
+     * @see net.wohlfart.gl.tools.ITextur#init()
+     */
     @Override
-	public void init() {
+    public void init() {
         GL11.glEnable(GL11.GL_TEXTURE_2D);
 
         final IntBuffer buffer = BufferUtils.createIntBuffer(1);
@@ -69,19 +69,23 @@ public class ImageTexture implements ITexture {
         GL11.glBindTexture(GL11.GL_TEXTURE_2D, 0);
     }
 
-    /* (non-Javadoc)
-	 * @see net.wohlfart.gl.tools.ITextur#bind()
-	 */
+    /*
+     * (non-Javadoc)
+     * 
+     * @see net.wohlfart.gl.tools.ITextur#bind()
+     */
     @Override
-	public void bind() {
+    public void bind() {
         GL11.glBindTexture(GL11.GL_TEXTURE_2D, id);
     }
 
-    /* (non-Javadoc)
-	 * @see net.wohlfart.gl.tools.ITextur#unbind()
-	 */
+    /*
+     * (non-Javadoc)
+     * 
+     * @see net.wohlfart.gl.tools.ITextur#unbind()
+     */
     @Override
-	public void unbind() {
+    public void unbind() {
         GL11.glBindTexture(GL11.GL_TEXTURE_2D, 0);
     }
 

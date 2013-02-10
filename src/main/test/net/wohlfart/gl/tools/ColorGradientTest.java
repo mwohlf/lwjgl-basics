@@ -14,14 +14,12 @@ public class ColorGradientTest {
 
     @Test
     public void checkSimpleOrdering() {
-        ColorGradient colorGradient = new ColorGradient(
-                new ColorGradient.GradientPoint(-1, new Color(255, 0, 0)), 
-                new ColorGradient.GradientPoint(0, new Color(0, 0, 0)), 
-                new ColorGradient.GradientPoint(+1, new Color(0, 0, 255)));
+        final ColorGradient colorGradient = new ColorGradient(new ColorGradient.GradientPoint(-1, new Color(255, 0, 0)), new ColorGradient.GradientPoint(0,
+                new Color(0, 0, 0)), new ColorGradient.GradientPoint(+1, new Color(0, 0, 255)));
 
-        Set<GradientPoint> gradientPoints = colorGradient.getGradientPoints();
-        int size = gradientPoints.size();
-        GradientPoint pointArray[] = new GradientPoint[size];
+        final Set<GradientPoint> gradientPoints = colorGradient.getGradientPoints();
+        final int size = gradientPoints.size();
+        final GradientPoint pointArray[] = new GradientPoint[size];
         gradientPoints.toArray(pointArray);
 
         assertTrue(pointArray[0].point < pointArray[1].point);
@@ -30,17 +28,13 @@ public class ColorGradientTest {
 
     @Test
     public void checkOrdering() {
-        ColorGradient colorGradient = new ColorGradient(
-                new ColorGradient.GradientPoint(+1.0d, new Color(255, 0, 0)), 
-                new ColorGradient.GradientPoint(+0.4d, new Color(255, 0, 0)), 
-                new ColorGradient.GradientPoint(+0.1d, new Color(255, 0, 0)),
-                new ColorGradient.GradientPoint(+0.0d, new Color(0, 0, 0)), 
-                new ColorGradient.GradientPoint(-0.2d, new Color(255, 0, 0)),
-                new ColorGradient.GradientPoint(-0.1d, new Color(0, 0, 255)));
+        final ColorGradient colorGradient = new ColorGradient(new ColorGradient.GradientPoint(+1.0d, new Color(255, 0, 0)), new ColorGradient.GradientPoint(
+                +0.4d, new Color(255, 0, 0)), new ColorGradient.GradientPoint(+0.1d, new Color(255, 0, 0)), new ColorGradient.GradientPoint(+0.0d, new Color(0,
+                0, 0)), new ColorGradient.GradientPoint(-0.2d, new Color(255, 0, 0)), new ColorGradient.GradientPoint(-0.1d, new Color(0, 0, 255)));
 
-        Set<GradientPoint> gradientPoints = colorGradient.getGradientPoints();
-        int size = gradientPoints.size();
-        GradientPoint pointArray[] = new GradientPoint[size];
+        final Set<GradientPoint> gradientPoints = colorGradient.getGradientPoints();
+        final int size = gradientPoints.size();
+        final GradientPoint pointArray[] = new GradientPoint[size];
         gradientPoints.toArray(pointArray);
 
         assertEquals(-0.2, pointArray[0].point, 0.001);
@@ -53,11 +47,11 @@ public class ColorGradientTest {
 
     @Test
     public void checkPoints() {
-        ColorGradient colorGradient = new ColorGradient(Color.BLACK, Color.WHITE);
-        Set<GradientPoint> gradientPoints = colorGradient.getGradientPoints();
-        int size = gradientPoints.size();
+        final ColorGradient colorGradient = new ColorGradient(Color.BLACK, Color.WHITE);
+        final Set<GradientPoint> gradientPoints = colorGradient.getGradientPoints();
+        final int size = gradientPoints.size();
         assertEquals(2, size);
-        GradientPoint pointArray[] = new GradientPoint[size];
+        final GradientPoint pointArray[] = new GradientPoint[size];
         gradientPoints.toArray(pointArray);
 
         assertEquals(Color.BLACK, pointArray[0].color);
@@ -98,10 +92,8 @@ public class ColorGradientTest {
     @Test
     public void threeColor() {
         Color color;
-        ColorGradient colorGradient = new ColorGradient(
-                new ColorGradient.GradientPoint(-1, new Color(255, 0, 0)), 
-                new ColorGradient.GradientPoint(0, new Color(0, 0, 0)), 
-                new ColorGradient.GradientPoint(+1, new Color(0, 0, 255)));
+        final ColorGradient colorGradient = new ColorGradient(new ColorGradient.GradientPoint(-1, new Color(255, 0, 0)), new ColorGradient.GradientPoint(0,
+                new Color(0, 0, 0)), new ColorGradient.GradientPoint(+1, new Color(0, 0, 255)));
 
         color = colorGradient.getColor(-1d);
         assertEquals(255, color.getRed());
@@ -133,10 +125,7 @@ public class ColorGradientTest {
     @Test
     public void threeColorSimple() {
         Color color;
-        ColorGradient colorGradient = new ColorGradient(
-                new Color(255, 0, 0), 
-                new Color(0, 0, 0), 
-                new Color(0, 0, 255));
+        final ColorGradient colorGradient = new ColorGradient(new Color(255, 0, 0), new Color(0, 0, 0), new Color(0, 0, 255));
 
         color = colorGradient.getColor(-1d);
         assertEquals(255, color.getRed());

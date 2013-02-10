@@ -10,47 +10,36 @@ import net.wohlfart.gl.shader.mesh.WireframeMeshBuilder;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.util.vector.Vector3f;
 
-
-
-
-
 /**
- *      5---------4
- *     /|        /|
- *    / |       / |
- *   1 ------- 0  |
- *   |  |      |  |
- *   |  6 - - -|- 7
- *   |/        |/
- *   2-------- 3
+ * 5---------4 /| /| / | / | 1 ------- 0 | | | | | | 6 - - -|- 7 |/ |/ 2-------- 3
  */
 public class CubeMesh extends RenderableGrid {
 
-
     private float length = 1;
 
-    public CubeMesh() {}
+    public CubeMesh() {
+    }
 
     public CubeMesh(float length) {
-    	this.length = length;
+        this.length = length;
     }
 
     protected List<Vector3f> createVertices() {
-    	float l = length/2f;
-        List<Vector3f> result = new ArrayList<Vector3f>(8);
-        result.add(new Vector3f(+l,+l,+l));
-        result.add(new Vector3f(-l,+l,+l));
-        result.add(new Vector3f(-l,-l,+l));
-        result.add(new Vector3f(+l,-l,+l));
-        result.add(new Vector3f(+l,+l,-l));
-        result.add(new Vector3f(-l,+l,-l));
-        result.add(new Vector3f(-l,-l,-l));
-        result.add(new Vector3f(+l,-l,-l));
+        final float l = length / 2f;
+        final List<Vector3f> result = new ArrayList<Vector3f>(8);
+        result.add(new Vector3f(+l, +l, +l));
+        result.add(new Vector3f(-l, +l, +l));
+        result.add(new Vector3f(-l, -l, +l));
+        result.add(new Vector3f(+l, -l, +l));
+        result.add(new Vector3f(+l, +l, -l));
+        result.add(new Vector3f(-l, +l, -l));
+        result.add(new Vector3f(-l, -l, -l));
+        result.add(new Vector3f(+l, -l, -l));
         return result;
     }
 
     protected Integer[] createIndices() {
-        List<Integer> result = new ArrayList<Integer>(6 * 2 * 3);
+        final List<Integer> result = new ArrayList<Integer>(6 * 2 * 3);
         result.addAll(createIndices(0, 1, 2, 3));
         result.addAll(createIndices(4, 0, 3, 7));
         result.addAll(createIndices(5, 4, 7, 6));
@@ -61,29 +50,28 @@ public class CubeMesh extends RenderableGrid {
     }
 
     protected Collection<Integer> createIndices(int i1, int i2, int i3, int i4) {
-    	List<Integer> result = new ArrayList<Integer>();
-    	result.add(i1);
-    	result.add(i2);
+        final List<Integer> result = new ArrayList<Integer>();
+        result.add(i1);
+        result.add(i2);
 
-    	result.add(i2);
-    	result.add(i3);
+        result.add(i2);
+        result.add(i3);
 
-    	result.add(i3);
-    	result.add(i4);
+        result.add(i3);
+        result.add(i4);
 
-    	result.add(i4);
-    	result.add(i1);
-    	return result;
-	}
-
+        result.add(i4);
+        result.add(i1);
+        return result;
+    }
 
     @Override
     protected IMesh setupMesh() {
-        WireframeMeshBuilder builder = new WireframeMeshBuilder();
+        final WireframeMeshBuilder builder = new WireframeMeshBuilder();
         builder.setVertices(createVertices());
         builder.setIndices(createIndices());
-		builder.setIndicesStructure(GL11.GL_LINES);
-		builder.setIndexElemSize(GL11.GL_UNSIGNED_INT);
+        builder.setIndicesStructure(GL11.GL_LINES);
+        builder.setIndexElemSize(GL11.GL_UNSIGNED_INT);
         builder.setColor(color);
         builder.setLineWidth(lineWidth);
         builder.setRotation(rotation);

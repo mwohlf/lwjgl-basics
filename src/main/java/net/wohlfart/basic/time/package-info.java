@@ -1,6 +1,5 @@
 package net.wohlfart.basic.time;
 
-
 /**
  * This package serves to provide delta times for machine and
  * performance independent animation and input controls

@@ -4,10 +4,9 @@ import java.awt.Color;
 import java.util.Set;
 import java.util.TreeSet;
 
-
 /**
  * converting noise to color
- *
+ * 
  * @author michael
  */
 public class ColorGradient {
@@ -22,14 +21,14 @@ public class ColorGradient {
             gradientPoints.add(new GradientPoint(RIGHT, colors[0]));
         } else {
             for (int i = 0; i < colors.length; i++) {
-                double delta = ((RIGHT - LEFT) * i / (colors.length - 1d));
+                final double delta = ((RIGHT - LEFT) * i / (colors.length - 1d));
                 gradientPoints.add(new GradientPoint(LEFT + delta, colors[i]));
             }
         }
     }
 
     public ColorGradient(GradientPoint... points) {
-        for (GradientPoint gradientPoint : points) {
+        for (final GradientPoint gradientPoint : points) {
             gradientPoints.add(gradientPoint);
         }
     }
@@ -40,20 +39,20 @@ public class ColorGradient {
     }
 
     /**
-     *
+     * 
      * @param value
      *            [-1 .. +1]
      * @return
      */
     public Color getColor(final double value) {
 
-        int size = gradientPoints.size();
-        GradientPoint pointArray[] = new GradientPoint[size];
+        final int size = gradientPoints.size();
+        final GradientPoint pointArray[] = new GradientPoint[size];
         gradientPoints.toArray(pointArray);
 
         GradientPoint left = pointArray[0];
         for (int i = 0; i < size; i++) {
-            GradientPoint next = pointArray[i];
+            final GradientPoint next = pointArray[i];
             if (next.point > value) {
                 break; // we need to stay below the next value
             }
@@ -62,7 +61,7 @@ public class ColorGradient {
 
         GradientPoint right = pointArray[size - 1];
         for (int i = size - 1; i >= 0; i--) {
-            GradientPoint next = pointArray[i];
+            final GradientPoint next = pointArray[i];
             if (next.point < value) {
                 break; // we need to stay below the next value
             }
@@ -88,11 +87,11 @@ public class ColorGradient {
 
     private Color calculateRGBColor(final GradientPoint left2, final GradientPoint right2, final double distanceLeft, final double distanceRight) {
 
-        float red = ((((float) left2.color.getRed() * (float) distanceRight) + ((float) right2.color.getRed() * (float) distanceLeft))) / 256f;
+        final float red = (((left2.color.getRed() * (float) distanceRight) + (right2.color.getRed() * (float) distanceLeft))) / 256f;
 
-        float green = ((((float) left2.color.getGreen() * (float) distanceRight) + ((float) right2.color.getGreen() * (float) distanceLeft))) / 256f;
+        final float green = (((left2.color.getGreen() * (float) distanceRight) + (right2.color.getGreen() * (float) distanceLeft))) / 256f;
 
-        float blue = ((((float) left2.color.getBlue() * (float) distanceRight) + ((float) right2.color.getBlue() * (float) distanceLeft))) / 256f;
+        final float blue = (((left2.color.getBlue() * (float) distanceRight) + (right2.color.getBlue() * (float) distanceLeft))) / 256f;
 
         return new Color(red, green, blue);
     }
@@ -116,23 +115,23 @@ public class ColorGradient {
         // v [-1 .. 1]
         float value = v;
 
-        value = (float)Math.sin(value * (float)Math.PI/2f);
-        value = (float)Math.sin(value * (float)Math.PI/2);
-        value = (float)Math.sin(value * (float)Math.PI/2);
+        value = (float) Math.sin(value * (float) Math.PI / 2f);
+        value = (float) Math.sin(value * (float) Math.PI / 2);
+        value = (float) Math.sin(value * (float) Math.PI / 2);
 
-        float red = (((float) top.getRed() * value) + ((float) low.getRed() * (1f - value))) / 256f;
-        float green = (((float) top.getGreen() * value) + ((float) low.getGreen() * (1f - value))) / 256f;
-        float blue = (((float) top.getBlue() * value) + ((float) low.getBlue() * (1f - value))) / 256f;
+        final float red = ((top.getRed() * value) + (low.getRed() * (1f - value))) / 256f;
+        final float green = ((top.getGreen() * value) + (low.getGreen() * (1f - value))) / 256f;
+        final float blue = ((top.getBlue() * value) + (low.getBlue() * (1f - value))) / 256f;
         return new Color(red, green, blue);
     }
 
     public static Color linearGradient(final Color top, final Color low, final double skyNoise) {
         // v [-1 .. 1]
-        float value = (float) (skyNoise + 1f) / 2f;
+        final float value = (float) (skyNoise + 1f) / 2f;
 
-        float red = (((float) top.getRed() * value) + ((float) low.getRed() * (1f - value))) / 256f;
-        float green = (((float) top.getGreen() * value) + ((float) low.getGreen() * (1f - value))) / 256f;
-        float blue = (((float) top.getBlue() * value) + ((float) low.getBlue() * (1f - value))) / 256f;
+        final float red = ((top.getRed() * value) + (low.getRed() * (1f - value))) / 256f;
+        final float green = ((top.getGreen() * value) + (low.getGreen() * (1f - value))) / 256f;
+        final float blue = ((top.getBlue() * value) + (low.getBlue() * (1f - value))) / 256f;
         return new Color(red, green, blue);
     }
 
