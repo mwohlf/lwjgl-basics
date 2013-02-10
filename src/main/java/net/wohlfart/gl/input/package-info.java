@@ -6,8 +6,12 @@ package net.wohlfart.gl.input;
  * InputSource:
  *   platform dependent low level input provider
  *
+ * InputAdaptor:
+ *   schema to turn low-level events into high-level events in the InputProcessor,
+ *   part of the InputProcessor
  *
- * InputProcessor:
+ *
+ * InputDispatcher:
  *   extends EventBus
  *   turns events from Input Source into high-level states and events
  *
@@ -16,9 +20,5 @@ package net.wohlfart.gl.input;
  *     - a poll call to query the current input state
  *     - createEVents method to trigger event creation
  *
- *
- * InputMapper:
- *   schema to turn low-level events into high-level events in the InputProcessor,
- *   part of the InputProcessor
  *
  */

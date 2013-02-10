@@ -10,9 +10,9 @@ public class LwjglInputAdaptor implements InputAdaptor {
     private final InputDispatcher inputDispatcher;
 
     // core of the adaptor, mapping platform keys to command events
+    // @formatter:off
     @SuppressWarnings("serial")
-    private final HashMap<Integer, CommandEvent> keyMap = new HashMap<Integer, CommandEvent>() {
-        {
+    private final HashMap<Integer, CommandEvent> keyMap = new HashMap<Integer, CommandEvent>() {{
             put(Keyboard.KEY_ESCAPE, new CommandEvent.Exit());
             // turning
             put(Keyboard.KEY_LEFT, new CommandEvent.RotateLeft());
@@ -28,8 +28,7 @@ public class LwjglInputAdaptor implements InputAdaptor {
             put(Keyboard.KEY_S, new CommandEvent.MoveRight());
             put(Keyboard.KEY_Q, new CommandEvent.MoveUp());
             put(Keyboard.KEY_X, new CommandEvent.MoveDown());
-        }
-    };
+    }}; // @formatter:on
 
     public LwjglInputAdaptor(InputDispatcher inputDispatcher) {
         this.inputDispatcher = inputDispatcher;

@@ -10,7 +10,6 @@ import net.wohlfart.gl.input.InputSource;
 import net.wohlfart.gl.input.LwjglInputAdaptor;
 import net.wohlfart.gl.input.LwjglInputSource;
 import net.wohlfart.gl.shader.GraphicContextManager;
-import net.wohlfart.tools.SimpleMath;
 
 import org.lwjgl.LWJGLException;
 import org.lwjgl.opengl.ContextAttribs;
@@ -18,7 +17,6 @@ import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.DisplayMode;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.PixelFormat;
-import org.lwjgl.util.vector.Matrix4f;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -38,7 +36,7 @@ class Game {
      */
     void start() {
         try {
-            graphContext.setProjectionMatrix(createProjectionMatrix());
+            graphContext.setSettings(settings);
             graphContext.setInputDispatcher(inputDispatcher);
             bootupOpenGL();
             setCurrentState(GameStateEnum.SIMPLE);
@@ -101,32 +99,6 @@ class Game {
         LOGGER.info("Version: " + GL11.glGetString(GL11.GL_VERSION));
     }
 
-    /**
-     * - the projection matrix defines the lens of the camera - the view matrix defines the position and the direction of the camera - the model matrix defines
-     * the position and direction of each 3D model see: http://www.lwjgl.org/wiki/index.php?title=The_Quad_with_Projection,_View_and_Model_matrices
-     * 
-     * @return our projection matrix
-     */
-    private Matrix4f createProjectionMatrix() {
-        // Setup projection matrix
-        final Matrix4f matrix = new Matrix4f();
-        final float fieldOfView = settings.getFieldOfView();
-        final float aspectRatio = (float) settings.width / (float) settings.height;
-        final float nearPlane = settings.getNearPlane();
-        final float farPlane = settings.getFarPlane();
-
-        final float yScale = SimpleMath.coTan(SimpleMath.deg2rad(fieldOfView / 2f));
-        final float xScale = yScale / aspectRatio;
-        final float frustumLength = farPlane - nearPlane;
-
-        matrix.m00 = xScale;
-        matrix.m11 = yScale;
-        matrix.m22 = -((farPlane + nearPlane) / frustumLength);
-        matrix.m23 = -1;
-        matrix.m32 = -(2 * nearPlane * farPlane / frustumLength);
-
-        return matrix;
-    }
 
     private void shutdownOpenGL() {
         Display.destroy();
