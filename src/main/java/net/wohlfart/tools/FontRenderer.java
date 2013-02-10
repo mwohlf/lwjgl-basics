@@ -22,7 +22,7 @@ public class FontRenderer {
     public static final char NULL_CHAR = '_';
     private static final String chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789;:,.-_#+?!\"()";
     {
-        if (!(chars.contains(new String("" + NULL_CHAR)))) {
+        if (!chars.contains(new String("" + NULL_CHAR))) {
             throw new IllegalStateException("need NULL_CHAR in char sequence");
         }
         ;
@@ -73,7 +73,7 @@ public class FontRenderer {
         float y = 0;
         for (final char c : chars.toCharArray()) {
             final float width = fontMetrics.charWidth(c);
-            if ((x + width) > WIDTH) { // new line
+            if (x + width > WIDTH) { // new line
                 x = 0;
                 y += height;
                 if (y + height > HEIGHT) {

@@ -44,10 +44,10 @@ public class CharacterAtlas {
         final ByteBuffer buffer = BufferUtils.createByteBuffer(pixels.length * 4);
         for (int i = 0; i < pixels.length; i++) {
             final int pixel = pixels[i];
-            buffer.put((byte) ((pixel >> 16) & 0xFF)); // Red component
-            buffer.put((byte) ((pixel >> 8) & 0xFF)); // Green component
+            buffer.put((byte) (pixel >> 16 & 0xFF)); // Red component
+            buffer.put((byte) (pixel >> 8 & 0xFF)); // Green component
             buffer.put((byte) (pixel & 0xFF)); // Blue component
-            buffer.put((byte) ((pixel >> 24) & 0xFF)); // Alpha component. Only for RGBA
+            buffer.put((byte) (pixel >> 24 & 0xFF)); // Alpha component. Only for RGBA
         }
         buffer.flip();
 

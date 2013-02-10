@@ -27,7 +27,7 @@ public class CelestialScene implements CanMove {
         for (int i = 1; i <= planetCount; i++) {
             final Celestial celestial = new Celestial(random.nextLong());
             celestials.add(celestial);
-            final float rad = ((float) (2f * Math.PI) / planetCount) * i;
+            final float rad = (float) (2f * Math.PI) / planetCount * i;
             celestial.setPosition((float) Math.sin(rad) * 200, 0, (float) Math.cos(rad) * 200);
         }
     }

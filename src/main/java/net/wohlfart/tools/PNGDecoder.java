@@ -244,10 +244,10 @@ public class PNGDecoder {
      */
     public void decode(ByteBuffer buffer, int stride, Format fmt) throws IOException {
         final int offset = buffer.position();
-        final int lineSize = ((width * bitdepth + 7) / 8) * bytesPerPixel;
+        final int lineSize = (width * bitdepth + 7) / 8 * bytesPerPixel;
         byte[] curLine = new byte[lineSize + 1];
         byte[] prevLine = new byte[lineSize + 1];
-        byte[] palLine = (bitdepth < 8) ? new byte[width + 1] : null;
+        byte[] palLine = bitdepth < 8 ? new byte[width + 1] : null;
 
         final Inflater inflater = new Inflater();
         try {
@@ -556,13 +556,13 @@ public class PNGDecoder {
             final int val = src[1 + (i >> 2)] & 255;
             switch (n - i) {
             default:
-                dst[i + 3] = (byte) ((val) & 3);
+                dst[i + 3] = (byte) (val & 3);
             case 3:
-                dst[i + 2] = (byte) ((val >> 2) & 3);
+                dst[i + 2] = (byte) (val >> 2 & 3);
             case 2:
-                dst[i + 1] = (byte) ((val >> 4) & 3);
+                dst[i + 1] = (byte) (val >> 4 & 3);
             case 1:
-                dst[i] = (byte) ((val >> 6));
+                dst[i] = (byte) (val >> 6);
             }
         }
     }
@@ -572,21 +572,21 @@ public class PNGDecoder {
             final int val = src[1 + (i >> 3)] & 255;
             switch (n - i) {
             default:
-                dst[i + 7] = (byte) ((val) & 1);
+                dst[i + 7] = (byte) (val & 1);
             case 7:
-                dst[i + 6] = (byte) ((val >> 1) & 1);
+                dst[i + 6] = (byte) (val >> 1 & 1);
             case 6:
-                dst[i + 5] = (byte) ((val >> 2) & 1);
+                dst[i + 5] = (byte) (val >> 2 & 1);
             case 5:
-                dst[i + 4] = (byte) ((val >> 3) & 1);
+                dst[i + 4] = (byte) (val >> 3 & 1);
             case 4:
-                dst[i + 3] = (byte) ((val >> 4) & 1);
+                dst[i + 3] = (byte) (val >> 4 & 1);
             case 3:
-                dst[i + 2] = (byte) ((val >> 5) & 1);
+                dst[i + 2] = (byte) (val >> 5 & 1);
             case 2:
-                dst[i + 1] = (byte) ((val >> 6) & 1);
+                dst[i + 1] = (byte) (val >> 6 & 1);
             case 1:
-                dst[i] = (byte) ((val >> 7));
+                dst[i] = (byte) (val >> 7);
             }
         }
     }
@@ -634,7 +634,7 @@ public class PNGDecoder {
             curLine[i] += (byte) ((prevLine[i] & 0xFF) >>> 1);
         }
         for (final int n = curLine.length; i < n; ++i) {
-            curLine[i] += (byte) (((prevLine[i] & 0xFF) + (curLine[i - bpp] & 0xFF)) >>> 1);
+            curLine[i] += (byte) ((prevLine[i] & 0xFF) + (curLine[i - bpp] & 0xFF) >>> 1);
         }
     }
 
@@ -733,7 +733,7 @@ public class PNGDecoder {
 
     private void readPLTE() throws IOException {
         final int paletteEntries = chunkLength / 3;
-        if (paletteEntries < 1 || paletteEntries > 256 || (chunkLength % 3) != 0) {
+        if (paletteEntries < 1 || paletteEntries > 256 || chunkLength % 3 != 0) {
             throw new IOException("PLTE chunk has wrong length");
         }
         palette = new byte[paletteEntries * 3];
@@ -824,7 +824,7 @@ public class PNGDecoder {
     }
 
     private void readChunkUnzip(Inflater inflater, byte[] buffer, int offset, int length) throws IOException {
-        assert (buffer != this.buffer);
+        assert buffer != this.buffer;
         try {
             do {
                 final int read = inflater.inflate(buffer, offset, length);
@@ -843,7 +843,7 @@ public class PNGDecoder {
                 }
             } while (length > 0);
         } catch (final DataFormatException ex) {
-            throw (IOException) (new IOException("inflate error").initCause(ex));
+            throw (IOException) new IOException("inflate error").initCause(ex);
         }
     }
 
@@ -859,7 +859,7 @@ public class PNGDecoder {
     }
 
     private int readInt(byte[] buffer, int offset) {
-        return ((buffer[offset]) << 24) | ((buffer[offset + 1] & 255) << 16) | ((buffer[offset + 2] & 255) << 8) | ((buffer[offset + 3] & 255));
+        return buffer[offset] << 24 | (buffer[offset + 1] & 255) << 16 | (buffer[offset + 2] & 255) << 8 | buffer[offset + 3] & 255;
     }
 
     private void skip(long amount) throws IOException {

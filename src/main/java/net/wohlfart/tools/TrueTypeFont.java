@@ -144,7 +144,7 @@ public class TrueTypeFont {
         gt.setColor(Color.WHITE);
         final int charx = 3;
         final int chary = 1;
-        gt.drawString(String.valueOf(ch), (charx), (chary) + fontMetrics.getAscent());
+        gt.drawString(String.valueOf(ch), charx, chary + fontMetrics.getAscent());
 
         return fontImage;
     }
@@ -171,12 +171,12 @@ public class TrueTypeFont {
             int positionX = 0;
             int positionY = 0;
 
-            final int customCharsLength = (customCharsArray != null) ? customCharsArray.length : 0;
+            final int customCharsLength = customCharsArray != null ? customCharsArray.length : 0;
 
             for (int i = 0; i < 256 + customCharsLength; i++) {
 
                 // get 0-255 characters and then custom characters
-                final char ch = (i < 256) ? (char) i : customCharsArray[i - 256];
+                final char ch = i < 256 ? (char) i : customCharsArray[i - 256];
 
                 BufferedImage fontImage = getFontImage(ch);
 
@@ -231,8 +231,8 @@ public class TrueTypeFont {
         final float TextureSrcY = srcY / textureHeight;
         final float SrcWidth = srcX2 - srcX;
         final float SrcHeight = srcY2 - srcY;
-        final float RenderWidth = (SrcWidth / textureWidth);
-        final float RenderHeight = (SrcHeight / textureHeight);
+        final float RenderWidth = SrcWidth / textureWidth;
+        final float RenderHeight = SrcHeight / textureHeight;
 
         // see: http://stackoverflow.com/questions/10299918/how-to-re-write-2d-opengl-app-for-opengl-es
         /*
@@ -409,7 +409,7 @@ public class TrueTypeFont {
             ByteBuffer byteBuffer;
             final DataBuffer db = bufferedImage.getData().getDataBuffer();
             if (db instanceof DataBufferInt) {
-                final int intI[] = ((DataBufferInt) (bufferedImage.getData().getDataBuffer())).getData();
+                final int intI[] = ((DataBufferInt) bufferedImage.getData().getDataBuffer()).getData();
                 final byte newI[] = new byte[intI.length * 4];
                 for (int i = 0; i < intI.length; i++) {
                     final byte b[] = intToByteArray(intI[i]);
@@ -424,7 +424,7 @@ public class TrueTypeFont {
                 byteBuffer = ByteBuffer.allocateDirect(width * height * (bpp / 8)).order(ByteOrder.nativeOrder()).put(newI);
             } else {
                 byteBuffer = ByteBuffer.allocateDirect(width * height * (bpp / 8)).order(ByteOrder.nativeOrder())
-                        .put(((DataBufferByte) (bufferedImage.getData().getDataBuffer())).getData());
+                        .put(((DataBufferByte) bufferedImage.getData().getDataBuffer()).getData());
             }
             byteBuffer.flip();
 

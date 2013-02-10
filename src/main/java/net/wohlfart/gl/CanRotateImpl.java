@@ -32,7 +32,7 @@ public class CanRotateImpl extends SimpleQuaternion implements CanRotate {
     // the (1,0,0) vector / X axis
     @Override
     public Vector3f getRght(final Vector3f result) {
-        result.x = (1f - 2f * (y * y + z * z));
+        result.x = 1f - 2f * (y * y + z * z);
         result.y = 2f * (x * y - w * z);
         result.z = 2f * (x * z + w * y);
         return result.normalise(new Vector3f());
@@ -42,7 +42,7 @@ public class CanRotateImpl extends SimpleQuaternion implements CanRotate {
     @Override
     public Vector3f getUp(final Vector3f result) {
         result.x = 2f * (x * y + w * z);
-        result.y = (1f - 2f * (z * z + x * x));
+        result.y = 1f - 2f * (z * z + x * x);
         result.z = 2f * (y * z - w * x);
         return result.normalise(new Vector3f());
     }
@@ -52,7 +52,7 @@ public class CanRotateImpl extends SimpleQuaternion implements CanRotate {
     public Vector3f getDir(final Vector3f result) {
         result.x = 2f * (x * z - w * y);
         result.y = 2f * (y * z + w * x);
-        result.z = (1f - 2f * (x * x + y * y));
+        result.z = 1f - 2f * (x * x + y * y);
         return result.normalise(new Vector3f());
     }
 

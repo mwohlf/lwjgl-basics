@@ -26,15 +26,15 @@ public class MouseMotionEvent {
     }
 
     public boolean isLeftButtonPressed() {
-        return (buttons & (byte) ((1 << MouseButton.LEFT.ordinal()) & 0xff)) != 0;
+        return (buttons & (byte) (1 << MouseButton.LEFT.ordinal() & 0xff)) != 0;
     }
 
     public boolean isMiddleButtonPressed() {
-        return (buttons & (byte) ((1 << MouseButton.MIDDLE.ordinal()) & 0xff)) != 0;
+        return (buttons & (byte) (1 << MouseButton.MIDDLE.ordinal() & 0xff)) != 0;
     }
 
     public boolean isRightButtonPressed() {
-        return (buttons & (byte) ((1 << MouseButton.RIGHT.ordinal()) & 0xff)) != 0;
+        return (buttons & (byte) (1 << MouseButton.RIGHT.ordinal() & 0xff)) != 0;
     }
 
 }

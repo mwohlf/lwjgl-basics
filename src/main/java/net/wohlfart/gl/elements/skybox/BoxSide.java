@@ -208,7 +208,7 @@ enum BoxSide {
             for (int y = 0; y < height; y++) {
                 final Vector3f vector = getVector(x, y, width, height);
                 final double noise = createNoise(vector.x * frequency, vector.y * frequency, vector.z * frequency, w * frequency, persistence, octaves);
-                if ((noise > -0.0001) && (noise < +0.0001)) {
+                if (noise > -0.0001 && noise < +0.0001) {
                     final Color color = gradient.getColor(noise * 1000);
                     data[x + y * width] = color.getRGB() << 8;
                 }

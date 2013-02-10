@@ -88,7 +88,7 @@ public class SimplexProcTexture extends ProceduralTexture {
     }
 
     private boolean isAlmost(float a, float value) {
-        return (a < (value + 0.004) && a > (value - 0.004));
+        return a < value + 0.004 && a > value - 0.004;
     }
 
 }

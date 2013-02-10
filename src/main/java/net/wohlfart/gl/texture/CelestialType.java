@@ -89,8 +89,8 @@ public enum CelestialType {
     public float maxPathRadius = 6000000.0f;
     public float minPathRadius = 700.0f; // sun-earth is 147098; sun-pluto is 5913520
 
-    public float minRot = ((float) Math.PI * 2f) / 60f; // in rad/s, 2pi mean one rotation per second 2pi/3 means one rotation in 3 sec
-    public float maxRot = ((float) Math.PI * 2f) / 300f;
+    public float minRot = (float) Math.PI * 2f / 60f; // in rad/s, 2pi mean one rotation per second 2pi/3 means one rotation in 3 sec
+    public float maxRot = (float) Math.PI * 2f / 300f;
 
     public float maxAxisDeplacement = 0.25f; // this value is randomly added to a normalized up vectors x and y values, earth is around 23.4 degree
 

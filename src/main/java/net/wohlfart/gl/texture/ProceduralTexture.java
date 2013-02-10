@@ -47,15 +47,15 @@ public abstract class ProceduralTexture implements TextureBuffer {
             throw new IllegalArgumentException("y > height - 1");
         }
 
-        final int i = (x + y * width);
+        final int i = x + y * width;
         int value = 0;
-        value = value | (0xff & color.getAlpha());
+        value = value | 0xff & color.getAlpha();
         value = value << 8;
-        value = value | (0xff & color.getRed());
+        value = value | 0xff & color.getRed();
         value = value << 8;
-        value = value | (0xff & color.getGreen());
+        value = value | 0xff & color.getGreen();
         value = value << 8;
-        value = value | (0xff & color.getBlue());
+        value = value | 0xff & color.getBlue();
         // data[i] = color.getRGB();
         data[i] = value;
     }
@@ -68,8 +68,8 @@ public abstract class ProceduralTexture implements TextureBuffer {
     protected Vector3f getNormalVector(final int x, final int y) {
         final int yRange = height - 1;
         final int xRange = width - 1;
-        final float latitude = ((float) Math.PI * ((float) y / (float) yRange)); // [0 .. PI] (north-south)
-        final float longitude = ((float) Math.PI * 2 * ((float) x / (float) xRange)); // [0 .. TWO_PI]
+        final float latitude = (float) Math.PI * ((float) y / (float) yRange); // [0 .. PI] (north-south)
+        final float longitude = (float) Math.PI * 2 * ((float) x / (float) xRange); // [0 .. TWO_PI]
 
         final float xx = (float) Math.sin(longitude) * (float) Math.sin(latitude); // 0 -> 0; 1/2pi -> 1 ; pi -> 0
         final float yy = (float) Math.cos(latitude); // 0 -> 1; 1/2pi -> 0 ; pi -> -1

@@ -14,7 +14,7 @@ public final class SimpleMath {
 
     public static final float QUARTER_PI = (float) (0.25d * Math.PI);
     public static final float HALF_PI = (float) (0.5d * Math.PI);
-    public static final float PI = (float) (Math.PI);
+    public static final float PI = (float) Math.PI;
     public static final float TWO_PI = (float) (2d * Math.PI);
 
     public static final Vector3f X_AXIS = new Vector3f(1, 0, 0);
@@ -34,11 +34,11 @@ public final class SimpleMath {
     }
 
     public static float rad2deg(final float rad) {
-        return (rad * 360f) / SimpleMath.TWO_PI;
+        return rad * 360f / SimpleMath.TWO_PI;
     }
 
     public static float deg2rad(final float deg) {
-        return (deg * SimpleMath.TWO_PI) / 360f;
+        return deg * SimpleMath.TWO_PI / 360f;
     }
 
     public static float coTan(final float angle) {

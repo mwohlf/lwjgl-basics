@@ -173,7 +173,7 @@ class TimSort<T> {
          * smaller (but sufficiently large) stack lengths for smaller arrays. The "magic numbers" in the computation below must be changed if MIN_MERGE is
          * decreased. See the MIN_MERGE declaration above for more information.
          */
-        final int stackLen = (len < 120 ? 5 : len < 1542 ? 10 : len < 119151 ? 19 : 40);
+        final int stackLen = len < 120 ? 5 : len < 1542 ? 10 : len < 119151 ? 19 : 40;
         runBase = new int[stackLen];
         runLen = new int[stackLen];
     }
@@ -281,7 +281,7 @@ class TimSort<T> {
              * Invariants: pivot >= all in [lo, left). pivot < all in [right, start).
              */
             while (left < right) {
-                final int mid = (left + right) >>> 1;
+                final int mid = left + right >>> 1;
                 if (c.compare(pivot, a[mid]) < 0) {
                     right = mid;
                 } else {
@@ -400,7 +400,7 @@ class TimSort<T> {
         }
         int r = 0; // Becomes 1 if any 1 bits are shifted off
         while (n >= MIN_MERGE) {
-            r |= (n & 1);
+            r |= n & 1;
             n >>= 1;
         }
         return n + r;
@@ -597,7 +597,7 @@ class TimSort<T> {
          */
         lastOfs++;
         while (lastOfs < ofs) {
-            final int m = lastOfs + ((ofs - lastOfs) >>> 1);
+            final int m = lastOfs + (ofs - lastOfs >>> 1);
 
             if (c.compare(key, a[base + m]) > 0) {
                 lastOfs = m + 1; // a[base + m] < key
@@ -681,7 +681,7 @@ class TimSort<T> {
          */
         lastOfs++;
         while (lastOfs < ofs) {
-            final int m = lastOfs + ((ofs - lastOfs) >>> 1);
+            final int m = lastOfs + (ofs - lastOfs >>> 1);
 
             if (c.compare(key, a[base + m]) < 0) {
                 ofs = m; // key < a[b + m]

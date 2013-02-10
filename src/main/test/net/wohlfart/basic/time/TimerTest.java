@@ -104,7 +104,7 @@ public class TimerTest {
         final long tickdelta = 5;
         ticks.add(tick);
         for (int i = 0; i < 15; i++) {
-            tick = (tick + tickdelta) & Long.MAX_VALUE;
+            tick = tick + tickdelta & Long.MAX_VALUE;
             ticks.add(tick);
         }
 

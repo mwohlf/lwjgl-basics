@@ -91,7 +91,7 @@ public class Celestial {
     }
 
     private float getRandom(float min, float max) {
-        return ((1f - random.nextFloat()) * (max - min)) + min;
+        return (1f - random.nextFloat()) * (max - min) + min;
     }
 
     public float getRadius() {

@@ -123,7 +123,7 @@ class Game {
         matrix.m11 = yScale;
         matrix.m22 = -((farPlane + nearPlane) / frustumLength);
         matrix.m23 = -1;
-        matrix.m32 = -((2 * nearPlane * farPlane) / frustumLength);
+        matrix.m32 = -(2 * nearPlane * farPlane / frustumLength);
 
         return matrix;
     }

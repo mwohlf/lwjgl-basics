@@ -82,37 +82,37 @@ public class TerahedronRefinedMesh extends RenderableGrid {
             vertices.add(n3); // offset + 2
 
             // top triangle
-            final int j = (i / indicesPerSide) * newIndices;
+            final int j = i / indicesPerSide * newIndices;
             indices2[j + 0] = indices[i + 0]; // top
-            indices2[j + 1] = (offset + 0);
-            indices2[j + 2] = (offset + 0); // mid-left
-            indices2[j + 3] = (offset + 2);
-            indices2[j + 4] = (offset + 2); // mid-right
+            indices2[j + 1] = offset + 0;
+            indices2[j + 2] = offset + 0; // mid-left
+            indices2[j + 3] = offset + 2;
+            indices2[j + 4] = offset + 2; // mid-right
             indices2[j + 5] = indices[i + 0];
 
             // left triangle
-            indices2[j + 6] = (offset + 0); // mid-left
+            indices2[j + 6] = offset + 0; // mid-left
             indices2[j + 7] = indices[i + 2];
             indices2[j + 8] = indices[i + 2]; // left
-            indices2[j + 9] = (offset + 1);
-            indices2[j + 10] = (offset + 1); // mid-bottom
-            indices2[j + 11] = (offset + 0);
+            indices2[j + 9] = offset + 1;
+            indices2[j + 10] = offset + 1; // mid-bottom
+            indices2[j + 11] = offset + 0;
 
             // right triangle
-            indices2[j + 12] = (offset + 2); // mid-right
-            indices2[j + 13] = (offset + 1);
-            indices2[j + 14] = (offset + 1); // mid-bottom
+            indices2[j + 12] = offset + 2; // mid-right
+            indices2[j + 13] = offset + 1;
+            indices2[j + 14] = offset + 1; // mid-bottom
             indices2[j + 15] = indices[i + 4];
             indices2[j + 16] = indices[i + 4]; // right
-            indices2[j + 17] = (offset + 2);
+            indices2[j + 17] = offset + 2;
 
             // center triangle
-            indices2[j + 18] = (offset + 0); // mid-left
-            indices2[j + 19] = (offset + 1);
-            indices2[j + 20] = (offset + 1); // mid-bottom
-            indices2[j + 21] = (offset + 2);
-            indices2[j + 22] = (offset + 2); // mid-right
-            indices2[j + 23] = (offset + 0);
+            indices2[j + 18] = offset + 0; // mid-left
+            indices2[j + 19] = offset + 1;
+            indices2[j + 20] = offset + 1; // mid-bottom
+            indices2[j + 21] = offset + 2;
+            indices2[j + 22] = offset + 2; // mid-right
+            indices2[j + 23] = offset + 0;
         }
         indices = indices2;
     }

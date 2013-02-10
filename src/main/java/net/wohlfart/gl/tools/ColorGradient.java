@@ -21,7 +21,7 @@ public class ColorGradient {
             gradientPoints.add(new GradientPoint(RIGHT, colors[0]));
         } else {
             for (int i = 0; i < colors.length; i++) {
-                final double delta = ((RIGHT - LEFT) * i / (colors.length - 1d));
+                final double delta = (RIGHT - LEFT) * i / (colors.length - 1d);
                 gradientPoints.add(new GradientPoint(LEFT + delta, colors[i]));
             }
         }
@@ -87,11 +87,11 @@ public class ColorGradient {
 
     private Color calculateRGBColor(final GradientPoint left2, final GradientPoint right2, final double distanceLeft, final double distanceRight) {
 
-        final float red = (((left2.color.getRed() * (float) distanceRight) + (right2.color.getRed() * (float) distanceLeft))) / 256f;
+        final float red = (left2.color.getRed() * (float) distanceRight + right2.color.getRed() * (float) distanceLeft) / 256f;
 
-        final float green = (((left2.color.getGreen() * (float) distanceRight) + (right2.color.getGreen() * (float) distanceLeft))) / 256f;
+        final float green = (left2.color.getGreen() * (float) distanceRight + right2.color.getGreen() * (float) distanceLeft) / 256f;
 
-        final float blue = (((left2.color.getBlue() * (float) distanceRight) + (right2.color.getBlue() * (float) distanceLeft))) / 256f;
+        final float blue = (left2.color.getBlue() * (float) distanceRight + right2.color.getBlue() * (float) distanceLeft) / 256f;
 
         return new Color(red, green, blue);
     }
@@ -119,9 +119,9 @@ public class ColorGradient {
         value = (float) Math.sin(value * (float) Math.PI / 2);
         value = (float) Math.sin(value * (float) Math.PI / 2);
 
-        final float red = ((top.getRed() * value) + (low.getRed() * (1f - value))) / 256f;
-        final float green = ((top.getGreen() * value) + (low.getGreen() * (1f - value))) / 256f;
-        final float blue = ((top.getBlue() * value) + (low.getBlue() * (1f - value))) / 256f;
+        final float red = (top.getRed() * value + low.getRed() * (1f - value)) / 256f;
+        final float green = (top.getGreen() * value + low.getGreen() * (1f - value)) / 256f;
+        final float blue = (top.getBlue() * value + low.getBlue() * (1f - value)) / 256f;
         return new Color(red, green, blue);
     }
 
@@ -129,9 +129,9 @@ public class ColorGradient {
         // v [-1 .. 1]
         final float value = (float) (skyNoise + 1f) / 2f;
 
-        final float red = ((top.getRed() * value) + (low.getRed() * (1f - value))) / 256f;
-        final float green = ((top.getGreen() * value) + (low.getGreen() * (1f - value))) / 256f;
-        final float blue = ((top.getBlue() * value) + (low.getBlue() * (1f - value))) / 256f;
+        final float red = (top.getRed() * value + low.getRed() * (1f - value)) / 256f;
+        final float green = (top.getGreen() * value + low.getGreen() * (1f - value)) / 256f;
+        final float blue = (top.getBlue() * value + low.getBlue() * (1f - value)) / 256f;
         return new Color(red, green, blue);
     }
 
