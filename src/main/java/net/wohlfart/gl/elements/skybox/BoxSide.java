@@ -51,8 +51,6 @@ enum BoxSide {
 	// main entry point
 	BoxSideMesh build(SkyboxParameters parameters) {
 
-		// load the texture
-		int textureId = createAndLoadTexture(GL13.GL_TEXTURE0, parameters); // FIXME: check if we coudl use a different texture unit
 
 		Vertex[] vertices = new Vertex[] {
 				// We'll define our quad using 4 vertices of the custom 'Vertex'
@@ -125,6 +123,10 @@ enum BoxSide {
 		GL15.glBufferData(GL15.GL_ELEMENT_ARRAY_BUFFER, indicesBuffer, GL15.GL_STATIC_DRAW);
 		GL15.glBindBuffer(GL15.GL_ELEMENT_ARRAY_BUFFER, 0);
 
+		// load the texture
+		int textureId = createAndLoadTexture(GL13.GL_TEXTURE0, parameters); // FIXME: check if we coudl use a different texture unit
+
+
 		return new BoxSideMesh(vaoHandle, vboVerticesHandle,
 				vboIndicesHandle, GL11.GL_TRIANGLES, GL11.GL_UNSIGNED_BYTE,
 				indicesCount, 0, colorAttrib, positionAttrib, textureAttrib,
@@ -143,9 +145,14 @@ enum BoxSide {
 		buffer.put(canvas);
 		buffer.rewind();
 
+		// see: http://lwjgl.org/forum/index.php?topic=2578.0
 		int texId = GL11.glGenTextures();
 		GL13.glActiveTexture(textureUnit);
 		GL11.glBindTexture(GL11.GL_TEXTURE_2D, texId);
+
+		GL11.glDisable(GL11.GL_BLEND);
+		GL11.glBlendFunc(GL11.GL_CONSTANT_ALPHA, GL11.GL_ZERO);
+
 		GL11.glPixelStorei(GL11.GL_UNPACK_ALIGNMENT, 1);
 		GL11.glTexImage2D(GL11.GL_TEXTURE_2D, 0, GL11.GL_RGBA8, width, height, 0, GL11.GL_RGBA, GL12.GL_UNSIGNED_INT_8_8_8_8, buffer);
 		GL30.glGenerateMipmap(GL11.GL_TEXTURE_2D);

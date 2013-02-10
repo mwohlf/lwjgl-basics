@@ -11,6 +11,7 @@ import net.wohlfart.model.Avatar;
 import net.wohlfart.tools.SimpleMath;
 import net.wohlfart.tools.SimpleMatrix4f;
 
+import org.lwjgl.opengl.GL11;
 import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector3f;
 
@@ -65,6 +66,8 @@ public class Skybox implements Renderable, SkyboxParameters {
 		ShaderUniformHandle.MODEL_TO_WORLD.set(SimpleMath.UNION_MATRIX);
 		ShaderUniformHandle.WORLD_TO_CAM.set(rotMatrix);
 		ShaderUniformHandle.CAM_TO_CLIP.set(camViewMatrix);
+
+		GL11.glDisable(GL11.GL_BLEND);
 
 		// draw only the visible sides
 		for (BoxSideMesh side : sides) {

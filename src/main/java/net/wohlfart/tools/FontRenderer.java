@@ -11,14 +11,19 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.InputStream;
 
+import net.wohlfart.gl.elements.hud.CharacterAtlas;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class FontRenderer {
 	protected static final Logger LOGGER = LoggerFactory.getLogger(FontRenderer.class);
 
+	public final static char NULL_CHAR = '_'; // we need this one in any charset
+
 	//private static final String FONT_FILE = "/fonts/alphbeta.ttf";
 	private static final String FONT_FILE = "/fonts/Greyscale_Basic_Regular.ttf";
+	//private static final String FONT_FILE = "/fonts/AeroviasBrasilNF.ttf";
 
 	private CharacterAtlas atlas;
 
@@ -26,7 +31,6 @@ public class FontRenderer {
 
 	private final int WIDTH = SIZE;
 	private final int HEIGHT = SIZE;
-
 
 	private final String chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789;:,.-_#+?!\"()";
 
@@ -55,9 +59,8 @@ public class FontRenderer {
 		Graphics2D g = (Graphics2D) buffImage.getGraphics();
 		g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 		g.setFont(font);
-		g.setColor(Color.BLUE);
+		g.setColor(new Color(0f,0f,0f,0f)); // transparent
 		g.fillRect(0, 0, WIDTH, HEIGHT);
-		g.setColor(Color.BLACK);
 		FontMetrics fontMetrics = g.getFontMetrics();
 		LineMetrics lineMetrics = fontMetrics.getLineMetrics(chars, g);
 
@@ -71,10 +74,10 @@ public class FontRenderer {
 				x = 0;
 				y += height;
 				if (y + height > HEIGHT) {
-					throw new IllegalStateException("chars don't fit into atlas");
+					throw new IllegalStateException("chars don't fit into the atlas");
 				}
 			}
-			g.setColor(Color.BLACK);
+			g.setColor(Color.WHITE);
 			g.drawString(String.valueOf(c), x, y + ascent);
 			atlas.put(c, x, y, width, height);
 			g.setColor(Color.RED);
@@ -82,6 +85,7 @@ public class FontRenderer {
 			x += width;
 		}
 		atlas.setImage(buffImage);
+		atlas.init();
 		return atlas;
 	}
 

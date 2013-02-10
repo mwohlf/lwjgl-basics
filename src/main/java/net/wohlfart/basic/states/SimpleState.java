@@ -9,6 +9,7 @@ import net.wohlfart.gl.elements.debug.IcosphereMesh;
 import net.wohlfart.gl.elements.debug.TerahedronRefinedMesh;
 import net.wohlfart.gl.elements.debug.TetrahedronMesh;
 import net.wohlfart.gl.elements.hud.Hud;
+import net.wohlfart.gl.elements.hud.Label;
 import net.wohlfart.gl.elements.skybox.Skybox;
 import net.wohlfart.gl.input.CommandEvent;
 import net.wohlfart.gl.renderer.RenderBucket;
@@ -45,9 +46,8 @@ class SimpleState implements GameState {
 	private final RenderBucket elemBucket = new RenderBucket();
 	private final Hud hud = new Hud();
 
-	private final boolean skyboxOn = false
-			;
-	private final boolean elementsOn = false;
+	private final boolean skyboxOn = true;
+	private final boolean elementsOn = true;
 	private final boolean hudOn = true;
 
 
@@ -77,6 +77,7 @@ class SimpleState implements GameState {
 
 		if (hudOn) {
 			hud.init(hudGraphicContext);
+			hud.add(new Label(50,50,"A"));
 		}
 
 	}
@@ -147,6 +148,7 @@ class SimpleState implements GameState {
 
 	@Override
 	public void render() {
+
 		if (skyboxOn) {
 			skybox.render();
 		}
@@ -168,6 +170,8 @@ class SimpleState implements GameState {
 		if (hudOn) {
 			hud.render();
 		}
+
+
 	}
 
 	@Override

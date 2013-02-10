@@ -4,8 +4,8 @@ import java.nio.ByteBuffer;
 import java.nio.FloatBuffer;
 
 import net.wohlfart.gl.shader.ShaderAttributeHandle;
+import net.wohlfart.gl.shader.mesh.CharacterMesh;
 import net.wohlfart.gl.shader.mesh.IMesh;
-import net.wohlfart.gl.shader.mesh.TexturedFragmentMesh;
 import net.wohlfart.gl.tools.Vertex;
 
 import org.lwjgl.BufferUtils;
@@ -16,40 +16,46 @@ import org.lwjgl.opengl.GL30;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class LayerMeshBuilder {
-	protected static final Logger LOGGER = LoggerFactory.getLogger(LayerMeshBuilder.class);
+public class CharacterMeshBuilder {
+	protected static final Logger LOGGER = LoggerFactory.getLogger(CharacterMeshBuilder.class);
 
-	private int texId;
+
+	private CharacterAtlas atlas;
+	private CharInfo info;
+	private int screenX;
+	private int screenY;
 
 	public IMesh build() {
+
+		float x1 = info.getX()/atlas.getImage().getWidth();
+		float x2 = (info.getX() + info.getWidth())/atlas.getImage().getWidth();
+
+		float y1 = info.getY()/atlas.getImage().getHeight();
+		float y2 = (info.getY() + info.getHeight())/atlas.getImage().getHeight();
 
 		// We'll define our quad using 4 vertices of the custom 'Vertex' class
 		Vertex v0 = new Vertex();
 		v0.setXYZ(-0.5f, 0.5f, 0f);
-		v0.setRGB(1, 0, 0);
-		v0.setST(0, 0);
+		v0.setST(x1, y1);
 
 		Vertex v1 = new Vertex();
 		v1.setXYZ(-0.5f, -0.5f, 0f);
-		v1.setRGB(0, 1, 0);
-		v1.setST(0, 1);
+		v1.setST(x1, y2);
 
 		Vertex v2 = new Vertex();
 		v2.setXYZ(0.5f, -0.5f, 0f);
-		v2.setRGB(0, 0, 1);
-		v2.setST(1, 1);
+		v2.setST(x2, y2);
 
 		Vertex v3 = new Vertex();
 		v3.setXYZ(0.5f, 0.5f, 0f);
-		v3.setRGB(1, 1, 1);
-		v3.setST(1, 0);
+		v3.setST(x2, y1);
 
 		Vertex[] vertices = new Vertex[] {v0, v1, v2, v3};
 		// Put each 'Vertex' in one FloatBuffer the order depends on the shaders positions!
 		FloatBuffer verticesBuffer = BufferUtils.createFloatBuffer(vertices.length * Vertex.elementCount);
 		for (int i = 0; i < vertices.length; i++) {
 			verticesBuffer.put(vertices[i].getXYZW());
-			verticesBuffer.put(vertices[i].getRGBA());
+			verticesBuffer.put(vertices[i].getRGBA());  // FIXME: color not needed
 			verticesBuffer.put(vertices[i].getST());
 		}
 		verticesBuffer.flip();
@@ -69,7 +75,7 @@ public class LayerMeshBuilder {
 		GL30.glBindVertexArray(vaoHandle);
 
 		int positionAttrib = ShaderAttributeHandle.POSITION.getLocation();
-		int colorAttrib = ShaderAttributeHandle.COLOR.getLocation();
+		//int colorAttrib = ShaderAttributeHandle.COLOR.getLocation();
 		int textureAttrib = ShaderAttributeHandle.TEXTURE_COORD.getLocation();
 
 		// Create a new Vertex Buffer Object in memory and select it (bind)
@@ -79,8 +85,6 @@ public class LayerMeshBuilder {
 
 		// Put the positions in attribute list 0
 		GL20.glVertexAttribPointer(positionAttrib, Vertex.positionElementCount, GL11.GL_FLOAT, false, Vertex.stride, Vertex.positionByteOffset);
-		// Put the colors in attribute list 1
-		GL20.glVertexAttribPointer(colorAttrib, Vertex.colorElementCount, GL11.GL_FLOAT, false, Vertex.stride, Vertex.colorByteOffset);
 		// Put the texture in attribute list 2
 		GL20.glVertexAttribPointer(textureAttrib, Vertex.textureElementCount, GL11.GL_FLOAT, false, Vertex.stride, Vertex.textureByteOffset);
 		// unbind
@@ -95,12 +99,25 @@ public class LayerMeshBuilder {
 		GL15.glBufferData(GL15.GL_ELEMENT_ARRAY_BUFFER, indicesBuffer, GL15.GL_STATIC_DRAW);
 		GL15.glBindBuffer(GL15.GL_ELEMENT_ARRAY_BUFFER, 0);
 
-		return new TexturedFragmentMesh(vaoHandle, vboVerticesHandle,
-				vboIndicesHandle, GL11.GL_TRIANGLES, GL11.GL_UNSIGNED_BYTE, indicesCount, 0, colorAttrib, positionAttrib, textureAttrib, texId);
+		int texId = atlas.getTextureId();
+		return new CharacterMesh(vaoHandle, vboVerticesHandle,
+				vboIndicesHandle, GL11.GL_TRIANGLES, GL11.GL_UNSIGNED_BYTE, indicesCount, 0, positionAttrib, textureAttrib, texId);
 	}
 
-	public void setTextureId(int texId) {
-		this.texId = texId;
+	public void setCharInfo(CharInfo info) {
+		this.info = info;
+	}
+
+	public void setCharAtlas(CharacterAtlas atlas) {
+		this.atlas = atlas;
+	}
+
+	public void setScreenX(int x) {
+		this.screenX = x;
+	}
+
+	public void setScreenY(int y) {
+		this.screenY = y;
 	}
 
 }
