@@ -7,7 +7,7 @@ import java.util.Comparator;
  * is otherwise identical to the Arrays.sort methods (uses timsort).<br>
  * <br>
  * Note that sorting primitive arrays with the Arrays.sort methods does not allocate memory (unless sorting large arrays of char, short, or byte).
- * 
+ *
  * @author Nathan Sweet
  */
 public class Sort {
@@ -39,7 +39,7 @@ public class Sort {
 
     public <T> void sort(Array<T> a, Comparator<T> c) {
         if (timSort == null) {
-            timSort = new TimSort();
+            timSort = new TimSort<T>();
         }
         timSort.doSort(a.items, c, 0, a.size);
     }

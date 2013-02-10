@@ -11,7 +11,7 @@ import java.util.zip.Inflater;
 
 /**
  * A PNGDecoder. The slick PNG decoder is based on this class :)
- * 
+ *
  * @author Matthias Mann
  */
 public class PNGDecoder {
@@ -42,7 +42,7 @@ public class PNGDecoder {
     private static final int PLTE = 0x504C5445;
     private static final int tRNS = 0x74524E53;
     private static final int IDAT = 0x49444154;
-    private static final int IEND = 0x49454E44;
+    // unused: private static final int IEND = 0x49454E44;
 
     private static final byte COLOR_GREYSCALE = 0;
     private static final byte COLOR_TRUECOLOR = 2;
@@ -111,7 +111,7 @@ public class PNGDecoder {
 
     /**
      * Checks if the image has a real alpha channel. This method does not check for the presence of a tRNS chunk.
-     * 
+     *
      * @return true if the image has an alpha channel
      * @see #hasAlpha()
      */
@@ -121,7 +121,7 @@ public class PNGDecoder {
 
     /**
      * Checks if the image has transparency information either from an alpha channel or from a tRNS chunk.
-     * 
+     *
      * @return true if the image has transparency
      * @see #hasAlphaChannel()
      * @see #overwriteTRNS(byte, byte, byte)
@@ -142,7 +142,7 @@ public class PNGDecoder {
      * <p>
      * Calling this method causes {@link #hasAlpha()} to return true.
      * </p>
-     * 
+     *
      * @param r
      *            the red component of the color to make transparent
      * @param g
@@ -172,7 +172,7 @@ public class PNGDecoder {
 
     /**
      * Computes the implemented format conversion for the desired format.
-     * 
+     *
      * @param fmt
      *            the desired format
      * @return format which best matches the desired format
@@ -228,7 +228,7 @@ public class PNGDecoder {
     /**
      * Decodes the image into the specified buffer. The first line is placed at the current position. After decode the buffer position is at the end of the last
      * line.
-     * 
+     *
      * @param buffer
      *            the buffer
      * @param stride
@@ -360,7 +360,7 @@ public class PNGDecoder {
     /**
      * Decodes the image into the specified buffer. The last line is placed at the current position. After decode the buffer position is at the end of the first
      * line.
-     * 
+     *
      * @param buffer
      *            the buffer
      * @param stride
@@ -620,7 +620,6 @@ public class PNGDecoder {
     }
 
     private void unfilterUp(byte[] curLine, byte[] prevLine) {
-        final int bpp = this.bytesPerPixel;
         for (int i = 1, n = curLine.length; i < n; ++i) {
             curLine[i] += prevLine[i];
         }

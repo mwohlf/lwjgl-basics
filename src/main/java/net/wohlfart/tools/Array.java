@@ -7,10 +7,10 @@ import java.util.NoSuchElementException;
 /**
  * A resizable, ordered or unordered array of objects. If unordered, this class avoids a memory copy when removing elements (the last element is moved to the
  * removed element's position).
- * 
+ *
  * @author Nathan Sweet
  */
-public class Array<T> implements Iterable<T> {
+class Array<T> implements Iterable<T> {
     /**
      * Provides direct access to the underlying array. If the Array's generic type is not Object, this field may only be accessed if the
      * {@link Array#Array(boolean, int, Class)} constructor was used.
@@ -45,7 +45,7 @@ public class Array<T> implements Iterable<T> {
 
     /**
      * Creates a new array with {@link #items} of the specified type.
-     * 
+     *
      * @param ordered
      *            If false, methods that remove elements may change the order of other elements in the array, which avoids a memory copy.
      * @param capacity
@@ -82,7 +82,7 @@ public class Array<T> implements Iterable<T> {
     /**
      * Creates a new array containing the elements in the specified array. The new array will have the same type of backing array. The capacity is set to the
      * number of elements, so any subsequent elements added will cause the backing array to be grown.
-     * 
+     *
      * @param ordered
      *            If false, methods that remove elements may change the order of other elements in the array, which avoids a memory copy.
      */
@@ -299,7 +299,7 @@ public class Array<T> implements Iterable<T> {
     /**
      * Increases the size of the backing array to acommodate the specified number of additional items. Useful before adding many items to avoid multiple backing
      * array resizes.
-     * 
+     *
      * @return {@link #items}
      */
     public T[] ensureCapacity(int additionalCapacity) {

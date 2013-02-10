@@ -11,16 +11,11 @@ import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL15;
 import org.lwjgl.opengl.GL20;
 import org.lwjgl.opengl.GL30;
-import org.lwjgl.util.vector.Quaternion;
-import org.lwjgl.util.vector.Vector3f;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class ColoredMeshBuilder {
-    protected static final Logger LOGGER = LoggerFactory.getLogger(WireframeMeshBuilder.class);
-
-    private Vector3f translation;
-    private Quaternion rotation;
+    protected static final Logger LOGGER = LoggerFactory.getLogger(ColoredMeshBuilder.class);
 
     public IMesh build() {
 

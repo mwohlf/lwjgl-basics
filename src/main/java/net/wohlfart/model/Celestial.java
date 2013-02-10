@@ -11,7 +11,7 @@ import org.lwjgl.util.glu.GLU;
 import org.lwjgl.util.glu.Sphere;
 import org.lwjgl.util.vector.Vector3f;
 
-public class Celestial {
+class Celestial {
 
     protected final Sphere sphere = new Sphere();
     protected final Vector3f position = new Vector3f();
@@ -90,8 +90,16 @@ public class Celestial {
 
     }
 
-    private float getRandom(float min, float max) {
+    protected float getRandom(float min, float max) {
         return (1f - random.nextFloat()) * (max - min) + min;
+    }
+
+    protected long getSeed() {
+        return seed;
+    }
+
+    protected Vector3f getRotAxis() {
+        return rotAxis;
     }
 
     public float getRadius() {

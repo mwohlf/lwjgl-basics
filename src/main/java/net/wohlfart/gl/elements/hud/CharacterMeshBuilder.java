@@ -16,7 +16,7 @@ import org.lwjgl.opengl.GL30;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class CharacterMeshBuilder {
+class CharacterMeshBuilder {
     protected static final Logger LOGGER = LoggerFactory.getLogger(CharacterMeshBuilder.class);
 
     private CharacterAtlas atlas;

@@ -1,6 +1,6 @@
 package net.wohlfart.widgets;
 
-public abstract class AbstractWidget {
+abstract class AbstractWidget {
 
     public abstract void paint(Renderer renderer);
 

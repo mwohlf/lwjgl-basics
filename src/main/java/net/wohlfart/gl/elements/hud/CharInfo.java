@@ -1,11 +1,11 @@
 package net.wohlfart.gl.elements.hud;
 
-public class CharInfo {
-    char c;
-    float x;
-    float y;
-    float w;
-    float h;
+class CharInfo {
+    protected char c;
+    protected float x;
+    protected float y;
+    protected float w;
+    protected float h;
 
     CharInfo(char c, float x, float y, float w, float h) {
         this.c = c;

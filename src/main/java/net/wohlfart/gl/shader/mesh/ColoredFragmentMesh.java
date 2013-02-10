@@ -5,7 +5,7 @@ import org.lwjgl.opengl.GL15;
 import org.lwjgl.opengl.GL20;
 import org.lwjgl.opengl.GL30;
 
-public class ColoredFragmentMesh implements IMesh {
+class ColoredFragmentMesh implements IMesh {
 
     private final int vaoHandle;
     private final int vboVerticesHandle;

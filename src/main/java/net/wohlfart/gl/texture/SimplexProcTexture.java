@@ -75,14 +75,24 @@ public class SimplexProcTexture extends ProceduralTexture {
         final double noise = SimplexNoise.noise(x * frequency, y * frequency, z * frequency, w * frequency);
         // for testing
         // double noise = gridnoise(x,y,z);
-
         return amplitude * noise;
     }
 
-    private double gridnoise(float x, float y, float z) {
-        if (isAlmost(x, 0f) || isAlmost(x, 0.1f) || isAlmost(x, 0.2f) || isAlmost(x, 0.3f) || isAlmost(x, 0.4f) || isAlmost(x, 0.5f) || isAlmost(x, 0.6f)
-                || isAlmost(x, 0.7f) || isAlmost(x, 0.8f) || isAlmost(x, 0.9f) || isAlmost(x, 1f)) {
+    protected double gridnoise(float x, float y, float z) {
+        // @formatter:off
+        if (isAlmost(x, 0f)
+                || isAlmost(x, 0.1f)
+                || isAlmost(x, 0.2f)
+                || isAlmost(x, 0.3f)
+                || isAlmost(x, 0.4f)
+                || isAlmost(x, 0.5f)
+                || isAlmost(x, 0.6f)
+                || isAlmost(x, 0.7f)
+                || isAlmost(x, 0.8f)
+                || isAlmost(x, 0.9f)
+                || isAlmost(x, 1f)) {
             return 1;
+            // @formatter:on
         }
         return -1;
     }

@@ -14,7 +14,7 @@ import org.lwjgl.util.glu.GLU;
 /**
  * the class for dealing with the basic shader stuff and keeping the shader program id
  */
-public class AbstractShaderProgram implements IShaderProgram {
+class AbstractShaderProgram implements IShaderProgram {
 
     private int programId = -1;
 
@@ -54,7 +54,7 @@ public class AbstractShaderProgram implements IShaderProgram {
 
     /**
      * attach, link and validate the shaders into a shader program
-     * 
+     *
      * @param handles
      *            the shaders
      * @return

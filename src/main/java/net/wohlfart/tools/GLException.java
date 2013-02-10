@@ -3,7 +3,7 @@ package net.wohlfart.tools;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.util.glu.GLU;
 
-public class GLException {
+class GLException {
 
     public static void checkGLError() {
         final int errorValue = GL11.glGetError();

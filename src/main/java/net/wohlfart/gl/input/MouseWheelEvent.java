@@ -19,4 +19,8 @@ public class MouseWheelEvent {
         return wheel;
     }
 
+    public MouseButton getMouseButton() {
+        return mouseButton;
+    }
+
 }

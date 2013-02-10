@@ -14,7 +14,7 @@ import org.slf4j.LoggerFactory;
 // read: http://stackoverflow.com/questions/10617589/why-would-it-be-beneficial-to-have-a-separate-projection-matrix-yet-combine-mod
 // and: http://www.arcsynthesis.org/gltut/Positioning/Tut07%20The%20Perils%20of%20World%20Space.html
 // and: http://www.arcsynthesis.org/gltut/Positioning/Tutorial%2005.html
-public class LayerImpl implements Layer {
+class LayerImpl implements Layer {
     protected static final Logger LOGGER = LoggerFactory.getLogger(LayerImpl.class);
 
     protected final Collection<Renderable> components = new HashSet<Renderable>();
@@ -52,6 +52,7 @@ public class LayerImpl implements Layer {
         components.add(label);
     }
 
+    @Override
     public CharacterAtlas getCharacterAtlas() {
         return characterAtlas;
     }

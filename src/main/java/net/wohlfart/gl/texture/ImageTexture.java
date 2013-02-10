@@ -11,7 +11,7 @@ import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 
-public class ImageTexture implements ITexture {
+class ImageTexture implements ITexture {
 
     protected final IntBuffer texture;
     protected final int width;
@@ -51,7 +51,7 @@ public class ImageTexture implements ITexture {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see net.wohlfart.gl.tools.ITextur#init()
      */
     @Override
@@ -71,7 +71,7 @@ public class ImageTexture implements ITexture {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see net.wohlfart.gl.tools.ITextur#bind()
      */
     @Override
@@ -81,7 +81,7 @@ public class ImageTexture implements ITexture {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see net.wohlfart.gl.tools.ITextur#unbind()
      */
     @Override
