@@ -22,9 +22,9 @@ public class Statistics extends TextComponent {
     @Override
     public void setLayer(Layer layer) {
         super.setLayer(layer);
-        fpsLabel = new FormattedLabel(x, y, "fps: {0, number, 000.0}");
+        fpsLabel = new FormattedLabel(x, y, "fps: {0, number, 000.000}");
         fpsLabel.setLayer(getLayer());
-        tpfLabel = new FormattedLabel(x, y, "tpf: {0, number, 000.0}");
+        tpfLabel = new FormattedLabel(x, y, "tpf: {0, number, 000.000}");
         tpfLabel.setLayer(getLayer());
     }
 

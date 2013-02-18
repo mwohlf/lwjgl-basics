@@ -40,7 +40,9 @@ class SimpleState implements GameState {
     private GraphicContextManager.IGraphicContext wireframeGraphicContext;
     private GraphicContextManager.IGraphicContext hudGraphicContext;
 
-    private final Statistics statistics = new Statistics(0, 0);
+    protected GraphicContextManager graphContext = GraphicContextManager.INSTANCE;
+
+    private Statistics statistics;
 
     private final Avatar avatar = new Avatar();
 
@@ -49,7 +51,7 @@ class SimpleState implements GameState {
     private final Hud hud = new Hud();
 
     private final boolean skyboxOn = true;
-    private final boolean elementsOn = false;
+    private final boolean elementsOn = true;
     private final boolean hudOn = true;
 
     @Override
@@ -57,6 +59,8 @@ class SimpleState implements GameState {
         // event bus registration
         GraphicContextManager.INSTANCE.getInputDispatcher().register(avatar);
         GraphicContextManager.INSTANCE.getInputDispatcher().register(this);
+
+        statistics = new Statistics(-graphContext.getScreenWidth()/3, 0);
 
         wireframeGraphicContext = new DefaultGraphicContext(new DefaultShaderProgram(DefaultShaderProgram.WIREFRAME_VERTEX_SHADER,
                 DefaultShaderProgram.WIREFRAME_FRAGMENT_SHADER));
