@@ -47,7 +47,7 @@ class LayerImpl implements Layer {
         meshData = null;
     }
 
-    public void add(Label label) {
+    public void add(TextComponent label) {
         label.setLayer(this); // double dispatch
         components.add(label);
     }

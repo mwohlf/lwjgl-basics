@@ -20,7 +20,7 @@ public class FontRenderer {
     protected static final Logger LOGGER = LoggerFactory.getLogger(FontRenderer.class);
 
     public static final char NULL_CHAR = '_';
-    private static final String chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789;:,.-_#+?!\"()";
+    private static final String chars = " abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789;:,.-_#+?!\"()";
     {
         if (!chars.contains(new String("" + NULL_CHAR))) {
             throw new IllegalStateException("need NULL_CHAR in char sequence");

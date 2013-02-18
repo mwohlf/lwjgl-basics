@@ -6,4 +6,13 @@ public interface Renderable {
 
     public abstract void dispose();
 
+    // do nothing renderer
+    public Renderable Null = new Renderable() {
+        @Override
+        public void render() {}
+        @Override
+        public void dispose() {}
+
+    };
+
 }

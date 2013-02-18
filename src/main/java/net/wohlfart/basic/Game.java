@@ -2,13 +2,10 @@ package net.wohlfart.basic;
 
 import net.wohlfart.basic.states.GameState;
 import net.wohlfart.basic.states.GameStateEnum;
-import net.wohlfart.basic.time.LwjglClockImpl;
 import net.wohlfart.basic.time.Timer;
 import net.wohlfart.basic.time.TimerImpl;
 import net.wohlfart.gl.input.DefaultInputDispatcher;
 import net.wohlfart.gl.input.InputSource;
-import net.wohlfart.gl.input.LwjglInputAdaptor;
-import net.wohlfart.gl.input.LwjglInputSource;
 import net.wohlfart.gl.shader.GraphicContextManager;
 
 import org.lwjgl.LWJGLException;
@@ -23,13 +20,31 @@ import org.slf4j.LoggerFactory;
 class Game {
     protected static final Logger LOGGER = LoggerFactory.getLogger(Game.class);
 
-    protected Settings settings = new Settings(); // just a default in case nothing gets injected
-    protected Timer timer = new TimerImpl(new LwjglClockImpl());
+    protected Settings settings;
+
+
     protected GameState currentState = GameStateEnum.NULL.getValue();
     protected GraphicContextManager graphContext = GraphicContextManager.INSTANCE;
-
     protected DefaultInputDispatcher inputDispatcher = new DefaultInputDispatcher();
-    protected InputSource inputSource = new LwjglInputSource(new LwjglInputAdaptor(inputDispatcher));
+
+
+    // platform specific instances
+    protected Platform platform;
+    protected Timer timer;
+    protected InputSource inputSource;
+
+
+
+    public void setGameSettings(final Settings settings) {
+        this.settings = settings;
+    }
+
+    public void setPlatform(Platform platform) {
+        this.platform = platform;
+        graphContext.setClock(platform.createClock());
+        timer = new TimerImpl(graphContext.getClock());
+        inputSource = platform.createInputSource(inputDispatcher);
+    }
 
     /**
      * set the initial state and fire up the main loop
@@ -38,6 +53,7 @@ class Game {
         try {
             graphContext.setSettings(settings);
             graphContext.setInputDispatcher(inputDispatcher);
+
             bootupOpenGL();
             setCurrentState(GameStateEnum.SIMPLE);
             runApplicationLoop();
@@ -108,10 +124,6 @@ class Game {
         currentState.dispose();
         currentState = newState.getValue();
         currentState.setup();
-    }
-
-    public void setGameSettings(final Settings settings) {
-        this.settings = settings;
     }
 
 }

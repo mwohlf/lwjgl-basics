@@ -21,6 +21,9 @@
 
 	<bean class="net.wohlfart.basic.Game" >
 	   <property name="gameSettings" ref="gameSettings" />
+	   <property name="platform" ref="lwjglPlatform" />
 	</bean>
-
+	
+	<bean id="lwjglPlatform" class="net.wohlfart.basic.LwjglPlatform" />
+	
 </beans>

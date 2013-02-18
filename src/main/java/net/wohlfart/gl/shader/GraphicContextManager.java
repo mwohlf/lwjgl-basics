@@ -1,6 +1,7 @@
 package net.wohlfart.gl.shader;
 
 import net.wohlfart.basic.Settings;
+import net.wohlfart.basic.time.Clock;
 import net.wohlfart.gl.input.DefaultInputDispatcher;
 import net.wohlfart.gl.input.InputDispatcher;
 import net.wohlfart.tools.SimpleMath;
@@ -43,6 +44,7 @@ public enum GraphicContextManager {
 
     private InputDispatcher inputDispatcher;
     private int screenDiagonal;
+    private Clock clock;
 
 
     public void setCurrentGraphicContext(IGraphicContext graphicContext) {
@@ -86,6 +88,14 @@ public enum GraphicContextManager {
 
     public InputDispatcher getInputDispatcher() {
         return inputDispatcher;
+    }
+
+    public void setClock(Clock clock) {
+        this.clock = clock;
+    }
+
+    public Clock getClock() {
+        return clock;
     }
 
     /**

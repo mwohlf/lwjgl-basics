@@ -20,7 +20,7 @@ public class Hud implements Renderable {
         this.textLayer = new LayerImpl();
     }
 
-    public void add(Label label) {
+    public void add(TextComponent label) {
         textLayer.add(label);
     }
 

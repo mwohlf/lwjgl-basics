@@ -9,7 +9,7 @@ import net.wohlfart.gl.elements.debug.IcosphereMesh;
 import net.wohlfart.gl.elements.debug.TerahedronRefinedMesh;
 import net.wohlfart.gl.elements.debug.TetrahedronMesh;
 import net.wohlfart.gl.elements.hud.Hud;
-import net.wohlfart.gl.elements.hud.Label;
+import net.wohlfart.gl.elements.hud.Statistics;
 import net.wohlfart.gl.elements.skybox.Skybox;
 import net.wohlfart.gl.input.CommandEvent;
 import net.wohlfart.gl.renderer.RenderBucket;
@@ -40,6 +40,8 @@ class SimpleState implements GameState {
     private GraphicContextManager.IGraphicContext wireframeGraphicContext;
     private GraphicContextManager.IGraphicContext hudGraphicContext;
 
+    private final Statistics statistics = new Statistics(0, 0);
+
     private final Avatar avatar = new Avatar();
 
     private final Skybox skybox = new Skybox();
@@ -48,7 +50,7 @@ class SimpleState implements GameState {
 
     private final boolean skyboxOn = true;
     private final boolean elementsOn = false;
-    private final boolean hudOn = false;
+    private final boolean hudOn = true;
 
     @Override
     public void setup() {
@@ -73,7 +75,8 @@ class SimpleState implements GameState {
 
         if (hudOn) {
             hud.init(hudGraphicContext);
-            hud.add(new Label(0, 0, "Hello World"));
+         //   hud.add(new Label(0, 0, "Hello World"));
+            hud.add(statistics);
         }
 
     }
@@ -118,6 +121,9 @@ class SimpleState implements GameState {
     @Override
     public void update(float tpf) {
         LOGGER.debug("update called with tpf/fps {}/{}", tpf, 1f / tpf);
+
+        statistics.update(tpf);
+
         // todo:
         // move the models / actors / perform the actions
     }
