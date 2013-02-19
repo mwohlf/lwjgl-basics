@@ -22,6 +22,8 @@ public enum GraphicContextManager {
 
     protected static final Logger LOGGER = LoggerFactory.getLogger(GraphicContextManager.class);
 
+    private static final float FIELD_OF_VIEW_LIMIT = 100; // 180
+
     public interface IGraphicContext {
 
         int getLocation(ShaderAttributeHandle shaderAttributeHandle);
@@ -108,17 +110,18 @@ public enum GraphicContextManager {
      * @formatter:off
      * - the projection matrix defines the lens of the camera
      * - the view matrix defines the position and the direction of the camera
-     * - the model matrix defines
-     * the position and direction of each 3D model
+     * - the model matrix defines the position and direction of each 3D model
      * see: http://www.lwjgl.org/wiki/index.php?title=The_Quad_with_Projection,_View_and_Model_matrices
+     * see: http://db-in.com/blog/2011/04/cameras-on-opengl-es-2-x/
      *
      * @return our projection matrix
      * @formatter:on
      */
+    /*
     private Matrix4f createProjectionMatrix() {
         // Setup projection matrix
         final Matrix4f matrix = new Matrix4f();
-        // the view angle in degree, 45 is fine
+
         final float fieldOfView = settings.getFieldOfView();
         final float aspectRatio = (float) settings.getWidth() / (float) settings.getHeight();
         final float nearPlane = settings.getNearPlane();
@@ -128,11 +131,92 @@ public enum GraphicContextManager {
         final float xScale = yScale / aspectRatio;
         final float frustumLength = farPlane - nearPlane;
 
+
+
+        final float nearPlane = settings.getNearPlane();      // 0.001
+        final float farPlane = settings.getFarPlane();        // 100
+        final float fieldOfView = settings.getFieldOfView();  // 45 degree
+        final float width = settings.getWidth();
+        final float height = settings.getHeight();
+        final float aspectRatio = width/height;
+
+        final float scale = SimpleMath.coTan(SimpleMath.deg2rad(fieldOfView/2f));
+        final float diag = SimpleMath.sqrt(width * width + height * height);
+
+        final float yScale = scale;
+        final float xScale = yScale/aspectRatio;
+        final float frustumLength = farPlane - nearPlane;
+
+
         matrix.m00 = xScale;
+        matrix.m01 = 0;
+        matrix.m02 = 0;
+        matrix.m03 = 0;
+
+        matrix.m10 = 0;
         matrix.m11 = yScale;
+        matrix.m12 = 0;
+        matrix.m13 = 0;
+
+        matrix.m20 = 0;
+        matrix.m21 = 0;
         matrix.m22 = -((farPlane + nearPlane) / frustumLength); // zScale
         matrix.m23 = -1;
+
+        matrix.m30 = 0;
+        matrix.m31 = 0;
         matrix.m32 = -(2 * nearPlane * farPlane / frustumLength);
+        matrix.m33 = 0;
+
+        return matrix;
+    }
+    */
+
+
+    private Matrix4f createProjectionMatrix() {
+        // Setup projection matrix
+        final Matrix4f matrix = new Matrix4f();
+        // the view angle in degree, 45 is fine
+
+        final float nearPlane = settings.getNearPlane();      // 0.001
+        final float farPlane = settings.getFarPlane();        // 100
+        float fieldOfView = settings.getFieldOfView();  // 45 degree
+        final float width = settings.getWidth();
+        final float height = settings.getHeight();
+
+        if (fieldOfView > FIELD_OF_VIEW_LIMIT) {
+            LOGGER.warn("field of view must be < {} found: '{}', resetting to {}", FIELD_OF_VIEW_LIMIT, fieldOfView, FIELD_OF_VIEW_LIMIT);
+            fieldOfView = Math.min(fieldOfView, FIELD_OF_VIEW_LIMIT);
+        }
+        // scale tells us how many pixels max fit
+        final float scale = SimpleMath.coTan(SimpleMath.deg2rad(fieldOfView/2f));
+        final float diag = SimpleMath.sqrt(width * width + height * height);
+
+        //final float yScale = scale;
+        //final float xScale = yScale/aspectRatio;
+        final float xScale = diag * scale / width;
+        final float yScale = diag * scale / height;
+        final float frustumLength = farPlane - nearPlane;
+
+        matrix.m00 = xScale;
+        matrix.m01 = 0;
+        matrix.m02 = 0;
+        matrix.m03 = 0;
+
+        matrix.m10 = 0;
+        matrix.m11 = yScale;
+        matrix.m12 = 0;
+        matrix.m13 = 0;
+
+        matrix.m20 = 0;
+        matrix.m21 = 0;
+        matrix.m22 = -((farPlane + nearPlane) / frustumLength); // zScale
+        matrix.m23 = -1;
+
+        matrix.m30 = 0;
+        matrix.m31 = 0;
+        matrix.m32 = -(2 * nearPlane * farPlane / frustumLength);
+        matrix.m33 = 1;
 
         return matrix;
     }

@@ -22,18 +22,14 @@ class Game {
 
     protected Settings settings;
 
-
     protected GameState currentState = GameStateEnum.NULL.getValue();
     protected GraphicContextManager graphContext = GraphicContextManager.INSTANCE;
     protected DefaultInputDispatcher inputDispatcher = new DefaultInputDispatcher();
-
 
     // platform specific instances
     protected Platform platform;
     protected Timer timer;
     protected InputSource inputSource;
-
-
 
     public void setGameSettings(final Settings settings) {
         this.settings = settings;
@@ -53,7 +49,6 @@ class Game {
         try {
             graphContext.setSettings(settings);
             graphContext.setInputDispatcher(inputDispatcher);
-
             bootupOpenGL();
             setCurrentState(GameStateEnum.SIMPLE);
             runApplicationLoop();
@@ -73,7 +68,7 @@ class Game {
             LOGGER.debug("[ms]/frame: {} ; frame/[s]: {}", delta, 1f / delta);
             // call the model to do their things
             currentState.update(delta);
-            // clear the screen buffer
+            // clear the screen buffer, not needed if we have a skybox working
             GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT);
             // do the magic
             currentState.render();

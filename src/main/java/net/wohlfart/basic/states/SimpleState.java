@@ -126,7 +126,9 @@ class SimpleState implements GameState {
     public void update(float tpf) {
         LOGGER.debug("update called with tpf/fps {}/{}", tpf, 1f / tpf);
 
-        statistics.update(tpf);
+        if (hudOn) {
+            statistics.update(tpf);
+        }
 
         // todo:
         // move the models / actors / perform the actions
