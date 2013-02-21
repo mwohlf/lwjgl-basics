@@ -8,4 +8,6 @@ public interface InputDispatcher {
 
     void post(Object event);
 
+    void destroy();
+
 }

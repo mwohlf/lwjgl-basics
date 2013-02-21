@@ -2,6 +2,8 @@ package net.wohlfart.basic.time;
 
 public interface Timer {
 
-    public float getDelta();
+    float getDelta();
+
+    void destroy();
 
 }

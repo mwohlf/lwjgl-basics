@@ -9,7 +9,6 @@ import net.wohlfart.gl.shader.GraphicContextManager.IGraphicContext;
 import net.wohlfart.gl.shader.ShaderUniformHandle;
 import net.wohlfart.model.Avatar;
 import net.wohlfart.tools.SimpleMath;
-import net.wohlfart.tools.SimpleMatrix4f;
 
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.util.vector.Matrix4f;
@@ -19,6 +18,8 @@ public class Skybox implements Renderable, SkyboxParameters {
 
 
     private final Vector3f viewDirection = new Vector3f();
+
+    private final Matrix4f rotMatrix = new Matrix4f();
 
     private BoxSideMesh[] sides;
 
@@ -50,7 +51,7 @@ public class Skybox implements Renderable, SkyboxParameters {
         viewDirection.normalise(viewDirection);
 
         final Matrix4f camViewMatrix = GraphicContextManager.INSTANCE.getProjectionMatrix();
-        final Matrix4f rotMatrix = SimpleMatrix4f.create(avatar.getRotation());
+        SimpleMath.convert(avatar.getRotation(), rotMatrix);
 
         GraphicContextManager.INSTANCE.setCurrentGraphicContext(graphicContext);
         ShaderUniformHandle.MODEL_TO_WORLD.set(SimpleMath.UNION_MATRIX);

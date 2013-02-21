@@ -6,6 +6,7 @@ import net.wohlfart.gl.elements.debug.Arrow;
 import net.wohlfart.gl.elements.debug.Circle;
 import net.wohlfart.gl.elements.debug.CubeMesh;
 import net.wohlfart.gl.elements.debug.IcosphereMesh;
+import net.wohlfart.gl.elements.debug.RenderableGrid;
 import net.wohlfart.gl.elements.debug.TerahedronRefinedMesh;
 import net.wohlfart.gl.elements.debug.TetrahedronMesh;
 import net.wohlfart.gl.elements.hud.Hud;
@@ -19,7 +20,6 @@ import net.wohlfart.gl.shader.GraphicContextManager;
 import net.wohlfart.gl.shader.ShaderUniformHandle;
 import net.wohlfart.model.Avatar;
 import net.wohlfart.tools.SimpleMath;
-import net.wohlfart.tools.SimpleMatrix4f;
 
 import org.lwjgl.opengl.Display;
 import org.lwjgl.util.ReadableColor;
@@ -54,18 +54,27 @@ class SimpleState implements GameState {
     private final boolean elementsOn = true;
     private final boolean hudOn = true;
 
+
+    // data for the render loop:
+    private final Matrix4f camViewMatrix = new Matrix4f();
+    private final Matrix4f posMatrix = new Matrix4f();
+    private final Vector3f posVector = new Vector3f();
+    private final Matrix4f rotMatrix = new Matrix4f();
+    private final Matrix4f rotPosMatrix = new Matrix4f();
+
+
     @Override
     public void setup() {
         // event bus registration
         GraphicContextManager.INSTANCE.getInputDispatcher().register(avatar);
         GraphicContextManager.INSTANCE.getInputDispatcher().register(this);
 
-        statistics = new Statistics(-graphContext.getScreenWidth()/3, 0);
+        statistics = new Statistics(0, 0);
 
-        wireframeGraphicContext = new DefaultGraphicContext(new DefaultShaderProgram(DefaultShaderProgram.WIREFRAME_VERTEX_SHADER,
-                DefaultShaderProgram.WIREFRAME_FRAGMENT_SHADER));
-        defaultGraphicContext = new DefaultGraphicContext(new DefaultShaderProgram(DefaultShaderProgram.DEFAULT_VERTEX_SHADER,
-                DefaultShaderProgram.DEFAULT_FRAGMENT_SHADER));
+        wireframeGraphicContext = new DefaultGraphicContext(
+                new DefaultShaderProgram(DefaultShaderProgram.WIREFRAME_VERTEX_SHADER, DefaultShaderProgram.WIREFRAME_FRAGMENT_SHADER));
+        defaultGraphicContext = new DefaultGraphicContext(
+                new DefaultShaderProgram(DefaultShaderProgram.DEFAULT_VERTEX_SHADER, DefaultShaderProgram.DEFAULT_FRAGMENT_SHADER));
         hudGraphicContext = new DefaultGraphicContext(
                 new DefaultShaderProgram(DefaultShaderProgram.HUD_VERTEX_SHADER, DefaultShaderProgram.HUD_FRAGMENT_SHADER));
 
@@ -109,7 +118,10 @@ class SimpleState implements GameState {
             final int x = SimpleMath.random(-200, 200);
             final int y = SimpleMath.random(-200, 200);
             final int z = SimpleMath.random(-200, 200);
-            elemBucket.add(new IcosphereMesh(1, 1).lineWidth(1).color(ReadableColor.RED).translate(new Vector3f(x, y, z)));
+
+            RenderableGrid mesh = new IcosphereMesh(1, 1).lineWidth(1).color(ReadableColor.CYAN);
+            mesh.setTranslation(new Vector3f(x, y, z));
+            elemBucket.add(mesh);
         }
 
         elemBucket.add(new TexturedQuad().translate(new Vector3f(-1, 5, 0)));
@@ -144,9 +156,9 @@ class SimpleState implements GameState {
         if (elementsOn) {
             final Matrix4f camViewMatrix = GraphicContextManager.INSTANCE.getProjectionMatrix();
 
-            final Matrix4f posMatrix = SimpleMatrix4f.create(avatar.getPosition().negate(null));
-            final Matrix4f rotMatrix = SimpleMatrix4f.create(avatar.getRotation());
-            final Matrix4f rotPosMatrix = Matrix4f.mul(rotMatrix, posMatrix, new Matrix4f());
+            SimpleMath.convert(avatar.getPosition().negate(posVector), posMatrix);
+            SimpleMath.convert(avatar.getRotation(), rotMatrix);
+            Matrix4f.mul(rotMatrix, posMatrix, rotPosMatrix);
 
             GraphicContextManager.INSTANCE.setCurrentGraphicContext(wireframeGraphicContext);
             ShaderUniformHandle.MODEL_TO_WORLD.set(SimpleMath.UNION_MATRIX);

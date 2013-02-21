@@ -10,12 +10,17 @@ import org.lwjgl.util.ReadableColor;
 import org.lwjgl.util.vector.Matrix4f;
 
 // handlers for uniforms used in the shader
-public enum ShaderUniformHandle {
-    MODEL_TO_WORLD("modelToWorldMatrix"), WORLD_TO_CAM("worldToCameraMatrix"), CAM_TO_CLIP("cameraToClipMatrix");
+public enum ShaderUniformHandle { // @formatter:off
+    MODEL_TO_WORLD("modelToWorldMatrix"),
+    WORLD_TO_CAM("worldToCameraMatrix"),
+    CAM_TO_CLIP("cameraToClipMatrix");
+    // @formatter:on
 
     private final String lookupString;
+    private final FloatBuffer colorBuffer = BufferUtils.createFloatBuffer(4);
+    private final FloatBuffer matrixBuffer = BufferUtils.createFloatBuffer(16);
 
-    ShaderUniformHandle(final String lookupString) {
+    ShaderUniformHandle(String lookupString) {
         this.lookupString = lookupString;
     }
 
@@ -28,16 +33,17 @@ public enum ShaderUniformHandle {
     }
 
     public void set(Matrix4f matrix) {
-        final FloatBuffer matrix44Buffer = BufferUtils.createFloatBuffer(16);
-        matrix.store(matrix44Buffer);
-        matrix44Buffer.flip();
-        GL20.glUniformMatrix4(getLocation(), false, matrix44Buffer);
+        matrix.store(matrixBuffer);
+        matrixBuffer.flip();
+        GL20.glUniformMatrix4(getLocation(), false, matrixBuffer);
     }
 
     public void set(ReadableColor readableColor) {
-        final FloatBuffer colorBuffer = BufferUtils.createFloatBuffer(4);
-        colorBuffer.put(new float[] { readableColor.getRed() / 255f, readableColor.getGreen() / 255f, readableColor.getBlue() / 255f,
-                readableColor.getAlpha() / 255f, });
+        colorBuffer.put(new float[] { // @formatter:off
+                readableColor.getRed() / 255f,
+                readableColor.getGreen() / 255f,
+                readableColor.getBlue() / 255f,
+                readableColor.getAlpha() / 255f, }); // @formatter:on
         colorBuffer.flip();
         set(colorBuffer);
     }

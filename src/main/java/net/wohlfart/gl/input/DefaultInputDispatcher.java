@@ -12,4 +12,9 @@ public class DefaultInputDispatcher extends EventBus implements InputDispatcher 
         super(EVENTBUS_NAME);
     }
 
+    @Override
+    public void destroy() {
+        //
+    }
+
 }

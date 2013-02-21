@@ -4,4 +4,6 @@ public interface InputSource {
 
     void createInputEvents(float delta);
 
+    void destroy();
+
 }

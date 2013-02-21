@@ -8,13 +8,16 @@ package net.wohlfart.gl.input;
  */
 public interface InputAdaptor {
 
-    DigitalEventDispatcher getKeyboardDigitalDevice();
+    KeyEventDispatcher getKeyboardKeyDevice();
 
-    DigitalEventDispatcher getMouseDigitalDevice();
+    KeyEventDispatcher getMouseKeyDevice();
 
     AnalogEventDispatcher getMouseAnalogDevice();
 
-    interface DigitalEventDispatcher {
+    PositionEventDispatcher getMousePositionDevice();
+
+
+    interface KeyEventDispatcher {
 
         void down(int key);
 
@@ -29,14 +32,36 @@ public interface InputAdaptor {
         void changed(int axis, int amout);
     }
 
+    interface PositionEventDispatcher {
+
+        void move(int posX, int posY);
+
+    }
+
+    // @formatter:off
     public enum Command {
-        MOVE_LEFT, MOVE_RIGHT, MOVE_UP, MOVE_DOWN, MOVE_FORWARD, MOVE_BACKWARD,
+        MOVE_LEFT,
+        MOVE_RIGHT,
+        MOVE_UP,
+        MOVE_DOWN,
+        MOVE_FORWARD,
+        MOVE_BACKWARD,
 
-        MOVE_FORWARD_WHEEL, MOVE_BACKWARD_WHEEL,
+        MOVE_FORWARD_WHEEL,
+        MOVE_BACKWARD_WHEEL,
 
-        ROTATE_LEFT, ROTATE_RIGHT, ROTATE_UP, ROTATE_DOWN, ROTATE_CLOCKWISE, ROTATE_COUNTER_CLOCKWISE,
+        ROTATE_LEFT,
+        ROTATE_RIGHT,
+        ROTATE_UP,
+        ROTATE_DOWN,
+        ROTATE_CLOCKWISE,
+        ROTATE_COUNTER_CLOCKWISE,
 
         EXIT,
     }
+    // @formatter:on
+
+    void destroy();
+
 
 }

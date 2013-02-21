@@ -3,18 +3,31 @@ package net.wohlfart.gl.input;
 import java.util.HashSet;
 import java.util.Iterator;
 
-import net.wohlfart.gl.input.InputAdaptor.DigitalEventDispatcher;
+import net.wohlfart.gl.input.InputAdaptor.KeyEventDispatcher;
+import net.wohlfart.gl.input.InputAdaptor.PositionEventDispatcher;
 
+import org.lwjgl.LWJGLException;
 import org.lwjgl.input.Keyboard;
+import org.lwjgl.input.Mouse;
 
 // central input processor for handling Mouse, Keyboard and Controllers
 public class LwjglInputSource implements InputSource {
 
     private final InputAdaptor inputAdaptor;
+    private final KeyEventDispatcher keyboardDevice;
+    private final PositionEventDispatcher positionDevice;
 
     public LwjglInputSource(InputAdaptor inputAdaptor) {
         this.inputAdaptor = inputAdaptor;
+        this.keyboardDevice = inputAdaptor.getKeyboardKeyDevice();
+        this.positionDevice = inputAdaptor.getMousePositionDevice();
+
         Keyboard.enableRepeatEvents(false);
+        try {
+            Mouse.create();
+        } catch (LWJGLException ex) {
+            throw new RuntimeException("can't create input source for lwjgl" , ex);
+        }
     }
 
     // called from the main loop
@@ -22,14 +35,13 @@ public class LwjglInputSource implements InputSource {
     public void createInputEvents(float delta) {
         processKeyboardState(delta);
         processKeyboardChanges(delta);
-        // processMouse(delta);
+        processMouse(delta);
         // processControllers(delta);
     }
 
     private final HashSet<Integer> pressedKeys = new HashSet<Integer>();
 
     private void processKeyboardChanges(float delta) {
-        final DigitalEventDispatcher keyboardDevice = inputAdaptor.getKeyboardDigitalDevice();
         while (Keyboard.next()) {
             final boolean pressed = Keyboard.getEventKeyState();
             final int keyCode = Keyboard.getEventKey();
@@ -44,7 +56,6 @@ public class LwjglInputSource implements InputSource {
     }
 
     private void processKeyboardState(float delta) {
-        final DigitalEventDispatcher keyboardDevice = inputAdaptor.getKeyboardDigitalDevice();
         Keyboard.poll();
         final Iterator<Integer> it = pressedKeys.iterator();
         while (it.hasNext()) {
@@ -57,21 +68,15 @@ public class LwjglInputSource implements InputSource {
         }
     }
 
-    /*
-     * private byte pressedButtons = 0; private void processMouse(final float delta) { while (Mouse.next()) { int buttonChanged = Mouse.getEventButton(); if
-     * (buttonChanged != -1) { // a button changed boolean pressed = Mouse.getEventButtonState(); if (pressed) { // inputProcessor.fire(new
-     * MousePressedEvent(buttonChanged)); pressedButtons = (byte) (pressedButtons | (1 << buttonChanged)); } else { // inputProcessor.fire(new
-     * MouseReleasedEvent(buttonChanged)); pressedButtons = (byte) (pressedButtons & ((1 << buttonChanged) ^ 0xff)); } };
-     * 
-     * int wheel = Mouse.getDWheel(); if (wheel != 0) { // inputProcessor.fire(new MouseWheelEvent(wheel, MouseButton.values()[buttonChanged + 1])); } int dx =
-     * Mouse.getDX(); int dy = Mouse.getDY(); if ((dx != 0) || (dy != 0)) { // inputProcessor.fire(new MouseMotionEvent(dx, dy, Mouse.getX(), Mouse.getY(),
-     * pressedButtons)); } } }
-     * 
-     * 
-     * 
-     * 
-     * private void processControllers(final float delta) {
-     * 
-     * }
-     */
+    @Override
+    public void destroy() {
+        inputAdaptor.destroy();
+    }
+
+    private void processMouse(final float delta) {
+        int screenX = Mouse.getX();
+        int screenY = Mouse.getY();
+        positionDevice.move(screenX, screenY);
+    }
+
 }

@@ -117,62 +117,6 @@ public enum GraphicContextManager {
      * @return our projection matrix
      * @formatter:on
      */
-    /*
-    private Matrix4f createProjectionMatrix() {
-        // Setup projection matrix
-        final Matrix4f matrix = new Matrix4f();
-
-        final float fieldOfView = settings.getFieldOfView();
-        final float aspectRatio = (float) settings.getWidth() / (float) settings.getHeight();
-        final float nearPlane = settings.getNearPlane();
-        final float farPlane = settings.getFarPlane();
-
-        final float yScale = SimpleMath.coTan(SimpleMath.deg2rad(fieldOfView / 2f));
-        final float xScale = yScale / aspectRatio;
-        final float frustumLength = farPlane - nearPlane;
-
-
-
-        final float nearPlane = settings.getNearPlane();      // 0.001
-        final float farPlane = settings.getFarPlane();        // 100
-        final float fieldOfView = settings.getFieldOfView();  // 45 degree
-        final float width = settings.getWidth();
-        final float height = settings.getHeight();
-        final float aspectRatio = width/height;
-
-        final float scale = SimpleMath.coTan(SimpleMath.deg2rad(fieldOfView/2f));
-        final float diag = SimpleMath.sqrt(width * width + height * height);
-
-        final float yScale = scale;
-        final float xScale = yScale/aspectRatio;
-        final float frustumLength = farPlane - nearPlane;
-
-
-        matrix.m00 = xScale;
-        matrix.m01 = 0;
-        matrix.m02 = 0;
-        matrix.m03 = 0;
-
-        matrix.m10 = 0;
-        matrix.m11 = yScale;
-        matrix.m12 = 0;
-        matrix.m13 = 0;
-
-        matrix.m20 = 0;
-        matrix.m21 = 0;
-        matrix.m22 = -((farPlane + nearPlane) / frustumLength); // zScale
-        matrix.m23 = -1;
-
-        matrix.m30 = 0;
-        matrix.m31 = 0;
-        matrix.m32 = -(2 * nearPlane * farPlane / frustumLength);
-        matrix.m33 = 0;
-
-        return matrix;
-    }
-    */
-
-
     private Matrix4f createProjectionMatrix() {
         // Setup projection matrix
         final Matrix4f matrix = new Matrix4f();
@@ -219,6 +163,10 @@ public enum GraphicContextManager {
         matrix.m33 = 1;
 
         return matrix;
+    }
+
+    public void destroy() {
+
     }
 
 }

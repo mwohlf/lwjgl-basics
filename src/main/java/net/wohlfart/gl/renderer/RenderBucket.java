@@ -8,7 +8,7 @@ import java.util.Set;
  */
 public class RenderBucket implements Renderable {
 
-    protected Set<Renderable> container = new HashSet<>();
+    protected Set<Renderable> container = new HashSet<>(10100);
 
     public void add(Renderable renderable) {
         container.add(renderable);

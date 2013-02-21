@@ -64,22 +64,26 @@ public final class SimpleMath {
 
     /**
      * rotate the vector by a rotation defined by the quaternion
-     * 
+     *
      * @param q
      * @param vec
      */
 
     public static void mul(final Quaternion q, final Vector3f vec, final Vector3f result) {
         float xx, yy, zz;
+        // @formatter:off
+        xx = q.w * q.w * vec.x + 2 * q.y * q.w * vec.z - 2 * q.z * q.w * vec.y
+           + q.x * q.x * vec.x + 2 * q.y * q.x * vec.y + 2 * q.z * q.x * vec.z
+           - q.z * q.z * vec.x - q.y * q.y * vec.x;
 
-        xx = q.w * q.w * vec.x + 2 * q.y * q.w * vec.z - 2 * q.z * q.w * vec.y + q.x * q.x * vec.x + 2 * q.y * q.x * vec.y + 2 * q.z * q.x * vec.z - q.z * q.z
-                * vec.x - q.y * q.y * vec.x;
+        yy = 2 * q.x * q.y * vec.x + q.y * q.y * vec.y + 2 * q.z * q.y * vec.z
+           + 2 * q.w * q.z * vec.x - q.z * q.z * vec.y + q.w * q.w * vec.y
+           - 2 * q.x * q.w * vec.z - q.x * q.x * vec.y;
 
-        yy = 2 * q.x * q.y * vec.x + q.y * q.y * vec.y + 2 * q.z * q.y * vec.z + 2 * q.w * q.z * vec.x - q.z * q.z * vec.y + q.w * q.w * vec.y - 2 * q.x * q.w
-                * vec.z - q.x * q.x * vec.y;
-
-        zz = 2 * q.x * q.z * vec.x + 2 * q.y * q.z * vec.y + q.z * q.z * vec.z - 2 * q.w * q.y * vec.x - q.y * q.y * vec.z + 2 * q.w * q.x * vec.y - q.x * q.x
-                * vec.z + q.w * q.w * vec.z;
+        zz = 2 * q.x * q.z * vec.x + 2 * q.y * q.z * vec.y + q.z * q.z * vec.z
+           - 2 * q.w * q.y * vec.x - q.y * q.y * vec.z + 2 * q.w * q.x * vec.y
+           - q.x * q.x * vec.z + q.w * q.w * vec.z;
+        // @formatter:on
 
         result.x = xx;
         result.y = yy;
@@ -88,7 +92,7 @@ public final class SimpleMath {
 
     /**
      * add one vector to another vecto
-     * 
+     *
      * @param translation
      * @param vec
      * @param result
@@ -101,9 +105,9 @@ public final class SimpleMath {
 
     /**
      * create a rotation quaternion defined by a start and an end vector, the rotation will be the rotation needed to transform the first vector into the second
-     * 
+     *
      * taken from: https://bitbucket.org/sinbad/ogre/src/9db75e3ba05c/OgreMain/include/OgreVector3.h#cl-651
-     * 
+     *
      * @param start
      * @param end
      * @param result
@@ -155,6 +159,146 @@ public final class SimpleMath {
         n |= n >> 8;
         n |= n >> 16;
         return n + 1;
+    }
+
+    public static Matrix4f createMatrix(Vector3f currentTranslation, Matrix4f matrix) {
+
+        matrix.m00 = 1;
+        matrix.m01 = 0;
+        matrix.m02 = 0;
+        matrix.m03 = 0;
+
+        matrix.m10 = 0;
+        matrix.m11 = 1;
+        matrix.m12 = 0;
+        matrix.m13 = 0;
+
+        matrix.m20 = 0;
+        matrix.m21 = 0;
+        matrix.m22 = 1;
+        matrix.m23 = 0;
+
+        matrix.m30 = currentTranslation.x;
+        matrix.m31 = currentTranslation.y;
+        matrix.m32 = currentTranslation.z;
+        matrix.m33 = 1;
+
+        return matrix;
+    }
+
+
+    public static Matrix4f convert(final Vector3f move, final Quaternion rot, final Matrix4f mat) {
+        //final SimpleMatrix4f mat = new SimpleMatrix4f();
+
+        final float xx = rot.x * rot.x;
+        final float xy = rot.x * rot.y;
+        final float xz = rot.x * rot.z;
+        final float xw = rot.x * rot.w;
+
+        final float yy = rot.y * rot.y;
+        final float yz = rot.y * rot.z;
+        final float yw = rot.y * rot.w;
+
+        final float zz = rot.z * rot.z;
+        final float zw = rot.z * rot.w;
+
+        // column-row syntax
+        mat.m00 = 1 - 2 * (yy + zz);
+        mat.m10 = 2 * (xy - zw);
+        mat.m20 = 2 * (xz + yw);
+        mat.m30 = move.x;
+
+        mat.m01 = 2 * (xy + zw);
+        mat.m11 = 1 - 2 * (xx + zz);
+        mat.m21 = 2 * (yz - xw);
+        mat.m31 = move.y;
+
+        mat.m02 = 2 * (xz - yw);
+        mat.m12 = 2 * (yz + xw);
+        mat.m22 = 1 - 2 * (xx + yy);
+        mat.m32 = move.z;
+
+        mat.m03 = 0;
+        mat.m13 = 0;
+        mat.m23 = 0;
+        mat.m33 = 1;
+
+        return mat;
+    }
+
+    /**
+     * @param move
+     *            vector describing a move
+     * @return a matrix
+     */
+    public static Matrix4f convert(final Vector3f move, final Matrix4f mat) {
+
+        // column-row syntax
+        mat.m00 = 1;
+        mat.m10 = 0;
+        mat.m20 = 0;
+        mat.m30 = move.x;
+
+        mat.m01 = 0;
+        mat.m11 = 1;
+        mat.m21 = 0;
+        mat.m31 = move.y;
+
+        mat.m02 = 0;
+        mat.m12 = 0;
+        mat.m22 = 1;
+        mat.m32 = move.z;
+
+        mat.m03 = 0;
+        mat.m13 = 0;
+        mat.m23 = 0;
+        mat.m33 = 1;
+
+        return mat;
+    }
+
+    /**
+     * @param rot
+     *            quaternion describing a rotation
+     * @return a matrix
+     */
+    public static Matrix4f convert(final Quaternion rot, final Matrix4f mat) {
+        //final SimpleMatrix4f mat = new SimpleMatrix4f();
+
+        final float xx = rot.x * rot.x;
+        final float xy = rot.x * rot.y;
+        final float xz = rot.x * rot.z;
+        final float xw = rot.x * rot.w;
+
+        final float yy = rot.y * rot.y;
+        final float yz = rot.y * rot.z;
+        final float yw = rot.y * rot.w;
+
+        final float zz = rot.z * rot.z;
+        final float zw = rot.z * rot.w;
+
+        // column-row syntax
+        mat.m00 = 1 - 2 * (yy + zz);
+        mat.m10 = 2 * (xy - zw);
+        mat.m20 = 2 * (xz + yw);
+        mat.m30 = 0;
+
+        mat.m01 = 2 * (xy + zw);
+        mat.m11 = 1 - 2 * (xx + zz);
+        mat.m21 = 2 * (yz - xw);
+        mat.m31 = 0;
+
+        mat.m02 = 2 * (xz - yw);
+        mat.m12 = 2 * (yz + xw);
+        mat.m22 = 1 - 2 * (xx + yy);
+        mat.m32 = 0;
+
+        mat.m03 = 0;
+        mat.m13 = 0;
+        mat.m23 = 0;
+        mat.m33 = 1;
+
+        return mat;
     }
 
 }

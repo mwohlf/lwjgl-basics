@@ -24,4 +24,9 @@ public class TimerImpl implements Timer {
         return delta;
     }
 
+    @Override
+    public void destroy() {
+
+    }
+
 }

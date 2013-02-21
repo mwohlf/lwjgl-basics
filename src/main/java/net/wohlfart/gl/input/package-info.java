@@ -10,6 +10,8 @@ package net.wohlfart.gl.input;
  *   schema to turn low-level events into high-level events in the InputProcessor,
  *   part of the InputProcessor
  *
+ * CommandEvent:
+ *   contains the platform independent event hierarchy
  *
  * InputDispatcher:
  *   extends EventBus

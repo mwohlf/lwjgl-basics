@@ -78,22 +78,22 @@ public class Avatar {
     }
 
     @Subscribe
-    public void rotateUp(CommandEvent.RotateUp evt) {
+    public void rotateDown(CommandEvent.RotateDown evt) {
         rotation.rotate(evt.getDelta() * ROT_SPEED, new Vector3f(+1, 0, 0));
     }
 
     @Subscribe
-    public void rotateDown(CommandEvent.RotateDown evt) {
+    public void rotateUp(CommandEvent.RotateUp evt) {
         rotation.rotate(evt.getDelta() * ROT_SPEED, new Vector3f(-1, 0, 0));
     }
 
     @Subscribe
-    public void rotateLeft(CommandEvent.RotateLeft evt) {
+    public void rotateRight(CommandEvent.RotateRight evt) {
         rotation.rotate(evt.getDelta() * ROT_SPEED, new Vector3f(0, +1, 0));
     }
 
     @Subscribe
-    public void rotateRight(CommandEvent.RotateRight evt) {
+    public void rotateLeft(CommandEvent.RotateLeft evt) {
         rotation.rotate(evt.getDelta() * ROT_SPEED, new Vector3f(0, -1, 0));
     }
 

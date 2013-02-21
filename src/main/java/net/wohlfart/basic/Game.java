@@ -31,15 +31,12 @@ class Game {
     protected Timer timer;
     protected InputSource inputSource;
 
-    public void setGameSettings(final Settings settings) {
+    public void setGameSettings(Settings settings) {
         this.settings = settings;
     }
 
     public void setPlatform(Platform platform) {
         this.platform = platform;
-        graphContext.setClock(platform.createClock());
-        timer = new TimerImpl(graphContext.getClock());
-        inputSource = platform.createInputSource(inputDispatcher);
     }
 
     /**
@@ -50,9 +47,13 @@ class Game {
             graphContext.setSettings(settings);
             graphContext.setInputDispatcher(inputDispatcher);
             bootupOpenGL();
+            graphContext.setClock(platform.createClock());
+            timer = new TimerImpl(graphContext.getClock());
+            inputSource = platform.createInputSource(inputDispatcher);
             setCurrentState(GameStateEnum.SIMPLE);
             runApplicationLoop();
             shutdownOpenGL();
+            shutdownGame();
         } catch (final LWJGLException ex) {
             LOGGER.warn("Application startup failed", ex);
         }
@@ -110,15 +111,20 @@ class Game {
         LOGGER.info("Version: " + GL11.glGetString(GL11.GL_VERSION));
     }
 
+    public void setCurrentState(final GameStateEnum newState) {
+        currentState.dispose();
+        currentState = newState.getValue();
+        currentState.setup();
+    }
 
     private void shutdownOpenGL() {
         Display.destroy();
     }
 
-    public void setCurrentState(final GameStateEnum newState) {
-        currentState.dispose();
-        currentState = newState.getValue();
-        currentState.setup();
+    private void shutdownGame() {
+        graphContext.destroy();
+        timer.destroy();
+        inputSource.destroy();
     }
 
 }
