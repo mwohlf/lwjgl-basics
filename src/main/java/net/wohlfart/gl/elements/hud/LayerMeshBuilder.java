@@ -21,26 +21,28 @@ public class LayerMeshBuilder {
 
     private int texId;
 
+    private final float Z = -1f;
+
     public IMesh build() {
 
         // We'll define our quad using 4 vertices of the custom 'Vertex' class
         final Vertex v0 = new Vertex();
-        v0.setXYZ(-0.5f, 0.5f, 0f);
+        v0.setXYZ(-0.5f, 0.5f, Z);
         v0.setRGB(1, 0, 0);
         v0.setST(0, 0);
 
         final Vertex v1 = new Vertex();
-        v1.setXYZ(-0.5f, -0.5f, 0f);
+        v1.setXYZ(-0.5f, -0.5f, Z);
         v1.setRGB(0, 1, 0);
         v1.setST(0, 1);
 
         final Vertex v2 = new Vertex();
-        v2.setXYZ(0.5f, -0.5f, 0f);
+        v2.setXYZ(0.5f, -0.5f, Z);
         v2.setRGB(0, 0, 1);
         v2.setST(1, 1);
 
         final Vertex v3 = new Vertex();
-        v3.setXYZ(0.5f, 0.5f, 0f);
+        v3.setXYZ(0.5f, 0.5f, Z);
         v3.setRGB(1, 1, 1);
         v3.setST(1, 0);
 
@@ -92,8 +94,10 @@ public class LayerMeshBuilder {
         GL15.glBufferData(GL15.GL_ELEMENT_ARRAY_BUFFER, indicesBuffer, GL15.GL_STATIC_DRAW);
         GL15.glBindBuffer(GL15.GL_ELEMENT_ARRAY_BUFFER, 0);
 
-        return new TexturedFragmentMesh(vaoHandle, vboVerticesHandle, vboIndicesHandle, GL11.GL_TRIANGLES, GL11.GL_UNSIGNED_BYTE, indicesCount, 0, colorAttrib,
-                positionAttrib, textureAttrib, texId);
+        // @formatter:off
+        return new TexturedFragmentMesh(vaoHandle, vboVerticesHandle, vboIndicesHandle, GL11.GL_TRIANGLES, GL11.GL_UNSIGNED_BYTE,
+                indicesCount, 0, colorAttrib, positionAttrib, textureAttrib, texId);
+        // @formatter:on
     }
 
     public void setTextureId(int texId) {

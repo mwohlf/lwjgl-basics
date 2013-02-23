@@ -10,7 +10,7 @@ import org.lwjgl.input.Keyboard;
 
 public class LwjglInputAdaptor implements InputAdaptor {
 
-    // event sink, parent component to post events to
+    // event sink, parent component we need to post the events to
     private final InputDispatcher inputDispatcher;
 
     // core of the adaptor, mapping platform keys to command events, the events are reused
@@ -34,14 +34,14 @@ public class LwjglInputAdaptor implements InputAdaptor {
             put(Keyboard.KEY_X, new CommandEvent.MoveDown());
     }};
 
+    @SuppressWarnings("serial")
     private final HashMap<Integer, PositionEvent> mouseMap = new HashMap<Integer, PositionEvent>() {{
         put(0, new CommandEvent.LeftClick());
         put(1, new CommandEvent.RightClick());
         put(2, new CommandEvent.MiddleClick());
     }};
 
-
-
+    PositionPointer positionPointer = new PositionPointer();
     // @formatter:on
 
     public LwjglInputAdaptor(InputDispatcher inputDispatcher) {
@@ -52,6 +52,7 @@ public class LwjglInputAdaptor implements InputAdaptor {
 
         @Override
         public void down(int key) {
+
         }
 
         @Override
@@ -69,60 +70,34 @@ public class LwjglInputAdaptor implements InputAdaptor {
 
     };
 
-    private final KeyEventDispatcher mouseDigitalDevice = new KeyEventDispatcher() {
+    private final PositionEventDispatcher mouseDigitalDevice = new PositionEventDispatcher() {
 
         @Override
-        public void down(int key) {
+        public void up(int key, int x, int y, float time) {
         }
 
         @Override
-        public void up(int key) {
+        public void down(int key, int x, int y, float time) {
         }
 
         @Override
-        public void pressed(int key, float time) {
-        }
-
-    };
-
-    private final AnalogEventDispatcher mouseAnalogDevice = new AnalogEventDispatcher() {
-
-        @Override
-        public void changed(int axis, int amount) {
-
-        }
-
-    };
-
-    private final PositionEventDispatcher mousePositionDevice = new PositionEventDispatcher() {
-        // reusing
-        PositionPointer positionPointer = new PositionPointer();
-
-        @Override
-        public void move(int posX, int posY) {
+        public void position(int posX, int posY) {
             positionPointer.setPosition(posX, posY);
             inputDispatcher.post(positionPointer);
         }
+
     };
 
+
+
     @Override
-    public KeyEventDispatcher getKeyboardKeyDevice() {
+    public KeyEventDispatcher getKeyboardDevice() {
         return keyboardDigitalDevice;
     }
 
     @Override
-    public KeyEventDispatcher getMouseKeyDevice() {
+    public PositionEventDispatcher getMouseDevice() {
         return mouseDigitalDevice;
-    }
-
-    @Override
-    public AnalogEventDispatcher getMouseAnalogDevice() {
-        return mouseAnalogDevice;
-    }
-
-    @Override
-    public PositionEventDispatcher getMousePositionDevice() {
-        return mousePositionDevice;
     }
 
     @Override

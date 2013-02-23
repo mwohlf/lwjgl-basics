@@ -1,18 +1,10 @@
 package net.wohlfart.basic.states;
 
-import net.wohlfart.gl.elements.ColoredQuad;
-import net.wohlfart.gl.elements.TexturedQuad;
-import net.wohlfart.gl.elements.debug.Arrow;
-import net.wohlfart.gl.elements.debug.Circle;
-import net.wohlfart.gl.elements.debug.CubeMesh;
-import net.wohlfart.gl.elements.debug.IcosphereMesh;
-import net.wohlfart.gl.elements.debug.RenderableGrid;
-import net.wohlfart.gl.elements.debug.TerahedronRefinedMesh;
-import net.wohlfart.gl.elements.debug.TetrahedronMesh;
 import net.wohlfart.gl.elements.hud.Hud;
 import net.wohlfart.gl.elements.hud.Statistics;
 import net.wohlfart.gl.elements.skybox.Skybox;
 import net.wohlfart.gl.input.CommandEvent;
+import net.wohlfart.gl.input.InputDispatcher;
 import net.wohlfart.gl.renderer.RenderBucket;
 import net.wohlfart.gl.shader.DefaultGraphicContext;
 import net.wohlfart.gl.shader.DefaultShaderProgram;
@@ -22,9 +14,7 @@ import net.wohlfart.model.Avatar;
 import net.wohlfart.tools.SimpleMath;
 
 import org.lwjgl.opengl.Display;
-import org.lwjgl.util.ReadableColor;
 import org.lwjgl.util.vector.Matrix4f;
-import org.lwjgl.util.vector.Quaternion;
 import org.lwjgl.util.vector.Vector3f;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -42,34 +32,37 @@ class SimpleState implements GameState {
 
     protected GraphicContextManager graphContext = GraphicContextManager.INSTANCE;
 
-    private Statistics statistics;
-
     private final Avatar avatar = new Avatar();
 
     private final Skybox skybox = new Skybox();
     private final RenderBucket elemBucket = new RenderBucket();
     private final Hud hud = new Hud();
 
-    private final boolean skyboxOn = true;
+    private final boolean skyboxOn = false;
     private final boolean elementsOn = true;
     private final boolean hudOn = true;
 
 
     // data for the render loop:
-    private final Matrix4f camViewMatrix = new Matrix4f();
-    private final Matrix4f posMatrix = new Matrix4f();
     private final Vector3f posVector = new Vector3f();
+    private final Matrix4f posMatrix = new Matrix4f();
     private final Matrix4f rotMatrix = new Matrix4f();
     private final Matrix4f rotPosMatrix = new Matrix4f();
 
 
+    private Statistics statistics;
+    private InputDispatcher inputDispacther;
+
     @Override
     public void setup() {
-        // event bus registration
-        GraphicContextManager.INSTANCE.getInputDispatcher().register(avatar);
-        GraphicContextManager.INSTANCE.getInputDispatcher().register(this);
-
+        inputDispacther = graphContext.getInputDispatcher();
         statistics = new Statistics(0, 0);
+
+
+        // event bus registration
+        inputDispacther.register(avatar);
+        inputDispacther.register(this);
+
 
         wireframeGraphicContext = new DefaultGraphicContext(
                 new DefaultShaderProgram(DefaultShaderProgram.WIREFRAME_VERTEX_SHADER, DefaultShaderProgram.WIREFRAME_FRAGMENT_SHADER));
@@ -83,55 +76,27 @@ class SimpleState implements GameState {
         }
 
         if (elementsOn) {
-            setupElementBucket();
+            //elemBucket.add(new ElementCreator().createRandomElements());
+            elemBucket.add(new ElementCreator().createCircles());
         }
 
         if (hudOn) {
             hud.init(hudGraphicContext);
-         //   hud.add(new Label(0, 0, "Hello World"));
             hud.add(statistics);
         }
 
     }
 
-    private void setupElementBucket() {
-        elemBucket.add(new Arrow(new Vector3f(1, 0, 0)).color(ReadableColor.RED));
-        elemBucket.add(new Arrow(new Vector3f(0, 1, 0)).color(ReadableColor.GREEN));
-        elemBucket.add(new Arrow(new Vector3f(0, 0, 1)).color(ReadableColor.BLUE));
-
-        elemBucket.add(new TerahedronRefinedMesh(2, 1).lineWidth(1).color(ReadableColor.RED).translate(new Vector3f(3, 5, 0)));
-        elemBucket.add(new TerahedronRefinedMesh(2, 2).lineWidth(2).color(ReadableColor.GREEN).translate(new Vector3f(0, 5, 0)));
-        elemBucket.add(new TerahedronRefinedMesh(2, 1).lineWidth(2).color(ReadableColor.BLUE).translate(new Vector3f(-3, 5, 0)));
-
-        elemBucket.add(new TetrahedronMesh(3).lineWidth(2).color(ReadableColor.WHITE).translate(new Vector3f(-3, -5, 0)));
-
-        elemBucket.add(new CubeMesh(1).lineWidth(1).color(ReadableColor.ORANGE).translate(new Vector3f(-3, -2, 0))
-                .rotate(SimpleMath.createQuaternion(new Vector3f(1, 0, -1), new Vector3f(0, 1, 0), new Quaternion())));
-
-        elemBucket.add(new Circle(1).lineWidth(2).translate(new Vector3f(3, 2, 0)));
-
-        elemBucket.add(new IcosphereMesh(1, 1).lineWidth(1).color(ReadableColor.RED).translate(new Vector3f(5, -7, 0)));
-        elemBucket.add(new IcosphereMesh(1, 2).lineWidth(2).color(ReadableColor.GREEN).translate(new Vector3f(0, -7, 0)));
-        elemBucket.add(new IcosphereMesh(1, 1).lineWidth(2).color(ReadableColor.BLUE).translate(new Vector3f(-5, -7, 0)));
-
-        for (int i = 0; i < 10000; i++) {
-            final int x = SimpleMath.random(-200, 200);
-            final int y = SimpleMath.random(-200, 200);
-            final int z = SimpleMath.random(-200, 200);
-
-            RenderableGrid mesh = new IcosphereMesh(1, 1).lineWidth(1).color(ReadableColor.CYAN);
-            mesh.setTranslation(new Vector3f(x, y, z));
-            elemBucket.add(mesh);
-        }
-
-        elemBucket.add(new TexturedQuad().translate(new Vector3f(-1, 5, 0)));
-
-        elemBucket.add(new ColoredQuad().translate(new Vector3f(-1, 5, 0)));
-    }
 
     @Subscribe
     public synchronized void onExitTriggered(CommandEvent.Exit exitEvent) {
         quit = true;
+    }
+
+    @Subscribe
+    public synchronized void onMouseMove(CommandEvent.PositionPointer positionEvent) {
+        int x = positionEvent.getX();
+        int y = positionEvent.getY();
     }
 
     @Override
@@ -141,6 +106,8 @@ class SimpleState implements GameState {
         if (hudOn) {
             statistics.update(tpf);
         }
+
+        //System.out.println("Avatar: " + avatar);
 
         // todo:
         // move the models / actors / perform the actions
@@ -154,8 +121,6 @@ class SimpleState implements GameState {
         }
 
         if (elementsOn) {
-            final Matrix4f camViewMatrix = GraphicContextManager.INSTANCE.getProjectionMatrix();
-
             SimpleMath.convert(avatar.getPosition().negate(posVector), posMatrix);
             SimpleMath.convert(avatar.getRotation(), rotMatrix);
             Matrix4f.mul(rotMatrix, posMatrix, rotPosMatrix);
@@ -163,7 +128,7 @@ class SimpleState implements GameState {
             GraphicContextManager.INSTANCE.setCurrentGraphicContext(wireframeGraphicContext);
             ShaderUniformHandle.MODEL_TO_WORLD.set(SimpleMath.UNION_MATRIX);
             ShaderUniformHandle.WORLD_TO_CAM.set(rotPosMatrix);
-            ShaderUniformHandle.CAM_TO_CLIP.set(camViewMatrix);
+            ShaderUniformHandle.CAM_TO_CLIP.set(GraphicContextManager.INSTANCE.getProjectionMatrix());
             elemBucket.render();
         }
 
@@ -183,8 +148,8 @@ class SimpleState implements GameState {
         defaultGraphicContext.dispose();
         wireframeGraphicContext.dispose();
         // event bus unregistration
-        GraphicContextManager.INSTANCE.getInputDispatcher().unregister(avatar);
-        GraphicContextManager.INSTANCE.getInputDispatcher().unregister(this);
+        inputDispacther.unregister(this);
+        inputDispacther.unregister(avatar);
     }
 
 }

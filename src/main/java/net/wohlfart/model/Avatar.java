@@ -107,4 +107,15 @@ public class Avatar {
         rotation.rotate(evt.getDelta() * ROT_SPEED, new Vector3f(0, 0, -1));
     }
 
+
+    @Override
+    public String toString() {
+        Vector3f pos = movement.getPosition();
+        Vector3f dir = rotation.getDir(new Vector3f());
+        Vector3f up = rotation.getUp(new Vector3f());
+        return ""
+           + "Position: (" + pos.x + "," + pos.y + "," + pos.z + ") "
+           + "Direction: (" + dir.x + "," + dir.y + "," + dir.z + ") Up: (" + up.x + "," + up.y + "," + up.z + ")";
+    }
+
 }

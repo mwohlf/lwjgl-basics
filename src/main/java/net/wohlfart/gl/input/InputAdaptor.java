@@ -1,5 +1,6 @@
 package net.wohlfart.gl.input;
 
+
 /*
  * mapping low level user triggered events to high level commands
  * this is the union set of all possible input devices
@@ -7,15 +8,6 @@ package net.wohlfart.gl.input;
  *
  */
 public interface InputAdaptor {
-
-    KeyEventDispatcher getKeyboardKeyDevice();
-
-    KeyEventDispatcher getMouseKeyDevice();
-
-    AnalogEventDispatcher getMouseAnalogDevice();
-
-    PositionEventDispatcher getMousePositionDevice();
-
 
     interface KeyEventDispatcher {
 
@@ -27,16 +19,21 @@ public interface InputAdaptor {
 
     }
 
-    interface AnalogEventDispatcher {
-
-        void changed(int axis, int amout);
-    }
-
     interface PositionEventDispatcher {
 
-        void move(int posX, int posY);
+        void down(int key, int x, int y, float time);
+
+        void up(int key, int x, int y, float time);
+
+        void position(int posX, int posY);
 
     }
+
+
+    KeyEventDispatcher getKeyboardDevice();
+
+    PositionEventDispatcher getMouseDevice();
+
 
     // @formatter:off
     public enum Command {
@@ -62,6 +59,5 @@ public interface InputAdaptor {
     // @formatter:on
 
     void destroy();
-
 
 }

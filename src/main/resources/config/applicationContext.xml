@@ -11,19 +11,19 @@
 		</property>
 	</bean>
 
-	<bean name="gameSettings" class="net.wohlfart.basic.Settings">
-      <property name="width" value="${display.width}" />
-      <property name="height" value="${display.height}" />
-      <property name="fieldOfView" value="${projection.fieldOfView}" />
-      <property name="nearPlane" value="${projection.nearPlane}" />
-      <property name="farPlane" value="${projection.farPlane}" />
-	</bean>
-
 	<bean class="net.wohlfart.basic.Game" >
 	   <property name="gameSettings" ref="gameSettings" />
 	   <property name="platform" ref="lwjglPlatform" />
 	</bean>
 	
 	<bean id="lwjglPlatform" class="net.wohlfart.basic.LwjglPlatform" />
+
+    <bean name="gameSettings" class="net.wohlfart.basic.Settings">
+      <property name="width" value="${display.width}" />
+      <property name="height" value="${display.height}" />
+      <property name="fieldOfView" value="${projection.fieldOfView}" />
+      <property name="nearPlane" value="${projection.nearPlane}" />
+      <property name="farPlane" value="${projection.farPlane}" />
+    </bean>
 	
 </beans>

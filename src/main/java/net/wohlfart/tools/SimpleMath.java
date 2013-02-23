@@ -33,6 +33,10 @@ public final class SimpleMath {
         return (float) Math.cos(f);
     }
 
+    public static float tan(float angle) {
+        return (float) Math.tan(angle);
+    }
+
     public static float rad2deg(final float rad) {
         return rad * 360f / SimpleMath.TWO_PI;
     }
@@ -57,6 +61,10 @@ public final class SimpleMath {
 
     public static int random(final int min, final int max) {
         return RANDOM.nextInt(max - min) + min;
+    }
+
+    public static float random(final float min, final float max) {
+        return RANDOM.nextFloat() * (max - min) + min;
     }
 
     // --------- quaternion and vector stuff

@@ -11,6 +11,8 @@ import org.lwjgl.util.vector.Matrix4f;
 
 public class Hud implements Renderable {
 
+    private final GraphicContextManager graphContext = GraphicContextManager.INSTANCE;
+
     private IGraphicContext hudContext;
 
     private LayerImpl textLayer;
@@ -26,8 +28,8 @@ public class Hud implements Renderable {
 
     @Override
     public void render() {
-        final Matrix4f camViewMatrix = GraphicContextManager.INSTANCE.getProjectionMatrix();
-        GraphicContextManager.INSTANCE.setCurrentGraphicContext(hudContext);
+        final Matrix4f camViewMatrix = graphContext.getProjectionMatrix();
+        graphContext.setCurrentGraphicContext(hudContext);
         ShaderUniformHandle.MODEL_TO_WORLD.set(SimpleMath.UNION_MATRIX);
         ShaderUniformHandle.WORLD_TO_CAM.set(SimpleMath.UNION_MATRIX);
         ShaderUniformHandle.CAM_TO_CLIP.set(camViewMatrix);

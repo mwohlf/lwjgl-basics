@@ -9,7 +9,7 @@ public class CommandEvent {
     private static final float ROTATION_SPEED = SimpleMath.TWO_PI;  // one rotation per sec
     private static final float MOVE_SPEED = 100f;                   // 100 units per sec
 
-    private float delta;
+    protected float delta;
 
 
     public float getDelta() {
@@ -37,6 +37,11 @@ public class CommandEvent {
 
         public int getY() {
             return y;
+        }
+
+        @Override
+        public String toString() {
+            return this.getClass() + ": [delta=" + delta + ", x=" + x + ", y=" + y + "]";
         }
     }
 

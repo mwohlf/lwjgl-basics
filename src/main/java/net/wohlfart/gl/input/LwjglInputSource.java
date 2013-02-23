@@ -13,34 +13,39 @@ import org.lwjgl.input.Mouse;
 // central input processor for handling Mouse, Keyboard and Controllers
 public class LwjglInputSource implements InputSource {
 
-    private final InputAdaptor inputAdaptor;
     private final KeyEventDispatcher keyboardDevice;
     private final PositionEventDispatcher positionDevice;
 
-    public LwjglInputSource(InputAdaptor inputAdaptor) {
-        this.inputAdaptor = inputAdaptor;
-        this.keyboardDevice = inputAdaptor.getKeyboardKeyDevice();
-        this.positionDevice = inputAdaptor.getMousePositionDevice();
+    // the current keyboard state
+    private final HashSet<Integer> pressedKeys = new HashSet<Integer>(8);
+    private final HashSet<Integer> pressedButtons = new HashSet<Integer>(4);
 
-        Keyboard.enableRepeatEvents(false);
+
+    public LwjglInputSource(InputAdaptor inputAdaptor) {
         try {
+            keyboardDevice = inputAdaptor.getKeyboardDevice();
+            positionDevice = inputAdaptor.getMouseDevice();
+            Keyboard.enableRepeatEvents(false);
             Mouse.create();
         } catch (LWJGLException ex) {
             throw new RuntimeException("can't create input source for lwjgl" , ex);
         }
     }
 
-    // called from the main loop
     @Override
     public void createInputEvents(float delta) {
-        processKeyboardState(delta);
         processKeyboardChanges(delta);
-        processMouse(delta);
-        // processControllers(delta);
+        processKeyboardState(delta);
+        processMouseChanges(delta);
+        processMouseState(delta);
     }
 
-    private final HashSet<Integer> pressedKeys = new HashSet<Integer>();
+    @Override
+    public void destroy() {
 
+    }
+
+    // processing the keyboard events from the queue
     private void processKeyboardChanges(float delta) {
         while (Keyboard.next()) {
             final boolean pressed = Keyboard.getEventKeyState();
@@ -55,8 +60,9 @@ public class LwjglInputSource implements InputSource {
         }
     }
 
+    // processing the current keyboard state
     private void processKeyboardState(float delta) {
-        Keyboard.poll();
+        //Keyboard.poll();
         final Iterator<Integer> it = pressedKeys.iterator();
         while (it.hasNext()) {
             final int keyCode = it.next();
@@ -68,15 +74,27 @@ public class LwjglInputSource implements InputSource {
         }
     }
 
-    @Override
-    public void destroy() {
-        inputAdaptor.destroy();
+
+    private void processMouseChanges(final float delta) {
+        while (Mouse.next()) {
+            final boolean pressed = Mouse.getEventButtonState();
+            final int buttonCode = Mouse.getEventButton();
+            final int x = Mouse.getEventX();
+            final int y = Mouse.getEventY();
+            if (pressed) {
+                positionDevice.down(buttonCode, x, y, delta);
+                pressedButtons.add(buttonCode);
+            } else {
+                positionDevice.up(buttonCode, x, y, delta);
+                pressedButtons.remove(buttonCode);
+            }
+        }
     }
 
-    private void processMouse(final float delta) {
+    private void processMouseState(float delta) {
         int screenX = Mouse.getX();
         int screenY = Mouse.getY();
-        positionDevice.move(screenX, screenY);
+        positionDevice.position(screenX, screenY);
     }
 
 }

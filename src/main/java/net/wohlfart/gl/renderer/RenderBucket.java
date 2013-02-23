@@ -1,5 +1,6 @@
 package net.wohlfart.gl.renderer;
 
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -9,6 +10,12 @@ import java.util.Set;
 public class RenderBucket implements Renderable {
 
     protected Set<Renderable> container = new HashSet<>(10100);
+
+    public void add(Collection<Renderable> elements) {
+        for (Renderable renderable : elements) {
+            add(renderable);
+        }
+    }
 
     public void add(Renderable renderable) {
         container.add(renderable);

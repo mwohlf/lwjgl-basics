@@ -19,6 +19,7 @@ public abstract class TextComponent implements Renderable {
     }
 
     protected HashSet<IMesh> createMeshSet(int x, int y, String string) {
+        assert string != null: "string to create MeshSet is null";
         final CharacterAtlas atlas = layer.getCharacterAtlas();
         int d = 0;
         HashSet<IMesh> characters = new HashSet<IMesh>();

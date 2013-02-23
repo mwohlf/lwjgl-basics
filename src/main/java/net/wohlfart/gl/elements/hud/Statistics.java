@@ -12,6 +12,7 @@ public class Statistics extends TextComponent {
 
     private FormattedLabel fpsLabel;
     private FormattedLabel tpfLabel;
+    private TextLabel textLabel;
 
 
     public Statistics(int x, int y) {
@@ -26,6 +27,8 @@ public class Statistics extends TextComponent {
         fpsLabel.setLayer(getLayer());
         tpfLabel = new FormattedLabel(x, y, "tpf: {0, number, 000.000}");
         tpfLabel.setLayer(getLayer());
+        textLabel = new TextLabel(x, y);
+        textLabel.setLayer(getLayer());
     }
 
     private void setFramesPerSecond(float fps) {
@@ -46,15 +49,22 @@ public class Statistics extends TextComponent {
         }
     }
 
+
+    public void setLabel(String text) {
+        textLabel.setText(text);
+    }
+
+
     @Override
     public void render() {
-        fpsLabel.render();
+        textLabel.render();
     }
 
     @Override
     public void dispose() {
         fpsLabel.dispose();
         tpfLabel.dispose();
+        textLabel.dispose();
     }
 
 }

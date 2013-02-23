@@ -50,6 +50,10 @@ public enum GraphicContextManager {
     private int screenWidth;
     private int screenHeight;
 
+    private float nearPlane;
+
+    private float farPlane;
+
 
     public void setCurrentGraphicContext(IGraphicContext graphicContext) {
         LOGGER.debug("setting gfx context to '{}'", graphicContext);
@@ -67,10 +71,11 @@ public enum GraphicContextManager {
         assert settings == null: "settings is already set";
         this.settings = settings;
         assert projectionMatrix == null: "projection matrix is already set";
-        projectionMatrix = createProjectionMatrix();
         screenWidth = settings.getWidth();
         screenHeight = settings.getHeight();
-        //this.screenDiagonal = (int) Math.ceil(Math.sqrt( w * w + h * h));
+        nearPlane = settings.getNearPlane();    //   0.1
+        farPlane = settings.getFarPlane();      // 100
+        projectionMatrix = createProjectionMatrix();
     }
 
     // package private, only used by for ShaderAttributeHandle and ShaderUniformHandle
@@ -88,6 +93,14 @@ public enum GraphicContextManager {
 
     public int getScreenHeight() {
         return screenHeight;
+    }
+
+    public float getNearPlane() {
+        return nearPlane;
+    }
+
+    public float getFarPlane() {
+        return farPlane;
     }
 
     public void setInputDispatcher(DefaultInputDispatcher inputSource) {
@@ -113,6 +126,7 @@ public enum GraphicContextManager {
      * - the model matrix defines the position and direction of each 3D model
      * see: http://www.lwjgl.org/wiki/index.php?title=The_Quad_with_Projection,_View_and_Model_matrices
      * see: http://db-in.com/blog/2011/04/cameras-on-opengl-es-2-x/
+     * see: http://www.songho.ca/opengl/gl_projectionmatrix.html
      *
      * @return our projection matrix
      * @formatter:on
@@ -122,24 +136,16 @@ public enum GraphicContextManager {
         final Matrix4f matrix = new Matrix4f();
         // the view angle in degree, 45 is fine
 
-        final float nearPlane = settings.getNearPlane();      // 0.001
-        final float farPlane = settings.getFarPlane();        // 100
-        float fieldOfView = settings.getFieldOfView();  // 45 degree
-        final float width = settings.getWidth();
-        final float height = settings.getHeight();
+        float fieldOfView = settings.getFieldOfView();      //  45 degree
+        final float aspectRatio = screenWidth / screenHeight;
 
         if (fieldOfView > FIELD_OF_VIEW_LIMIT) {
             LOGGER.warn("field of view must be < {} found: '{}', resetting to {}", FIELD_OF_VIEW_LIMIT, fieldOfView, FIELD_OF_VIEW_LIMIT);
             fieldOfView = Math.min(fieldOfView, FIELD_OF_VIEW_LIMIT);
         }
-        // scale tells us how many pixels max fit
-        final float scale = SimpleMath.coTan(SimpleMath.deg2rad(fieldOfView/2f));
-        final float diag = SimpleMath.sqrt(width * width + height * height);
 
-        //final float yScale = scale;
-        //final float xScale = yScale/aspectRatio;
-        final float xScale = diag * scale / width;
-        final float yScale = diag * scale / height;
+        float yScale = SimpleMath.coTan(SimpleMath.deg2rad(fieldOfView / 2f));
+        float xScale = yScale / aspectRatio;
         final float frustumLength = farPlane - nearPlane;
 
         matrix.m00 = xScale;
@@ -159,8 +165,8 @@ public enum GraphicContextManager {
 
         matrix.m30 = 0;
         matrix.m31 = 0;
-        matrix.m32 = -(2 * nearPlane * farPlane / frustumLength);
-        matrix.m33 = 1;
+        matrix.m32 = -((2 * nearPlane * farPlane) / frustumLength);
+        matrix.m33 = 0;
 
         return matrix;
     }

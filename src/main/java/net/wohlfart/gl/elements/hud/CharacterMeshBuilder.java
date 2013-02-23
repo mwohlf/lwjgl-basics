@@ -19,6 +19,8 @@ import org.slf4j.LoggerFactory;
 class CharacterMeshBuilder {
     protected static final Logger LOGGER = LoggerFactory.getLogger(CharacterMeshBuilder.class);
 
+    private static final float Z = -1f;
+
     private CharacterAtlas atlas;
     private CharInfo info;
     private float screenX;
@@ -26,7 +28,7 @@ class CharacterMeshBuilder {
 
     public IMesh build() {
 
-        final float x1 = screenX / 512f; // assuming a screen size of 1000x1000
+        final float x1 = screenX; // assuming a screen size of 1000x1000
         final float y1 = screenY;
         final float x2 = x1 + info.getWidth() / atlas.getImage().getWidth();
         final float y2 = y1 - info.getHeight() / atlas.getImage().getHeight();
@@ -38,19 +40,19 @@ class CharacterMeshBuilder {
 
         // We'll define our quad using 4 vertices of the custom 'Vertex' class
         final Vertex v0 = new Vertex();
-        v0.setXYZ(x1, y1, 0f);
+        v0.setXYZ(x1, y1, Z);
         v0.setST(s1, t1);
 
         final Vertex v1 = new Vertex();
-        v1.setXYZ(x1, y2, 0f);
+        v1.setXYZ(x1, y2, Z);
         v1.setST(s1, t2);
 
         final Vertex v2 = new Vertex();
-        v2.setXYZ(x2, y2, 0f);
+        v2.setXYZ(x2, y2, Z);
         v2.setST(s2, t2);
 
         final Vertex v3 = new Vertex();
-        v3.setXYZ(x2, y1, 0f);
+        v3.setXYZ(x2, y1, Z);
         v3.setST(s2, t1);
 
         final Vertex[] vertices = new Vertex[] { v0, v1, v2, v3 };
@@ -100,8 +102,8 @@ class CharacterMeshBuilder {
         GL15.glBindBuffer(GL15.GL_ELEMENT_ARRAY_BUFFER, 0);
 
         final int texId = atlas.getTextureId();
-        return new CharacterMesh(vaoHandle, vboVerticesHandle, vboIndicesHandle, GL11.GL_TRIANGLES, GL11.GL_UNSIGNED_BYTE, indicesCount, 0, positionAttrib,
-                textureAttrib, texId);
+        return new CharacterMesh(vaoHandle, vboVerticesHandle, vboIndicesHandle, GL11.GL_TRIANGLES, GL11.GL_UNSIGNED_BYTE,
+                indicesCount, 0, positionAttrib, textureAttrib, texId);
     }
 
     public void setCharInfo(CharInfo info) {
