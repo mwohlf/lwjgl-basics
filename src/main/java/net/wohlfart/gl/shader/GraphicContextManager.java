@@ -48,10 +48,6 @@ public enum GraphicContextManager {
     private InputDispatcher inputDispatcher;
     private Clock clock;
 
-    private float yScale;
-
-    private float xScale;
-
 
     public void setCurrentGraphicContext(IGraphicContext graphicContext) {
         LOGGER.debug("setting gfx context to '{}'", graphicContext);
@@ -149,12 +145,13 @@ public enum GraphicContextManager {
             fieldOfView = Math.min(fieldOfView, FIELD_OF_VIEW_LIMIT);
         }
 
-        final float aspectRatio = (float)settings.getWidth() / (float)settings.getHeight();
-        yScale = SimpleMath.coTan(SimpleMath.deg2rad(fieldOfView / 2f));
-        xScale = yScale / aspectRatio;
         float nearPlane = settings.getNearPlane();    // 0.1
         float farPlane = settings.getFarPlane();      // 100
-        final float frustumLength = farPlane - nearPlane;
+        float frustumLength = farPlane - nearPlane;
+        float aspectRatio = (float)settings.getWidth() / (float)settings.getHeight();
+        float yScale = SimpleMath.coTan(SimpleMath.deg2rad(fieldOfView / 2f));
+        float xScale = yScale / aspectRatio;
+        float zScale = -((farPlane + nearPlane) / frustumLength);
 
         matrix.m00 = xScale;
         matrix.m01 = 0;
@@ -168,7 +165,7 @@ public enum GraphicContextManager {
 
         matrix.m20 = 0;
         matrix.m21 = 0;
-        matrix.m22 = -((farPlane + nearPlane) / frustumLength); // zScale
+        matrix.m22 = zScale;
         matrix.m23 = -1;
 
         matrix.m30 = 0;

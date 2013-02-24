@@ -14,6 +14,7 @@ import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL15;
 import org.lwjgl.opengl.GL20;
 import org.lwjgl.opengl.GL30;
+import org.lwjgl.util.vector.Matrix4f;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -26,8 +27,6 @@ class CharMeshBuilder {
     protected static final Logger LOGGER = LoggerFactory.getLogger(CharMeshBuilder.class);
 
     private final GraphicContextManager cxtManager = GraphicContextManager.INSTANCE;
-
-    private static final float Z = -1f;
 
     private CharAtlas atlas;
     private CharInfo info;
@@ -43,18 +42,24 @@ class CharMeshBuilder {
     public IMesh build() {
         float atlasWidth = atlas.getImage().getWidth();
         float atlasHeight = atlas.getImage().getHeight();
-        int width = cxtManager.getScreenWidth();
-        int height = cxtManager.getScreenHeight();
+        float width = cxtManager.getScreenWidth();
+        float height = cxtManager.getScreenHeight();
+        Matrix4f m = cxtManager.getPerspectiveProjMatrix();
+        float xScale = m.m00;
+        float yScale = m.m11;
+        float zScale = m.m22;
 
-        float x1 = screenX - 0.7f;
-        float y1 = screenY;
-        float x2 = x1 + info.getWidth() / atlasWidth;
-        float y2 = y1 - info.getHeight() / atlasHeight;
+        float x1 = screenX - (width / 2f);
+        float y1 = height - (screenY - (height / 2f)) - 500;
+        float x2 = x1 + info.getWidth();
+        float y2 = y1 - info.getHeight();
+        float z = 1;
 
-//        x1 = x1 / width;
-//        y1 = y1 / height;
-        // x2 = x2 / width;
-        // y2 = y2 / height;
+        x1 = x1 * xScale / width;
+        y1 = y1 / height;
+        z = 1 * zScale;
+        x2 = x2 * xScale / width;
+        y2 = y2 / height;
 
         final float s1 = info.getX() / atlasWidth;
         final float t1 = info.getY() / atlasHeight;
@@ -63,19 +68,19 @@ class CharMeshBuilder {
 
         // We'll define our quad using 4 vertices of the custom 'Vertex' class
         final Vertex v0 = new Vertex();
-        v0.setXYZ(x1, y1, Z);
+        v0.setXYZ(x1, y1, z);
         v0.setST(s1, t1);
 
         final Vertex v1 = new Vertex();
-        v1.setXYZ(x1, y2, Z);
+        v1.setXYZ(x1, y2, z);
         v1.setST(s1, t2);
 
         final Vertex v2 = new Vertex();
-        v2.setXYZ(x2, y2, Z);
+        v2.setXYZ(x2, y2, z);
         v2.setST(s2, t2);
 
         final Vertex v3 = new Vertex();
-        v3.setXYZ(x2, y1, Z);
+        v3.setXYZ(x2, y1, z);
         v3.setST(s2, t1);
 
         final Vertex[] vertices = new Vertex[] { v0, v1, v2, v3 };

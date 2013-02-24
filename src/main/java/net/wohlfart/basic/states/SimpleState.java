@@ -42,8 +42,8 @@ class SimpleState implements GameState {
     private final RenderBucket elemBucket = new RenderBucket();
     private final Hud hud = new Hud();
 
-    private final boolean skyboxOn = false;
-    private final boolean elementsOn = false;
+    private final boolean skyboxOn = true;
+    private final boolean elementsOn = true;
     private final boolean hudOn = true;
 
     private Statistics statistics;

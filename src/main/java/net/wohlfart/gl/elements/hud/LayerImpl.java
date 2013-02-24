@@ -7,6 +7,7 @@ import net.wohlfart.gl.elements.hud.widgets.CharAtlas;
 import net.wohlfart.gl.elements.hud.widgets.CharAtlasBuilder;
 import net.wohlfart.gl.elements.hud.widgets.TextComponent;
 import net.wohlfart.gl.renderer.Renderable;
+import net.wohlfart.gl.shader.GraphicContextManager;
 import net.wohlfart.gl.shader.mesh.IMesh;
 
 import org.lwjgl.util.vector.Vector3f;
@@ -20,6 +21,8 @@ import org.slf4j.LoggerFactory;
 class LayerImpl implements Layer {
     protected static final Logger LOGGER = LoggerFactory.getLogger(LayerImpl.class);
 
+    private final GraphicContextManager cxtManager = GraphicContextManager.INSTANCE;
+
     protected final Collection<Renderable> components = new HashSet<Renderable>();
 
     protected IMesh meshData;
@@ -30,7 +33,8 @@ class LayerImpl implements Layer {
         characterAtlas = new CharAtlasBuilder().build();
         final TextureMeshBuilder builder = new TextureMeshBuilder();
         builder.setTextureId(characterAtlas.getTextureId());
-        builder.setTranslation(new Vector3f(0,-0.5f,-0.9f));
+        float z = cxtManager.getNearPlane() - 1;
+        builder.setTranslation(new Vector3f(0,-0.5f,z));
         return builder.build();
     }
 
@@ -39,7 +43,7 @@ class LayerImpl implements Layer {
         if (meshData == null) {
             meshData = setup();
         }
-        // meshData.draw();
+        meshData.draw();
         for (final Renderable component : components) {
             component.render();
         }

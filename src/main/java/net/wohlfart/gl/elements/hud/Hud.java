@@ -29,7 +29,7 @@ public class Hud implements Renderable {
         this.avatar = avatar;
         this.hudContext = hudContext;
         this.layer = new LayerImpl();
-        add(new Label(0, 0, "hello world"));
+        add(new Label(0, 0, "hello world at (0,0)"));
     }
 
     public void add(TextComponent label) {
