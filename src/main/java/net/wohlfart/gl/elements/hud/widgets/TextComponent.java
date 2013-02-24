@@ -29,7 +29,7 @@ public abstract class TextComponent implements Renderable {
             if (info == null) {
                 info = atlas.getCharInfo(CharAtlasBuilder.NULL_CHAR);
             }
-            final IMesh mesh = createMesh(x + d, y, info, atlas);
+            final IMesh mesh = createSingleCharMesh(x + d, y, info, atlas);
             d += info.getWidth();
             if (mesh != null) {
                 characters.add(mesh);
@@ -38,7 +38,7 @@ public abstract class TextComponent implements Renderable {
         return characters;
     }
 
-    private IMesh createMesh(int x, int y, CharInfo info, CharAtlas characterAtlas) {
+    private IMesh createSingleCharMesh(int x, int y, CharInfo info, CharAtlas characterAtlas) {
         final CharMeshBuilder builder = new CharMeshBuilder();
         builder.setCharAtlas(characterAtlas);
         builder.setCharInfo(info);

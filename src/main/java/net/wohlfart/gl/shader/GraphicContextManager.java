@@ -48,6 +48,10 @@ public enum GraphicContextManager {
     private InputDispatcher inputDispatcher;
     private Clock clock;
 
+    private float yScale;
+
+    private float xScale;
+
 
     public void setCurrentGraphicContext(IGraphicContext graphicContext) {
         LOGGER.debug("setting gfx context to '{}'", graphicContext);
@@ -133,25 +137,23 @@ public enum GraphicContextManager {
      * @formatter:on
      */
     private Matrix4f createPerspectiveProjectionMatrix() {
-        int screenWidth = settings.getWidth();
-        int screenHeight = settings.getHeight();
-        float nearPlane = settings.getNearPlane();    // 0.1
-        float farPlane = settings.getFarPlane();      // 100
 
         // Setup projection matrix
         final Matrix4f matrix = new Matrix4f();
         // the view angle in degree, 45 is fine
 
         float fieldOfView = settings.getFieldOfView();      //  45 degree
-        final float aspectRatio = (float)screenWidth / (float)screenHeight;
 
         if (fieldOfView > FIELD_OF_VIEW_LIMIT) {
             LOGGER.warn("field of view must be < {} found: '{}', resetting to {}", FIELD_OF_VIEW_LIMIT, fieldOfView, FIELD_OF_VIEW_LIMIT);
             fieldOfView = Math.min(fieldOfView, FIELD_OF_VIEW_LIMIT);
         }
 
-        float yScale = SimpleMath.coTan(SimpleMath.deg2rad(fieldOfView / 2f));
-        float xScale = yScale / aspectRatio;
+        final float aspectRatio = (float)settings.getWidth() / (float)settings.getHeight();
+        yScale = SimpleMath.coTan(SimpleMath.deg2rad(fieldOfView / 2f));
+        xScale = yScale / aspectRatio;
+        float nearPlane = settings.getNearPlane();    // 0.1
+        float farPlane = settings.getFarPlane();      // 100
         final float frustumLength = farPlane - nearPlane;
 
         matrix.m00 = xScale;

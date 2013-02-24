@@ -39,7 +39,7 @@ class LayerImpl implements Layer {
         if (meshData == null) {
             meshData = setup();
         }
-        meshData.draw();
+        // meshData.draw();
         for (final Renderable component : components) {
             component.render();
         }

@@ -20,33 +20,46 @@ import org.slf4j.LoggerFactory;
 
 
 /**
- * this is a mesh for a single character
+ * this creates a mesh for a single character
  */
 class CharMeshBuilder {
     protected static final Logger LOGGER = LoggerFactory.getLogger(CharMeshBuilder.class);
 
     private final GraphicContextManager cxtManager = GraphicContextManager.INSTANCE;
 
-    private static final float Z = 1f;
+    private static final float Z = -1f;
 
     private CharAtlas atlas;
     private CharInfo info;
+
+
+    // we have to match the screen coords into the mesh coords
+
+    // [0...cxtManager.getScreenWidth()] --> [-0.5...0.5]
     private float screenX;
+    // [0...cxtManager.getScreenHeight()] --> [-0.5...0.5]
     private float screenY;
 
     public IMesh build() {
-        int height = cxtManager.getScreenHeight();
+        float atlasWidth = atlas.getImage().getWidth();
+        float atlasHeight = atlas.getImage().getHeight();
         int width = cxtManager.getScreenWidth();
+        int height = cxtManager.getScreenHeight();
 
-        final float x1 = screenX; // assuming a screen size of 1000x1000
-        final float y1 = screenY;
-        final float x2 = x1 + info.getWidth() / atlas.getImage().getWidth();
-        final float y2 = y1 - info.getHeight() / atlas.getImage().getHeight();
+        float x1 = screenX - 0.7f;
+        float y1 = screenY;
+        float x2 = x1 + info.getWidth() / atlasWidth;
+        float y2 = y1 - info.getHeight() / atlasHeight;
 
-        final float s1 = info.getX() / atlas.getImage().getWidth();
-        final float t1 = info.getY() / atlas.getImage().getHeight();
-        final float s2 = (info.getX() + info.getWidth()) / atlas.getImage().getWidth();
-        final float t2 = (info.getY() + info.getHeight()) / atlas.getImage().getHeight();
+//        x1 = x1 / width;
+//        y1 = y1 / height;
+        // x2 = x2 / width;
+        // y2 = y2 / height;
+
+        final float s1 = info.getX() / atlasWidth;
+        final float t1 = info.getY() / atlasHeight;
+        final float s2 = (info.getX() + info.getWidth()) / atlasWidth;
+        final float t2 = (info.getY() + info.getHeight()) / atlasHeight;
 
         // We'll define our quad using 4 vertices of the custom 'Vertex' class
         final Vertex v0 = new Vertex();
