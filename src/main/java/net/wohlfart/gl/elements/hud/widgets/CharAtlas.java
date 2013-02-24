@@ -1,4 +1,4 @@
-package net.wohlfart.gl.elements.hud;
+package net.wohlfart.gl.elements.hud.widgets;
 
 import java.awt.image.BufferedImage;
 import java.nio.ByteBuffer;
@@ -9,12 +9,17 @@ import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL13;
 import org.lwjgl.opengl.GL30;
 
-public class CharacterAtlas {
+/*
+ * mesh for a complete charset,
+ * also serves as texture for building labels with text content
+ */
+public class CharAtlas {
 
     HashMap<Character, CharInfo> map = new HashMap<Character, CharInfo>();
     BufferedImage buffImage;
     Integer texId;
 
+    // store a single character with its coordinates inside the texture
     public void put(char c, float x, float y, float w, float h) {
         map.put(c, new CharInfo(c, x, y, w, h));
     }

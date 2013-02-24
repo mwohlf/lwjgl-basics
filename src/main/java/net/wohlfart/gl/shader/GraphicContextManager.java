@@ -22,7 +22,7 @@ public enum GraphicContextManager {
 
     protected static final Logger LOGGER = LoggerFactory.getLogger(GraphicContextManager.class);
 
-    private static final float FIELD_OF_VIEW_LIMIT = 100; // 180
+    private static final float FIELD_OF_VIEW_LIMIT = 100; // << 180
 
     public interface IGraphicContext {
 
@@ -40,19 +40,13 @@ public enum GraphicContextManager {
 
     private IGraphicContext currentGraphicContext;
     // the projection matrix defines the lens of the camera, e.g. view angle
-    private Matrix4f projectionMatrix;
+    private Matrix4f perspectiveProjMatrix;
+    private Matrix4f orthographicProjMatrix;
     // game settings
     private Settings settings;
 
     private InputDispatcher inputDispatcher;
-    //private int screenDiagonal;
     private Clock clock;
-    private int screenWidth;
-    private int screenHeight;
-
-    private float nearPlane;
-
-    private float farPlane;
 
 
     public void setCurrentGraphicContext(IGraphicContext graphicContext) {
@@ -68,14 +62,9 @@ public enum GraphicContextManager {
     }
 
     public void setSettings(Settings settings) {
-        assert settings == null: "settings is already set";
         this.settings = settings;
-        assert projectionMatrix == null: "projection matrix is already set";
-        screenWidth = settings.getWidth();
-        screenHeight = settings.getHeight();
-        nearPlane = settings.getNearPlane();    //   0.1
-        farPlane = settings.getFarPlane();      // 100
-        projectionMatrix = createProjectionMatrix();
+        perspectiveProjMatrix = createPerspectiveProjectionMatrix();
+        orthographicProjMatrix = createOrthographicProjectionMatrix();
     }
 
     // package private, only used by for ShaderAttributeHandle and ShaderUniformHandle
@@ -83,24 +72,28 @@ public enum GraphicContextManager {
         return currentGraphicContext;
     }
 
-    public Matrix4f getProjectionMatrix() {
-        return projectionMatrix;
+    public Matrix4f getPerspectiveProjMatrix() {
+        return perspectiveProjMatrix;
+    }
+
+    public Matrix4f getOrthographicProjMatrix() {
+        return orthographicProjMatrix;
     }
 
     public int getScreenWidth() {
-        return screenWidth;
+        return settings.getWidth();
     }
 
     public int getScreenHeight() {
-        return screenHeight;
+        return settings.getHeight();
     }
 
     public float getNearPlane() {
-        return nearPlane;
+        return settings.getNearPlane();    //   0.1
     }
 
     public float getFarPlane() {
-        return farPlane;
+        return settings.getFarPlane();      // 100
     }
 
     public void setInputDispatcher(DefaultInputDispatcher inputSource) {
@@ -122,8 +115,16 @@ public enum GraphicContextManager {
     /**
      * @formatter:off
      * - the projection matrix defines the lens of the camera
+     *   it translates the world space into 2D screen space
+     *
      * - the view matrix defines the position and the direction of the camera
+     *   it is set once per rendering pass and defined in which direction the cam is looking
+     *
      * - the model matrix defines the position and direction of each 3D model
+     *   it is used to move and rotate a model in the world space around
+     *   each model can set its individual matrix before rendering so it is
+     *   set for each model object
+     *
      * see: http://www.lwjgl.org/wiki/index.php?title=The_Quad_with_Projection,_View_and_Model_matrices
      * see: http://db-in.com/blog/2011/04/cameras-on-opengl-es-2-x/
      * see: http://www.songho.ca/opengl/gl_projectionmatrix.html
@@ -131,7 +132,12 @@ public enum GraphicContextManager {
      * @return our projection matrix
      * @formatter:on
      */
-    private Matrix4f createProjectionMatrix() {
+    private Matrix4f createPerspectiveProjectionMatrix() {
+        int screenWidth = settings.getWidth();
+        int screenHeight = settings.getHeight();
+        float nearPlane = settings.getNearPlane();    // 0.1
+        float farPlane = settings.getFarPlane();      // 100
+
         // Setup projection matrix
         final Matrix4f matrix = new Matrix4f();
         // the view angle in degree, 45 is fine
@@ -170,6 +176,43 @@ public enum GraphicContextManager {
 
         return matrix;
     }
+
+    // this is not used and probably not correct yet
+    private Matrix4f createOrthographicProjectionMatrix() {
+        int screenWidth = settings.getWidth();
+        int screenHeight = settings.getHeight();
+        float nearPlane = settings.getNearPlane();    // 0.1
+        float farPlane = settings.getFarPlane();      // 100
+
+        // Setup projection matrix
+        final Matrix4f matrix = new Matrix4f();
+        // the view angle in degree, 45 is fine
+
+        final float frustumLength = farPlane - nearPlane;
+
+        matrix.m00 = 2f/screenWidth;
+        matrix.m01 = 0;
+        matrix.m02 = 0;
+        matrix.m03 = 0;
+
+        matrix.m10 = 0;
+        matrix.m11 = 2f/screenHeight;
+        matrix.m12 = 0;
+        matrix.m13 = 0;
+
+        matrix.m20 = 0;
+        matrix.m21 = 0;
+        matrix.m22 = -2/frustumLength; // zScale
+        matrix.m23 = 0;
+
+        matrix.m30 = 0; //reenWidth/2;
+        matrix.m31 = 0; // -screenHeight/2;
+        matrix.m32 = -(nearPlane + farPlane) / frustumLength;
+        matrix.m33 = 1;
+
+        return matrix;
+    }
+
 
     public void destroy() {
 

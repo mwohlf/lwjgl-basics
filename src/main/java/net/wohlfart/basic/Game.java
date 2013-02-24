@@ -17,6 +17,14 @@ import org.lwjgl.opengl.PixelFormat;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+
+
+
+/**
+ *
+ * bootstrapping the game and handling state changes within the game
+ *
+ */
 class Game {
     protected static final Logger LOGGER = LoggerFactory.getLogger(Game.class);
 
@@ -31,15 +39,9 @@ class Game {
     protected Timer timer;
     protected InputSource inputSource;
 
-    public void setGameSettings(Settings settings) {
-        this.settings = settings;
-    }
-
-    public void setPlatform(Platform platform) {
-        this.platform = platform;
-    }
 
     /**
+     * entry point for the application
      * set the initial state and fire up the main loop
      */
     void start() {
@@ -58,6 +60,15 @@ class Game {
             LOGGER.warn("Application startup failed", ex);
         }
     }
+
+    public void setGameSettings(Settings settings) {
+        this.settings = settings;
+    }
+
+    public void setPlatform(Platform platform) {
+        this.platform = platform;
+    }
+
 
     /**
      * this is the main loop that does all the work
@@ -90,6 +101,7 @@ class Game {
         GL11.glViewport(0, 0, settings.width, settings.height);
         // used for GL11.glClear(GL11.GL_COLOR_BUFFER_BIT);
         GL11.glClearColor(0.1f, 0.7f, 0.1f, 0f);
+        //GL11.glClearColor(0.0f, 0.0f, 0.0f, 0f);
         // turn culling off so it will be drawn regardless of what way it is facing
         GL11.glDisable(GL11.GL_CULL_FACE);
         // GL11.glEnable(GL11.GL_CULL_FACE);

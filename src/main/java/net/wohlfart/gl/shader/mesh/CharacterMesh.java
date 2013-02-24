@@ -22,8 +22,9 @@ public class CharacterMesh implements IMesh {
     private final int textureId;
 
     // package private, created by the builder
-    public CharacterMesh(int vaoHandle, int vboVerticesHandle,
-    // index
+    public CharacterMesh(
+            int vaoHandle, int vboVerticesHandle,
+            // index
             int vboIndicesHandle, int indicesType, int indexElemSize, int indicesCount, int indexOffset,
             // attrib pos
             int positionAttrib, int textureAttrib, int textureId) {

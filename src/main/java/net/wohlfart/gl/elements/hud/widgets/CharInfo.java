@@ -1,4 +1,4 @@
-package net.wohlfart.gl.elements.hud;
+package net.wohlfart.gl.elements.hud.widgets;
 
 class CharInfo {
     protected char c;

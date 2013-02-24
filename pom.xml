@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" 
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 
+                             http://maven.apache.org/xsd/maven-4.0.0.xsd">
+                             
   <modelVersion>4.0.0</modelVersion>
-
   <groupId>basic</groupId>
   <artifactId>basic</artifactId>
   <version>0.0.1-SNAPSHOT</version>
@@ -15,7 +17,8 @@
     <java3d.version>1.3.1</java3d.version>
     <junit.version>4.11</junit.version>
     <logback.version>1.0.7</logback.version>
-    <guava.version>12.0</guava.version>
+    <guava.version>14.0-rc3</guava.version>
+    <natives.version>0.0.7</natives.version>
   </properties>
 
   <dependencies>
@@ -124,7 +127,7 @@
       <plugin>
         <groupId>com.googlecode.mavennatives</groupId>
         <artifactId>maven-nativedependencies-plugin</artifactId>
-        <version>0.0.7</version>
+        <version>${natives.version}</version>
         <executions>
           <execution>
             <id>unpacknatives</id>

@@ -27,7 +27,7 @@ public class WireframeMesh implements IMesh {
 
     // package private, created by the builder
     WireframeMesh(int vaoHandle, int vboVerticesHandle,
-    // index
+            // index
             int vboIndicesHandle, int indicesType, int indexElemSize, int indicesCount, int indexOffset,
             // color
             int colorAttrib, int positionAttrib, int textureAttrib, ReadableColor color,

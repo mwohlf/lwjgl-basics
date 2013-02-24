@@ -1,4 +1,4 @@
-package net.wohlfart.tools;
+package net.wohlfart;
 
 import java.awt.BorderLayout;
 import java.awt.Container;
@@ -12,6 +12,14 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.WindowConstants;
 
+import net.wohlfart.gl.elements.hud.widgets.CharAtlasBuilder;
+
+import org.lwjgl.LWJGLException;
+import org.lwjgl.opengl.ContextAttribs;
+import org.lwjgl.opengl.Display;
+import org.lwjgl.opengl.DisplayMode;
+import org.lwjgl.opengl.PixelFormat;
+
 @SuppressWarnings("serial")
 public class CharFrame extends JFrame {
 
@@ -20,7 +28,11 @@ public class CharFrame extends JFrame {
             EventQueue.invokeAndWait(new Runnable() {
                 @Override
                 public void run() {
-                    new CharFrame().setVisible(true);
+                    try {
+                        new CharFrame().setVisible(true);
+                    } catch (LWJGLException ex) {
+                        ex.printStackTrace();
+                    }
                 }
             });
         } catch (InvocationTargetException | InterruptedException ex) {
@@ -28,15 +40,28 @@ public class CharFrame extends JFrame {
         }
     }
 
-    CharFrame() {
+    CharFrame() throws LWJGLException {
+        setupDisplay();
         addContent();
         setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
     }
 
+    private void setupDisplay() throws LWJGLException {
+        final PixelFormat pixelFormat = new PixelFormat();
+        final ContextAttribs contextAtributes = new ContextAttribs(3, 3); // OpenGL versions
+        contextAtributes.withForwardCompatible(true);
+        contextAtributes.withProfileCore(true);
+        Display.setDisplayMode(new DisplayMode(100, 100));
+        Display.setResizable(false);
+        Display.setTitle("testing");
+        Display.setVSyncEnabled(true);
+        Display.create(pixelFormat, contextAtributes); // creates the GL context
+    }
+
+
     private void addContent() {
-        final FontRenderer fontRenderer = new FontRenderer();
-        fontRenderer.init();
-        final Image image = fontRenderer.getCharacterAtlas().getImage();
+        final CharAtlasBuilder fontRenderer = new CharAtlasBuilder();
+        final Image image = fontRenderer.build().getImage();
 
         final Container content = getContentPane();
 

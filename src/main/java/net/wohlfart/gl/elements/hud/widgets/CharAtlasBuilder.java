@@ -1,4 +1,4 @@
-package net.wohlfart.tools;
+package net.wohlfart.gl.elements.hud.widgets;
 
 import java.awt.Color;
 import java.awt.Font;
@@ -11,13 +11,18 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.InputStream;
 
-import net.wohlfart.gl.elements.hud.CharacterAtlas;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class FontRenderer {
-    protected static final Logger LOGGER = LoggerFactory.getLogger(FontRenderer.class);
+public class CharAtlasBuilder {
+    protected static final Logger LOGGER = LoggerFactory.getLogger(CharAtlasBuilder.class);
+
+    private static final float DEFAULT_FONT_SIZE = 25f;
+    // private static final String FONT_FILE = "/fonts/alphbeta.ttf";
+    // private static final String FONT_FILE = "/fonts/Greyscale_Basic_Regular.ttf";
+    // private static final String FONT_FILE = "/fonts/AeroviasBrasilNF.ttf";
+    private static final String DEFAULT_FONT_FILE = "/fonts/VeraMono.ttf";
+
 
     public static final char NULL_CHAR = '_';
     private static final String chars = " abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789;:,.-_#+?!\"()";
@@ -25,38 +30,40 @@ public class FontRenderer {
         if (!chars.contains(new String("" + NULL_CHAR))) {
             throw new IllegalStateException("need NULL_CHAR in char sequence");
         }
-        ;
     };
 
     private static final int WIDTH = 512;
     private static final int HEIGHT = 512;
 
-    private static final boolean borderOn = false;
+    private boolean borderOn = false;
+    private float fontSize = DEFAULT_FONT_SIZE;
+    private String fontFile = DEFAULT_FONT_FILE;
 
-    // private static final String FONT_FILE = "/fonts/alphbeta.ttf";
-    private static final String FONT_FILE = "/fonts/Greyscale_Basic_Regular.ttf";
-    // private static final String FONT_FILE = "/fonts/AeroviasBrasilNF.ttf";
 
-    private CharacterAtlas atlas;
-
-    public FontRenderer init() {
-        final String filename = FONT_FILE;
-        try (InputStream inputStream = ClassLoader.class.getResourceAsStream(filename);) {
+    public CharAtlas build() {
+        try (InputStream inputStream = ClassLoader.class.getResourceAsStream(fontFile);) {
             Font font = Font.createFont(Font.TRUETYPE_FONT, inputStream);
-            font = font.deriveFont(16f); // size
-            atlas = createCharacterAtlas(font);
+            font = font.deriveFont(fontSize); // size
+            return createCharacterAtlas(font);
         } catch (FontFormatException | IOException ex) {
-            LOGGER.error("can't create font from file '" + filename + "', the atlas will be null, expect more errors", ex);
+            throw new WidgetError("can't create font from file '" + fontFile + "'", ex);
         }
-        return this;
     }
 
-    public CharacterAtlas getCharacterAtlas() {
-        return atlas;
+    public void setBorderOn(boolean borderOn) {
+        this.borderOn = borderOn;
     }
 
-    CharacterAtlas createCharacterAtlas(Font font) {
-        final CharacterAtlas atlas = new CharacterAtlas();
+    public void setFontSize(float fontSize) {
+        this.fontSize = fontSize;
+    }
+
+    public void setFontFile(String fontFile) {
+        this.fontFile = fontFile;
+    }
+
+    private CharAtlas createCharacterAtlas(Font font) {
+        final CharAtlas atlas = new CharAtlas();
 
         final BufferedImage buffImage = new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_ARGB);
         final Graphics2D g = (Graphics2D) buffImage.getGraphics();

@@ -1,10 +1,10 @@
-package net.wohlfart.gl.elements.hud;
+package net.wohlfart.gl.elements.hud.widgets;
 
 import java.util.HashSet;
 
+import net.wohlfart.gl.elements.hud.Layer;
 import net.wohlfart.gl.renderer.Renderable;
 import net.wohlfart.gl.shader.mesh.IMesh;
-import net.wohlfart.tools.FontRenderer;
 
 public abstract class TextComponent implements Renderable {
 
@@ -20,14 +20,14 @@ public abstract class TextComponent implements Renderable {
 
     protected HashSet<IMesh> createMeshSet(int x, int y, String string) {
         assert string != null: "string to create MeshSet is null";
-        final CharacterAtlas atlas = layer.getCharacterAtlas();
+        final CharAtlas atlas = layer.getCharacterAtlas();
         int d = 0;
         HashSet<IMesh> characters = new HashSet<IMesh>();
         final char[] charArray = string.toCharArray();
         for (final char c : charArray) {
             CharInfo info = atlas.getCharInfo(c);
             if (info == null) {
-                info = atlas.getCharInfo(FontRenderer.NULL_CHAR);
+                info = atlas.getCharInfo(CharAtlasBuilder.NULL_CHAR);
             }
             final IMesh mesh = createMesh(x + d, y, info, atlas);
             d += info.getWidth();
@@ -38,8 +38,8 @@ public abstract class TextComponent implements Renderable {
         return characters;
     }
 
-    private IMesh createMesh(int x, int y, CharInfo info, CharacterAtlas characterAtlas) {
-        final CharacterMeshBuilder builder = new CharacterMeshBuilder();
+    private IMesh createMesh(int x, int y, CharInfo info, CharAtlas characterAtlas) {
+        final CharMeshBuilder builder = new CharMeshBuilder();
         builder.setCharAtlas(characterAtlas);
         builder.setCharInfo(info);
         builder.setScreenX(x);

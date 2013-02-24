@@ -50,7 +50,7 @@ public class Skybox implements Renderable, SkyboxParameters {
         avatar.readDirection(viewDirection);
         viewDirection.normalise(viewDirection);
 
-        final Matrix4f camViewMatrix = GraphicContextManager.INSTANCE.getProjectionMatrix();
+        final Matrix4f camViewMatrix = GraphicContextManager.INSTANCE.getPerspectiveProjMatrix();
         SimpleMath.convert(avatar.getRotation(), rotMatrix);
 
         GraphicContextManager.INSTANCE.setCurrentGraphicContext(graphicContext);

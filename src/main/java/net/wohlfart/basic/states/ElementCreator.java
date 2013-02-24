@@ -40,7 +40,6 @@ public class ElementCreator {
         elemBucket.add(new Circle(90).lineWidth(2));
         elemBucket.add(new Circle(100).lineWidth(2));
 
-
         return elemBucket;
     }
 

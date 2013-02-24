@@ -1,4 +1,6 @@
-package net.wohlfart.gl.elements.hud;
+package net.wohlfart.gl.elements.hud.widgets;
+
+import net.wohlfart.gl.elements.hud.Layer;
 
 
 public class Statistics extends TextComponent {

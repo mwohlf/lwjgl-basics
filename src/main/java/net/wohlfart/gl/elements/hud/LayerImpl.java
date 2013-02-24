@@ -3,10 +3,13 @@ package net.wohlfart.gl.elements.hud;
 import java.util.Collection;
 import java.util.HashSet;
 
+import net.wohlfart.gl.elements.hud.widgets.CharAtlas;
+import net.wohlfart.gl.elements.hud.widgets.CharAtlasBuilder;
+import net.wohlfart.gl.elements.hud.widgets.TextComponent;
 import net.wohlfart.gl.renderer.Renderable;
 import net.wohlfart.gl.shader.mesh.IMesh;
-import net.wohlfart.tools.FontRenderer;
 
+import org.lwjgl.util.vector.Vector3f;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -21,12 +24,13 @@ class LayerImpl implements Layer {
 
     protected IMesh meshData;
 
-    protected CharacterAtlas characterAtlas;
+    protected CharAtlas characterAtlas;
 
     protected IMesh setup() {
-        characterAtlas = new FontRenderer().init().getCharacterAtlas();
-        final LayerMeshBuilder builder = new LayerMeshBuilder();
+        characterAtlas = new CharAtlasBuilder().build();
+        final TextureMeshBuilder builder = new TextureMeshBuilder();
         builder.setTextureId(characterAtlas.getTextureId());
+        builder.setTranslation(new Vector3f(0,-0.5f,-0.9f));
         return builder.build();
     }
 
@@ -53,7 +57,7 @@ class LayerImpl implements Layer {
     }
 
     @Override
-    public CharacterAtlas getCharacterAtlas() {
+    public CharAtlas getCharacterAtlas() {
         return characterAtlas;
     }
 

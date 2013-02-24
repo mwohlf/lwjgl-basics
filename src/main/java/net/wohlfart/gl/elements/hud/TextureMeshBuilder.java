@@ -7,47 +7,75 @@ import net.wohlfart.gl.shader.ShaderAttributeHandle;
 import net.wohlfart.gl.shader.mesh.IMesh;
 import net.wohlfart.gl.shader.mesh.TexturedFragmentMesh;
 import net.wohlfart.gl.tools.Vertex;
+import net.wohlfart.tools.SimpleMath;
 
 import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL15;
 import org.lwjgl.opengl.GL20;
 import org.lwjgl.opengl.GL30;
+import org.lwjgl.util.vector.Quaternion;
+import org.lwjgl.util.vector.Vector3f;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class LayerMeshBuilder {
-    protected static final Logger LOGGER = LoggerFactory.getLogger(LayerMeshBuilder.class);
+
+/**
+ * layer for testing the txt features
+ */
+public class TextureMeshBuilder {
+    protected static final Logger LOGGER = LoggerFactory.getLogger(TextureMeshBuilder.class);
 
     private int texId;
+    private Quaternion rotation = new Quaternion();
+    private Vector3f translation = new Vector3f();
 
-    private final float Z = -1f;
 
     public IMesh build() {
 
-        // We'll define our quad using 4 vertices of the custom 'Vertex' class
-        final Vertex v0 = new Vertex();
-        v0.setXYZ(-0.5f, 0.5f, Z);
-        v0.setRGB(1, 0, 0);
-        v0.setST(0, 0);
+        final Vector3f[] vectors = new Vector3f[] {
+                new Vector3f(-0.5f,+0.5f, 0),
+                new Vector3f(-0.5f,-0.5f, 0),
+                new Vector3f(+0.5f,-0.5f, 0),
+                new Vector3f(+0.5f,+0.5f, 0)
+        };
 
-        final Vertex v1 = new Vertex();
-        v1.setXYZ(-0.5f, -0.5f, Z);
-        v1.setRGB(0, 1, 0);
-        v1.setST(0, 1);
+        if (rotation != null) {
+            for (final Vector3f vec : vectors) {
+                SimpleMath.mul(rotation, vec, vec);
+            }
+        }
+        if (translation != null) {
+            for (final Vector3f vec : vectors) {
+                SimpleMath.add(translation, vec, vec);
+            }
+        }
 
-        final Vertex v2 = new Vertex();
-        v2.setXYZ(0.5f, -0.5f, Z);
-        v2.setRGB(0, 0, 1);
-        v2.setST(1, 1);
 
-        final Vertex v3 = new Vertex();
-        v3.setXYZ(0.5f, 0.5f, Z);
-        v3.setRGB(1, 1, 1);
-        v3.setST(1, 0);
+        final Vertex[] vertices = new Vertex[] {
+                new Vertex() {{
+                    setXYZ(vectors[0].x, vectors[0].y, vectors[0].z);
+                    setRGB(1, 0, 0);
+                    setST(0, 0);
+                }},
+                new Vertex() {{
+                    setXYZ(vectors[1].x, vectors[1].y, vectors[1].z);
+                    setRGB(0, 1, 0);
+                    setST(0, 1);
+                }},
+                new Vertex() {{
+                    setXYZ(vectors[2].x, vectors[2].y, vectors[2].z);
+                    setRGB(0, 0, 1);
+                    setST(1, 1);
+                }},
+                new Vertex() {{
+                    setXYZ(vectors[3].x, vectors[3].y, vectors[3].z);
+                    setRGB(1, 1, 1);
+                    setST(1, 0);
+                }}
+        };
 
-        final Vertex[] vertices = new Vertex[] { v0, v1, v2, v3 };
-        // Put each 'Vertex' in one FloatBuffer the order depends on the shaders positions!
+
         final FloatBuffer verticesBuffer = BufferUtils.createFloatBuffer(vertices.length * Vertex.elementCount);
         for (int i = 0; i < vertices.length; i++) {
             verticesBuffer.put(vertices[i].getXYZW());
@@ -102,6 +130,14 @@ public class LayerMeshBuilder {
 
     public void setTextureId(int texId) {
         this.texId = texId;
+    }
+
+    public void setRotation(Quaternion rotation) {
+        this.rotation = rotation;
+    }
+
+    public void setTranslation(Vector3f translation) {
+        this.translation = translation;
     }
 
 }

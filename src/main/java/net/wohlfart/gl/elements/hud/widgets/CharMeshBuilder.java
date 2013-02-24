@@ -1,4 +1,4 @@
-package net.wohlfart.gl.elements.hud;
+package net.wohlfart.gl.elements.hud.widgets;
 
 import java.nio.ByteBuffer;
 import java.nio.FloatBuffer;
@@ -16,12 +16,17 @@ import org.lwjgl.opengl.GL30;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-class CharacterMeshBuilder {
-    protected static final Logger LOGGER = LoggerFactory.getLogger(CharacterMeshBuilder.class);
 
-    private static final float Z = -1f;
 
-    private CharacterAtlas atlas;
+/**
+ * this is a mesh for a single character
+ */
+class CharMeshBuilder {
+    protected static final Logger LOGGER = LoggerFactory.getLogger(CharMeshBuilder.class);
+
+    private static final float Z = 1f;
+
+    private CharAtlas atlas;
     private CharInfo info;
     private float screenX;
     private float screenY;
@@ -110,7 +115,7 @@ class CharacterMeshBuilder {
         this.info = info;
     }
 
-    public void setCharAtlas(CharacterAtlas atlas) {
+    public void setCharAtlas(CharAtlas atlas) {
         this.atlas = atlas;
     }
 
