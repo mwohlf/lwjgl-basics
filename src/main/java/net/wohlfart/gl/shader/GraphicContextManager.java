@@ -143,7 +143,7 @@ public enum GraphicContextManager {
         // the view angle in degree, 45 is fine
 
         float fieldOfView = settings.getFieldOfView();      //  45 degree
-        final float aspectRatio = screenWidth / screenHeight;
+        final float aspectRatio = (float)screenWidth / (float)screenHeight;
 
         if (fieldOfView > FIELD_OF_VIEW_LIMIT) {
             LOGGER.warn("field of view must be < {} found: '{}', resetting to {}", FIELD_OF_VIEW_LIMIT, fieldOfView, FIELD_OF_VIEW_LIMIT);

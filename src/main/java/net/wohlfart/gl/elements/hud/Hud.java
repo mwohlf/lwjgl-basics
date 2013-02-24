@@ -21,17 +21,17 @@ public class Hud implements Renderable {
     private IGraphicContext hudContext;
     private Avatar avatar;
 
-    private LayerImpl textLayer;
+    private LayerImpl layer;
 
 
     public void init(IGraphicContext hudContext, Avatar avatar) {
         this.avatar = avatar;
         this.hudContext = hudContext;
-        this.textLayer = new LayerImpl();
+        this.layer = new LayerImpl();
     }
 
     public void add(TextComponent label) {
-        textLayer.add(label);
+        layer.add(label);
     }
 
     @Override
@@ -43,12 +43,12 @@ public class Hud implements Renderable {
         //ShaderUniformHandle.CAM_TO_CLIP.set(contextManagert.getOrthographicProjMatrix());
         //ShaderUniformHandle.CAM_TO_CLIP.set(SimpleMath.UNION_MATRIX);
         GL11.glEnable(GL11.GL_BLEND);
-        textLayer.render();
+        layer.render();
     }
 
     @Override
     public void dispose() {
-        textLayer.dispose();
+        layer.dispose();
     }
 
 }

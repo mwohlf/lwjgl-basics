@@ -1,11 +1,14 @@
 package net.wohlfart.gl.elements.hud.widgets;
 
+/*
+ * dimension info for a single character
+ */
 class CharInfo {
-    protected char c;
-    protected float x;
-    protected float y;
-    protected float w;
-    protected float h;
+    protected final char c;
+    protected final float x;
+    protected final float y;
+    protected final float w;
+    protected final float h;
 
     CharInfo(char c, float x, float y, float w, float h) {
         this.c = c;

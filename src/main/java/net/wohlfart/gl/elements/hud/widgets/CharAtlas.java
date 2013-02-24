@@ -19,25 +19,18 @@ public class CharAtlas {
     BufferedImage buffImage;
     Integer texId;
 
+    CharAtlas() {
+
+    }
+
     // store a single character with its coordinates inside the texture
-    public void put(char c, float x, float y, float w, float h) {
+    void put(char c, float x, float y, float w, float h) {
         map.put(c, new CharInfo(c, x, y, w, h));
     }
 
-    public void setImage(BufferedImage buffImage) {
+    void setupImage(BufferedImage buffImage) {
         this.buffImage = buffImage;
-    }
-
-    public BufferedImage getImage() {
-        return buffImage;
-    }
-
-    public CharInfo getCharInfo(char c) {
-        return map.get(c);
-    }
-
-    public int getTextureId() {
-        return texId;
+        setupTexture(GL13.GL_TEXTURE1);
     }
 
     protected void setupTexture(int textureUnit) {
@@ -78,8 +71,16 @@ public class CharAtlas {
         GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER, GL11.GL_LINEAR_MIPMAP_LINEAR);
     }
 
-    public void init() {
-        setupTexture(GL13.GL_TEXTURE1);
+    public BufferedImage getImage() {
+        return buffImage;
+    }
+
+    public CharInfo getCharInfo(char c) {
+        return map.get(c);
+    }
+
+    public int getTextureId() {
+        return texId;
     }
 
 }

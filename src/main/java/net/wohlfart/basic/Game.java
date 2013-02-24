@@ -39,6 +39,7 @@ class Game {
     protected Timer timer;
     protected InputSource inputSource;
 
+    private DisplayMode oldDisplayMode;
 
     /**
      * entry point for the application
@@ -96,7 +97,11 @@ class Game {
      * setup a OpenGL 3.3 environment
      */
     private void bootupOpenGL() throws LWJGLException {
-        setupDisplay();
+        if (settings.getFullscreen()) {
+            setupFullscreen();
+        } else {
+            setupWindow();
+        }
         // Map the internal OpenGL coordinate system to the entire screen
         GL11.glViewport(0, 0, settings.width, settings.height);
         // used for GL11.glClear(GL11.GL_COLOR_BUFFER_BIT);
@@ -105,11 +110,13 @@ class Game {
         // turn culling off so it will be drawn regardless of what way it is facing
         GL11.glDisable(GL11.GL_CULL_FACE);
         // GL11.glEnable(GL11.GL_CULL_FACE);
+        LOGGER.info("Vendor: " + GL11.glGetString(GL11.GL_VENDOR));
+        LOGGER.info("Version: " + GL11.glGetString(GL11.GL_VERSION));
     }
 
     // see: http://lwjgl.org/forum/index.php/topic,2951.0.html
     // for more about setting up a display...
-    private void setupDisplay() throws LWJGLException {
+    private void setupWindow() throws LWJGLException {
         final PixelFormat pixelFormat = new PixelFormat();
         final ContextAttribs contextAtributes = new ContextAttribs(3, 3); // OpenGL versions
         contextAtributes.withForwardCompatible(true);
@@ -117,11 +124,28 @@ class Game {
         Display.setDisplayMode(new DisplayMode(settings.getWidth(), settings.getHeight()));
         Display.setResizable(false);
         Display.setTitle(settings.getTitle());
-        Display.setVSyncEnabled(true);
         Display.create(pixelFormat, contextAtributes); // creates the GL context
-        LOGGER.info("Vendor: " + GL11.glGetString(GL11.GL_VENDOR));
-        LOGGER.info("Version: " + GL11.glGetString(GL11.GL_VERSION));
     }
+
+    private void setupFullscreen() throws LWJGLException {
+        DisplayMode[] modes = Display.getAvailableDisplayModes();
+        DisplayMode bestFit = modes[0];
+        for (DisplayMode mode : modes) {
+            if ((bestFit == null) || (mode.getWidth() > bestFit.getWidth())) {
+ //               bestFit = mode;
+            }
+        }
+        oldDisplayMode = Display.getDisplayMode();
+        final PixelFormat pixelFormat = new PixelFormat();
+        final ContextAttribs contextAtributes = new ContextAttribs(3, 3); // OpenGL versions
+        contextAtributes.withForwardCompatible(true);
+        contextAtributes.withProfileCore(true);
+        Display.setDisplayMode(bestFit);
+        Display.setFullscreen(true);
+        Display.setDisplayMode(bestFit);
+        Display.create(pixelFormat, contextAtributes); // creates the GL context
+    }
+
 
     public void setCurrentState(final GameStateEnum newState) {
         currentState.dispose();
@@ -130,6 +154,13 @@ class Game {
     }
 
     private void shutdownOpenGL() {
+        if (oldDisplayMode != null) {
+            try {
+                Display.setDisplayMode(oldDisplayMode);
+            } catch (LWJGLException ex) {
+                LOGGER.warn("error while shutting down", ex);
+            }
+        }
         Display.destroy();
     }
 

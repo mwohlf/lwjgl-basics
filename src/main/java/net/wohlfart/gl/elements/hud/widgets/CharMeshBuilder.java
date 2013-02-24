@@ -3,6 +3,7 @@ package net.wohlfart.gl.elements.hud.widgets;
 import java.nio.ByteBuffer;
 import java.nio.FloatBuffer;
 
+import net.wohlfart.gl.shader.GraphicContextManager;
 import net.wohlfart.gl.shader.ShaderAttributeHandle;
 import net.wohlfart.gl.shader.mesh.CharacterMesh;
 import net.wohlfart.gl.shader.mesh.IMesh;
@@ -24,6 +25,8 @@ import org.slf4j.LoggerFactory;
 class CharMeshBuilder {
     protected static final Logger LOGGER = LoggerFactory.getLogger(CharMeshBuilder.class);
 
+    private final GraphicContextManager cxtManager = GraphicContextManager.INSTANCE;
+
     private static final float Z = 1f;
 
     private CharAtlas atlas;
@@ -32,6 +35,8 @@ class CharMeshBuilder {
     private float screenY;
 
     public IMesh build() {
+        int height = cxtManager.getScreenHeight();
+        int width = cxtManager.getScreenWidth();
 
         final float x1 = screenX; // assuming a screen size of 1000x1000
         final float y1 = screenY;

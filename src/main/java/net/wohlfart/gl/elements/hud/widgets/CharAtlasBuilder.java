@@ -14,6 +14,9 @@ import java.io.InputStream;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+/*
+ * creating a atlas for a font
+ */
 public class CharAtlasBuilder {
     protected static final Logger LOGGER = LoggerFactory.getLogger(CharAtlasBuilder.class);
 
@@ -96,8 +99,7 @@ public class CharAtlasBuilder {
             }
             x += width;
         }
-        atlas.setImage(buffImage);
-        atlas.init();
+        atlas.setupImage(buffImage);
         return atlas;
     }
 

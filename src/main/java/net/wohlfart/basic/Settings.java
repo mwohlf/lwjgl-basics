@@ -13,6 +13,8 @@ public class Settings {
     protected float nearPlane = 0.1f;
     protected float farPlane = 100f;
 
+    private boolean fullscreen = false;
+
     /**
      * @return display width
      */
@@ -55,6 +57,17 @@ public class Settings {
 
     public void setNearPlane(float nearPlane) {
         this.nearPlane = nearPlane;
+    }
+
+    /**
+     * @return treu if the application runs in fullscreen mode
+     */
+    public boolean getFullscreen() {
+        return fullscreen;
+    }
+
+    public void setFullscreen(boolean fullscreen) {
+        this.fullscreen = fullscreen;
     }
 
     /**
