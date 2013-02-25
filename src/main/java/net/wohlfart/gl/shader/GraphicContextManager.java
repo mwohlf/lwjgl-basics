@@ -96,6 +96,11 @@ public enum GraphicContextManager {
         return settings.getFarPlane();      // 100
     }
 
+    public float getFieldOfView() {
+        return settings.getFieldOfView();
+    }
+
+
     public void setInputDispatcher(DefaultInputDispatcher inputSource) {
         this.inputDispatcher = inputSource;
     }

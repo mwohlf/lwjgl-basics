@@ -20,7 +20,7 @@ import org.slf4j.LoggerFactory;
 public class CharAtlasBuilder {
     protected static final Logger LOGGER = LoggerFactory.getLogger(CharAtlasBuilder.class);
 
-    private static final float DEFAULT_FONT_SIZE = 25f;
+    private static final float DEFAULT_FONT_SIZE = 17f;
     // private static final String FONT_FILE = "/fonts/alphbeta.ttf";
     // private static final String FONT_FILE = "/fonts/Greyscale_Basic_Regular.ttf";
     // private static final String FONT_FILE = "/fonts/AeroviasBrasilNF.ttf";

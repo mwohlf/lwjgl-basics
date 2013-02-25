@@ -8,6 +8,7 @@ import net.wohlfart.gl.shader.ShaderAttributeHandle;
 import net.wohlfart.gl.shader.mesh.CharacterMesh;
 import net.wohlfart.gl.shader.mesh.IMesh;
 import net.wohlfart.gl.tools.Vertex;
+import net.wohlfart.tools.SimpleMath;
 
 import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL11;
@@ -49,17 +50,22 @@ class CharMeshBuilder {
         float yScale = m.m11;
         float zScale = m.m22;
 
-        float x1 = screenX - (width / 2f);
-        float y1 = height - (screenY - (height / 2f)) - 500;
-        float x2 = x1 + info.getWidth();
-        float y2 = y1 - info.getHeight();
-        float z = 1;
 
+        // this is the z range we need to have a 1:1 dot match from the mesh to the screen
+        float z = -0.5f * SimpleMath.coTan(SimpleMath.deg2rad(cxtManager.getFieldOfView() / 2f));
+
+
+        float x1 = screenX / atlasWidth - (0.5f * (width / height));
+        float y1 = screenY / atlasHeight + 0.5f;
+        float x2 = x1 + info.getWidth()  / atlasWidth;
+        float y2 = y1 - info.getHeight()  / atlasHeight;
+
+        /*
         x1 = x1 * xScale / width;
         y1 = y1 / height;
-        z = 1 * zScale;
         x2 = x2 * xScale / width;
         y2 = y2 / height;
+        */
 
         final float s1 = info.getX() / atlasWidth;
         final float t1 = info.getY() / atlasHeight;
