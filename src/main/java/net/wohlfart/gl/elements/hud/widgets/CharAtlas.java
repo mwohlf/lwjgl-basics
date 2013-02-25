@@ -10,7 +10,7 @@ import org.lwjgl.opengl.GL13;
 import org.lwjgl.opengl.GL30;
 
 /*
- * mesh for a complete charset,
+ * mesh for a complete character set in a specified font and size
  * also serves as texture for building labels with text content
  */
 public class CharAtlas {

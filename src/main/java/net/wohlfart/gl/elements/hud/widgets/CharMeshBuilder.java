@@ -15,13 +15,11 @@ import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL15;
 import org.lwjgl.opengl.GL20;
 import org.lwjgl.opengl.GL30;
-import org.lwjgl.util.vector.Matrix4f;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 
-
-/**
+/*
  * this creates a mesh for a single character
  */
 class CharMeshBuilder {
@@ -32,12 +30,7 @@ class CharMeshBuilder {
     private CharAtlas atlas;
     private CharInfo info;
 
-
-    // we have to match the screen coords into the mesh coords
-
-    // [0...cxtManager.getScreenWidth()] --> [-0.5...0.5]
     private float screenX;
-    // [0...cxtManager.getScreenHeight()] --> [-0.5...0.5]
     private float screenY;
 
     public IMesh build() {
@@ -45,27 +38,14 @@ class CharMeshBuilder {
         float atlasHeight = atlas.getImage().getHeight();
         float width = cxtManager.getScreenWidth();
         float height = cxtManager.getScreenHeight();
-        Matrix4f m = cxtManager.getPerspectiveProjMatrix();
-        float xScale = m.m00;
-        float yScale = m.m11;
-        float zScale = m.m22;
-
 
         // this is the z range we need to have a 1:1 dot match from the mesh to the screen
         float z = -0.5f * SimpleMath.coTan(SimpleMath.deg2rad(cxtManager.getFieldOfView() / 2f));
-
 
         float x1 = screenX / atlasWidth - (0.5f * (width / height));
         float y1 = screenY / atlasHeight + 0.5f;
         float x2 = x1 + info.getWidth()  / atlasWidth;
         float y2 = y1 - info.getHeight()  / atlasHeight;
-
-        /*
-        x1 = x1 * xScale / width;
-        y1 = y1 / height;
-        x2 = x2 * xScale / width;
-        y2 = y2 / height;
-        */
 
         final float s1 = info.getX() / atlasWidth;
         final float t1 = info.getY() / atlasHeight;

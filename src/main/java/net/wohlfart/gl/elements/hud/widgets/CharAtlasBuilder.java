@@ -15,7 +15,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /*
- * creating a atlas for a font
+ * creating an atlas for a font
  */
 public class CharAtlasBuilder {
     protected static final Logger LOGGER = LoggerFactory.getLogger(CharAtlasBuilder.class);
