@@ -37,6 +37,18 @@ public class Avatar {
         return rotation.getRotation();
     }
 
+    public Vector3f getDir(Vector3f vec) {
+        return rotation.getDir(vec);
+    }
+
+    public Vector3f getUp(Vector3f vec) {
+        return rotation.getUp(vec);
+    }
+
+    public Vector3f getRght(Vector3f vec) {
+        return rotation.getRght(vec);
+    }
+
     public Vector3f getPosition() {
         return movement.getPosition();
     }

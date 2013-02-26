@@ -1,6 +1,9 @@
 package net.wohlfart.basic.states;
 
+import net.wohlfart.gl.MousePicker;
 import net.wohlfart.gl.elements.hud.Hud;
+import net.wohlfart.gl.elements.hud.widgets.Label;
+import net.wohlfart.gl.elements.hud.widgets.MousePosition;
 import net.wohlfart.gl.elements.hud.widgets.Statistics;
 import net.wohlfart.gl.elements.skybox.Skybox;
 import net.wohlfart.gl.input.CommandEvent;
@@ -42,21 +45,27 @@ class SimpleState implements GameState {
     private final RenderBucket elemBucket = new RenderBucket();
     private final Hud hud = new Hud();
 
-    private final boolean skyboxOn = true;
+    private final boolean skyboxOn = false;
     private final boolean elementsOn = true;
     private final boolean hudOn = true;
 
     private Statistics statistics;
+    private MousePosition mousePosition;
+    private MousePicker mousePicker;
     private InputDispatcher inputDispatcher;
 
     @Override
     public void setup() {
         inputDispatcher = graphContext.getInputDispatcher();
-        statistics = new Statistics(0, 0);
+        statistics = new Statistics(0, -40);
+        mousePosition = new MousePosition(0, -20);
+        mousePicker = new MousePicker(avatar, elemBucket);
 
         // event bus registration
         inputDispatcher.register(avatar);
         inputDispatcher.register(this);
+        inputDispatcher.register(mousePosition);
+        inputDispatcher.register(mousePicker);
 
         wireframeGraphicContext = new DefaultGraphicContext(
                 new DefaultShaderProgram(DefaultShaderProgram.WIREFRAME_VERTEX_SHADER, DefaultShaderProgram.WIREFRAME_FRAGMENT_SHADER));
@@ -71,8 +80,8 @@ class SimpleState implements GameState {
 
         if (elementsOn) {
             elemBucket.init(wireframeGraphicContext, avatar);
-            elemBucket.add(new ElementCreator().createCircles());
-            elemBucket.add(new ElementCreator().createRandomElements());
+            //elemBucket.add(new ElementCreator().createCircles());
+            //elemBucket.add(new ElementCreator().createRandomElements());
             //ControllerFrame frame = new ControllerFrame();
             //frame.init();
             //elemBucket.add(frame.getCube());
@@ -81,6 +90,8 @@ class SimpleState implements GameState {
         if (hudOn) {
             hud.init(hudGraphicContext, avatar);
             hud.add(statistics);
+            hud.add(mousePosition);
+            hud.add(new Label(0, 0, "hello world at (0,0)"));
         }
 
     }

@@ -78,6 +78,9 @@ public class LwjglInputAdaptor implements InputAdaptor {
 
         @Override
         public void down(int key, int x, int y, float time) {
+            PositionEvent event = mouseMap.get(key);
+            event.setPosition(x, y);
+            inputDispatcher.post(event);
         }
 
         @Override

@@ -309,4 +309,16 @@ public final class SimpleMath {
         return mat;
     }
 
+    public static void mul(Vector3f dir, float a) {
+        dir.x *= a;
+        dir.y *= a;
+        dir.z *= a;
+    }
+
+    public static void sum(Vector3f target, Vector3f a, Vector3f b, Vector3f c) {
+        target.x = a.x + b.x + c.x;
+        target.y = a.y + b.y + c.y;
+        target.z = a.z + b.z + c.z;
+    }
+
 }

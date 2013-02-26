@@ -1,6 +1,5 @@
 package net.wohlfart.gl.elements.hud;
 
-import net.wohlfart.gl.elements.hud.widgets.Label;
 import net.wohlfart.gl.elements.hud.widgets.TextComponent;
 import net.wohlfart.gl.renderer.Renderable;
 import net.wohlfart.gl.shader.GraphicContextManager;
@@ -17,7 +16,7 @@ import org.lwjgl.opengl.GL11;
  */
 public class Hud implements Renderable {
 
-    private final GraphicContextManager contextManagert = GraphicContextManager.INSTANCE;
+    private final GraphicContextManager cxtManagert = GraphicContextManager.INSTANCE;
 
     private IGraphicContext hudContext;
     private Avatar avatar;
@@ -29,7 +28,6 @@ public class Hud implements Renderable {
         this.avatar = avatar;
         this.hudContext = hudContext;
         this.layer = new LayerImpl();
-        add(new Label(0, 0, "hello world at (0,0)"));
     }
 
     public void add(TextComponent label) {
@@ -38,10 +36,10 @@ public class Hud implements Renderable {
 
     @Override
     public void render() {
-        contextManagert.setCurrentGraphicContext(hudContext);
+        cxtManagert.setCurrentGraphicContext(hudContext);
         ShaderUniformHandle.MODEL_TO_WORLD.set(SimpleMath.UNION_MATRIX);
         ShaderUniformHandle.WORLD_TO_CAM.set(SimpleMath.UNION_MATRIX);
-        ShaderUniformHandle.CAM_TO_CLIP.set(contextManagert.getPerspectiveProjMatrix());
+        ShaderUniformHandle.CAM_TO_CLIP.set(cxtManagert.getPerspectiveProjMatrix());
         //ShaderUniformHandle.CAM_TO_CLIP.set(contextManagert.getOrthographicProjMatrix());
         //ShaderUniformHandle.CAM_TO_CLIP.set(SimpleMath.UNION_MATRIX);
         GL11.glEnable(GL11.GL_BLEND);
