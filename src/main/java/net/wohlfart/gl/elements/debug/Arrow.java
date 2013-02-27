@@ -20,18 +20,32 @@ public class Arrow extends RenderableGrid {
             new Vector3f(+0.02f, -0.02f, +0.90f), // tip bottom
     };
 
-    private final Integer[] indices = new Integer[] { 1, 0, // shaft
+    private final Integer[] indices = new Integer[] {
+            1, 0, // shaft
             2, 0, // tip1
             3, 0, // tip2
             4, 0, // tip3
             5, 0, // tip4
     };
 
+
+    public static Arrow createLink(Vector3f start, Vector3f end) {
+        Arrow result = new Arrow(new Vector3f(end.x - start.x,
+                                              end.y - start.y,
+                                              end.z - start.z));
+        result.translate(start);
+        return result;
+    }
+
     public Arrow() {
 
     }
 
     public Arrow(final Vector3f tip) {
+        float length = tip.length();
+        for (final Vector3f vec : vertices) {
+            vec.z *= length;
+        }
         SimpleMath.createQuaternion(vertices[0], tip, rotation);
     }
 

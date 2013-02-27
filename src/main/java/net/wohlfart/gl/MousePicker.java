@@ -7,6 +7,7 @@ import net.wohlfart.gl.shader.GraphicContextManager;
 import net.wohlfart.model.Avatar;
 import net.wohlfart.tools.SimpleMath;
 
+import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector3f;
 
 import com.google.common.eventbus.Subscribe;
@@ -17,53 +18,50 @@ public class MousePicker {
     private final float width;
     private final float height;
     private final float nearPlane;
+    private final float farPlane;
+    private final float fieldOfView;
     private final Avatar avatar;
 
-    private Vector3f dir = new Vector3f();
-    private Vector3f right = new Vector3f();
-    private Vector3f up = new Vector3f();
+    private final Vector3f dir = new Vector3f();
+    private final Vector3f right = new Vector3f();
+    private final Vector3f up = new Vector3f();
 
     private final Vector3f ray = new Vector3f();
     private final RenderBucket elemBucket;
+    private final Matrix4f m;
 
     public MousePicker(Avatar avatar, RenderBucket elemBucket) {
         this.avatar = avatar;
         this.elemBucket = elemBucket;
+        m = ctxManager.getPerspectiveProjMatrix();
         width = ctxManager.getScreenWidth();
         height = ctxManager.getScreenHeight();
         nearPlane = ctxManager.getNearPlane();
+        farPlane = ctxManager.getFarPlane();
+        fieldOfView = ctxManager.getFieldOfView();
     }
 
     @Subscribe
-    public synchronized void onMouseClick(CommandEvent.LeftClick clickEvent) {
+    public void onMouseClick(CommandEvent.LeftClick clickEvent) {
         float x = clickEvent.getX();
         float y = clickEvent.getY();
 
-        // translate mouse coordinates so that the origin lies in the center of the view port
-        x -= width / 2f;
-        y -= height / 2f;
+        float dx = SimpleMath.tan(SimpleMath.deg2rad(fieldOfView)) * (x/(width*0.5f) - 1f);
+        float dy = SimpleMath.tan(SimpleMath.deg2rad(fieldOfView)) * (y/(height*0.5f) - 1f);
 
-        // scale mouse coordinates so that half the view port width and height becomes 1
-        x /= width;
-        y /= height;
+        Vector3f start = new Vector3f(dx * nearPlane/m.m00, dy * nearPlane/m.m11, nearPlane/m.m22);
+        Vector3f end = new Vector3f(dx * farPlane/m.m00, dy * farPlane/m.m11, farPlane/m.m22);
 
-        dir = avatar.getDir(dir);
-        right = avatar.getRght(right);
-        up = avatar.getUp(up);
+        Vector3f pos = avatar.getPosition();
 
-        System.out.println(""
-                + " x: " +  x + " y: " + y
-                + " dir: " + dir + " right: " + right + " up: " + up);
+        start.x += pos.x;
+        start.y += pos.y;
+        start.z += pos.z;
+        end.x += pos.x;
+        end.y += pos.y;
+        end.z += pos.z;
 
-        SimpleMath.mul(dir, nearPlane);
-        SimpleMath.mul(right, x);
-        SimpleMath.mul(up, y);
-
-        SimpleMath.sum(ray, dir, right, up);
-        SimpleMath.mul(ray, 100f);
-
-        elemBucket.add(new Arrow(ray));
-
+        elemBucket.add(Arrow.createLink(start, end).lineWidth(1f));
     }
 
 }
