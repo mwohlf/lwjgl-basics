@@ -8,6 +8,7 @@ import net.wohlfart.model.Avatar;
 import net.wohlfart.tools.SimpleMath;
 
 import org.lwjgl.util.vector.Matrix4f;
+import org.lwjgl.util.vector.Quaternion;
 import org.lwjgl.util.vector.Vector3f;
 
 import com.google.common.eventbus.Subscribe;
@@ -49,17 +50,24 @@ public class MousePicker {
         float dx = SimpleMath.tan(SimpleMath.deg2rad(fieldOfView)) * (x/(width*0.5f) - 1f);
         float dy = SimpleMath.tan(SimpleMath.deg2rad(fieldOfView)) * (y/(height*0.5f) - 1f);
 
+        // unviewMat = (projectionMat * modelViewMat).inverse()
         Vector3f start = new Vector3f(dx * nearPlane/m.m00, dy * nearPlane/m.m11, nearPlane/m.m22);
         Vector3f end = new Vector3f(dx * farPlane/m.m00, dy * farPlane/m.m11, farPlane/m.m22);
 
-        Vector3f pos = avatar.getPosition();
+        Quaternion rot = avatar.getRotation();
+        rot.negate(rot);
+        SimpleMath.mul(rot, start, start);
+        SimpleMath.mul(rot, end, end);
+        rot.negate(rot);
 
+        Vector3f pos = avatar.getPosition();
         start.x += pos.x;
         start.y += pos.y;
         start.z += pos.z;
         end.x += pos.x;
         end.y += pos.y;
         end.z += pos.z;
+
 
         elemBucket.add(Arrow.createLink(start, end).lineWidth(1f));
     }

@@ -12,8 +12,8 @@ import org.lwjgl.util.vector.Matrix4f;
 // handlers for uniforms used in the shader
 public enum ShaderUniformHandle { // @formatter:off
     MODEL_TO_WORLD("modelToWorldMatrix"),
-    WORLD_TO_CAM("worldToCameraMatrix"),
-    CAM_TO_CLIP("cameraToClipMatrix");
+    WORLD_TO_CAM("worldToCameraMatrix"),  // model view matrix
+    CAM_TO_CLIP("cameraToClipMatrix");    // projection matrix
     // @formatter:on
 
     private final String lookupString;
