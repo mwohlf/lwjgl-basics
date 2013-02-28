@@ -80,8 +80,8 @@ class SimpleState implements GameState {
 
         if (elementsOn) {
             elemBucket.init(wireframeGraphicContext, avatar);
-            //elemBucket.add(new ElementCreator().createCircles());
-            //elemBucket.add(new ElementCreator().createRandomElements());
+           // elemBucket.add(new ElementCreator().createCircles());
+           // elemBucket.add(new ElementCreator().createRandomElements());
             //ControllerFrame frame = new ControllerFrame();
             //frame.init();
             //elemBucket.add(frame.getCube());

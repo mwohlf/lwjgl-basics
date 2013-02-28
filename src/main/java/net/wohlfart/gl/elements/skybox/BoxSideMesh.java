@@ -7,7 +7,7 @@ import org.lwjgl.util.vector.Vector3f;
 
 class BoxSideMesh extends TexturedFragmentMesh implements HasNormal {
 
-    private final Vector3f normal;
+    private Vector3f normal = new Vector3f();
 
     BoxSideMesh(int vaoHandle, int vboVerticesHandle, int vboIndicesHandle, int indicesType, int indexElemSize, int indicesCount, int indexOffset,
             int colorAttrib, int positionAttrib, int textureAttrib, int textureId, Vector3f normal) {
