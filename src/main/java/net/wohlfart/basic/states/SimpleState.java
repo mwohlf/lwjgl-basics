@@ -47,7 +47,7 @@ class SimpleState implements GameState {
 
     private final boolean skyboxOn = false;
     private final boolean elementsOn = true;
-    private final boolean hudOn = true;
+    private final boolean hudOn = false;
 
     private Statistics statistics;
     private MousePosition mousePosition;

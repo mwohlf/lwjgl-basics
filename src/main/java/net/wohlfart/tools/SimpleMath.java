@@ -321,4 +321,10 @@ public final class SimpleMath {
         target.z = a.z + b.z + c.z;
     }
 
+    public static void mul(Matrix4f n, Vector3f in, Vector3f out) {
+        out.x = n.m00 * in.x + n.m01 * in.y + n.m02 * in.z;
+        out.y = n.m10 * in.x + n.m11 * in.y + n.m12 * in.z;
+        out.z = n.m20 * in.x + n.m21 * in.y + n.m22 * in.z;
+    }
+
 }

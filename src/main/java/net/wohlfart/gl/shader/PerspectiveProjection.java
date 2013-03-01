@@ -70,7 +70,7 @@ class PerspectiveProjection {
 
         matrix.m30 = 0;
         matrix.m31 = 0;
-        matrix.m32 = -((2 * nearPlane * farPlane) / frustumLength);
+        matrix.m32 = -((2f * nearPlane * farPlane) / frustumLength);
         matrix.m33 = 0;
 
         return matrix;

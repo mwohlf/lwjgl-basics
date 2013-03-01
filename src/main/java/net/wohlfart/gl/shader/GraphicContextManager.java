@@ -11,6 +11,7 @@ import net.wohlfart.tools.SimpleMath;
 import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Quaternion;
 import org.lwjgl.util.vector.Vector3f;
+import org.lwjgl.util.vector.Vector4f;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -47,7 +48,7 @@ public enum GraphicContextManager {
     private Matrix4f orthographicProjMatrix;
     //
     private Matrix4f projectionMatrix;
-    private Matrix4f viewMatrix;
+    private Matrix4f modelViewMatrix;
     // game settings
     private Settings settings;
 
@@ -74,11 +75,13 @@ public enum GraphicContextManager {
     }
 
     void setProjectionMatrix(Matrix4f projectionMatrix) {
+        //System.out.println("new projection matrix: \n" + projectionMatrix);
         this.projectionMatrix = projectionMatrix;
     }
 
-    void setViewMatrix(Matrix4f viewMatrix) {
-        this.viewMatrix = viewMatrix;
+    void setModelViewMatrix(Matrix4f modelViewMatrix) {
+        //System.out.println("new modelView matrix: \n" + modelViewMatrix);
+        this.modelViewMatrix = modelViewMatrix;
     }
 
     // package private, only used by for ShaderAttributeHandle and ShaderUniformHandle
@@ -130,7 +133,89 @@ public enum GraphicContextManager {
         return clock;
     }
 
-    public PickingRay createPickingRay(float x, float y, Avatar avatar) {
+    //  http://gamedev.stackexchange.com/questions/8974/converting-a-mouse-click-to-a-ray
+    // http://gamedev.stackexchange.com/questions/8974/converting-a-mouse-click-to-a-ray
+    public PickingRay createPickingRay(float x, float y) {
+        System.out.println("------------createPickingRay for: " + x + "," + y + "------------");
+
+        Matrix4f m = new Matrix4f();
+        Matrix4f transformMatrix = new Matrix4f();
+        Matrix4f.mul(projectionMatrix, modelViewMatrix, m);
+        transformMatrix = Matrix4f.invert(m, transformMatrix);
+
+        float width = settings.getWidth();
+        float height = settings.getHeight();
+        float nearPlane = settings.getNearPlane();
+        float farPlane = settings.getFarPlane();
+        float fieldOfView = settings.getFieldOfView();
+
+        Vector4f cameraSpaceNear = new Vector4f(x / width * 2f - 1f, y / height * 2f - 1f, -1.0f, 1.0f);
+        Vector4f cameraSpaceFar = new Vector4f(x / width * 2f - 1f, y / height * 2f - 1f,  1.0f, 1.0f);
+
+        System.out.println("cameraSpaceNear: " + cameraSpaceNear);
+        System.out.println("cameraSpaceFar: " + cameraSpaceFar);
+        System.out.println("viewMatrix: \n" + modelViewMatrix);
+        System.out.println("projectionMatrix: \n" + projectionMatrix);
+        System.out.println("transformMatrix: \n" + transformMatrix);
+
+        System.out.println("inverted: \n" + transformMatrix);
+        Vector4f worldSpaceNear = new Vector4f();
+        Matrix4f.transform(transformMatrix, cameraSpaceNear, worldSpaceNear);
+        //Matrix4f.transform(SimpleMath.UNION_MATRIX, cameraSpaceNear, worldSpaceNear);
+
+        Vector4f worldSpaceFar = new Vector4f();
+        Matrix4f.transform(transformMatrix, cameraSpaceFar, worldSpaceFar);
+        //Matrix4f.transform(SimpleMath.UNION_MATRIX, cameraSpaceFar, worldSpaceFar);
+
+        //Vector3f start = new Vector3f(worldSpaceNear.x/m.m00, worldSpaceNear.y/m.m11, worldSpaceNear.z/m.m22);
+        //Vector3f end = new Vector3f(worldSpaceFar.x/m.m00, worldSpaceFar.y/m.m11, worldSpaceFar.z/m.m22);
+        //Vector3f start = new Vector3f(worldSpaceNear.x, worldSpaceNear.y, -nearPlane);
+        //Vector3f end = new Vector3f(worldSpaceFar.x, worldSpaceFar.y, -farPlane);
+        Vector3f start = new Vector3f(worldSpaceNear.x / worldSpaceNear.w,
+                                      worldSpaceNear.y / worldSpaceNear.w,
+                                      worldSpaceNear.z / worldSpaceNear.w);
+        Vector3f end = new Vector3f(worldSpaceFar.x / worldSpaceFar.w,
+                                    worldSpaceFar.y / worldSpaceFar.w,
+                                    worldSpaceFar.z / worldSpaceFar.w);
+
+        System.out.println("finalDraw: start: " + start + " end: " + end);
+
+        return new PickingRay(start, end);
+    }
+
+    public PickingRay createPickingRayBroken(float x, float y, Avatar avatar) {
+        Matrix4f m = projectionMatrix;
+        float width = settings.getWidth();
+        float height = settings.getHeight();
+        float nearPlane = settings.getNearPlane();
+        float farPlane = settings.getFarPlane();
+        float fieldOfView = settings.getFieldOfView();
+
+        float dx = SimpleMath.tan(SimpleMath.deg2rad(fieldOfView)) * (x/(width*0.5f) - 1f);
+        float dy = SimpleMath.tan(SimpleMath.deg2rad(fieldOfView)) * (y/(height*0.5f) - 1f);
+
+        // unviewMat = (projectionMat * modelViewMat).inverse()
+        Vector4f cameraSpaceNear = new Vector4f(dx * nearPlane, dy * nearPlane, -nearPlane, 1);
+        Vector4f cameraSpaceFar = new Vector4f(dx * farPlane, dy * farPlane, -farPlane, 1);
+
+        Matrix4f tmpView = Matrix4f.mul(modelViewMatrix, projectionMatrix, new Matrix4f());
+        Matrix4f invertedViewMatrix = (Matrix4f) tmpView.invert();
+
+        Vector4f worldSpaceNear = new Vector4f();
+        Matrix4f.transform(invertedViewMatrix, cameraSpaceNear, worldSpaceNear);
+
+        Vector4f worldSpaceFar = new Vector4f();
+        Matrix4f.transform(invertedViewMatrix, cameraSpaceFar, worldSpaceFar);
+
+        Vector3f start = new Vector3f(worldSpaceNear.x, worldSpaceNear.y, worldSpaceNear.z);
+        Vector3f end = new Vector3f(worldSpaceFar.x, worldSpaceFar.y, worldSpaceFar.z);
+
+        return new PickingRay(start, end);
+    }
+
+    public PickingRay createPickingRayWorking(float x, float y, Avatar avatar) {
+        System.out.println("------------createPickingRay for: " + x + "," + y + "------------");
+
         Matrix4f m = projectionMatrix;
         float width = settings.getWidth();
         float height = settings.getHeight();
@@ -159,9 +244,9 @@ public enum GraphicContextManager {
         end.y += pos.y;
         end.z += pos.z;
 
+        System.out.println("------------final vectors: " + start + "," + end + "------------");
         return new PickingRay(start, end);
     }
-
 
     public void destroy() {
 

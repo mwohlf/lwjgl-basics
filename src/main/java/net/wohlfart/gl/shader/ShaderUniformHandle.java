@@ -16,7 +16,7 @@ public enum ShaderUniformHandle { // @formatter:off
         @Override
         public void set(Matrix4f matrix) {
             super.set(matrix);
-            INSTANCE.setViewMatrix(matrix);
+            INSTANCE.setModelViewMatrix(matrix);
         }
     },  // model view matrix
     CAM_TO_CLIP("cameraToClipMatrix") {

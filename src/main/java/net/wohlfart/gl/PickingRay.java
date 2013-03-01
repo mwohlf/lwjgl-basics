@@ -12,11 +12,11 @@ public class PickingRay {
         this.end = end;
     }
 
-    Vector3f getStart() {
+    public Vector3f getStart() {
         return start;
     }
 
-    Vector3f getEnd() {
+    public Vector3f getEnd() {
         return end;
     }
 
