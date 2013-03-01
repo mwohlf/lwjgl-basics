@@ -24,7 +24,6 @@ public class MousePicker {
     public void onMouseClick(CommandEvent.LeftClick clickEvent) {
         float x = clickEvent.getX();
         float y = clickEvent.getY();
-        //PickingRay ray = ctxManager.createPickingRayWorking(x, y, avatar);
         PickingRay ray = ctxManager.createPickingRay(x, y);
         elemBucket.add(Arrow.createLink(ray.getStart(), ray.getEnd()).lineWidth(1f));
     }
