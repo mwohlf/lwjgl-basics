@@ -5,7 +5,6 @@ import net.wohlfart.gl.renderer.Renderable;
 import net.wohlfart.gl.shader.GraphicContextManager;
 import net.wohlfart.gl.shader.GraphicContextManager.IGraphicContext;
 import net.wohlfart.gl.shader.ShaderUniformHandle;
-import net.wohlfart.model.Avatar;
 import net.wohlfart.tools.SimpleMath;
 
 import org.lwjgl.opengl.GL11;
@@ -19,13 +18,11 @@ public class Hud implements Renderable {
     private final GraphicContextManager cxtManagert = GraphicContextManager.INSTANCE;
 
     private IGraphicContext hudContext;
-    private Avatar avatar;
 
     private LayerImpl layer;
 
 
-    public void init(IGraphicContext hudContext, Avatar avatar) {
-        this.avatar = avatar;
+    public void init(IGraphicContext hudContext) {
         this.hudContext = hudContext;
         this.layer = new LayerImpl();
     }

@@ -3,7 +3,6 @@ package net.wohlfart.gl;
 import net.wohlfart.gl.elements.debug.Arrow;
 import net.wohlfart.gl.input.CommandEvent;
 import net.wohlfart.gl.renderer.RenderBucket;
-import net.wohlfart.gl.shader.GraphicContextManager;
 
 import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector3f;
@@ -32,7 +31,6 @@ public class MousePicker {
     public void onMouseClick(CommandEvent.LeftClick clickEvent) {
         float x = clickEvent.getX();
         float y = clickEvent.getY();
-        GraphicContextManager ctxManager = GraphicContextManager.INSTANCE;
 
         PickingRay ray = createPickingRay(x, y, elemBucket);
         elemBucket.add(Arrow.createLink(ray.getStart(), ray.getEnd()).lineWidth(1f));
