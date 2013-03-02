@@ -4,6 +4,7 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
+import net.wohlfart.gl.HasCamProjectionModelViewMatrices;
 import net.wohlfart.gl.shader.GraphicContextManager;
 import net.wohlfart.gl.shader.GraphicContextManager.IGraphicContext;
 import net.wohlfart.gl.shader.ShaderUniformHandle;
@@ -16,7 +17,7 @@ import org.lwjgl.util.vector.Vector3f;
 /**
  * a set of renderables that have common features like using the same shader/renderer
  */
-public class RenderBucket implements Renderable {
+public class RenderBucket implements Renderable, HasCamProjectionModelViewMatrices {
 
     protected Set<Renderable> container = new HashSet<>(10100);
     private IGraphicContext wireframeGraphicContext;
@@ -48,7 +49,6 @@ public class RenderBucket implements Renderable {
 
     @Override
     public void render() {
-
         SimpleMath.convert(avatar.getPosition().negate(posVector), posMatrix);
         SimpleMath.convert(avatar.getRotation(), rotMatrix);
         Matrix4f.mul(rotMatrix, posMatrix, rotPosMatrix);
@@ -71,5 +71,14 @@ public class RenderBucket implements Renderable {
         container.clear();
     }
 
+    @Override
+    public Matrix4f getProjectionMatrix() {
+        return GraphicContextManager.INSTANCE.getPerspectiveProjMatrix();
+    }
+
+    @Override
+    public Matrix4f getModelViewMatrix() {
+        return rotPosMatrix;
+    }
 
 }

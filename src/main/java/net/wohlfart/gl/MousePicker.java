@@ -34,19 +34,16 @@ public class MousePicker {
         float y = clickEvent.getY();
         GraphicContextManager ctxManager = GraphicContextManager.INSTANCE;
 
-        PickingRay ray = createPickingRay(x, y,
-                ctxManager.projectionMatrix,
-                ctxManager.modelViewMatrix
-                );
+        PickingRay ray = createPickingRay(x, y, elemBucket);
         elemBucket.add(Arrow.createLink(ray.getStart(), ray.getEnd()).lineWidth(1f));
     }
 
 
 
     // see: http://gamedev.stackexchange.com/questions/8974/converting-a-mouse-click-to-a-ray
-    public PickingRay createPickingRay(float x, float y, Matrix4f projectionMatrix, Matrix4f modelViewMatrix){
+    public PickingRay createPickingRay(float x, float y, HasCamProjectionModelViewMatrices hasMatrices){
 
-        Matrix4f.mul(projectionMatrix, modelViewMatrix, transformMatrix);
+        Matrix4f.mul(hasMatrices.getProjectionMatrix(), hasMatrices.getModelViewMatrix(), transformMatrix);
         transformMatrix = Matrix4f.invert(transformMatrix, transformMatrix);
 
 

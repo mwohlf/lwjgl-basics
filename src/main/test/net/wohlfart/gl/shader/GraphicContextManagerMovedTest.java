@@ -2,6 +2,7 @@ package net.wohlfart.gl.shader;
 
 import static org.junit.Assert.assertEquals;
 import net.wohlfart.basic.Settings;
+import net.wohlfart.gl.HasCamProjectionModelViewMatrices;
 import net.wohlfart.gl.MousePicker;
 import net.wohlfart.gl.PickingRay;
 
@@ -14,6 +15,22 @@ public class GraphicContextManagerMovedTest {
     GraphicContextManager contxt;
     Settings settings;
     MousePicker mousePicker;
+
+    HasCamProjectionModelViewMatrices matrices = new HasCamProjectionModelViewMatrices() {
+
+        @Override
+        public Matrix4f getProjectionMatrix() {
+            return GraphicContextManager.INSTANCE.getPerspectiveProjMatrix();
+        }
+
+        @Override
+        public Matrix4f getModelViewMatrix() {
+            Matrix4f m = new Matrix4f();
+            m.m30 = -10;
+            return m;
+        }
+
+    };
 
 
     @Before
@@ -54,7 +71,7 @@ public class GraphicContextManagerMovedTest {
 
         // mouse origin is bottom left
         // picking the center of the screen should give us a solid line along the z axis:
-        ray = mousePicker.createPickingRay(settings.getWidth()/2f, settings.getHeight()/2f, contxt.projectionMatrix, contxt.modelViewMatrix);
+        ray = mousePicker.createPickingRay(settings.getWidth()/2f, settings.getHeight()/2f, matrices);
 
         assertEquals(10.0, ray.getStart().x, 0.01);
         assertEquals( 0.0, ray.getStart().y, 0.01);
