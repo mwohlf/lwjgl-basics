@@ -38,13 +38,6 @@ public class GraphicContextManagerMovedTest {
         settings = createSettings();
         contxt = GraphicContextManager.INSTANCE;
         contxt.setSettings(settings);
-        // use projection matrix
-        Matrix4f projectionMatrix = contxt.getPerspectiveProjMatrix();
-        contxt.setProjectionMatrix(projectionMatrix);
-        // no cam move or rotation for now:
-        Matrix4f modelViewMatrix = new Matrix4f();
-        modelViewMatrix.m30 = -10;                    // move 10 in x direction
-        contxt.setModelViewMatrix(modelViewMatrix);
         mousePicker = new MousePicker(null, settings.getWidth(), settings.getHeight());
     }
 

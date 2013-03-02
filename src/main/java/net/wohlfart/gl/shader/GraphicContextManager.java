@@ -42,11 +42,6 @@ public enum GraphicContextManager {
     private Matrix4f perspectiveProjMatrix;
     private Matrix4f orthographicProjMatrix;
 
-    // current projection matrix in use (shouldn't change at all)
-    public Matrix4f projectionMatrix;
-    // current modelView matrix, changed when cam moves or rotates
-    public Matrix4f modelViewMatrix;
-
     // game settings from the config file
     private Settings settings;
     // user input
@@ -76,14 +71,6 @@ public enum GraphicContextManager {
 
     // the following methods are package private,
     // and shold only used by ShaderAttributeHandle and ShaderUniformHandle
-
-    void setProjectionMatrix(Matrix4f projectionMatrix) {
-        this.projectionMatrix = projectionMatrix;
-    }
-
-    void setModelViewMatrix(Matrix4f modelViewMatrix) {
-        this.modelViewMatrix = modelViewMatrix;
-    }
 
     IGraphicContext getCurrentGraphicContext() {
         return currentGraphicContext;
