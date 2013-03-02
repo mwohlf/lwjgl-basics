@@ -13,9 +13,9 @@ import com.google.common.eventbus.Subscribe;
 
 public class Avatar {
     // used for key triggered rotations, default rotation speed is one rotation per second
-    private final float ROT_SPEED = 0.1f;
+    private static final float ROT_SPEED = 0.1f;
     // used for key triggered moves, default move is 100 units per second
-    private final float MOVE_SPEED = 0.1f;
+    private static final float MOVE_SPEED = 0.1f;
 
     private final CanRotate rotation;
     private final CanMove movement;

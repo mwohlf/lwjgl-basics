@@ -1,15 +1,17 @@
 package net.wohlfart.gl.tools;
 
 import java.awt.Color;
+import java.io.Serializable;
 import java.util.Set;
 import java.util.TreeSet;
 
 /**
  * converting noise to color
- * 
+ *
  * @author michael
  */
-public class ColorGradient {
+@SuppressWarnings("serial")
+public class ColorGradient implements Serializable {
     private static final double LEFT = -1d;
     private static final double RIGHT = +1d;
 
@@ -39,7 +41,7 @@ public class ColorGradient {
     }
 
     /**
-     * 
+     *
      * @param value
      *            [-1 .. +1]
      * @return
@@ -96,7 +98,7 @@ public class ColorGradient {
         return new Color(red, green, blue);
     }
 
-    public static class GradientPoint implements Comparable<GradientPoint> {
+    public static class GradientPoint implements Comparable<GradientPoint>, Serializable  {
         final double point;
         final Color color;
 
@@ -108,6 +110,14 @@ public class ColorGradient {
         @Override
         public int compareTo(final GradientPoint that) {
             return Double.compare(this.point, that.point);
+        }
+
+        @Override
+        public boolean equals(Object that) {
+            if (that instanceof GradientPoint) {
+                return Double.compare(this.point, ((GradientPoint)that).point) == 0;
+            }
+            return false;
         }
     }
 

@@ -9,7 +9,7 @@ import org.junit.Test;
 
 public class TimerTest {
 
-    private class TestClock implements Clock {
+    private static class TestClock implements Clock {
 
         private final long ticksPerSecond;
         private final long maxValidCount;
