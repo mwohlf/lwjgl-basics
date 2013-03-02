@@ -86,9 +86,9 @@ public class VertexArrayObject implements IMesh {
     }
 
     public static class Builder {
-        private static int VERTEX_SIZE = 4;
-        private static int COLOR_SIZE = 4;
-        private static float LINE_WIDTH = 5f;
+        private static final int VERTEX_SIZE = 4;
+        private static final int COLOR_SIZE = 4;
+        private static final float LINE_WIDTH = 5f;
         private final List<Vector3f> vertices = new ArrayList<Vector3f>();
         private List<ReadableColor> colors = new ArrayList<ReadableColor>();
         private final List<Byte> indices = new ArrayList<Byte>();

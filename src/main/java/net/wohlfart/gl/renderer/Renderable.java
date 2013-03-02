@@ -7,7 +7,7 @@ public interface Renderable {
     public abstract void dispose();
 
     // do nothing renderer
-    public Renderable Null = new Renderable() {
+    public Renderable NULL = new Renderable() {
         @Override
         public void render() {}
         @Override

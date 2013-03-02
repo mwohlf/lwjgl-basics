@@ -3,6 +3,7 @@ package net.wohlfart.gl.input;
 import java.util.HashSet;
 import java.util.Iterator;
 
+import net.wohlfart.GenericGameException;
 import net.wohlfart.gl.input.InputAdaptor.KeyEventDispatcher;
 import net.wohlfart.gl.input.InputAdaptor.PositionEventDispatcher;
 
@@ -28,7 +29,7 @@ public class LwjglInputSource implements InputSource {
             Keyboard.enableRepeatEvents(false);
             Mouse.create();
         } catch (LWJGLException ex) {
-            throw new RuntimeException("can't create input source for lwjgl" , ex);
+            throw new GenericGameException("can't create input source for lwjgl" , ex);
         }
     }
 

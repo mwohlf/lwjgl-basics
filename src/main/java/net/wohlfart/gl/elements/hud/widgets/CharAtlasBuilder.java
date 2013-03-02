@@ -28,9 +28,9 @@ public class CharAtlasBuilder {
 
 
     public static final char NULL_CHAR = '_';
-    private static final String chars = " abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789;:,.-_#+?!\"()";
+    private static final String CHARS = " abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789;:,.-_#+?!\"()";
     {
-        if (!chars.contains(new String("" + NULL_CHAR))) {
+        if (!CHARS.contains(new String("" + NULL_CHAR))) {
             throw new IllegalStateException("need NULL_CHAR in char sequence");
         }
     };
@@ -75,13 +75,13 @@ public class CharAtlasBuilder {
         g.setColor(new Color(0f, 0f, 0f, 0f)); // transparent
         g.fillRect(0, 0, WIDTH, HEIGHT);
         final FontMetrics fontMetrics = g.getFontMetrics();
-        final LineMetrics lineMetrics = fontMetrics.getLineMetrics(chars, g);
+        final LineMetrics lineMetrics = fontMetrics.getLineMetrics(CHARS, g);
 
         final float height = lineMetrics.getHeight();
         final float ascent = lineMetrics.getAscent();
         float x = 0;
         float y = 0;
-        for (final char c : chars.toCharArray()) {
+        for (final char c : CHARS.toCharArray()) {
             final float width = fontMetrics.charWidth(c);
             if (x + width > WIDTH) { // new line
                 x = 0;

@@ -90,7 +90,7 @@ class Celestial {
 
     }
 
-    protected float getRandom(float min, float max) {
+    private float getRandom(float min, float max) {
         return (1f - random.nextFloat()) * (max - min) + min;
     }
 
