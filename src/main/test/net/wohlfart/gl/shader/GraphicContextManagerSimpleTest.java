@@ -2,6 +2,7 @@ package net.wohlfart.gl.shader;
 
 import static org.junit.Assert.assertEquals;
 import net.wohlfart.basic.Settings;
+import net.wohlfart.gl.MousePicker;
 import net.wohlfart.gl.PickingRay;
 
 import org.junit.Before;
@@ -11,7 +12,8 @@ import org.lwjgl.util.vector.Matrix4f;
 public class GraphicContextManagerSimpleTest {
 
     GraphicContextManager contxt;
-    private Settings settings;
+    Settings settings;
+    MousePicker mousePicker;
 
     @Before
     public void setup() {
@@ -24,6 +26,7 @@ public class GraphicContextManagerSimpleTest {
         // no cam move or rotation for now:
         Matrix4f modelViewMatrix = new Matrix4f();
         contxt.setModelViewMatrix(modelViewMatrix);
+        mousePicker = new MousePicker(null, settings.getWidth(), settings.getHeight());
     }
 
     Settings createSettings() {
@@ -45,7 +48,7 @@ public class GraphicContextManagerSimpleTest {
         PickingRay ray;
 
         // mouse origin is bottom left:
-        ray = contxt.createPickingRay(1000, 700);
+        ray = mousePicker.createPickingRay(1000, 700, contxt.projectionMatrix, contxt.modelViewMatrix);
 
         assertEquals( 0.059173370, ray.getStart().x, 0.01);
         assertEquals( 0.041421358, ray.getStart().y, 0.01);
@@ -63,7 +66,7 @@ public class GraphicContextManagerSimpleTest {
         PickingRay ray;
 
         // mouse origin is bottom left:
-        ray = contxt.createPickingRay(0, 700);
+        ray = mousePicker.createPickingRay(0, 700, contxt.projectionMatrix, contxt.modelViewMatrix);
 
         assertEquals(-0.059173370, ray.getStart().x, 0.01);
         assertEquals( 0.041421358, ray.getStart().y, 0.01);
@@ -81,7 +84,7 @@ public class GraphicContextManagerSimpleTest {
         PickingRay ray;
 
         // mouse origin is bottom left:
-        ray = contxt.createPickingRay(0, 0);
+        ray = mousePicker.createPickingRay(0, 0, contxt.projectionMatrix, contxt.modelViewMatrix);
 
         assertEquals(-0.059173370, ray.getStart().x, 0.01);
         assertEquals(-0.041421358, ray.getStart().y, 0.01);
@@ -99,7 +102,7 @@ public class GraphicContextManagerSimpleTest {
         PickingRay ray;
 
         // mouse origin is bottom left:
-        ray = contxt.createPickingRay(1000, 0);
+        ray = mousePicker.createPickingRay(1000, 0, contxt.projectionMatrix, contxt.modelViewMatrix);
 
         assertEquals( 0.059173370, ray.getStart().x, 0.01);
         assertEquals(-0.041421358, ray.getStart().y, 0.01);
@@ -118,7 +121,7 @@ public class GraphicContextManagerSimpleTest {
 
         // mouse origin is bottom left
         // picking the center of the screen should give us a solid line along the z axis:
-        ray = contxt.createPickingRay(settings.getWidth()/2f, settings.getHeight()/2f);
+        ray = mousePicker.createPickingRay(settings.getWidth()/2f, settings.getHeight()/2f, contxt.projectionMatrix, contxt.modelViewMatrix);
 
         assertEquals( 0.0, ray.getStart().x, 0.01);
         assertEquals( 0.0, ray.getStart().y, 0.01);

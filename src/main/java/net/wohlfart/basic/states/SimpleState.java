@@ -59,7 +59,7 @@ class SimpleState implements GameState {
         inputDispatcher = graphContext.getInputDispatcher();
         statistics = new Statistics(0, -40);
         mousePosition = new MousePosition(0, -20);
-        mousePicker = new MousePicker(avatar, elemBucket);
+        mousePicker = new MousePicker(elemBucket, graphContext.getScreenWidth(), graphContext.getScreenHeight());
 
         // event bus registration
         inputDispatcher.register(avatar);

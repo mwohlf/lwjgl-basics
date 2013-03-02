@@ -2,13 +2,10 @@ package net.wohlfart.gl.shader;
 
 import net.wohlfart.basic.Settings;
 import net.wohlfart.basic.time.Clock;
-import net.wohlfart.gl.PickingRay;
 import net.wohlfart.gl.input.DefaultInputDispatcher;
 import net.wohlfart.gl.input.InputDispatcher;
 
 import org.lwjgl.util.vector.Matrix4f;
-import org.lwjgl.util.vector.Vector3f;
-import org.lwjgl.util.vector.Vector4f;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -46,9 +43,9 @@ public enum GraphicContextManager {
     private Matrix4f orthographicProjMatrix;
 
     // current projection matrix in use (shouldn't change at all)
-    private Matrix4f projectionMatrix;
+    public Matrix4f projectionMatrix;
     // current modelView matrix, changed when cam moves or rotates
-    private Matrix4f modelViewMatrix;
+    public Matrix4f modelViewMatrix;
 
     // game settings from the config file
     private Settings settings;
@@ -136,38 +133,6 @@ public enum GraphicContextManager {
 
     public Clock getClock() {
         return clock;
-    }
-
-
-
-    private Matrix4f transformMatrix = new Matrix4f();
-
-    // see: http://gamedev.stackexchange.com/questions/8974/converting-a-mouse-click-to-a-ray
-    public PickingRay createPickingRay(float x, float y) {
-
-        Matrix4f.mul(projectionMatrix, modelViewMatrix, transformMatrix);
-        transformMatrix = Matrix4f.invert(transformMatrix, transformMatrix);
-
-        float width = settings.getWidth();
-        float height = settings.getHeight();
-
-        Vector4f cameraSpaceNear = new Vector4f(x / width * 2f - 1f, y / height * 2f - 1f, -1.0f, 1.0f);
-        Vector4f cameraSpaceFar = new Vector4f(x / width * 2f - 1f, y / height * 2f - 1f,  1.0f, 1.0f);
-
-        Vector4f worldSpaceNear = new Vector4f();
-        Matrix4f.transform(transformMatrix, cameraSpaceNear, worldSpaceNear);
-
-        Vector4f worldSpaceFar = new Vector4f();
-        Matrix4f.transform(transformMatrix, cameraSpaceFar, worldSpaceFar);
-
-        Vector3f start = new Vector3f(worldSpaceNear.x / worldSpaceNear.w,
-                                      worldSpaceNear.y / worldSpaceNear.w,
-                                      worldSpaceNear.z / worldSpaceNear.w);
-        Vector3f end = new Vector3f(worldSpaceFar.x / worldSpaceFar.w,
-                                    worldSpaceFar.y / worldSpaceFar.w,
-                                    worldSpaceFar.z / worldSpaceFar.w);
-
-        return new PickingRay(start, end);
     }
 
     public void destroy() {
