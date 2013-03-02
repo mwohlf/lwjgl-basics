@@ -12,7 +12,7 @@ import org.lwjgl.opengl.GL11;
 import org.lwjgl.util.vector.Vector3f;
 
 // see: http://blog.andreaskahler.com/2009/06/creating-icosphere-mesh-in-code.html
-public class IcosphereMesh extends RenderableGrid {
+public class IcosphereMesh extends AbstractRenderableGrid {
 
     private int lod = 0;
     private float radius = 1;

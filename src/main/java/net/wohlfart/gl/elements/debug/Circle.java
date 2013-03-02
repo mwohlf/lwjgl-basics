@@ -10,7 +10,7 @@ import net.wohlfart.tools.SimpleMath;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.util.vector.Vector3f;
 
-public class Circle extends RenderableGrid {
+public class Circle extends AbstractRenderableGrid {
 
     private final int pieces = 15; // LOD
     private float radius = 1;

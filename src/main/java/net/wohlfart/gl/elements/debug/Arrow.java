@@ -9,7 +9,7 @@ import net.wohlfart.tools.SimpleMath;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.util.vector.Vector3f;
 
-public class Arrow extends RenderableGrid {
+public class Arrow extends AbstractRenderableGrid {
 
     // vertices[0] is the direction of the arrow
     private final Vector3f[] vertices = new Vector3f[] { new Vector3f(+0.00f, +0.00f, +1.00f), // tip is in z direction <-- end

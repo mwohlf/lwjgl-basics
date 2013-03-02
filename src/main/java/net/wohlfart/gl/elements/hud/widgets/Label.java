@@ -5,7 +5,7 @@ import java.util.Collection;
 import net.wohlfart.gl.shader.mesh.IMesh;
 
 // a label is a quad for each character
-public class Label extends TextComponent {
+public class Label extends AbstractTextComponent {
 
     final int x;
     final int y;

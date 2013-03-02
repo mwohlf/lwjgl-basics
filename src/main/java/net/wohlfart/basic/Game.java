@@ -118,9 +118,9 @@ class Game {
     // for more about setting up a display...
     private void setupWindow() throws LWJGLException {
         final PixelFormat pixelFormat = new PixelFormat();
-        final ContextAttribs contextAtributes = new ContextAttribs(3, 3); // OpenGL versions
-        contextAtributes.withForwardCompatible(true);
-        contextAtributes.withProfileCore(true);
+        final ContextAttribs contextAtributes = new ContextAttribs(3, 3)
+             .withForwardCompatible(true)
+             .withProfileCore(true);
         Display.setDisplayMode(new DisplayMode(settings.getWidth(), settings.getHeight()));
         Display.setResizable(false);
         Display.setTitle(settings.getTitle());

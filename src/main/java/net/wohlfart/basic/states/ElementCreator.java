@@ -9,7 +9,7 @@ import net.wohlfart.gl.elements.debug.Arrow;
 import net.wohlfart.gl.elements.debug.Circle;
 import net.wohlfart.gl.elements.debug.CubeMesh;
 import net.wohlfart.gl.elements.debug.IcosphereMesh;
-import net.wohlfart.gl.elements.debug.RenderableGrid;
+import net.wohlfart.gl.elements.debug.AbstractRenderableGrid;
 import net.wohlfart.gl.elements.debug.TerahedronRefinedMesh;
 import net.wohlfart.gl.elements.debug.TetrahedronMesh;
 import net.wohlfart.gl.renderer.Renderable;
@@ -73,7 +73,7 @@ public class ElementCreator {
             final float y = SimpleMath.random(-farPlane, farPlane);
             final float z = SimpleMath.random(-farPlane, farPlane);
 
-            RenderableGrid mesh = new IcosphereMesh(1, 1).lineWidth(1).color(ReadableColor.CYAN);
+            AbstractRenderableGrid mesh = new IcosphereMesh(1, 1).lineWidth(1).color(ReadableColor.CYAN);
             mesh.setTranslation(new Vector3f(x, y, z));
             elemBucket.add(mesh);
         }

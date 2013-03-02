@@ -16,7 +16,7 @@ import javax.swing.JTextField;
 import javax.swing.WindowConstants;
 
 import net.wohlfart.gl.elements.debug.CubeMesh;
-import net.wohlfart.gl.elements.debug.RenderableGrid;
+import net.wohlfart.gl.elements.debug.AbstractRenderableGrid;
 
 import org.lwjgl.util.ReadableColor;
 import org.lwjgl.util.vector.Vector3f;
@@ -28,7 +28,7 @@ public class ControllerFrame extends JFrame {
     protected final JTextField ycoord = new JTextField(5);
     protected final JTextField zcoord = new JTextField(5);
     protected final JButton apply = new JButton("apply");
-    private RenderableGrid cube;
+    private AbstractRenderableGrid cube;
 
     public ControllerFrame() {
     }
@@ -63,7 +63,7 @@ public class ControllerFrame extends JFrame {
             }});
     }
 
-    public RenderableGrid getCube() {
+    public AbstractRenderableGrid getCube() {
         return cube;
     }
 

@@ -3,7 +3,7 @@ package net.wohlfart.gl.elements;
 import net.wohlfart.gl.shader.mesh.ColoredMeshBuilder;
 import net.wohlfart.gl.shader.mesh.IMesh;
 
-public class ColoredQuad extends RenderableImpl {
+public class ColoredQuad extends AbstractRenderable {
 
     @Override
     protected IMesh setupMesh() {

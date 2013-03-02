@@ -23,6 +23,11 @@ public final class SimpleMath {
 
     public static final Matrix4f UNION_MATRIX = new Matrix4f();
 
+
+    private SimpleMath() {
+         // tools class with only static methods
+    }
+
     // --------- trigeometric stuff
 
     public static float sin(final float f) {

@@ -14,7 +14,7 @@ import org.lwjgl.util.vector.Vector3f;
  * 0 /|\ / | \ / | \ / 3 \ / - - \ 1 --------- 2
  * 
  */
-public class TetrahedronMesh extends RenderableGrid {
+public class TetrahedronMesh extends AbstractRenderableGrid {
 
     private float length = 1;
 

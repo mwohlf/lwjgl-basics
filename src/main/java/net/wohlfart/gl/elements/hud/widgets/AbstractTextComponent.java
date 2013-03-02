@@ -6,7 +6,7 @@ import net.wohlfart.gl.elements.hud.Layer;
 import net.wohlfart.gl.renderer.Renderable;
 import net.wohlfart.gl.shader.mesh.IMesh;
 
-public abstract class TextComponent implements Renderable {
+public abstract class AbstractTextComponent implements Renderable {
 
     private Layer layer;
 

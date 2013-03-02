@@ -5,7 +5,7 @@ import java.util.HashSet;
 
 import net.wohlfart.gl.elements.hud.widgets.CharAtlas;
 import net.wohlfart.gl.elements.hud.widgets.CharAtlasBuilder;
-import net.wohlfart.gl.elements.hud.widgets.TextComponent;
+import net.wohlfart.gl.elements.hud.widgets.AbstractTextComponent;
 import net.wohlfart.gl.renderer.Renderable;
 import net.wohlfart.gl.shader.GraphicContextManager;
 import net.wohlfart.gl.shader.mesh.IMesh;
@@ -55,7 +55,7 @@ class LayerImpl implements Layer {
         meshData = null;
     }
 
-    public void add(TextComponent label) {
+    public void add(AbstractTextComponent label) {
         label.setLayer(this); // double dispatch
         components.add(label);
     }

@@ -1,6 +1,6 @@
 package net.wohlfart.gl.elements.hud;
 
-import net.wohlfart.gl.elements.hud.widgets.TextComponent;
+import net.wohlfart.gl.elements.hud.widgets.AbstractTextComponent;
 import net.wohlfart.gl.renderer.Renderable;
 import net.wohlfart.gl.shader.GraphicContextManager;
 import net.wohlfart.gl.shader.GraphicContextManager.IGraphicContext;
@@ -27,7 +27,7 @@ public class Hud implements Renderable {
         this.layer = new LayerImpl();
     }
 
-    public void add(TextComponent label) {
+    public void add(AbstractTextComponent label) {
         layer.add(label);
     }
 

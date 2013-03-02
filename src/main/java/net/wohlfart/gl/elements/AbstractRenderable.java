@@ -9,7 +9,7 @@ import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Quaternion;
 import org.lwjgl.util.vector.Vector3f;
 
-public abstract class RenderableImpl implements Renderable {
+public abstract class AbstractRenderable implements Renderable {
 
     protected IMesh meshData;
     protected Matrix4f modelToWorldMatrix = new Matrix4f();
@@ -28,13 +28,13 @@ public abstract class RenderableImpl implements Renderable {
         meshData = null;
     }
 
-    public RenderableImpl translate(Vector3f translation) {
+    public AbstractRenderable translate(Vector3f translation) {
         this.translation.set(translation);
         resetMeshData();
         return this;
     }
 
-    public RenderableImpl rotate(Quaternion rotation) {
+    public AbstractRenderable rotate(Quaternion rotation) {
         this.rotation.set(rotation);
         resetMeshData();
         return this;
