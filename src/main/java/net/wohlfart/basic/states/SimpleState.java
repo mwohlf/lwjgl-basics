@@ -102,12 +102,6 @@ class SimpleState implements GameState {
         quit = true;
     }
 
-    @Subscribe
-    public synchronized void onMouseMove(CommandEvent.PositionPointer positionEvent) {
-        int x = positionEvent.getX();
-        int y = positionEvent.getY();
-    }
-
     @Override
     public void update(float tpf) {
         LOGGER.debug("update called with tpf/fps {}/{}", tpf, 1f / tpf);

@@ -22,42 +22,50 @@
   </properties>
 
   <dependencies>
+  
     <dependency>
       <groupId>org.lwjgl.lwjgl</groupId>
       <artifactId>lwjgl</artifactId>
       <version>${org.lwjgl.version}</version>
     </dependency>
+    
     <dependency>
       <groupId>org.lwjgl.lwjgl</groupId>
       <artifactId>lwjgl_util</artifactId>
       <version>${org.lwjgl.version}</version>
     </dependency>
+    
     <dependency>
       <groupId>java3d</groupId>
       <artifactId>vecmath</artifactId>
       <version>${java3d.version}</version>
     </dependency>
+    
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
       <version>${junit.version}</version>
       <scope>test</scope>
     </dependency>
+    
     <dependency>
       <groupId>org.slf4j</groupId>
       <artifactId>jcl-over-slf4j</artifactId>
       <version>${org.slf4j.version}</version>
     </dependency>
+    
     <dependency>
       <groupId>org.slf4j</groupId>
       <artifactId>slf4j-api</artifactId>
       <version>${org.slf4j.version}</version>
     </dependency>
+    
     <dependency>
       <groupId>ch.qos.logback</groupId>
       <artifactId>logback-classic</artifactId>
       <version>${logback.version}</version>
     </dependency>
+    
     <dependency>
       <groupId>org.springframework</groupId>
       <artifactId>spring-core</artifactId>
@@ -69,6 +77,7 @@
         </exclusion>
       </exclusions>
     </dependency>
+    
     <dependency>
       <groupId>org.springframework</groupId>
       <artifactId>spring-context</artifactId>
@@ -80,11 +89,21 @@
         </exclusion>
       </exclusions>
     </dependency>
+    
+    <!-- event bus -->
     <dependency>
       <groupId>com.google.guava</groupId>
       <artifactId>guava</artifactId>
       <version>${guava.version}</version>
     </dependency>
+    
+    <dependency>
+      <groupId>org.antlr</groupId>
+      <artifactId>antlr4</artifactId>
+      <version>4.0</version>
+      <type>jar</type>
+      <scope>compile</scope>
+  </dependency>
 
   </dependencies>
   <repositories>
@@ -115,6 +134,7 @@
 
   <build>
     <plugins>
+    
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-compiler-plugin</artifactId>
@@ -138,7 +158,62 @@
           </execution>
         </executions>
       </plugin>
+      
+      <plugin>
+        <groupId>org.antlr</groupId>
+        <artifactId>antlr4-maven-plugin</artifactId>
+        <version>4.0</version>
+        <executions>
+          <execution>
+            <goals>
+              <goal>antlr4</goal>
+            </goals>
+            <configuration>
+              <sourceDirectory>${basedir}/src/antlr4</sourceDirectory>
+              <outputDirectory>${basedir}/target/generated-sources/java/net/wohlfart/antlr4</outputDirectory>
+            </configuration>
+          </execution>
+        </executions>
+        <configuration>
+        </configuration>
+      </plugin>
+
     </plugins>
+    
+    
+    <pluginManagement>
+    	<plugins>
+    		<!--This plugin's configuration is used to store Eclipse m2e settings only. It has no influence on the Maven build itself.-->
+    		<plugin>
+    			<groupId>org.eclipse.m2e</groupId>
+    			<artifactId>lifecycle-mapping</artifactId>
+    			<version>1.0.0</version>
+    			<configuration>
+    				<lifecycleMappingMetadata>
+    					<pluginExecutions>
+    						<pluginExecution>
+    							<pluginExecutionFilter>
+    								<groupId>org.antlr</groupId>
+    								<artifactId>
+    									antlr4-maven-plugin
+    								</artifactId>
+    								<versionRange>[4.0,)</versionRange>
+    								<goals>
+    									<goal>antlr4</goal>
+    								</goals>
+    							</pluginExecutionFilter>
+    							<action>
+    								<ignore></ignore>
+    							</action>
+    						</pluginExecution>
+    					</pluginExecutions>
+    				</lifecycleMappingMetadata>
+    			</configuration>
+    		</plugin>
+    	</plugins>
+    </pluginManagement>
+    
+    
   </build>
 
 </project>
