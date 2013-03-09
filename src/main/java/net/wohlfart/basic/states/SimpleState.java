@@ -50,7 +50,7 @@ class SimpleState implements GameState {
     private final RenderBucket elemBucket = new RenderBucket();
     private final Hud hud = new Hud();
 
-    private final boolean skyboxOn = false;
+    private final boolean skyboxOn = true;
     private final boolean elementsOn = true;
     private final boolean hudOn = true;
 
@@ -85,7 +85,7 @@ class SimpleState implements GameState {
 
         if (elementsOn) {
             elemBucket.init(wireframeGraphicContext, avatar);
-            //elemBucket.add(new ElementCreator().createCircles());
+            elemBucket.add(new ElementCreator().createCircles());
             //elemBucket.add(new ElementCreator().createRandomElements());
             //ControllerFrame frame = new ControllerFrame();
             //frame.init();

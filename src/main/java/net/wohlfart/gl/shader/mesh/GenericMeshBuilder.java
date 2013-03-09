@@ -134,7 +134,7 @@ public class GenericMeshBuilder {
     }
 
     public int getIndicesType() {
-        // return GL11.GL_LINE_LOOP;
+        //return GL11.GL_LINE_LOOP;
         return GL11.GL_TRIANGLES;
     }
 

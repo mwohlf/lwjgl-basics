@@ -6,7 +6,8 @@ import static net.wohlfart.gl.shader.GraphicContextManager.INSTANCE;
 public enum ShaderAttributeHandle { // @formatter:off
     COLOR("in_Color", 4),
     POSITION("in_Position", 4),
-    TEXTURE_COORD("in_TexCoord", 2);
+    TEXTURE_COORD("in_TexCoord", 2),
+    NORMAL("in_Normal", 2);
     // @formatter:on
 
     private final String lookupString;

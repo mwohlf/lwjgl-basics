@@ -1,19 +1,14 @@
 #version 330 compatibility
 
-// see: http://www.lighthouse3d.com/cg-topics/code-samples/opengl-3-3-glsl-1-5-sample/
-// see: http://www.arcsynthesis.org/gltut/Basics/Tut02%20Vertex%20Attributes.html
-// see: http://arcsynthesis.org/gltut/Basics/Tut01%20Dissecting%20Display.html
-// see: http://zach.in.tu-clausthal.de/teaching/cg_literatur/glsl_tutorial/index.html
-
-// location might affect glVertexAttribPointer & glEnableVertexAttribArray
-// the location is used in glVertexAttribPointer
-layout (location = 1) in vec4 in_Position;   // the variable names are looked up in the Shader class
-layout (location = 0) in vec4 in_Color;
-layout (location = 2) in vec2 in_TexCoord;
-
 uniform mat4 modelToWorldMatrix;     // modelMatrix
 uniform mat4 worldToCameraMatrix;    // viewMatrix
 uniform mat4 cameraToClipMatrix;     // projectionMatrix
+
+
+layout (location = 1) in vec4 in_Position;
+layout (location = 0) in vec4 in_Color;
+layout (location = 2) in vec2 in_TexCoord;
+layout (location = 3) in vec2 in_Normal;
 
 // uniform vec4 uni_Color;
 
