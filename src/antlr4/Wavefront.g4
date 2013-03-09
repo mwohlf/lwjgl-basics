@@ -47,7 +47,9 @@ material: 'usemtl' IDENTIFIER;
 
 surface: 's' ('on'|'off');
 
-face: 'f' VERTEX_NORMAL VERTEX_NORMAL VERTEX_NORMAL;
+face: 'f' vertNormIdx vertNormIdx vertNormIdx;
+
+vertNormIdx: NATURAL '//' NATURAL;
 
 // ------- lexer  
 
@@ -57,16 +59,12 @@ IDENTIFIER: LETTER (ALPHANUMERIC)*;
 
 FILENAME: LETTER (VALID_FILECHAR)*;
 
-VERTEX_NORMAL: (NATURAL '//' NATURAL);
-
 REAL: (INTEGER '.' NATURAL);
 
+NATURAL: (DIGIT)+;   
+
 INTEGER: ('-')? NATURAL; 
-
-// ------- token creation
     
-fragment NATURAL: (DIGIT)+;   
-
 fragment VALID_FILECHAR: (ALPHANUMERIC | SPECIAL_CHAR);
 
 fragment ALPHANUMERIC: (DIGIT | LETTER);

@@ -1,5 +1,9 @@
 package net.wohlfart.basic.states;
 
+import java.io.IOException;
+import java.io.InputStream;
+
+import net.wohlfart.antlr4.ModelLoader;
 import net.wohlfart.gl.MousePicker;
 import net.wohlfart.gl.elements.hud.Hud;
 import net.wohlfart.gl.elements.hud.widgets.Label;
@@ -12,6 +16,7 @@ import net.wohlfart.gl.renderer.RenderBucket;
 import net.wohlfart.gl.shader.DefaultGraphicContext;
 import net.wohlfart.gl.shader.DefaultShaderProgram;
 import net.wohlfart.gl.shader.GraphicContextManager;
+import net.wohlfart.gl.shader.mesh.GenericMeshBuilder;
 import net.wohlfart.model.Avatar;
 
 import org.lwjgl.opengl.Display;
@@ -45,7 +50,7 @@ class SimpleState implements GameState {
     private final RenderBucket elemBucket = new RenderBucket();
     private final Hud hud = new Hud();
 
-    private final boolean skyboxOn = true;
+    private final boolean skyboxOn = false;
     private final boolean elementsOn = true;
     private final boolean hudOn = true;
 
@@ -80,11 +85,18 @@ class SimpleState implements GameState {
 
         if (elementsOn) {
             elemBucket.init(wireframeGraphicContext, avatar);
-            elemBucket.add(new ElementCreator().createCircles());
-            elemBucket.add(new ElementCreator().createRandomElements());
+            //elemBucket.add(new ElementCreator().createCircles());
+            //elemBucket.add(new ElementCreator().createRandomElements());
             //ControllerFrame frame = new ControllerFrame();
             //frame.init();
             //elemBucket.add(frame.getCube());
+            try (InputStream inputStream = ClassLoader.class.getResourceAsStream("/models/cube/cube.obj");) {
+                graphContext.setCurrentGraphicContext(wireframeGraphicContext);
+                GenericMeshBuilder builder = new ModelLoader().load(inputStream);
+                elemBucket.add(builder.build());
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            }
         }
 
         if (hudOn) {

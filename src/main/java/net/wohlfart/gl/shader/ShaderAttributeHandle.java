@@ -3,8 +3,11 @@ package net.wohlfart.gl.shader;
 import static net.wohlfart.gl.shader.GraphicContextManager.INSTANCE;
 
 // handler for vertex attributes used in the shader
-public enum ShaderAttributeHandle {
-    COLOR("in_Color", 4), POSITION("in_Position", 4), TEXTURE_COORD("in_TexCoord", 2);
+public enum ShaderAttributeHandle { // @formatter:off
+    COLOR("in_Color", 4),
+    POSITION("in_Position", 4),
+    TEXTURE_COORD("in_TexCoord", 2);
+    // @formatter:on
 
     private final String lookupString;
     private final int size;

@@ -1,8 +1,11 @@
 package net.wohlfart.antlr4;
 
+import static org.junit.Assert.assertEquals;
+
 import org.antlr.v4.runtime.ANTLRInputStream;
 import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.tree.ParseTree;
+import org.antlr.v4.runtime.tree.ParseTreeWalker;
 import org.junit.Test;
 
 public class WavefrontTest {
@@ -11,16 +14,20 @@ public class WavefrontTest {
 
     @Test
     public void simpleParse() {
-        // create a CharStream that reads from standard input
         ANTLRInputStream input = new ANTLRInputStream(getCube());
-        // create a lexer that feeds off of input CharStream
         WavefrontLexer lexer = new WavefrontLexer(input);
-        // create a buffer of tokens pulled from the lexer
         CommonTokenStream tokens = new CommonTokenStream(lexer);
-        // create a parser that feeds off the tokens buffer
         WavefrontParser parser = new WavefrontParser(tokens);
 
-        ParseTree tree = parser.wavefront(); // begin parsing at init rule
+        ParseTree tree = parser.wavefront();
+
+        ParseTreeWalker walker = new ParseTreeWalker();
+        WavefrontReader reader = new WavefrontReader();
+        walker.walk(reader, tree);
+
+        assertEquals(12 * 3, reader.getMeshBuilder().getIndicesCount());
+        assertEquals(8, reader.getMeshBuilder().getVerticesCount());
+
         System.out.println(tree.toStringTree(parser)); // print LISP-style tree
 
     }

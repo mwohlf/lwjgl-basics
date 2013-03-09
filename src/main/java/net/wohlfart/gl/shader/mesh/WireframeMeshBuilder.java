@@ -57,18 +57,6 @@ public class WireframeMeshBuilder {
                 positionAttrib, textureAttrib, color, lineWidth);
     }
 
-    private int createElementArrayBuffer() {
-        final int vboIndicesHandle = GL15.glGenBuffers();
-        GL15.glBindBuffer(GL15.GL_ELEMENT_ARRAY_BUFFER, vboIndicesHandle);
-        // FIXME: check the vertex count and use a byte or short buffer here if the number of vertices is low enough
-        final int[] buffer = getIndices();
-        final IntBuffer indicesBuffer = BufferUtils.createIntBuffer(buffer.length);
-        indicesBuffer.put(buffer);
-        indicesBuffer.flip();
-        GL15.glBufferData(GL15.GL_ELEMENT_ARRAY_BUFFER, indicesBuffer, GL15.GL_STATIC_DRAW);
-        return vboIndicesHandle;
-    }
-
     private void applyRotationAndTranslation() {
         if (rotation != null) {
             for (final Vector3f vec : vertices) {
@@ -80,6 +68,18 @@ public class WireframeMeshBuilder {
                 SimpleMath.add(translation, vec, vec);
             }
         }
+    }
+
+    private int createElementArrayBuffer() {
+        final int vboIndicesHandle = GL15.glGenBuffers();
+        GL15.glBindBuffer(GL15.GL_ELEMENT_ARRAY_BUFFER, vboIndicesHandle);
+        // FIXME: check the vertex count and use a byte or short buffer here if the number of vertices is low enough
+        final int[] buffer = getIndices();
+        final IntBuffer indicesBuffer = BufferUtils.createIntBuffer(buffer.length);
+        indicesBuffer.put(buffer);
+        indicesBuffer.flip();
+        GL15.glBufferData(GL15.GL_ELEMENT_ARRAY_BUFFER, indicesBuffer, GL15.GL_STATIC_DRAW);
+        return vboIndicesHandle;
     }
 
     private int createVboHandle(float[] floatBuff, final ShaderAttributeHandle attrHandle) {

@@ -2,11 +2,7 @@ package net.wohlfart.gl.renderer;
 
 public interface Renderable {
 
-    public abstract void render();
-
-    public abstract void dispose();
-
-    // do nothing renderer
+    // a do nothing renderer
     public Renderable NULL = new Renderable() {
         @Override
         public void render() {}
@@ -14,5 +10,11 @@ public interface Renderable {
         public void dispose() {}
 
     };
+
+
+    public abstract void render();
+
+    public abstract void dispose();
+
 
 }
