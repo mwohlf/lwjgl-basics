@@ -35,7 +35,7 @@ public class CharAtlasBuilder {
 
 
     /** Constant <code>NULL_CHAR='_'</code> */
-    public static final char NULL_CHAR = '_';
+    static final char NULL_CHAR = '_';
     private static final String CHARS = " abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789;:,.-_#+?!\"()";
     {
         if (!CHARS.contains(new String("" + NULL_CHAR))) {

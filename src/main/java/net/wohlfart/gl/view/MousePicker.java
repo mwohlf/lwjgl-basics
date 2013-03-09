@@ -1,4 +1,4 @@
-package net.wohlfart.gl;
+package net.wohlfart.gl.view;
 
 import net.wohlfart.gl.elements.debug.Arrow;
 import net.wohlfart.gl.input.CommandEvent;
@@ -12,8 +12,6 @@ import com.google.common.eventbus.Subscribe;
 
 /**
  * <p>MousePicker class.</p>
- *
- *
  *
  */
 public class MousePicker {
@@ -62,8 +60,8 @@ public class MousePicker {
      *
      * @param x a float.
      * @param y a float.
-     * @param hasMatrices a {@link net.wohlfart.gl.HasCamProjectionModelViewMatrices} object.
-     * @return a {@link net.wohlfart.gl.PickingRay} object.
+     * @param hasMatrices a {@link net.wohlfart.gl.view.HasCamProjectionModelViewMatrices} object.
+     * @return a {@link net.wohlfart.gl.view.PickingRay} object.
      */
     public PickingRay createPickingRay(float x, float y, HasCamProjectionModelViewMatrices hasMatrices){
 

@@ -1,22 +1,20 @@
 package net.wohlfart.basic.time;
 
 /**
- * <p>Timer interface.</p>
- *
- *
- *
+ * <p>A generic Timer interface,
+ *    a timer is usually based on a clock.</p>
  */
 public interface Timer {
 
     /**
-     * <p>getDelta.</p>
+     * <p>Returns the time in seconds since the last call.</p>
      *
-     * @return a float.
+     * @return a float with the time in seconds since the last call to getDelta()
      */
     float getDelta();
 
     /**
-     * <p>destroy.</p>
+     * <p>Destroy the timer and free its resources.</p>
      */
     void destroy();
 

@@ -5,11 +5,11 @@ import java.util.HashSet;
 
 import net.wohlfart.gl.elements.ColoredQuad;
 import net.wohlfart.gl.elements.TexturedQuad;
+import net.wohlfart.gl.elements.debug.AbstractRenderableGrid;
 import net.wohlfart.gl.elements.debug.Arrow;
 import net.wohlfart.gl.elements.debug.Circle;
 import net.wohlfart.gl.elements.debug.CubeMesh;
 import net.wohlfart.gl.elements.debug.IcosphereMesh;
-import net.wohlfart.gl.elements.debug.AbstractRenderableGrid;
 import net.wohlfart.gl.elements.debug.TerahedronRefinedMesh;
 import net.wohlfart.gl.elements.debug.TetrahedronMesh;
 import net.wohlfart.gl.renderer.Renderable;
@@ -21,19 +21,12 @@ import org.lwjgl.util.vector.Quaternion;
 import org.lwjgl.util.vector.Vector3f;
 
 /**
- * <p>ElementCreator class.</p>
- *
- *
- *
+ * <p>ElementCreator for providing dummy data to test rendering for different states.</p>
  */
-public class ElementCreator {
+final class ElementCreator {
 
-    protected GraphicContextManager graphContext = GraphicContextManager.INSTANCE;
-
-
-    Collection<Renderable> createCircles() {
+    static Collection<Renderable> createCircles() {
         HashSet<Renderable> elemBucket = new HashSet<Renderable>();
-
         elemBucket.add(new Circle(1).lineWidth(2));
         elemBucket.add(new Circle(10).lineWidth(2));
         elemBucket.add(new Circle(20).lineWidth(2));
@@ -45,12 +38,11 @@ public class ElementCreator {
         elemBucket.add(new Circle(80).lineWidth(2));
         elemBucket.add(new Circle(90).lineWidth(2));
         elemBucket.add(new Circle(100).lineWidth(2));
-
         return elemBucket;
     }
 
 
-    Collection<Renderable> createRandomElements() {
+    static Collection<Renderable> createRandomElements() {
 
         HashSet<Renderable> elemBucket = new HashSet<Renderable>();
 
@@ -73,6 +65,19 @@ public class ElementCreator {
         elemBucket.add(new IcosphereMesh(1, 2).lineWidth(2).color(ReadableColor.GREEN).translate(new Vector3f(0, -7, 0)));
         elemBucket.add(new IcosphereMesh(1, 1).lineWidth(2).color(ReadableColor.BLUE).translate(new Vector3f(-5, -7, 0)));
 
+
+        elemBucket.add(new TexturedQuad().translate(new Vector3f(-1, 5, 0)));
+        elemBucket.add(new ColoredQuad().translate(new Vector3f(-1, 5, 0)));
+
+        return elemBucket;
+    }
+
+
+    static Collection<Renderable> createSpheres() {
+        HashSet<Renderable> elemBucket = new HashSet<Renderable>();
+
+        GraphicContextManager graphContext = GraphicContextManager.INSTANCE;
+
         float farPlane= graphContext.getFarPlane();
         for (int i = 0; i < 10000; i++) {
             final float x = SimpleMath.random(-farPlane, farPlane);
@@ -83,9 +88,6 @@ public class ElementCreator {
             mesh.setTranslation(new Vector3f(x, y, z));
             elemBucket.add(mesh);
         }
-
-        elemBucket.add(new TexturedQuad().translate(new Vector3f(-1, 5, 0)));
-        elemBucket.add(new ColoredQuad().translate(new Vector3f(-1, 5, 0)));
 
         return elemBucket;
     }

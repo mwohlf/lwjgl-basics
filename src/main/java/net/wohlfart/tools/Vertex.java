@@ -1,4 +1,4 @@
-package net.wohlfart.gl.tools;
+package net.wohlfart.tools;
 
 import org.lwjgl.util.vector.Vector3f;
 

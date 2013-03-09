@@ -15,17 +15,14 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.WindowConstants;
 
-import net.wohlfart.gl.elements.debug.CubeMesh;
 import net.wohlfart.gl.elements.debug.AbstractRenderableGrid;
+import net.wohlfart.gl.elements.debug.CubeMesh;
 
 import org.lwjgl.util.ReadableColor;
 import org.lwjgl.util.vector.Vector3f;
 
 /**
  * <p>ControllerFrame class.</p>
- *
- *
- *
  */
 @SuppressWarnings("serial")
 public class ControllerFrame extends JFrame {

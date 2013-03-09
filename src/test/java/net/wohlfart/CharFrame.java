@@ -23,9 +23,9 @@ import org.lwjgl.opengl.PixelFormat;
 /**
  * <p>CharFrame class.</p>
  *
- * @author michael
- * @version $Id: $Id
- * @since 0.0.1
+ *
+ *
+ *
  */
 @SuppressWarnings("serial")
 public class CharFrame extends JFrame {

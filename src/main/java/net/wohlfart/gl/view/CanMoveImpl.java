@@ -1,12 +1,9 @@
-package net.wohlfart.gl;
+package net.wohlfart.gl.view;
 
 import org.lwjgl.util.vector.Vector3f;
 
 /**
  * <p>CanMoveImpl class.</p>
- *
- *
- *
  */
 @SuppressWarnings("serial")
 public class CanMoveImpl extends Vector3f implements CanMove {

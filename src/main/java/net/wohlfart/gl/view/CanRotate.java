@@ -1,13 +1,10 @@
-package net.wohlfart.gl;
+package net.wohlfart.gl.view;
 
 import org.lwjgl.util.vector.Quaternion;
 import org.lwjgl.util.vector.Vector3f;
 
 /**
  * <p>CanRotate interface.</p>
- *
- *
- *
  */
 public interface CanRotate {
 

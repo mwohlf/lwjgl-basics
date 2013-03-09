@@ -14,9 +14,9 @@
 	<bean class="net.wohlfart.basic.Game" >
 	   <property name="gameSettings" ref="gameSettings" />
 	   <property name="platform" ref="lwjglPlatform" />
+	   <property name="inputDispatcher" ref="inputDispatcher" />
 	</bean>
 	
-	<bean id="lwjglPlatform" class="net.wohlfart.basic.LwjglPlatform" />
 
     <bean name="gameSettings" class="net.wohlfart.basic.Settings">
       <property name="width" value="${display.width}" />
@@ -26,5 +26,9 @@
       <property name="nearPlane" value="${projection.nearPlane}" />
       <property name="farPlane" value="${projection.farPlane}" />
     </bean>
-	
+
+    <bean id="lwjglPlatform" class="net.wohlfart.basic.LwjglPlatform" />
+
+    <bean id="inputDispatcher" class="net.wohlfart.gl.input.DefaultInputDispatcher" />
+    	
 </beans>

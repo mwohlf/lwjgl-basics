@@ -1,18 +1,18 @@
-package net.wohlfart.antlr4;
+package net.wohlfart.gl.antlr4;
 
 import java.util.List;
 
-import net.wohlfart.antlr4.WavefrontParser.FaceContext;
-import net.wohlfart.antlr4.WavefrontParser.NormalContext;
-import net.wohlfart.antlr4.WavefrontParser.ObjectNameContext;
-import net.wohlfart.antlr4.WavefrontParser.VertNormIdxContext;
-import net.wohlfart.antlr4.WavefrontParser.VertexContext;
+import net.wohlfart.gl.antlr4.WavefrontParser.FaceContext;
+import net.wohlfart.gl.antlr4.WavefrontParser.NormalContext;
+import net.wohlfart.gl.antlr4.WavefrontParser.ObjectNameContext;
+import net.wohlfart.gl.antlr4.WavefrontParser.VertNormIdxContext;
+import net.wohlfart.gl.antlr4.WavefrontParser.VertexContext;
 import net.wohlfart.gl.shader.mesh.GenericMeshBuilder;
 
 import org.antlr.v4.runtime.tree.TerminalNode;
 
 /**
- * <p>MeshBuilderProviderImpl class.</p>
+ * <p>An implementation of a MeshBuilderProvider.</p>
  */
 class MeshBuilderProviderImpl extends WavefrontBaseListener implements MeshBuilderProvider {
 

@@ -2,7 +2,6 @@ package net.wohlfart.gl.shader;
 
 import net.wohlfart.basic.Settings;
 import net.wohlfart.basic.time.Clock;
-import net.wohlfart.gl.input.DefaultInputDispatcher;
 import net.wohlfart.gl.input.InputDispatcher;
 
 import org.lwjgl.util.vector.Matrix4f;
@@ -156,7 +155,7 @@ public enum GraphicContextManager {
      *
      * @param inputSource a {@link net.wohlfart.gl.input.DefaultInputDispatcher} object.
      */
-    public void setInputDispatcher(DefaultInputDispatcher inputSource) {
+    public void setInputDispatcher(InputDispatcher inputSource) {
         this.inputDispatcher = inputSource;
     }
 
@@ -167,24 +166,6 @@ public enum GraphicContextManager {
      */
     public InputDispatcher getInputDispatcher() {
         return inputDispatcher;
-    }
-
-    /**
-     * <p>Setter for the field <code>clock</code>.</p>
-     *
-     * @param clock a {@link net.wohlfart.basic.time.Clock} object.
-     */
-    public void setClock(Clock clock) {
-        this.clock = clock;
-    }
-
-    /**
-     * <p>Getter for the field <code>clock</code>.</p>
-     *
-     * @return a {@link net.wohlfart.basic.time.Clock} object.
-     */
-    public Clock getClock() {
-        return clock;
     }
 
     /**

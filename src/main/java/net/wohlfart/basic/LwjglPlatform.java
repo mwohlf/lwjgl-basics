@@ -8,7 +8,7 @@ import net.wohlfart.gl.input.LwjglInputAdaptor;
 import net.wohlfart.gl.input.LwjglInputSource;
 
 /**
- * <p>LwjglPlatform class.</p>
+ * <p>A class providing lwjgl specific features</p>
  */
 public class LwjglPlatform implements Platform {
 

@@ -1,6 +1,6 @@
-package net.wohlfart.gl;
+package net.wohlfart.gl.view;
 
-import net.wohlfart.tools.SimpleQuaternion;
+import net.wohlfart.tools.SimpleMath;
 
 import org.lwjgl.util.vector.Quaternion;
 import org.lwjgl.util.vector.Vector3f;
@@ -12,7 +12,7 @@ import org.lwjgl.util.vector.Vector3f;
  *
  */
 @SuppressWarnings("serial")
-public class CanRotateImpl extends SimpleQuaternion implements CanRotate {
+public class CanRotateImpl extends Quaternion implements CanRotate {
 
     /** {@inheritDoc} */
     @Override
@@ -24,7 +24,7 @@ public class CanRotateImpl extends SimpleQuaternion implements CanRotate {
     @Override
     public void rotate(float angle, Vector3f axis) {
         axis.normalise();
-        final SimpleQuaternion rot = new SimpleQuaternion();
+        final Quaternion rot = new Quaternion();
         final double n = Math.sqrt(axis.x * axis.x + axis.y * axis.y + axis.z * axis.z);
         final float sin = (float) (Math.sin(0.5 * angle) / n);
         rot.x = axis.x * sin;
@@ -33,7 +33,7 @@ public class CanRotateImpl extends SimpleQuaternion implements CanRotate {
         rot.w = (float) Math.cos(0.5 * angle);
 
         Quaternion.mul(rot, this, rot);
-        rot.normalizeLocal();
+        SimpleMath.normalizeLocal(rot);
         set(rot);
     }
 

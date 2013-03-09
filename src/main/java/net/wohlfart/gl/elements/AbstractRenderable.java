@@ -18,15 +18,15 @@ import org.lwjgl.util.vector.Vector3f;
 public abstract class AbstractRenderable implements Renderable {
 
     protected IMesh meshData;
-    protected Matrix4f modelToWorldMatrix = new Matrix4f();
 
     // initial translation and rotation of the mesh
     protected final Vector3f translation = new Vector3f();
     protected final Quaternion rotation = new Quaternion();
 
     // dynamic translation and rotation
-    protected Vector3f currentTranslation = new Vector3f();
-    protected Quaternion currentRotation = new Quaternion();
+    private Vector3f currentTranslation = new Vector3f();
+    private Quaternion currentRotation = new Quaternion();
+    private final Matrix4f modelToWorldMatrix = new Matrix4f();
 
     /**
      * <p>setupMesh.</p>
@@ -90,7 +90,7 @@ public abstract class AbstractRenderable implements Renderable {
         if (meshData == null) {
             meshData = setupMesh();
         }
-        SimpleMath.createMatrix(currentTranslation, modelToWorldMatrix);
+        SimpleMath.convert(currentTranslation, currentRotation, modelToWorldMatrix);
         ShaderUniformHandle.MODEL_TO_WORLD.set(modelToWorldMatrix);
         meshData.draw();
     }

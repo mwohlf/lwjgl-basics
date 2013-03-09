@@ -8,9 +8,6 @@ import org.lwjgl.opengl.GL30;
 
 /**
  * <p>CharacterMesh class.</p>
- *
- *
- *
  */
 public class CharacterMesh implements IMesh {
 

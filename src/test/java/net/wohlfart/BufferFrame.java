@@ -24,9 +24,9 @@ import net.wohlfart.gl.texture.SimplexProcTexture;
 /**
  * <p>BufferFrame class.</p>
  *
- * @author michael
- * @version $Id: $Id
- * @since 0.0.1
+ *
+ *
+ *
  */
 @SuppressWarnings("serial")
 public class BufferFrame extends JFrame {

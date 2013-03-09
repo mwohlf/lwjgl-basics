@@ -1,12 +1,9 @@
-package net.wohlfart.gl;
+package net.wohlfart.gl.view;
 
 import org.lwjgl.util.vector.Vector3f;
 
 /**
  * <p>PickingRay class.</p>
- *
- *
- *
  */
 public class PickingRay {
 

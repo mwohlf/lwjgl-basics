@@ -8,9 +8,6 @@ import org.lwjgl.util.vector.Vector3f;
 
 /**
  * <p>Abstract ProceduralTexture class.</p>
- *
- *
- *
  */
 public abstract class ProceduralTexture implements TextureBuffer {
 

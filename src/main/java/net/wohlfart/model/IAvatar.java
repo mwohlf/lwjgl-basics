@@ -5,9 +5,6 @@ import org.lwjgl.util.vector.Vector3f;
 
 /**
  * <p>IAvatar interface.</p>
- *
- *
- *
  */
 public interface IAvatar {
 

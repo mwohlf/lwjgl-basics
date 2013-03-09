@@ -11,9 +11,6 @@ import org.lwjgl.util.vector.Vector3f;
 
 /**
  * <p>CelestialTexture class.</p>
- *
- *
- *
  */
 public class CelestialTexture implements ITexture {
     final long seed;
@@ -96,7 +93,7 @@ public class CelestialTexture implements ITexture {
 
     /**
      * 0/0 is top left, the whole texture is wrapped around the celestial object
-     * 
+     *
      * @return a vector with each element [0..1]
      */
     final Vector3f getNormalVector(final int x, final int y) {

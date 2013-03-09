@@ -1,7 +1,7 @@
 package net.wohlfart.basic;
 
 /**
- * <p>Settings class.</p>
+ * <p>a collection of application settings that can be configured at startup.</p>
  */
 public class Settings {
 

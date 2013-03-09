@@ -25,7 +25,7 @@ class NullState implements GameState {
 
     /** {@inheritDoc} */
     @Override
-    public void dispose() {
+    public void destroy() {
     }
 
 }

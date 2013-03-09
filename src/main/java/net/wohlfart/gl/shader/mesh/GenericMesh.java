@@ -11,9 +11,6 @@ import org.lwjgl.util.ReadableColor;
 
 /**
  * <p>GenericMesh class.</p>
- *
- *
- *
  */
 public class GenericMesh implements Renderable {
 
@@ -29,7 +26,7 @@ public class GenericMesh implements Renderable {
 
 
     // only called by the builder
-    GenericMesh(GenericMeshBuilder builder) {
+    GenericMesh(GenericMeshData builder) {
         vaoHandle = builder.getVaoHandle();
         vboVerticesHandle = builder.getVboVerticesHandle();
         vboIndicesHandle = builder.getVboIndicesHandle();

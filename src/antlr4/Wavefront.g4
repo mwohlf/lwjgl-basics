@@ -18,8 +18,9 @@ language = Java;
     public static final int COMMENTS = 2;
 }
 
+// changing the package in the header also effects the outputDirectory in the pom.xml
 @header {
-package net.wohlfart.antlr4;
+package net.wohlfart.gl.antlr4;
 }
 
 wavefront:   (SL_COMMENT | element)+ EOF;

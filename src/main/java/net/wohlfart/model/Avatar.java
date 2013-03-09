@@ -1,10 +1,10 @@
 package net.wohlfart.model;
 
-import net.wohlfart.gl.CanMove;
-import net.wohlfart.gl.CanMoveImpl;
-import net.wohlfart.gl.CanRotate;
-import net.wohlfart.gl.CanRotateImpl;
 import net.wohlfart.gl.input.CommandEvent;
+import net.wohlfart.gl.view.CanMove;
+import net.wohlfart.gl.view.CanMoveImpl;
+import net.wohlfart.gl.view.CanRotate;
+import net.wohlfart.gl.view.CanRotateImpl;
 
 import org.lwjgl.util.vector.Quaternion;
 import org.lwjgl.util.vector.Vector3f;
@@ -13,9 +13,6 @@ import com.google.common.eventbus.Subscribe;
 
 /**
  * <p>Avatar class.</p>
- *
- *
- *
  */
 public class Avatar {
     // used for key triggered rotations, default rotation speed is one rotation per second
@@ -36,8 +33,8 @@ public class Avatar {
     /**
      * <p>Constructor for Avatar.</p>
      *
-     * @param rotation a {@link net.wohlfart.gl.CanRotate} object.
-     * @param movement a {@link net.wohlfart.gl.CanMove} object.
+     * @param rotation a {@link net.wohlfart.gl.view.CanRotate} object.
+     * @param movement a {@link net.wohlfart.gl.view.CanMove} object.
      */
     public Avatar(final CanRotate rotation, final CanMove movement) {
         this.rotation = rotation;

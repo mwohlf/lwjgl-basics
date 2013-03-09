@@ -5,10 +5,6 @@ import org.lwjgl.util.vector.Vector3f;
 
 /**
  * <p>VectorTestBase class.</p>
- *
- * @author michael
- * @version $Id: $Id
- * @since 0.0.1
  */
 public class VectorTestBase {
 

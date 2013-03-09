@@ -7,8 +7,8 @@ import java.nio.ByteBuffer;
 import java.nio.FloatBuffer;
 
 import net.wohlfart.gl.shader.ShaderAttributeHandle;
-import net.wohlfart.gl.tools.Vertex;
 import net.wohlfart.tools.PNGDecoder;
+import net.wohlfart.tools.Vertex;
 import net.wohlfart.tools.PNGDecoder.Format;
 
 import org.lwjgl.BufferUtils;

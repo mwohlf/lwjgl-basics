@@ -1,4 +1,4 @@
-package net.wohlfart.gl.tools;
+package net.wohlfart.tools;
 
 /**
  * Simplex Noise in 2D, 3D and 4D. Based on the example code of this paper: http://staffwww.itn.liu.se/~stegu/simplexnoise/simplexnoise.pdf

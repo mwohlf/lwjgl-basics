@@ -5,12 +5,14 @@ import net.wohlfart.gl.input.InputDispatcher;
 import net.wohlfart.gl.input.InputSource;
 
 /**
- * <p>Platform interface.</p>
+ * <p>Platform interface,
+ *  we try to encapsulate anything platform specific behind this interface.</p>
  */
 public interface Platform {
 
     /**
-     * <p>createClock.</p>
+     * <p>Create some kind of clock, this method should only be needed once,
+     * multiple timers can be derived from this clock</p>
      *
      * @return a {@link net.wohlfart.basic.time.Clock} object.
      */

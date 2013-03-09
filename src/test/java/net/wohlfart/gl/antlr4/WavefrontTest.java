@@ -1,4 +1,4 @@
-package net.wohlfart.antlr4;
+package net.wohlfart.gl.antlr4;
 
 import static org.junit.Assert.assertEquals;
 
@@ -10,13 +10,8 @@ import org.junit.Test;
 
 /**
  * <p>WavefrontTest class.</p>
- *
- * @author michael
- * @version $Id: $Id
- * @since 0.0.1
  */
 public class WavefrontTest {
-
 
 
     /**
@@ -37,8 +32,6 @@ public class WavefrontTest {
 
         assertEquals(12 * 3, reader.getMeshBuilder().getIndicesCount());
         assertEquals(8, reader.getMeshBuilder().getVerticesCount());
-
-        System.out.println(tree.toStringTree(parser)); // print LISP-style tree
 
     }
 

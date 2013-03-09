@@ -1,4 +1,4 @@
-package net.wohlfart.gl.tools;
+package net.wohlfart.tools;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -6,16 +6,13 @@ import static org.junit.Assert.assertTrue;
 import java.awt.Color;
 import java.util.Set;
 
-import net.wohlfart.gl.tools.ColorGradient.GradientPoint;
+import net.wohlfart.tools.ColorGradient;
+import net.wohlfart.tools.ColorGradient.GradientPoint;
 
 import org.junit.Test;
 
 /**
  * <p>ColorGradientTest class.</p>
- *
- * @author michael
- * @version $Id: $Id
- * @since 0.0.1
  */
 public class ColorGradientTest {
 
@@ -41,9 +38,14 @@ public class ColorGradientTest {
      */
     @Test
     public void checkOrdering() {
-        final ColorGradient colorGradient = new ColorGradient(new ColorGradient.GradientPoint(+1.0d, new Color(255, 0, 0)), new ColorGradient.GradientPoint(
-                +0.4d, new Color(255, 0, 0)), new ColorGradient.GradientPoint(+0.1d, new Color(255, 0, 0)), new ColorGradient.GradientPoint(+0.0d, new Color(0,
-                0, 0)), new ColorGradient.GradientPoint(-0.2d, new Color(255, 0, 0)), new ColorGradient.GradientPoint(-0.1d, new Color(0, 0, 255)));
+        // @formatter:off
+        final ColorGradient colorGradient = new ColorGradient(
+                new ColorGradient.GradientPoint(+1.0d, new Color(255, 0, 0)),
+                new ColorGradient.GradientPoint(+0.4d, new Color(255, 0, 0)),
+                new ColorGradient.GradientPoint(+0.1d, new Color(255, 0, 0)),
+                new ColorGradient.GradientPoint(+0.0d, new Color(0, 0, 0)),
+                new ColorGradient.GradientPoint(-0.2d, new Color(255, 0, 0)),
+                new ColorGradient.GradientPoint(-0.1d, new Color(0, 0, 255))); // @formatter:on
 
         final Set<GradientPoint> gradientPoints = colorGradient.getGradientPoints();
         final int size = gradientPoints.size();

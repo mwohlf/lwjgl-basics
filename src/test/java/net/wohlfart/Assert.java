@@ -8,9 +8,9 @@ import org.lwjgl.util.vector.Vector3f;
 /**
  * <p>Assert class.</p>
  *
- * @author michael
- * @version $Id: $Id
- * @since 0.0.1
+ *
+ *
+ *
  */
 public final class Assert {
     private static final float MAX_DIFF = 0.00001f;

@@ -2,9 +2,9 @@ package net.wohlfart.gl.shader;
 
 import static org.junit.Assert.assertEquals;
 import net.wohlfart.basic.Settings;
-import net.wohlfart.gl.HasCamProjectionModelViewMatrices;
-import net.wohlfart.gl.MousePicker;
-import net.wohlfart.gl.PickingRay;
+import net.wohlfart.gl.view.HasCamProjectionModelViewMatrices;
+import net.wohlfart.gl.view.MousePicker;
+import net.wohlfart.gl.view.PickingRay;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -12,10 +12,6 @@ import org.lwjgl.util.vector.Matrix4f;
 
 /**
  * <p>GraphicContextManagerMovedTest class.</p>
- *
- * @author michael
- * @version $Id: $Id
- * @since 0.0.1
  */
 public class GraphicContextManagerMovedTest {
 

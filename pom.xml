@@ -170,7 +170,7 @@
             </goals>
             <configuration>
               <sourceDirectory>${basedir}/src/antlr4</sourceDirectory>
-              <outputDirectory>${basedir}/target/generated-sources/java/net/wohlfart/antlr4</outputDirectory>
+              <outputDirectory>${basedir}/target/generated-sources/java/net/wohlfart/gl/antlr4</outputDirectory>
             </configuration>
           </execution>
         </executions>

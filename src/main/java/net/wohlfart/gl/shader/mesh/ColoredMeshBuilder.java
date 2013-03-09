@@ -4,7 +4,7 @@ import java.nio.ByteBuffer;
 import java.nio.FloatBuffer;
 
 import net.wohlfart.gl.shader.ShaderAttributeHandle;
-import net.wohlfart.gl.tools.Vertex;
+import net.wohlfart.tools.Vertex;
 
 import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL11;
@@ -16,9 +16,6 @@ import org.slf4j.LoggerFactory;
 
 /**
  * <p>ColoredMeshBuilder class.</p>
- *
- *
- *
  */
 public class ColoredMeshBuilder {
     /** Constant <code>LOGGER</code> */

@@ -1,4 +1,4 @@
-package net.wohlfart.gl.tools;
+package net.wohlfart.tools;
 
 import java.awt.Color;
 import java.io.Serializable;
@@ -38,7 +38,7 @@ public class ColorGradient implements Serializable {
     /**
      * <p>Constructor for ColorGradient.</p>
      *
-     * @param points a {@link net.wohlfart.gl.tools.ColorGradient.GradientPoint} object.
+     * @param points a {@link net.wohlfart.tools.ColorGradient.GradientPoint} object.
      */
     public ColorGradient(GradientPoint... points) {
         for (final GradientPoint gradientPoint : points) {

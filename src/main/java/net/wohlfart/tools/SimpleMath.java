@@ -8,10 +8,7 @@ import org.lwjgl.util.vector.Vector3f;
 import org.lwjgl.util.vector.Vector4f;
 
 /**
- * <p>SimpleMath class.</p>
- *
- *
- *
+ * <p>toolkit class to work with vectors, matrices and quaternions.</p>
  */
 public final class SimpleMath {
     private static final float EPSILON = 0.0000001f;
@@ -379,7 +376,7 @@ public final class SimpleMath {
      * @return a matrix
      * @param mat a {@link org.lwjgl.util.vector.Matrix4f} object.
      */
-    public static Matrix4f convert(final Quaternion rot, final Matrix4f mat) {
+    public static Matrix4f convert(Quaternion rot, Matrix4f mat) {
         //final SimpleMatrix4f mat = new SimpleMatrix4f();
 
         final float xx = rot.x * rot.x;
@@ -445,7 +442,7 @@ public final class SimpleMath {
     }
 
     /**
-     * <p>mul.</p>
+     * <p>multiply a vector with a matrix</p>
      *
      * @param n a {@link org.lwjgl.util.vector.Matrix4f} object.
      * @param in a {@link org.lwjgl.util.vector.Vector3f} object.
@@ -455,6 +452,86 @@ public final class SimpleMath {
         out.x = n.m00 * in.x + n.m01 * in.y + n.m02 * in.z;
         out.y = n.m10 * in.x + n.m11 * in.y + n.m12 * in.z;
         out.z = n.m20 * in.x + n.m21 * in.y + n.m22 * in.z;
+    }
+
+    // the (1,0,0) vector / X axis
+    public static Vector3f getRght(Quaternion q, Vector3f result) {
+        result.x = 1f - 2f * (q.y * q.y + q.z * q.z);
+        result.y = 2f * (q.x * q.y - q.w * q.z);
+        result.z = 2f * (q.x * q.z + q.w * q.y);
+        return result.normalise(new Vector3f());
+    }
+
+    // the (0,1,0) vector / Y axis
+    public static Vector3f getUp(Quaternion q, Vector3f result) {
+        result.x = 2f * (q.x * q.y + q.w * q.z);
+        result.y = 1f - 2f * (q.z * q.z + q.x * q.x);
+        result.z = 2f * (q.y * q.z - q.w * q.x);
+        return result.normalise(new Vector3f());
+    }
+
+    // the (0,0,1) vector / Z axis
+    public static Vector3f getDir(Quaternion q, Vector3f result) {
+        result.x = 2f * (q.x * q.z - q.w * q.y);
+        result.y = 2f * (q.y * q.z + q.w * q.x);
+        result.z = 1f - 2f * (q.x * q.x + q.y * q.y);
+        return result.normalise(new Vector3f());
+    }
+
+    public static void rotate(Quaternion q, float angle, Vector3f axis) {
+        axis.normalise();
+        final Quaternion rot = new Quaternion();
+        final double n = Math.sqrt(axis.x * axis.x + axis.y * axis.y + axis.z * axis.z);
+        final float sin = (float) (Math.sin(0.5 * angle) / n);
+        rot.x = axis.x * sin;
+        rot.y = axis.y * sin;
+        rot.z = axis.z * sin;
+        rot.w = (float) Math.cos(0.5 * angle);
+
+        Quaternion.mul(rot, q, rot);
+        normalizeLocal(rot);
+        q.set(rot);
+    }
+
+    /**
+     * <p>normalizeLocal.</p>
+     */
+    public static void normalizeLocal(Quaternion q) {
+        final float l = (float) Math.sqrt(q.x * q.x + q.y * q.y + q.z * q.z + q.w * q.w);
+        q.x = q.x / l;
+        q.y = q.y / l;
+        q.z = q.z / l;
+        q.w = q.w / l;
+    }
+
+    /**
+     * <p>multLocal.</p>
+     *
+     * @param vec a {@link org.lwjgl.util.vector.Vector3f} object.
+     * @return a {@link org.lwjgl.util.vector.Vector3f} object.
+     */
+    public Vector3f multLocal(Vector3f vec, Quaternion q) {
+        float xx, yy, zz;
+        // @formatter:off
+        xx = q.w * q.w * vec.x + 2 * q.y * q.w * vec.z
+             - 2 * q.z * q.w * vec.y + q.x * q.x * vec.x
+             + 2 * q.y * q.x * vec.y + 2 * q.z * q.x * vec.z
+             - q.z * q.z * vec.x - q.y * q.y * vec.x;
+
+        yy = 2 * q.x * q.y * vec.x + q.y * q.y * vec.y
+             + 2 * q.z * q.y * vec.z + 2 * q.w * q.z * vec.x
+             - q.z * q.z * vec.y + q.w * q.w * vec.y
+             - 2 * q.x * q.w * vec.z - q.x * q.x * vec.y;
+
+        zz = 2 * q.x * q.z * vec.x + 2 * q.y * q.z * vec.y
+             + q.z * q.z * vec.z - 2 * q.w * q.y * vec.x
+             - q.y * q.y * vec.z + 2 * q.w * q.x * vec.y
+             - q.x * q.x * vec.z + q.w * q.w * vec.z;
+        // @formatter:on
+        vec.x = xx;
+        vec.y = yy;
+        vec.z = zz;
+        return vec;
     }
 
 }

@@ -1,9 +1,11 @@
-package net.wohlfart.gl;
+package net.wohlfart.gl.view;
 
 import org.lwjgl.util.vector.Vector3f;
 
 /**
- * <p>CanMove interface.</p>
+ * <p>CanMove interface might be implemented
+ * by anything that has a position and might be moved around.
+ * This is mainly for a player position or a camera.</p>
  *
  *
  *

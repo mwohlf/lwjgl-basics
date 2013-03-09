@@ -28,7 +28,7 @@ import org.slf4j.LoggerFactory;
  * @formatter:on
  */
 class PerspectiveProjection {
-    static final Logger LOGGER = LoggerFactory.getLogger(PerspectiveProjection.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(PerspectiveProjection.class);
 
     private static final float FIELD_OF_VIEW_LIMIT = 100; // << 180
 

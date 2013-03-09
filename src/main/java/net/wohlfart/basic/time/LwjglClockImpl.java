@@ -3,10 +3,7 @@ package net.wohlfart.basic.time;
 import org.lwjgl.Sys;
 
 /**
- * <p>LwjglClockImpl class.</p>
- *
- *
- *
+ * <p>A lwjgl specific clock implementation.</p>
  */
 public class LwjglClockImpl implements Clock {
 

@@ -5,6 +5,10 @@ import java.util.Set;
 
 import org.springframework.context.ApplicationContext;
 
+/**
+ * <p>Wrapper class for the application context.</p>
+ *
+ */
 class GameContext implements IGameContext {
     private final ApplicationContext delegate;
 

@@ -9,10 +9,6 @@ import org.junit.Test;
 
 /**
  * <p>TimerTest class.</p>
- *
- * @author michael
- * @version $Id: $Id
- * @since 0.0.1
  */
 public class TimerTest {
 

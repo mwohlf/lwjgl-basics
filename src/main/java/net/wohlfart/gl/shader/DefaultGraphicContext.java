@@ -16,7 +16,7 @@ import org.slf4j.LoggerFactory;
  */
 public class DefaultGraphicContext implements GraphicContextManager.IGraphicContext {
     /** Constant <code>LOGGER</code> */
-    protected static final Logger LOGGER = LoggerFactory.getLogger(DefaultGraphicContext.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(DefaultGraphicContext.class);
 
     private final IShaderProgram shaderProgram;
 

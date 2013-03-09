@@ -8,10 +8,6 @@ import org.lwjgl.util.vector.Vector3f;
 
 /**
  * <p>SimpleMathTest class.</p>
- *
- * @author michael
- * @version $Id: $Id
- * @since 0.0.1
  */
 public class SimpleMathTest {
 

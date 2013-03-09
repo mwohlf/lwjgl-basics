@@ -2,16 +2,12 @@ package net.wohlfart.basic.states;
 
 // wrapper for state objects
 /**
- * <p>GameStateEnum class.</p>
- *
- *
- *
+ * <p>Enum class for all valid game states.</p>
  */
 public enum GameStateEnum {
     // @formatter:off
     NULL(new NullState()),
-    SIMPLE(new SimpleState()),
-    CELESTIAL(new CelestialState());
+    SIMPLE(new SimpleState());
     // @formatter:on
 
     private GameState state;

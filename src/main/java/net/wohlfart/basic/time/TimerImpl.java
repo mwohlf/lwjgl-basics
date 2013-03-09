@@ -1,10 +1,7 @@
 package net.wohlfart.basic.time;
 
 /**
- * <p>TimerImpl class.</p>
- *
- *
- *
+ * <p>A Timer implementation that works with any clock.</p>
  */
 public class TimerImpl implements Timer {
 

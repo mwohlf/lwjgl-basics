@@ -4,10 +4,10 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
-import net.wohlfart.gl.HasCamProjectionModelViewMatrices;
 import net.wohlfart.gl.shader.GraphicContextManager;
 import net.wohlfart.gl.shader.GraphicContextManager.IGraphicContext;
 import net.wohlfart.gl.shader.ShaderUniformHandle;
+import net.wohlfart.gl.view.HasCamProjectionModelViewMatrices;
 import net.wohlfart.model.Avatar;
 import net.wohlfart.tools.SimpleMath;
 
@@ -15,17 +15,13 @@ import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector3f;
 
 /**
- * a set of renderables that have common features like using the same shader/renderer
- *
- *
- *
+ * <p>A set of Renderables that use the same GraphicContext.
  */
 public class RenderBucket implements Renderable, HasCamProjectionModelViewMatrices {
 
     protected Set<Renderable> container = new HashSet<>(10100);
-    private IGraphicContext wireframeGraphicContext;
+    private IGraphicContext graphicContext;
     private Avatar avatar;
-
 
     // data for the render loop:
     private final Vector3f posVector = new Vector3f();
@@ -41,7 +37,7 @@ public class RenderBucket implements Renderable, HasCamProjectionModelViewMatric
      * @param avatar a {@link net.wohlfart.model.Avatar} object.
      */
     public void init(IGraphicContext wireframeGraphicContext, Avatar avatar) {
-        this.wireframeGraphicContext = wireframeGraphicContext;
+        this.graphicContext = wireframeGraphicContext;
         this.avatar = avatar;
     }
 
@@ -73,7 +69,7 @@ public class RenderBucket implements Renderable, HasCamProjectionModelViewMatric
         SimpleMath.convert(avatar.getRotation(), rotMatrix);
         Matrix4f.mul(rotMatrix, posMatrix, rotPosMatrix);
 
-        GraphicContextManager.INSTANCE.setCurrentGraphicContext(wireframeGraphicContext);
+        GraphicContextManager.INSTANCE.setCurrentGraphicContext(graphicContext);
         ShaderUniformHandle.MODEL_TO_WORLD.set(SimpleMath.UNION_MATRIX);
         ShaderUniformHandle.WORLD_TO_CAM.set(rotPosMatrix);
         ShaderUniformHandle.CAM_TO_CLIP.set(GraphicContextManager.INSTANCE.getPerspectiveProjMatrix());

@@ -4,9 +4,6 @@ import java.io.IOException;
 
 /**
  * <p>TestTexture class.</p>
- *
- *
- *
  */
 public class TestTexture extends ImageTexture {
     private static final String TEXTURE_FILENAME = "texture.jpg";

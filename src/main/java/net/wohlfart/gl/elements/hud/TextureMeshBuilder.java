@@ -6,8 +6,8 @@ import java.nio.FloatBuffer;
 import net.wohlfart.gl.shader.ShaderAttributeHandle;
 import net.wohlfart.gl.shader.mesh.IMesh;
 import net.wohlfart.gl.shader.mesh.TexturedFragmentMesh;
-import net.wohlfart.gl.tools.Vertex;
 import net.wohlfart.tools.SimpleMath;
+import net.wohlfart.tools.Vertex;
 
 import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL11;

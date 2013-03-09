@@ -21,11 +21,8 @@ import org.slf4j.LoggerFactory;
 
 /**
  * <p>GenericMeshBuilder class.</p>
- *
- *
- *
  */
-public class GenericMeshBuilder {
+public class GenericMeshBuilder implements GenericMeshData {
     /** Constant <code>LOGGER</code> */
     protected static final Logger LOGGER = LoggerFactory.getLogger(WireframeMeshBuilder.class);
 
@@ -60,11 +57,9 @@ public class GenericMeshBuilder {
         GL30.glBindVertexArray(vaoHandle);
         vboVerticesHandle = createVboVerticesHandle();
         vboIndicesHandle = createVboIndicesHandle();
-
         GL30.glBindVertexArray(0);
 
-
-        // TODO: return whatever the data permist e.g. a wire mesh if we have wires here or a real mesh...
+        // TODO: return whatever the data permits e.g. a wire mesh if we have wires here or a real mesh...
         return new GenericMesh(this);
     }
 
@@ -158,6 +153,7 @@ public class GenericMeshBuilder {
      *
      * @return a int.
      */
+    @Override
     public int getVaoHandle() {
         return vaoHandle;
     }
@@ -167,6 +163,7 @@ public class GenericMeshBuilder {
      *
      * @return a int.
      */
+    @Override
     public int getVboVerticesHandle() {
         return vboVerticesHandle;
     }
@@ -176,6 +173,7 @@ public class GenericMeshBuilder {
      *
      * @return a int.
      */
+    @Override
     public int getVboIndicesHandle() {
         return vboIndicesHandle;
     }
@@ -185,6 +183,7 @@ public class GenericMeshBuilder {
      *
      * @return a int.
      */
+    @Override
     public int getLineWidth() {
         return 3;
     }
@@ -194,6 +193,7 @@ public class GenericMeshBuilder {
      *
      * @return a int.
      */
+    @Override
     public int getIndicesType() {
         //return GL11.GL_LINE_LOOP;
         return GL11.GL_TRIANGLES;
@@ -204,6 +204,7 @@ public class GenericMeshBuilder {
      *
      * @return a int.
      */
+    @Override
     public int getIndexElemSize() {
         return GL11.GL_UNSIGNED_INT;
     }
@@ -213,6 +214,7 @@ public class GenericMeshBuilder {
      *
      * @return a int.
      */
+    @Override
     public int getIndicesCount() {
         return indices.size();
     }
@@ -231,6 +233,7 @@ public class GenericMeshBuilder {
      *
      * @return a int.
      */
+    @Override
     public int getIndexOffset() {
         return 0;
     }
@@ -240,6 +243,7 @@ public class GenericMeshBuilder {
      *
      * @return a {@link org.lwjgl.util.ReadableColor} object.
      */
+    @Override
     public ReadableColor getColor() {
         return Color.RED;
     }

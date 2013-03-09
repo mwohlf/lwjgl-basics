@@ -4,7 +4,7 @@ import net.wohlfart.basic.states.GameState;
 import net.wohlfart.basic.states.GameStateEnum;
 import net.wohlfart.basic.time.Timer;
 import net.wohlfart.basic.time.TimerImpl;
-import net.wohlfart.gl.input.DefaultInputDispatcher;
+import net.wohlfart.gl.input.InputDispatcher;
 import net.wohlfart.gl.input.InputSource;
 import net.wohlfart.gl.shader.GraphicContextManager;
 
@@ -16,46 +16,42 @@ import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.PixelFormat;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.InitializingBean;
+import org.springframework.util.Assert;
 
 
 /**
- * This class does bootstrap the game and handles state changes within the game.
+ * <p>
+ * This class is bootstrapping the application
+ * and handles state changes within the application.
+ * </p>
  */
-class Game {
+class Game implements InitializingBean {
     private static final Logger LOGGER = LoggerFactory.getLogger(Game.class);
 
-    protected Settings settings;
+    protected final GraphicContextManager graphContext = GraphicContextManager.INSTANCE;
 
     protected GameState currentState = GameStateEnum.NULL.getValue();
-    protected GraphicContextManager graphContext = GraphicContextManager.INSTANCE;
-    protected DefaultInputDispatcher inputDispatcher = new DefaultInputDispatcher();
 
-    // platform specific instances
+    // lwjgl, ... jogl, webgl (hopefully one day)
     protected Platform platform;
-    protected Timer timer;
-    protected InputSource inputSource;
+    protected Settings settings;
+    protected InputDispatcher inputDispatcher;
 
-    private DisplayMode oldDisplayMode;
+    protected Timer globalGameTimer;
+    protected InputSource userInputSource;
+
+    /** we need to remember the initial display mode so we can reset it on exit*/
+    private DisplayMode rememberDisplayMode;
+
 
     /**
-     * entry point for the application
-     * set the initial state and fire up the main loop
+     * <p>Setter for the field <code>platform</code>.</p>
+     *
+     * @param platform a {@link net.wohlfart.basic.Platform} object.
      */
-    void start() {
-        try {
-            graphContext.setSettings(settings);
-            graphContext.setInputDispatcher(inputDispatcher);
-            bootupOpenGL();
-            graphContext.setClock(platform.createClock());
-            timer = new TimerImpl(graphContext.getClock());
-            inputSource = platform.createInputSource(inputDispatcher);
-            setCurrentState(GameStateEnum.SIMPLE);
-            runApplicationLoop();
-            shutdownOpenGL();
-            shutdownGame();
-        } catch (final LWJGLException ex) {
-            LOGGER.warn("Application startup failed", ex);
-        }
+    public void setPlatform(Platform platform) {
+        this.platform = platform;
     }
 
     /**
@@ -68,52 +64,86 @@ class Game {
     }
 
     /**
-     * <p>Setter for the field <code>platform</code>.</p>
+     * <p>setting the event bus for user input</P>
      *
-     * @param platform a {@link net.wohlfart.basic.Platform} object.
+     * @param inputDispatcher
      */
-    public void setPlatform(Platform platform) {
-        this.platform = platform;
+    public void setInputDispatcher(InputDispatcher inputDispatcher) {
+        this.inputDispatcher = inputDispatcher;
+    }
+
+
+
+    @Override
+    public void afterPropertiesSet() throws Exception {
+        LOGGER.debug("<afterPropertiesSet>");
+        Assert.notNull(platform, "platform missing, you probably forgot to inject platform in the Game");
+        Assert.notNull(settings, "settings missing, you probably forgot to inject settings in the Game");
+        Assert.notNull(inputDispatcher, "inputDispatcher missing, you probably forgot to inject inputDispatcher in the Game");
+
+        graphContext.setSettings(settings);
+        graphContext.setInputDispatcher(inputDispatcher);
     }
 
 
     /**
-     * this is the main loop that does all the work
+     * <p>Entry point for the application
+     * sets the initial state and fire up the main loop.</p>
+     */
+    void start() {
+        try {
+            startPlatform();
+            globalGameTimer = new TimerImpl(platform.createClock());
+            userInputSource = platform.createInputSource(inputDispatcher);
+
+            setCurrentState(GameStateEnum.SIMPLE);
+            runApplicationLoop();
+            shutdownPlatform();
+            shutdownGame();
+        } catch (final LWJGLException ex) {
+            LOGGER.warn("Application startup failed", ex);
+        }
+    }
+
+
+    /**
+     * <p>This is the main loop that does all the work,
+     *    this method returns when the application is exited by the user.</p>
      */
     private void runApplicationLoop() {
         float delta;
         while (!currentState.isDone()) {
-            delta = timer.getDelta();
+            delta = globalGameTimer.getDelta();
             LOGGER.debug("[ms]/frame: {} ; frame/[s]: {}", delta, 1f / delta);
-            // call the model to do their things
+            // call the models to do their things
             currentState.update(delta);
             // clear the screen buffer, not needed if we have a skybox working
             GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT);
-            // do the magic
+            // do the render magic
             currentState.render();
             Display.sync(settings.getSync());
             // draw the (double-)buffer to the screen, read user input
             Display.update();
             // triggers the callbacks for user input
-            inputSource.createInputEvents(delta);
+            userInputSource.createInputEvents(delta);
         }
     }
 
     /**
      * setup a OpenGL 3.3 environment
      */
-    private void bootupOpenGL() throws LWJGLException {
+    private void startPlatform() throws LWJGLException {
         if (settings.getFullscreen()) {
             setupFullscreen();
         } else {
             setupWindow();
         }
-        // Map the internal OpenGL coordinate system to the entire screen
+        // map the internal OpenGL coordinate system to the entire viewport
         GL11.glViewport(0, 0, settings.width, settings.height);
-        // used for GL11.glClear(GL11.GL_COLOR_BUFFER_BIT);
+        // used for GL11.glClear(GL11.GL_COLOR_BUFFER_BIT); not really needed if we have a skybox anyways
         GL11.glClearColor(0.1f, 0.7f, 0.1f, 0f);
         //GL11.glClearColor(0.0f, 0.0f, 0.0f, 0f);
-        // turn culling off so it will be drawn regardless of what way it is facing
+        // turn culling off so it will be drawn regardless of which way a surface is facing
         GL11.glDisable(GL11.GL_CULL_FACE);
         // GL11.glEnable(GL11.GL_CULL_FACE);
         LOGGER.info("Vendor: " + GL11.glGetString(GL11.GL_VENDOR));
@@ -134,6 +164,7 @@ class Game {
     }
 
     private void setupFullscreen() throws LWJGLException {
+        // TODO: figure out which one is the best mode and use it
         DisplayMode[] modes = Display.getAvailableDisplayModes();
         DisplayMode bestFit = modes[0];
         for (DisplayMode mode : modes) {
@@ -141,7 +172,7 @@ class Game {
  //               bestFit = mode;
             }
         }
-        oldDisplayMode = Display.getDisplayMode();
+        rememberDisplayMode = Display.getDisplayMode();
         final PixelFormat pixelFormat = new PixelFormat();
         final ContextAttribs contextAtributes = new ContextAttribs(3, 3); // OpenGL versions
         contextAtributes.withForwardCompatible(true);
@@ -159,15 +190,15 @@ class Game {
      * @param newState a {@link net.wohlfart.basic.states.GameStateEnum} object.
      */
     public void setCurrentState(final GameStateEnum newState) {
-        currentState.dispose();
+        currentState.destroy();
         currentState = newState.getValue();
         currentState.setup();
     }
 
-    private void shutdownOpenGL() {
-        if (oldDisplayMode != null) {
+    private void shutdownPlatform() {
+        if (rememberDisplayMode != null) {
             try {
-                Display.setDisplayMode(oldDisplayMode);
+                Display.setDisplayMode(rememberDisplayMode);
             } catch (LWJGLException ex) {
                 LOGGER.warn("error while shutting down", ex);
             }
@@ -176,9 +207,10 @@ class Game {
     }
 
     private void shutdownGame() {
+        setCurrentState(GameStateEnum.NULL);
         graphContext.destroy();
-        timer.destroy();
-        inputSource.destroy();
+        globalGameTimer.destroy();
+        userInputSource.destroy();
     }
 
 }

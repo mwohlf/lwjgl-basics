@@ -4,9 +4,6 @@ import java.nio.IntBuffer;
 
 /**
  * <p>TextureBuffer interface.</p>
- *
- *
- *
  */
 public interface TextureBuffer {
 

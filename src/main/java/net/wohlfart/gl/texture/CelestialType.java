@@ -2,14 +2,11 @@ package net.wohlfart.gl.texture;
 
 import java.awt.Color;
 
-import net.wohlfart.gl.tools.ColorGradient;
-import net.wohlfart.gl.tools.SimplexNoise;
+import net.wohlfart.tools.ColorGradient;
+import net.wohlfart.tools.SimplexNoise;
 
 /**
  * different strategies for building planets
- *
- *
- *
  */
 public enum CelestialType {
 
@@ -99,7 +96,7 @@ public enum CelestialType {
 
     /**
      * fallback
-     * 
+     *
      * @param x
      *            [0..1]
      * @param y

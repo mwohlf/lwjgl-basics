@@ -4,7 +4,7 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 /**
- * <p>Application entry point.</p>
+ * <p>This is the application entry point.</p>
  */
 public class Start {
 
