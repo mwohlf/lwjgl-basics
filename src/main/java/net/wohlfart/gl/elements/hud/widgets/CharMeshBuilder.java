@@ -23,6 +23,7 @@ import org.slf4j.LoggerFactory;
  * this creates a mesh for a single character
  */
 class CharMeshBuilder {
+    /** Constant <code>LOGGER</code> */
     protected static final Logger LOGGER = LoggerFactory.getLogger(CharMeshBuilder.class);
 
     private final GraphicContextManager cxtManager = GraphicContextManager.INSTANCE;
@@ -33,6 +34,11 @@ class CharMeshBuilder {
     private float screenX;
     private float screenY;
 
+    /**
+     * <p>build.</p>
+     *
+     * @return a {@link net.wohlfart.gl.shader.mesh.IMesh} object.
+     */
     public IMesh build() {
         float atlasWidth = atlas.getImage().getWidth();
         float atlasHeight = atlas.getImage().getHeight();
@@ -120,18 +126,38 @@ class CharMeshBuilder {
                 indicesCount, 0, positionAttrib, textureAttrib, texId);
     }
 
+    /**
+     * <p>setCharInfo.</p>
+     *
+     * @param info a {@link net.wohlfart.gl.elements.hud.widgets.CharInfo} object.
+     */
     public void setCharInfo(CharInfo info) {
         this.info = info;
     }
 
+    /**
+     * <p>setCharAtlas.</p>
+     *
+     * @param atlas a {@link net.wohlfart.gl.elements.hud.widgets.CharAtlas} object.
+     */
     public void setCharAtlas(CharAtlas atlas) {
         this.atlas = atlas;
     }
 
+    /**
+     * <p>Setter for the field <code>screenX</code>.</p>
+     *
+     * @param x a float.
+     */
     public void setScreenX(float x) {
         this.screenX = x;
     }
 
+    /**
+     * <p>Setter for the field <code>screenY</code>.</p>
+     *
+     * @param y a float.
+     */
     public void setScreenY(float y) {
         this.screenY = y;
     }

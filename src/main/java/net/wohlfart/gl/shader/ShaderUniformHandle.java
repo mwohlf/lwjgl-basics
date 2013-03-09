@@ -10,6 +10,12 @@ import org.lwjgl.util.ReadableColor;
 import org.lwjgl.util.vector.Matrix4f;
 
 // handlers for uniforms used in the shader
+/**
+ * <p>ShaderUniformHandle class.</p>
+ *
+ *
+ *
+ */
 public enum ShaderUniformHandle { // @formatter:off
     MODEL_TO_WORLD("modelToWorldMatrix"),
     WORLD_TO_CAM("worldToCameraMatrix"),  // model view matrix
@@ -28,16 +34,31 @@ public enum ShaderUniformHandle { // @formatter:off
         return lookupString;
     }
 
+    /**
+     * <p>getLocation.</p>
+     *
+     * @return a int.
+     */
     public int getLocation() {
         return INSTANCE.getCurrentGraphicContext().getLocation(this);
     }
 
+    /**
+     * <p>set.</p>
+     *
+     * @param matrix a {@link org.lwjgl.util.vector.Matrix4f} object.
+     */
     public void set(Matrix4f matrix) {
         matrix.store(matrixBuffer);
         matrixBuffer.flip();
         GL20.glUniformMatrix4(getLocation(), false, matrixBuffer);
     }
 
+    /**
+     * <p>set.</p>
+     *
+     * @param readableColor a {@link org.lwjgl.util.ReadableColor} object.
+     */
     public void set(ReadableColor readableColor) {
         colorBuffer.put(new float[] { // @formatter:off
                 readableColor.getRed() / 255f,
@@ -48,6 +69,11 @@ public enum ShaderUniformHandle { // @formatter:off
         set(colorBuffer);
     }
 
+    /**
+     * <p>set.</p>
+     *
+     * @param colorBuffer a {@link java.nio.FloatBuffer} object.
+     */
     public void set(final FloatBuffer colorBuffer) {
         GL20.glUniform4(getLocation(), colorBuffer);
     }

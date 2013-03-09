@@ -9,15 +9,27 @@ import net.wohlfart.gl.CanMove;
 import org.lwjgl.util.vector.Vector3f;
 
 // this is the root of a scene graph
+/**
+ * <p>CelestialScene class.</p>
+ *
+ *
+ *
+ */
 public class CelestialScene implements CanMove {
 
     protected final Vector3f position = new Vector3f();
     protected final Collection<Celestial> celestials = new ArrayList<Celestial>();
 
+    /**
+     * <p>Constructor for CelestialScene.</p>
+     */
     public CelestialScene() {
         // celestials.add(new Celestial(){{position.set(new Vector3f(0,0,-40f));}});
     }
 
+    /**
+     * <p>setup.</p>
+     */
     public void setup() {
         addRandomPlanets(13);
     }
@@ -32,27 +44,40 @@ public class CelestialScene implements CanMove {
         }
     }
 
+    /**
+     * <p>update.</p>
+     *
+     * @param tpf a float.
+     */
     public void update(float tpf) {
         for (final Celestial celestial : celestials) {
             celestial.update(tpf);
         }
     }
 
+    /**
+     * <p>render.</p>
+     */
     public void render() {
         for (final Celestial celestial : celestials) {
             celestial.render();
         }
     }
 
+    /**
+     * <p>teardown.</p>
+     */
     public void teardown() {
 
     }
 
+    /** {@inheritDoc} */
     @Override
     public Vector3f getPosition() {
         return position;
     }
 
+    /** {@inheritDoc} */
     @Override
     public void setPosition(Vector3f pos) {
         position.set(pos);

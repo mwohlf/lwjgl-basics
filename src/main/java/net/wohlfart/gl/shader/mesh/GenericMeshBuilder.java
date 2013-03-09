@@ -19,7 +19,14 @@ import org.lwjgl.util.vector.Vector3f;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+/**
+ * <p>GenericMeshBuilder class.</p>
+ *
+ *
+ *
+ */
 public class GenericMeshBuilder {
+    /** Constant <code>LOGGER</code> */
     protected static final Logger LOGGER = LoggerFactory.getLogger(WireframeMeshBuilder.class);
 
     private final String name;
@@ -32,11 +39,21 @@ public class GenericMeshBuilder {
     private int vboIndicesHandle;
 
 
+    /**
+     * <p>Constructor for GenericMeshBuilder.</p>
+     *
+     * @param name a {@link java.lang.String} object.
+     */
     public GenericMeshBuilder(String name) {
         this.name = name;
     }
 
 
+    /**
+     * <p>build.</p>
+     *
+     * @return a {@link net.wohlfart.gl.renderer.Renderable} object.
+     */
     public Renderable build() {
         vaoHandle = GL30.glGenVertexArrays();
 
@@ -53,14 +70,33 @@ public class GenericMeshBuilder {
 
 
 
+    /**
+     * <p>addNormal.</p>
+     *
+     * @param x a float.
+     * @param y a float.
+     * @param z a float.
+     */
     public void addNormal(float x, float y, float z) {
         normals.add(new Vector3f(x,y,z));
     }
 
+    /**
+     * <p>addVertex.</p>
+     *
+     * @param x a float.
+     * @param y a float.
+     * @param z a float.
+     */
     public void addVertex(float x, float y, float z) {
         vertices.add(new Vector3f(x,y,z));
     }
 
+    /**
+     * <p>addVertexIndex.</p>
+     *
+     * @param integer a int.
+     */
     public void addVertexIndex(int integer) {
         indices.add(integer);
     }
@@ -117,43 +153,93 @@ public class GenericMeshBuilder {
         return result;
     }
 
+    /**
+     * <p>Getter for the field <code>vaoHandle</code>.</p>
+     *
+     * @return a int.
+     */
     public int getVaoHandle() {
         return vaoHandle;
     }
 
+    /**
+     * <p>Getter for the field <code>vboVerticesHandle</code>.</p>
+     *
+     * @return a int.
+     */
     public int getVboVerticesHandle() {
         return vboVerticesHandle;
     }
 
+    /**
+     * <p>Getter for the field <code>vboIndicesHandle</code>.</p>
+     *
+     * @return a int.
+     */
     public int getVboIndicesHandle() {
         return vboIndicesHandle;
     }
 
+    /**
+     * <p>getLineWidth.</p>
+     *
+     * @return a int.
+     */
     public int getLineWidth() {
         return 3;
     }
 
+    /**
+     * <p>getIndicesType.</p>
+     *
+     * @return a int.
+     */
     public int getIndicesType() {
         //return GL11.GL_LINE_LOOP;
         return GL11.GL_TRIANGLES;
     }
 
+    /**
+     * <p>getIndexElemSize.</p>
+     *
+     * @return a int.
+     */
     public int getIndexElemSize() {
         return GL11.GL_UNSIGNED_INT;
     }
 
+    /**
+     * <p>getIndicesCount.</p>
+     *
+     * @return a int.
+     */
     public int getIndicesCount() {
         return indices.size();
     }
 
+    /**
+     * <p>getVerticesCount.</p>
+     *
+     * @return a int.
+     */
     public int getVerticesCount() {
         return vertices.size();
     }
 
+    /**
+     * <p>getIndexOffset.</p>
+     *
+     * @return a int.
+     */
     public int getIndexOffset() {
         return 0;
     }
 
+    /**
+     * <p>getColor.</p>
+     *
+     * @return a {@link org.lwjgl.util.ReadableColor} object.
+     */
     public ReadableColor getColor() {
         return Color.RED;
     }

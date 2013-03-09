@@ -18,6 +18,12 @@ import org.lwjgl.util.vector.Quaternion;
 import org.lwjgl.util.vector.Vector3f;
 
 // see: http://www.arcsynthesis.org/gltut/Positioning/Tutorial%2005.html
+/**
+ * <p>VertexArrayObject class.</p>
+ *
+ *
+ *
+ */
 public class VertexArrayObject implements IMesh {
 
     private final int vaoHandle;
@@ -154,6 +160,7 @@ public class VertexArrayObject implements IMesh {
 
     }
 
+    /** {@inheritDoc} */
     @Override
     public void draw() {
         GL30.glBindVertexArray(vaoHandle);
@@ -161,6 +168,7 @@ public class VertexArrayObject implements IMesh {
         GL30.glBindVertexArray(0);
     }
 
+    /** {@inheritDoc} */
     @Override
     public void dispose() {
         // Disable the VBO index from the VAO attributes list

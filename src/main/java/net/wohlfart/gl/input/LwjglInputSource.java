@@ -3,7 +3,7 @@ package net.wohlfart.gl.input;
 import java.util.HashSet;
 import java.util.Iterator;
 
-import net.wohlfart.GenericGameException;
+import net.wohlfart.basic.GenericGameException;
 import net.wohlfart.gl.input.InputAdaptor.KeyEventDispatcher;
 import net.wohlfart.gl.input.InputAdaptor.PositionEventDispatcher;
 
@@ -12,6 +12,12 @@ import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 
 // central input processor for handling Mouse, Keyboard and Controllers
+/**
+ * <p>LwjglInputSource class.</p>
+ *
+ *
+ *
+ */
 public class LwjglInputSource implements InputSource {
 
     private final KeyEventDispatcher keyboardDevice;
@@ -22,6 +28,11 @@ public class LwjglInputSource implements InputSource {
     private final HashSet<Integer> pressedButtons = new HashSet<Integer>(4);
 
 
+    /**
+     * <p>Constructor for LwjglInputSource.</p>
+     *
+     * @param inputAdaptor a {@link net.wohlfart.gl.input.InputAdaptor} object.
+     */
     public LwjglInputSource(InputAdaptor inputAdaptor) {
         try {
             keyboardDevice = inputAdaptor.getKeyboardDevice();
@@ -33,6 +44,7 @@ public class LwjglInputSource implements InputSource {
         }
     }
 
+    /** {@inheritDoc} */
     @Override
     public void createInputEvents(float delta) {
         processKeyboardChanges(delta);
@@ -41,6 +53,7 @@ public class LwjglInputSource implements InputSource {
         processMouseState(delta);
     }
 
+    /** {@inheritDoc} */
     @Override
     public void destroy() {
 

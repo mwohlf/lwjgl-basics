@@ -13,17 +13,36 @@ import org.lwjgl.util.vector.Vector3f;
 /*
  * 5---------4 /| /| / | / | 1 ------- 0 | | | | | | 6 - - -|- 7 |/ |/ 2-------- 3
  */
+/**
+ * <p>CubeMesh class.</p>
+ *
+ *
+ *
+ */
 public class CubeMesh extends AbstractRenderableGrid {
 
     private float length = 1;
 
+    /**
+     * <p>Constructor for CubeMesh.</p>
+     */
     public CubeMesh() {
     }
 
+    /**
+     * <p>Constructor for CubeMesh.</p>
+     *
+     * @param length a float.
+     */
     public CubeMesh(float length) {
         this.length = length;
     }
 
+    /**
+     * <p>createVertices.</p>
+     *
+     * @return a {@link java.util.List} object.
+     */
     protected List<Vector3f> createVertices() {
         final float l = length / 2f;
         final List<Vector3f> result = new ArrayList<Vector3f>(8);
@@ -38,6 +57,11 @@ public class CubeMesh extends AbstractRenderableGrid {
         return result;
     }
 
+    /**
+     * <p>createIndices.</p>
+     *
+     * @return an array of {@link java.lang.Integer} objects.
+     */
     protected Integer[] createIndices() {
         final List<Integer> result = new ArrayList<Integer>(6 * 2 * 3);
         result.addAll(createIndices(0, 1, 2, 3));
@@ -49,6 +73,15 @@ public class CubeMesh extends AbstractRenderableGrid {
         return result.toArray(new Integer[result.size()]);
     }
 
+    /**
+     * <p>createIndices.</p>
+     *
+     * @param i1 a int.
+     * @param i2 a int.
+     * @param i3 a int.
+     * @param i4 a int.
+     * @return a {@link java.util.Collection} object.
+     */
     protected Collection<Integer> createIndices(int i1, int i2, int i3, int i4) {
         final List<Integer> result = new ArrayList<Integer>();
         result.add(i1);
@@ -65,6 +98,7 @@ public class CubeMesh extends AbstractRenderableGrid {
         return result;
     }
 
+    /** {@inheritDoc} */
     @Override
     protected IMesh setupMesh() {
         final WireframeMeshBuilder builder = new WireframeMeshBuilder();

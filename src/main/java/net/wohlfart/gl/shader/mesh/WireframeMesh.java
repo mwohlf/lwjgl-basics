@@ -7,6 +7,12 @@ import org.lwjgl.opengl.GL30;
 import org.lwjgl.util.ReadableColor;
 
 // see: http://code.google.com/p/open-docs/wiki/LWJGL_5_Weitere_Vielecke
+/**
+ * <p>WireframeMesh class.</p>
+ *
+ *
+ *
+ */
 public class WireframeMesh implements IMesh {
 
     private final int vaoHandle;
@@ -51,6 +57,7 @@ public class WireframeMesh implements IMesh {
         this.lineWidth = lineWidth;
     }
 
+    /** {@inheritDoc} */
     @Override
     public void draw() {
         GL30.glBindVertexArray(vaoHandle);
@@ -66,6 +73,7 @@ public class WireframeMesh implements IMesh {
         GL30.glBindVertexArray(0);
     }
 
+    /** {@inheritDoc} */
     @Override
     public void dispose() {
         // Disable the VBO index from the VAO attributes list

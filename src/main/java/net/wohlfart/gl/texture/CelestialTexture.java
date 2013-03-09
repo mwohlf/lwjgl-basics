@@ -9,6 +9,12 @@ import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 import org.lwjgl.util.vector.Vector3f;
 
+/**
+ * <p>CelestialTexture class.</p>
+ *
+ *
+ *
+ */
 public class CelestialTexture implements ITexture {
     final long seed;
     final CelestialType celestialType;
@@ -18,6 +24,13 @@ public class CelestialTexture implements ITexture {
 
     protected int id;
 
+    /**
+     * <p>Constructor for CelestialTexture.</p>
+     *
+     * @param radius a float.
+     * @param celestialType a {@link net.wohlfart.gl.texture.CelestialType} object.
+     * @param seed a long.
+     */
     public CelestialTexture(final float radius, final CelestialType celestialType, final long seed) {
         this.width = (int) (radius * 2f * (float) Math.PI + 0.5f);
         this.height = (int) (radius * 2f * (float) Math.PI + 0.5f);
@@ -26,6 +39,14 @@ public class CelestialTexture implements ITexture {
         texture = BufferUtils.createIntBuffer(width * height);
     }
 
+    /**
+     * <p>Constructor for CelestialTexture.</p>
+     *
+     * @param width a int.
+     * @param height a int.
+     * @param celestialType a {@link net.wohlfart.gl.texture.CelestialType} object.
+     * @param seed a long.
+     */
     public CelestialTexture(final int width, final int height, CelestialType celestialType, final long seed) {
         this.width = width;
         this.height = height;
@@ -34,6 +55,7 @@ public class CelestialTexture implements ITexture {
         texture = BufferUtils.createIntBuffer(width * height);
     }
 
+    /** {@inheritDoc} */
     @Override
     public void init() {
 
@@ -130,20 +152,32 @@ public class CelestialTexture implements ITexture {
         // data[i + 3] = (byte) color.getAlpha(); // a
     }
 
+    /** {@inheritDoc} */
     @Override
     public void bind() {
         GL11.glBindTexture(GL11.GL_TEXTURE_2D, id);
     }
 
+    /** {@inheritDoc} */
     @Override
     public void unbind() {
         GL11.glBindTexture(GL11.GL_TEXTURE_2D, 0);
     }
 
+    /**
+     * <p>Getter for the field <code>width</code>.</p>
+     *
+     * @return a int.
+     */
     public int getWidth() {
         return width;
     }
 
+    /**
+     * <p>Getter for the field <code>height</code>.</p>
+     *
+     * @return a int.
+     */
     public int getHeight() {
         return height;
     }

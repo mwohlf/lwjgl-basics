@@ -37,6 +37,7 @@ class ColoredFragmentMesh implements IMesh {
         this.positionAttrib = positionAttrib;
     }
 
+    /** {@inheritDoc} */
     @Override
     public void draw() {
         GL30.glBindVertexArray(vaoHandle);
@@ -53,6 +54,7 @@ class ColoredFragmentMesh implements IMesh {
         GL30.glBindVertexArray(0);
     }
 
+    /** {@inheritDoc} */
     @Override
     public void dispose() {
         // Disable the VBO index from the VAO attributes list

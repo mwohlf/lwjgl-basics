@@ -16,6 +16,7 @@ class BoxSideMesh extends TexturedFragmentMesh implements HasNormal {
         this.normal = normal.normalise(this.normal);
     }
 
+    /** {@inheritDoc} */
     @Override
     public Vector3f getNormal() {
         return normal;

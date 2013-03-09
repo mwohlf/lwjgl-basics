@@ -10,8 +10,18 @@ import net.wohlfart.gl.tools.ColorGradient.GradientPoint;
 
 import org.junit.Test;
 
+/**
+ * <p>ColorGradientTest class.</p>
+ *
+ * @author michael
+ * @version $Id: $Id
+ * @since 0.0.1
+ */
 public class ColorGradientTest {
 
+    /**
+     * <p>checkSimpleOrdering.</p>
+     */
     @Test
     public void checkSimpleOrdering() {
         final ColorGradient colorGradient = new ColorGradient(new ColorGradient.GradientPoint(-1, new Color(255, 0, 0)), new ColorGradient.GradientPoint(0,
@@ -26,6 +36,9 @@ public class ColorGradientTest {
         assertTrue(pointArray[1].point < pointArray[2].point);
     }
 
+    /**
+     * <p>checkOrdering.</p>
+     */
     @Test
     public void checkOrdering() {
         final ColorGradient colorGradient = new ColorGradient(new ColorGradient.GradientPoint(+1.0d, new Color(255, 0, 0)), new ColorGradient.GradientPoint(
@@ -45,6 +58,9 @@ public class ColorGradientTest {
         assertEquals(+1.0, pointArray[5].point, 0.001);
     }
 
+    /**
+     * <p>checkPoints.</p>
+     */
     @Test
     public void checkPoints() {
         final ColorGradient colorGradient = new ColorGradient(Color.BLACK, Color.WHITE);
@@ -59,6 +75,9 @@ public class ColorGradientTest {
 
     }
 
+    /**
+     * <p>middleSimpleGrey.</p>
+     */
     @Test
     public void middleSimpleGrey() {
         ColorGradient colorGradient;
@@ -89,6 +108,9 @@ public class ColorGradientTest {
         assertEquals(255 / 2, middle.getBlue());
     }
 
+    /**
+     * <p>threeColor.</p>
+     */
     @Test
     public void threeColor() {
         Color color;
@@ -122,6 +144,9 @@ public class ColorGradientTest {
 
     }
 
+    /**
+     * <p>threeColorSimple.</p>
+     */
     @Test
     public void threeColorSimple() {
         Color color;

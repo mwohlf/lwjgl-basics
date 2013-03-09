@@ -22,17 +22,25 @@ class Array<T> implements Iterable<T> {
 
     private ArrayIterator<T> iterator;
 
-    /** Creates an ordered array with a capacity of 16. */
+    /**
+     * Creates an ordered array with a capacity of 16.
+     */
     public Array() {
         this(true, 16);
     }
 
-    /** Creates an ordered array with the specified capacity. */
+    /**
+     * Creates an ordered array with the specified capacity.
+     *
+     * @param capacity a int.
+     */
     public Array(int capacity) {
         this(true, capacity);
     }
 
     /**
+     * <p>Constructor for Array.</p>
+     *
      * @param ordered
      *            If false, methods that remove elements may change the order of other elements in the array, which avoids a memory copy.
      * @param capacity
@@ -50,13 +58,18 @@ class Array<T> implements Iterable<T> {
      *            If false, methods that remove elements may change the order of other elements in the array, which avoids a memory copy.
      * @param capacity
      *            Any elements added beyond this will cause the backing array to be grown.
+     * @param arrayType a {@link java.lang.Class} object.
      */
     public Array(boolean ordered, int capacity, Class<T> arrayType) {
         this.ordered = ordered;
         items = (T[]) java.lang.reflect.Array.newInstance(arrayType, capacity);
     }
 
-    /** Creates an ordered array with {@link #items} of the specified type and a capacity of 16. */
+    /**
+     * Creates an ordered array with {@link #items} of the specified type and a capacity of 16.
+     *
+     * @param arrayType a {@link java.lang.Class} object.
+     */
     public Array(Class<T> arrayType) {
         this(true, 16, arrayType);
     }
@@ -64,6 +77,8 @@ class Array<T> implements Iterable<T> {
     /**
      * Creates a new array containing the elements in the specified array. The new array will have the same type of backing array and will be ordered if the
      * specified array is ordered. The capacity is set to the number of elements, so any subsequent elements added will cause the backing array to be grown.
+     *
+     * @param array a {@link net.wohlfart.tools.Array} object.
      */
     public Array(Array<T> array) {
         this(array.ordered, array.size, (Class<T>) array.items.getClass().getComponentType());
@@ -74,6 +89,8 @@ class Array<T> implements Iterable<T> {
     /**
      * Creates a new ordered array containing the elements in the specified array. The new array will have the same type of backing array. The capacity is set
      * to the number of elements, so any subsequent elements added will cause the backing array to be grown.
+     *
+     * @param array an array of T objects.
      */
     public Array(T[] array) {
         this(true, array);
@@ -85,6 +102,7 @@ class Array<T> implements Iterable<T> {
      *
      * @param ordered
      *            If false, methods that remove elements may change the order of other elements in the array, which avoids a memory copy.
+     * @param array an array of T objects.
      */
     public Array(boolean ordered, T[] array) {
         this(ordered, array.length, (Class<T>) array.getClass().getComponentType());
@@ -92,6 +110,11 @@ class Array<T> implements Iterable<T> {
         System.arraycopy(array, 0, items, 0, size);
     }
 
+    /**
+     * <p>add.</p>
+     *
+     * @param value a T object.
+     */
     public void add(T value) {
         T[] items = this.items;
         if (size == items.length) {
@@ -100,10 +123,22 @@ class Array<T> implements Iterable<T> {
         items[size++] = value;
     }
 
+    /**
+     * <p>addAll.</p>
+     *
+     * @param array a {@link net.wohlfart.tools.Array} object.
+     */
     public void addAll(Array<T> array) {
         addAll(array, 0, array.size);
     }
 
+    /**
+     * <p>addAll.</p>
+     *
+     * @param array a {@link net.wohlfart.tools.Array} object.
+     * @param offset a int.
+     * @param length a int.
+     */
     public void addAll(Array<T> array, int offset, int length) {
         if (offset + length > array.size) {
             throw new IllegalArgumentException("offset + length must be <= size: " + offset + " + " + length + " <= " + array.size);
@@ -111,10 +146,22 @@ class Array<T> implements Iterable<T> {
         addAll(array.items, offset, length);
     }
 
+    /**
+     * <p>addAll.</p>
+     *
+     * @param array an array of T objects.
+     */
     public void addAll(T[] array) {
         addAll(array, 0, array.length);
     }
 
+    /**
+     * <p>addAll.</p>
+     *
+     * @param array an array of T objects.
+     * @param offset a int.
+     * @param length a int.
+     */
     public void addAll(T[] array, int offset, int length) {
         T[] items = this.items;
         final int sizeNeeded = size + length;
@@ -125,6 +172,12 @@ class Array<T> implements Iterable<T> {
         size += length;
     }
 
+    /**
+     * <p>get.</p>
+     *
+     * @param index a int.
+     * @return a T object.
+     */
     public T get(int index) {
         if (index >= size) {
             throw new IndexOutOfBoundsException(String.valueOf(index));
@@ -132,6 +185,12 @@ class Array<T> implements Iterable<T> {
         return items[index];
     }
 
+    /**
+     * <p>set.</p>
+     *
+     * @param index a int.
+     * @param value a T object.
+     */
     public void set(int index, T value) {
         if (index >= size) {
             throw new IndexOutOfBoundsException(String.valueOf(index));
@@ -139,6 +198,12 @@ class Array<T> implements Iterable<T> {
         items[index] = value;
     }
 
+    /**
+     * <p>insert.</p>
+     *
+     * @param index a int.
+     * @param value a T object.
+     */
     public void insert(int index, T value) {
         T[] items = this.items;
         if (size == items.length) {
@@ -153,6 +218,12 @@ class Array<T> implements Iterable<T> {
         items[index] = value;
     }
 
+    /**
+     * <p>swap.</p>
+     *
+     * @param first a int.
+     * @param second a int.
+     */
     public void swap(int first, int second) {
         if (first >= size) {
             throw new IndexOutOfBoundsException(String.valueOf(first));
@@ -167,8 +238,12 @@ class Array<T> implements Iterable<T> {
     }
 
     /**
+     * <p>contains.</p>
+     *
      * @param identity
      *            If true, == comparison will be used. If false, .equals() comaparison will be used.
+     * @param value a T object.
+     * @return a boolean.
      */
     public boolean contains(T value, boolean identity) {
         final T[] items = this.items;
@@ -189,6 +264,13 @@ class Array<T> implements Iterable<T> {
         return false;
     }
 
+    /**
+     * <p>indexOf.</p>
+     *
+     * @param value a T object.
+     * @param identity a boolean.
+     * @return a int.
+     */
     public int indexOf(T value, boolean identity) {
         final T[] items = this.items;
         if (identity || value == null) {
@@ -207,6 +289,13 @@ class Array<T> implements Iterable<T> {
         return -1;
     }
 
+    /**
+     * <p>lastIndexOf.</p>
+     *
+     * @param value a T object.
+     * @param identity a boolean.
+     * @return a int.
+     */
     public int lastIndexOf(T value, boolean identity) {
         final T[] items = this.items;
         if (identity || value == null) {
@@ -225,6 +314,13 @@ class Array<T> implements Iterable<T> {
         return -1;
     }
 
+    /**
+     * <p>removeValue.</p>
+     *
+     * @param value a T object.
+     * @param identity a boolean.
+     * @return a boolean.
+     */
     public boolean removeValue(T value, boolean identity) {
         final T[] items = this.items;
         if (identity || value == null) {
@@ -245,7 +341,12 @@ class Array<T> implements Iterable<T> {
         return false;
     }
 
-    /** Removes and returns the item at the specified index. */
+    /**
+     * Removes and returns the item at the specified index.
+     *
+     * @param index a int.
+     * @return a T object.
+     */
     public T removeIndex(int index) {
         if (index >= size) {
             throw new IndexOutOfBoundsException(String.valueOf(index));
@@ -262,7 +363,11 @@ class Array<T> implements Iterable<T> {
         return value;
     }
 
-    /** Removes and returns the last item. */
+    /**
+     * Removes and returns the last item.
+     *
+     * @return a T object.
+     */
     public T pop() {
         --size;
         final T item = items[size];
@@ -270,16 +375,27 @@ class Array<T> implements Iterable<T> {
         return item;
     }
 
-    /** Returns the last item. */
+    /**
+     * Returns the last item.
+     *
+     * @return a T object.
+     */
     public T peek() {
         return items[size - 1];
     }
 
-    /** Returns the first item. */
+    /**
+     * Returns the first item.
+     *
+     * @return a T object.
+     */
     public T first() {
         return items[0];
     }
 
+    /**
+     * <p>clear.</p>
+     */
     public void clear() {
         final T[] items = this.items;
         for (int i = 0, n = size; i < n; i++) {
@@ -301,6 +417,7 @@ class Array<T> implements Iterable<T> {
      * array resizes.
      *
      * @return {@link #items}
+     * @param additionalCapacity a int.
      */
     public T[] ensureCapacity(int additionalCapacity) {
         final int sizeNeeded = size + additionalCapacity;
@@ -310,7 +427,12 @@ class Array<T> implements Iterable<T> {
         return items;
     }
 
-    /** Creates a new backing array with the specified size containing the current items. */
+    /**
+     * Creates a new backing array with the specified size containing the current items.
+     *
+     * @param newSize a int.
+     * @return an array of T objects.
+     */
     protected T[] resize(int newSize) {
         final T[] items = this.items;
         final T[] newItems = (T[]) java.lang.reflect.Array.newInstance(items.getClass().getComponentType(), newSize);
@@ -320,17 +442,24 @@ class Array<T> implements Iterable<T> {
     }
 
     /**
-     * Sorts this array. The array elements must implement {@link Comparable}. This method is not thread safe (uses {@link Sort#instance()}).
+     * Sorts this array. The array elements must implement {@link java.lang.Comparable}. This method is not thread safe (uses {@link net.wohlfart.tools.Sort#instance()}).
      */
     public void sort() {
         Sort.instance().sort(items, 0, size);
     }
 
-    /** Sorts the array. This method is not thread safe (uses {@link Sort#instance()}). */
+    /**
+     * Sorts the array. This method is not thread safe (uses {@link net.wohlfart.tools.Sort#instance()}).
+     *
+     * @param comparator a {@link java.util.Comparator} object.
+     */
     public void sort(Comparator<T> comparator) {
         Sort.instance().sort(items, comparator, 0, size);
     }
 
+    /**
+     * <p>reverse.</p>
+     */
     public void reverse() {
         for (int i = 0, lastIndex = size - 1, n = size / 2; i < n; i++) {
             final int ii = lastIndex - i;
@@ -340,6 +469,9 @@ class Array<T> implements Iterable<T> {
         }
     }
 
+    /**
+     * <p>shuffle.</p>
+     */
     public void shuffle() {
         for (int i = size - 1; i >= 0; i--) {
             final int ii = SimpleMath.random(i);
@@ -350,6 +482,8 @@ class Array<T> implements Iterable<T> {
     }
 
     /**
+     * {@inheritDoc}
+     *
      * Returns an iterator for the items in the array. Remove is supported. Note that the same iterator instance is returned each time this method is called.
      * Use the {@link ArrayIterator} constructor for nested or multithreaded iteration.
      */
@@ -365,6 +499,8 @@ class Array<T> implements Iterable<T> {
 
     /**
      * Reduces the size of the array to the specified size. If the array is already smaller than the specified size, no action is taken.
+     *
+     * @param newSize a int.
      */
     public void truncate(int newSize) {
         if (size <= newSize) {
@@ -376,7 +512,11 @@ class Array<T> implements Iterable<T> {
         size = newSize;
     }
 
-    /** Returns a random item from the array, or null if the array is empty. */
+    /**
+     * Returns a random item from the array, or null if the array is empty.
+     *
+     * @return a T object.
+     */
     public T random() {
         if (size == 0) {
             return null;
@@ -384,16 +524,29 @@ class Array<T> implements Iterable<T> {
         return items[SimpleMath.random(0, size - 1)];
     }
 
+    /**
+     * <p>toArray.</p>
+     *
+     * @return an array of T objects.
+     */
     public T[] toArray() {
         return (T[]) toArray(items.getClass().getComponentType());
     }
 
+    /**
+     * <p>toArray.</p>
+     *
+     * @param type a {@link java.lang.Class} object.
+     * @param <V> a V object.
+     * @return an array of V objects.
+     */
     public <V> V[] toArray(Class<V> type) {
         final V[] result = (V[]) java.lang.reflect.Array.newInstance(type, size);
         System.arraycopy(items, 0, result, 0, size);
         return result;
     }
 
+    /** {@inheritDoc} */
     @Override
     public boolean equals(Object object) {
         if (object == this) {
@@ -419,6 +572,7 @@ class Array<T> implements Iterable<T> {
         return true;
     }
 
+    /** {@inheritDoc} */
     @Override
     public String toString() {
         if (size == 0) {
@@ -436,6 +590,12 @@ class Array<T> implements Iterable<T> {
         return buffer.toString();
     }
 
+    /**
+     * <p>toString.</p>
+     *
+     * @param separator a {@link java.lang.String} object.
+     * @return a {@link java.lang.String} object.
+     */
     public String toString(String separator) {
         if (size == 0) {
             return "";

@@ -7,6 +7,12 @@ import net.wohlfart.gl.tools.SimplexNoise;
 
 import org.lwjgl.util.vector.Vector3f;
 
+/**
+ * <p>SimplexProcTexture class.</p>
+ *
+ *
+ *
+ */
 public class SimplexProcTexture extends ProceduralTexture {
 
     private final ColorGradient gradient = new ColorGradient(Color.WHITE, Color.BLACK, Color.BLACK);
@@ -14,34 +20,71 @@ public class SimplexProcTexture extends ProceduralTexture {
     private float persistence = 0.5f;
     private float w = 5;
 
+    /**
+     * <p>Constructor for SimplexProcTexture.</p>
+     *
+     * @param width a int.
+     * @param height a int.
+     */
     public SimplexProcTexture(int width, int height) {
         super(width, height);
     }
 
+    /**
+     * <p>Getter for the field <code>octaves</code>.</p>
+     *
+     * @return a int.
+     */
     public int getOctaves() {
         return octaves;
     }
 
+    /**
+     * <p>Getter for the field <code>persistence</code>.</p>
+     *
+     * @return a float.
+     */
     public float getPersistence() {
         return persistence;
     }
 
+    /**
+     * <p>Getter for the field <code>w</code>.</p>
+     *
+     * @return a float.
+     */
     public float getW() {
         return w;
     }
 
+    /**
+     * <p>Setter for the field <code>octaves</code>.</p>
+     *
+     * @param octaves a int.
+     */
     public void setOctaves(int octaves) {
         this.octaves = octaves;
     }
 
+    /**
+     * <p>Setter for the field <code>persistence</code>.</p>
+     *
+     * @param persistence a float.
+     */
     public void setPersistence(float persistence) {
         this.persistence = persistence;
     }
 
+    /**
+     * <p>Setter for the field <code>w</code>.</p>
+     *
+     * @param w a float.
+     */
     public void setW(float w) {
         this.w = w;
     }
 
+    /** {@inheritDoc} */
     @Override
     protected int[] initialize(int width, int height, int[] data) {
 
@@ -57,6 +100,17 @@ public class SimplexProcTexture extends ProceduralTexture {
     }
 
     // adding octaves
+    /**
+     * <p>createNoise.</p>
+     *
+     * @param x a float.
+     * @param y a float.
+     * @param z a float.
+     * @param w a float.
+     * @param persistence a float.
+     * @param octaves a int.
+     * @return a double.
+     */
     protected double createNoise(final float x, final float y, final float z, final float w, final float persistence, final int octaves) {
         double result = 0;
         float max = 0;
@@ -70,6 +124,17 @@ public class SimplexProcTexture extends ProceduralTexture {
     }
 
     // calling the noise
+    /**
+     * <p>createNoise.</p>
+     *
+     * @param x a float.
+     * @param y a float.
+     * @param z a float.
+     * @param w a float.
+     * @param amplitude a float.
+     * @param frequency a float.
+     * @return a double.
+     */
     protected double createNoise(final float x, final float y, final float z, final float w, final float amplitude, final float frequency) {
         // the noise returns [-1 .. +1]
         final double noise = SimplexNoise.noise(x * frequency, y * frequency, z * frequency, w * frequency);
@@ -78,6 +143,14 @@ public class SimplexProcTexture extends ProceduralTexture {
         return amplitude * noise;
     }
 
+    /**
+     * <p>gridnoise.</p>
+     *
+     * @param x a float.
+     * @param y a float.
+     * @param z a float.
+     * @return a double.
+     */
     protected double gridnoise(float x, float y, float z) {
         // @formatter:off
         if (isAlmost(x, 0f)

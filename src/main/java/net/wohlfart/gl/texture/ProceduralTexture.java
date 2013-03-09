@@ -6,6 +6,12 @@ import java.nio.IntBuffer;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.util.vector.Vector3f;
 
+/**
+ * <p>Abstract ProceduralTexture class.</p>
+ *
+ *
+ *
+ */
 public abstract class ProceduralTexture implements TextureBuffer {
 
     protected long seed;
@@ -14,12 +20,19 @@ public abstract class ProceduralTexture implements TextureBuffer {
     protected IntBuffer buffer;
     protected int id;
 
+    /**
+     * <p>Constructor for ProceduralTexture.</p>
+     *
+     * @param width a int.
+     * @param height a int.
+     */
     public ProceduralTexture(int width, int height) {
         this.width = width;
         this.height = height;
         this.buffer = BufferUtils.createIntBuffer(width * height);
     }
 
+    /** {@inheritDoc} */
     @Override
     public void init() {
         int[] data = new int[width * height];
@@ -30,8 +43,24 @@ public abstract class ProceduralTexture implements TextureBuffer {
         buffer.rewind();
     }
 
+    /**
+     * <p>initialize.</p>
+     *
+     * @param width a int.
+     * @param height a int.
+     * @param data an array of int.
+     * @return an array of int.
+     */
     protected abstract int[] initialize(int width, int height, int[] data);
 
+    /**
+     * <p>setPixel.</p>
+     *
+     * @param x a int.
+     * @param y a int.
+     * @param color a {@link java.awt.Color} object.
+     * @param data an array of int.
+     */
     protected void setPixel(int x, int y, Color color, int[] data) {
         y = height - y - 1;
         if (x < 0) {
@@ -62,8 +91,10 @@ public abstract class ProceduralTexture implements TextureBuffer {
 
     /**
      * 0/0 is top left, the whole texture is wrapped around a sphere
-     * 
+     *
      * @return a vector with each element [0..1]
+     * @param x a int.
+     * @param y a int.
      */
     protected Vector3f getNormalVector(final int x, final int y) {
         final int yRange = height - 1;
@@ -78,16 +109,19 @@ public abstract class ProceduralTexture implements TextureBuffer {
         return new Vector3f(xx, yy, zz);
     }
 
+    /** {@inheritDoc} */
     @Override
     public IntBuffer getBuffer() {
         return buffer;
     }
 
+    /** {@inheritDoc} */
     @Override
     public int getWidth() {
         return width;
     }
 
+    /** {@inheritDoc} */
     @Override
     public int getHeight() {
         return height;

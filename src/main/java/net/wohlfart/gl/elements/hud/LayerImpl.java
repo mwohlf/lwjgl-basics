@@ -19,6 +19,7 @@ import org.slf4j.LoggerFactory;
 // and: http://www.arcsynthesis.org/gltut/Positioning/Tut07%20The%20Perils%20of%20World%20Space.html
 // and: http://www.arcsynthesis.org/gltut/Positioning/Tutorial%2005.html
 class LayerImpl implements Layer {
+    /** Constant <code>LOGGER</code> */
     protected static final Logger LOGGER = LoggerFactory.getLogger(LayerImpl.class);
 
     private final GraphicContextManager cxtManager = GraphicContextManager.INSTANCE;
@@ -29,6 +30,11 @@ class LayerImpl implements Layer {
 
     protected CharAtlas characterAtlas;
 
+    /**
+     * <p>setup.</p>
+     *
+     * @return a {@link net.wohlfart.gl.shader.mesh.IMesh} object.
+     */
     protected IMesh setup() {
         characterAtlas = new CharAtlasBuilder().build();
         final TextureMeshBuilder builder = new TextureMeshBuilder();
@@ -38,6 +44,7 @@ class LayerImpl implements Layer {
         return builder.build();
     }
 
+    /** {@inheritDoc} */
     @Override
     public void render() {
         if (meshData == null) {
@@ -49,17 +56,24 @@ class LayerImpl implements Layer {
         }
     }
 
+    /** {@inheritDoc} */
     @Override
     public void dispose() {
         meshData.dispose();
         meshData = null;
     }
 
+    /**
+     * <p>add.</p>
+     *
+     * @param label a {@link net.wohlfart.gl.elements.hud.widgets.AbstractTextComponent} object.
+     */
     public void add(AbstractTextComponent label) {
         label.setLayer(this); // double dispatch
         components.add(label);
     }
 
+    /** {@inheritDoc} */
     @Override
     public CharAtlas getCharacterAtlas() {
         return characterAtlas;

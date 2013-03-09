@@ -27,22 +27,30 @@ class CelestialState implements GameState {
 
     // ui, sounds, cam
 
+    /** {@inheritDoc} */
     @Override
     public void setup() {
         GraphicContextManager.INSTANCE.getInputDispatcher().register(this);
         GraphicContextManager.INSTANCE.getInputDispatcher().register(avatar);
     }
 
+    /**
+     * <p>onExitTriggered.</p>
+     *
+     * @param exitEvent a {@link net.wohlfart.gl.input.CommandEvent.Exit} object.
+     */
     @Subscribe
     public void onExitTriggered(CommandEvent.Exit exitEvent) {
         escPressed = true;
     }
 
+    /** {@inheritDoc} */
     @Override
     public void update(float tpf) {
         scene.update(tpf);
     }
 
+    /** {@inheritDoc} */
     @Override
     public void render() {
         // GL11.glLoadIdentity();
@@ -52,11 +60,13 @@ class CelestialState implements GameState {
         widgetSet.paint(renderer);
     }
 
+    /** {@inheritDoc} */
     @Override
     public boolean isDone() {
         return Display.isCloseRequested() || escPressed;
     }
 
+    /** {@inheritDoc} */
     @Override
     public void dispose() {
         GraphicContextManager.INSTANCE.getInputDispatcher().unregister(this);

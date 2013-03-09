@@ -4,9 +4,18 @@ import org.lwjgl.util.vector.Quaternion;
 import org.lwjgl.util.vector.Vector3f;
 
 // see: http://code.google.com/p/jmonkeyengine/source/browse/branches/jme3/src/core/com/jme3/math/Quaternion.java?r=5231
+/**
+ * <p>SimpleQuaternion class.</p>
+ *
+ *
+ *
+ */
 @SuppressWarnings("serial")
 public class SimpleQuaternion extends Quaternion {
 
+    /**
+     * <p>normalizeLocal.</p>
+     */
     public void normalizeLocal() {
         final float l = (float) Math.sqrt(x * x + y * y + z * z + w * w);
         x = x / l;
@@ -15,6 +24,12 @@ public class SimpleQuaternion extends Quaternion {
         w = w / l;
     }
 
+    /**
+     * <p>multLocal.</p>
+     *
+     * @param vec a {@link org.lwjgl.util.vector.Vector3f} object.
+     * @return a {@link org.lwjgl.util.vector.Vector3f} object.
+     */
     public Vector3f multLocal(Vector3f vec) {
         float xx, yy, zz;
 

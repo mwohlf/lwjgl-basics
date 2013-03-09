@@ -6,8 +6,18 @@ import org.junit.Test;
 import org.lwjgl.util.vector.Quaternion;
 import org.lwjgl.util.vector.Vector3f;
 
+/**
+ * <p>SimpleMathTest class.</p>
+ *
+ * @author michael
+ * @version $Id: $Id
+ * @since 0.0.1
+ */
 public class SimpleMathTest {
 
+    /**
+     * <p>testCreateQuaternionA.</p>
+     */
     @Test
     public void testCreateQuaternionA() {
         final Quaternion quat = new Quaternion();
@@ -18,6 +28,9 @@ public class SimpleMathTest {
         Assert.assertEqualVec(new Vector3f(0, 1, 0), vec);
     }
 
+    /**
+     * <p>testCreateQuaternionB.</p>
+     */
     @Test
     public void testCreateQuaternionB() {
         final Quaternion quat = new Quaternion();
@@ -28,6 +41,9 @@ public class SimpleMathTest {
         Assert.assertEqualVec(new Vector3f(1.41421f, 0, 0), vec);
     }
 
+    /**
+     * <p>testCreateQuaternionIdentity.</p>
+     */
     @Test
     public void testCreateQuaternionIdentity() {
         final Quaternion quat = new Quaternion();
@@ -38,6 +54,9 @@ public class SimpleMathTest {
         Assert.assertEqualVec(new Vector3f(1, 1, 0), vec);
     }
 
+    /**
+     * <p>testCreateQuaternion1180degreeA.</p>
+     */
     @Test
     public void testCreateQuaternion1180degreeA() {
         final Quaternion quat = new Quaternion();
@@ -48,6 +67,9 @@ public class SimpleMathTest {
         Assert.assertEqualVec(new Vector3f(-3, 0, 0), vec);
     }
 
+    /**
+     * <p>testCreateQuaternion1180degreeB.</p>
+     */
     @Test
     public void testCreateQuaternion1180degreeB() {
         final Quaternion quat = new Quaternion();
@@ -58,6 +80,9 @@ public class SimpleMathTest {
         Assert.assertEqualVec(new Vector3f(-3, 0, 0), vec);
     }
 
+    /**
+     * <p>testAddVector.</p>
+     */
     @Test
     public void testAddVector() {
         // for the sake of coverage

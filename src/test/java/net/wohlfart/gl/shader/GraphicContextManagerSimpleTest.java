@@ -10,6 +10,13 @@ import org.junit.Before;
 import org.junit.Test;
 import org.lwjgl.util.vector.Matrix4f;
 
+/**
+ * <p>GraphicContextManagerSimpleTest class.</p>
+ *
+ * @author michael
+ * @version $Id: $Id
+ * @since 0.0.1
+ */
 public class GraphicContextManagerSimpleTest {
 
     GraphicContextManager contxt;
@@ -31,6 +38,9 @@ public class GraphicContextManagerSimpleTest {
 
     };
 
+    /**
+     * <p>setup.</p>
+     */
     @Before
     public void setup() {
         settings = createSettings();
@@ -51,6 +61,9 @@ public class GraphicContextManagerSimpleTest {
     }
 
 
+    /**
+     * <p>testTopRight.</p>
+     */
     @Test
     public void testTopRight() {
         // createPickingRay for: 1000.0,700.0------------
@@ -69,6 +82,9 @@ public class GraphicContextManagerSimpleTest {
         assertEquals(-99.99999, ray.getEnd().z, 0.01);
     }
 
+    /**
+     * <p>testTopLeft.</p>
+     */
     @Test
     public void testTopLeft() {
         // createPickingRay for: 1000.0,700.0------------
@@ -87,6 +103,9 @@ public class GraphicContextManagerSimpleTest {
         assertEquals(-99.99999, ray.getEnd().z, 0.01);
     }
 
+    /**
+     * <p>testBottomLeft.</p>
+     */
     @Test
     public void testBottomLeft() {
         // createPickingRay for: 0.0,0.0------------
@@ -105,6 +124,9 @@ public class GraphicContextManagerSimpleTest {
         assertEquals(-99.99999, ray.getEnd().z, 0.01);
     }
 
+    /**
+     * <p>testBottomRigth.</p>
+     */
     @Test
     public void testBottomRigth() {
         // createPickingRay for: 0.0,0.0------------
@@ -123,6 +145,9 @@ public class GraphicContextManagerSimpleTest {
         assertEquals(-99.99999, ray.getEnd().z, 0.01);
     }
 
+    /**
+     * <p>testCenter.</p>
+     */
     @Test
     public void testCenter() {
         // createPickingRay for: 500.0,350.0

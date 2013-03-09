@@ -10,6 +10,12 @@ import org.lwjgl.util.vector.Vector4f;
 
 import com.google.common.eventbus.Subscribe;
 
+/**
+ * <p>MousePicker class.</p>
+ *
+ *
+ *
+ */
 public class MousePicker {
 
 
@@ -21,12 +27,24 @@ public class MousePicker {
     private final float height;
 
 
+    /**
+     * <p>Constructor for MousePicker.</p>
+     *
+     * @param elemBucket a {@link net.wohlfart.gl.renderer.RenderBucket} object.
+     * @param width a float.
+     * @param height a float.
+     */
     public MousePicker(RenderBucket elemBucket, float width, float height) {
         this.elemBucket = elemBucket;
         this.width = width;
         this.height = height;
     }
 
+    /**
+     * <p>onMouseClick.</p>
+     *
+     * @param clickEvent a {@link net.wohlfart.gl.input.CommandEvent.LeftClick} object.
+     */
     @Subscribe
     public void onMouseClick(CommandEvent.LeftClick clickEvent) {
         float x = clickEvent.getX();
@@ -39,6 +57,14 @@ public class MousePicker {
 
 
     // see: http://gamedev.stackexchange.com/questions/8974/converting-a-mouse-click-to-a-ray
+    /**
+     * <p>createPickingRay.</p>
+     *
+     * @param x a float.
+     * @param y a float.
+     * @param hasMatrices a {@link net.wohlfart.gl.HasCamProjectionModelViewMatrices} object.
+     * @return a {@link net.wohlfart.gl.PickingRay} object.
+     */
     public PickingRay createPickingRay(float x, float y, HasCamProjectionModelViewMatrices hasMatrices){
 
         Matrix4f.mul(hasMatrices.getProjectionMatrix(), hasMatrices.getModelViewMatrix(), transformMatrix);

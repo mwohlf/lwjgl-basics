@@ -12,6 +12,7 @@ class GameContext implements IGameContext {
         this.delegate = context;
     }
 
+    /** {@inheritDoc} */
     @Override
     public <T> T getBeanOfType(Class<T> clazz) {
         final Set<Entry<String, T>> set = delegate.getBeansOfType(clazz).entrySet();

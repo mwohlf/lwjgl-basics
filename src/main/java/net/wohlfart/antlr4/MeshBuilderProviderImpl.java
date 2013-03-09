@@ -11,16 +11,27 @@ import net.wohlfart.gl.shader.mesh.GenericMeshBuilder;
 
 import org.antlr.v4.runtime.tree.TerminalNode;
 
-public class WavefrontReader extends WavefrontBaseListener {
+/**
+ * <p>MeshBuilderProviderImpl class.</p>
+ */
+class MeshBuilderProviderImpl extends WavefrontBaseListener implements MeshBuilderProvider {
 
     private GenericMeshBuilder currentBuilder;
 
+    /** {@inheritDoc} */
+    @Override
+    public GenericMeshBuilder getMeshBuilder() {
+        return currentBuilder;
+    }
+
+    /** {@inheritDoc} */
     @Override
     public void exitObjectName(ObjectNameContext ctx) {
         String objectName = ctx.IDENTIFIER().getText();
         currentBuilder = new GenericMeshBuilder(objectName);
     }
 
+    /** {@inheritDoc} */
     @Override
     public void exitVertex(VertexContext ctx) {
         List<TerminalNode> coords = ctx.REAL();
@@ -30,6 +41,7 @@ public class WavefrontReader extends WavefrontBaseListener {
                 Float.parseFloat(coords.get(2).getText()));
     }
 
+    /** {@inheritDoc} */
     @Override
     public void exitNormal(NormalContext ctx) {
         List<TerminalNode> coords = ctx.REAL();
@@ -39,16 +51,13 @@ public class WavefrontReader extends WavefrontBaseListener {
                 Float.parseFloat(coords.get(2).getText()));
     }
 
+    /** {@inheritDoc} */
     @Override
     public void exitFace(FaceContext ctx) {
         List<VertNormIdxContext> vertNormIdx = ctx.vertNormIdx();
         for (VertNormIdxContext n : vertNormIdx) {
             currentBuilder.addVertexIndex(Integer.parseInt(n.NATURAL(0).getText()) - 1);
         }
-    }
-
-    public GenericMeshBuilder getMeshBuilder() {
-        return currentBuilder;
     }
 
 }

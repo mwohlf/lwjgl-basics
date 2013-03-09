@@ -16,6 +16,9 @@ import org.lwjgl.util.vector.Vector3f;
 
 /**
  * a set of renderables that have common features like using the same shader/renderer
+ *
+ *
+ *
  */
 public class RenderBucket implements Renderable, HasCamProjectionModelViewMatrices {
 
@@ -31,22 +34,39 @@ public class RenderBucket implements Renderable, HasCamProjectionModelViewMatric
     private final Matrix4f rotPosMatrix = new Matrix4f();
 
 
+    /**
+     * <p>init.</p>
+     *
+     * @param wireframeGraphicContext a {@link net.wohlfart.gl.shader.GraphicContextManager.IGraphicContext} object.
+     * @param avatar a {@link net.wohlfart.model.Avatar} object.
+     */
     public void init(IGraphicContext wireframeGraphicContext, Avatar avatar) {
         this.wireframeGraphicContext = wireframeGraphicContext;
         this.avatar = avatar;
     }
 
 
+    /**
+     * <p>add.</p>
+     *
+     * @param elements a {@link java.util.Collection} object.
+     */
     public void add(Collection<Renderable> elements) {
         for (Renderable renderable : elements) {
             add(renderable);
         }
     }
 
+    /**
+     * <p>add.</p>
+     *
+     * @param renderable a {@link net.wohlfart.gl.renderer.Renderable} object.
+     */
     public void add(Renderable renderable) {
         container.add(renderable);
     }
 
+    /** {@inheritDoc} */
     @Override
     public void render() {
         SimpleMath.convert(avatar.getPosition().negate(posVector), posMatrix);
@@ -63,6 +83,7 @@ public class RenderBucket implements Renderable, HasCamProjectionModelViewMatric
         }
     }
 
+    /** {@inheritDoc} */
     @Override
     public void dispose() {
         for (final Renderable renderable : container) {
@@ -71,11 +92,13 @@ public class RenderBucket implements Renderable, HasCamProjectionModelViewMatric
         container.clear();
     }
 
+    /** {@inheritDoc} */
     @Override
     public Matrix4f getProjectionMatrix() {
         return GraphicContextManager.INSTANCE.getPerspectiveProjMatrix();
     }
 
+    /** {@inheritDoc} */
     @Override
     public Matrix4f getModelViewMatrix() {
         return rotPosMatrix;

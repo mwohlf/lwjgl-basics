@@ -20,9 +20,21 @@ import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.DisplayMode;
 import org.lwjgl.opengl.PixelFormat;
 
+/**
+ * <p>CharFrame class.</p>
+ *
+ * @author michael
+ * @version $Id: $Id
+ * @since 0.0.1
+ */
 @SuppressWarnings("serial")
 public class CharFrame extends JFrame {
 
+    /**
+     * <p>main.</p>
+     *
+     * @param args an array of {@link java.lang.String} objects.
+     */
     public static void main(String[] args) {
         try {
             EventQueue.invokeAndWait(new Runnable() {
@@ -82,6 +94,7 @@ public class CharFrame extends JFrame {
 
     }
 
+    /** {@inheritDoc} */
     @Override
     public void setVisible(boolean isVisible) {
         super.setVisible(isVisible);

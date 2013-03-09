@@ -2,8 +2,22 @@ package net.wohlfart.widgets;
 
 import org.lwjgl.opengl.GL11;
 
+/**
+ * <p>Renderer class.</p>
+ *
+ *
+ *
+ */
 public class Renderer {
 
+    /**
+     * <p>fillRect.</p>
+     *
+     * @param x a int.
+     * @param y a int.
+     * @param w a int.
+     * @param h a int.
+     */
     public void fillRect(int x, int y, int w, int h) {
 
         // GL11.glPushMatrix();

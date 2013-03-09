@@ -8,6 +8,12 @@ import net.wohlfart.gl.input.CommandEvent.PositionPointer;
 
 import org.lwjgl.input.Keyboard;
 
+/**
+ * <p>LwjglInputAdaptor class.</p>
+ *
+ *
+ *
+ */
 public class LwjglInputAdaptor implements InputAdaptor {
 
     // event sink, parent component we need to post the events to
@@ -44,6 +50,11 @@ public class LwjglInputAdaptor implements InputAdaptor {
     PositionPointer positionPointer = new PositionPointer();
     // @formatter:on
 
+    /**
+     * <p>Constructor for LwjglInputAdaptor.</p>
+     *
+     * @param inputDispatcher a {@link net.wohlfart.gl.input.InputDispatcher} object.
+     */
     public LwjglInputAdaptor(InputDispatcher inputDispatcher) {
         this.inputDispatcher = inputDispatcher;
     }
@@ -93,16 +104,19 @@ public class LwjglInputAdaptor implements InputAdaptor {
 
 
 
+    /** {@inheritDoc} */
     @Override
     public KeyEventDispatcher getKeyboardDevice() {
         return keyboardDigitalDevice;
     }
 
+    /** {@inheritDoc} */
     @Override
     public PositionEventDispatcher getMouseDevice() {
         return mouseDigitalDevice;
     }
 
+    /** {@inheritDoc} */
     @Override
     public void destroy() {
         inputDispatcher.destroy();

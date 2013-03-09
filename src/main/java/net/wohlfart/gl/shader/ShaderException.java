@@ -1,5 +1,11 @@
 package net.wohlfart.gl.shader;
 
+/**
+ * <p>ShaderException class.</p>
+ *
+ *
+ *
+ */
 @SuppressWarnings("serial")
 public class ShaderException extends RuntimeException {
 

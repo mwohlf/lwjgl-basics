@@ -20,7 +20,14 @@ import org.lwjgl.util.vector.Vector3f;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+/**
+ * <p>WireframeMeshBuilder class.</p>
+ *
+ *
+ *
+ */
 public class WireframeMeshBuilder {
+    /** Constant <code>LOGGER</code> */
     protected static final Logger LOGGER = LoggerFactory.getLogger(WireframeMeshBuilder.class);
 
     private final List<Vector3f> vertices = new ArrayList<Vector3f>();
@@ -35,6 +42,11 @@ public class WireframeMeshBuilder {
     private Vector3f translation;
     private Quaternion rotation;
 
+    /**
+     * <p>build.</p>
+     *
+     * @return a {@link net.wohlfart.gl.shader.mesh.IMesh} object.
+     */
     public IMesh build() {
 
         applyRotationAndTranslation();
@@ -123,34 +135,74 @@ public class WireframeMeshBuilder {
 
     // --
 
+    /**
+     * <p>Setter for the field <code>vertices</code>.</p>
+     *
+     * @param vertices a {@link java.util.List} object.
+     */
     public void setVertices(final List<Vector3f> vertices) {
         this.vertices.addAll(vertices);
     }
 
+    /**
+     * <p>Setter for the field <code>indices</code>.</p>
+     *
+     * @param indices an array of {@link java.lang.Integer} objects.
+     */
     public void setIndices(final Integer[] indices) {
         this.indices.addAll(Arrays.asList(indices));
     }
 
+    /**
+     * <p>Setter for the field <code>rotation</code>.</p>
+     *
+     * @param quaternion a {@link org.lwjgl.util.vector.Quaternion} object.
+     */
     public void setRotation(final Quaternion quaternion) {
         this.rotation = quaternion;
     }
 
+    /**
+     * <p>Setter for the field <code>translation</code>.</p>
+     *
+     * @param translation a {@link org.lwjgl.util.vector.Vector3f} object.
+     */
     public void setTranslation(final Vector3f translation) {
         this.translation = translation;
     }
 
+    /**
+     * <p>Setter for the field <code>color</code>.</p>
+     *
+     * @param color a {@link org.lwjgl.util.ReadableColor} object.
+     */
     public void setColor(final ReadableColor color) {
         this.color = color;
     }
 
+    /**
+     * <p>Setter for the field <code>lineWidth</code>.</p>
+     *
+     * @param lineWidth a float.
+     */
     public void setLineWidth(float lineWidth) {
         this.lineWidth = lineWidth;
     }
 
+    /**
+     * <p>Setter for the field <code>indicesStructure</code>.</p>
+     *
+     * @param indicesStructure a int.
+     */
     public void setIndicesStructure(int indicesStructure) {
         this.indicesStructure = indicesStructure;
     }
 
+    /**
+     * <p>Setter for the field <code>indexElemSize</code>.</p>
+     *
+     * @param indexElemSize a int.
+     */
     public void setIndexElemSize(int indexElemSize) {
         this.indexElemSize = indexElemSize;
     }

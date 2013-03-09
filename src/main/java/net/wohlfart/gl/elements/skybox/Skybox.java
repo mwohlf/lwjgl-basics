@@ -14,6 +14,12 @@ import org.lwjgl.opengl.GL11;
 import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector3f;
 
+/**
+ * <p>Skybox class.</p>
+ *
+ *
+ *
+ */
 public class Skybox implements Renderable, SkyboxParameters {
 
 
@@ -27,6 +33,12 @@ public class Skybox implements Renderable, SkyboxParameters {
 
     private IGraphicContext graphicContext;
 
+    /**
+     * <p>init.</p>
+     *
+     * @param graphicContext a {@link net.wohlfart.gl.shader.GraphicContextManager.IGraphicContext} object.
+     * @param avatar a {@link net.wohlfart.model.Avatar} object.
+     */
     public void init(IGraphicContext graphicContext, Avatar avatar) {
         this.avatar = avatar;
         this.graphicContext = graphicContext;
@@ -41,6 +53,7 @@ public class Skybox implements Renderable, SkyboxParameters {
         sides = array.toArray(new BoxSideMesh[values.length]);
     }
 
+    /** {@inheritDoc} */
     @Override
     public void render() {
         assert sides != null : "the skybox sides are null, make sure to call the init method";
@@ -68,16 +81,19 @@ public class Skybox implements Renderable, SkyboxParameters {
         }
     }
 
+    /** {@inheritDoc} */
     @Override
     public void dispose() {
         sides = null;
     }
 
+    /** {@inheritDoc} */
     @Override
     public PerlinNoiseParameters getNoiseParamClouds() {
         return clouds;
     }
 
+    /** {@inheritDoc} */
     @Override
     public PerlinNoiseParameters getNoiseParamStars() {
         return stars;

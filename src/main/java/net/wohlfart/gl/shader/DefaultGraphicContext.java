@@ -8,10 +8,14 @@ import org.slf4j.LoggerFactory;
 
 /**
  * modeling an OpenGL Context: - shader - attribute location - uniform locations
- * 
+ *
  * see: http://www.opengl.org/wiki/OpenGL_Context
+ *
+ *
+ *
  */
 public class DefaultGraphicContext implements GraphicContextManager.IGraphicContext {
+    /** Constant <code>LOGGER</code> */
     protected static final Logger LOGGER = LoggerFactory.getLogger(DefaultGraphicContext.class);
 
     private final IShaderProgram shaderProgram;
@@ -19,6 +23,11 @@ public class DefaultGraphicContext implements GraphicContextManager.IGraphicCont
     private final int[] attributeMap = new int[ShaderAttributeHandle.values().length];
     private final int[] uniformMap = new int[ShaderUniformHandle.values().length];
 
+    /**
+     * <p>Constructor for DefaultGraphicContext.</p>
+     *
+     * @param shaderProgram a {@link net.wohlfart.gl.shader.IShaderProgram} object.
+     */
     public DefaultGraphicContext(IShaderProgram shaderProgram) {
         this.shaderProgram = shaderProgram;
         this.shaderProgram.setup();
@@ -58,32 +67,38 @@ public class DefaultGraphicContext implements GraphicContextManager.IGraphicCont
         LOGGER.debug("matrixMap setup: '{}'", Arrays.toString(uniformMap));
     }
 
+    /** {@inheritDoc} */
     @Override
     public String toString() {
         return "DefaultGraphicContext with shader: " + shaderProgram;
     }
 
+    /** {@inheritDoc} */
     @Override
     public void bind() {
         shaderProgram.bind();
     }
 
+    /** {@inheritDoc} */
     @Override
     public void unbind() {
         shaderProgram.unbind();
     }
 
+    /** {@inheritDoc} */
     @Override
     public void dispose() {
         shaderProgram.unbind();
         shaderProgram.dispose();
     }
 
+    /** {@inheritDoc} */
     @Override
     public int getLocation(ShaderAttributeHandle shaderAttributeHandle) {
         return attributeMap[shaderAttributeHandle.ordinal()];
     }
 
+    /** {@inheritDoc} */
     @Override
     public int getLocation(ShaderUniformHandle shaderUniformHandle) {
         return uniformMap[shaderUniformHandle.ordinal()];

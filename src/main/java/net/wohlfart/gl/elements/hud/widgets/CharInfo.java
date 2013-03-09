@@ -18,18 +18,38 @@ class CharInfo {
         this.h = h;
     }
 
+    /**
+     * <p>Getter for the field <code>x</code>.</p>
+     *
+     * @return a float.
+     */
     public float getX() {
         return x;
     }
 
+    /**
+     * <p>Getter for the field <code>y</code>.</p>
+     *
+     * @return a float.
+     */
     public float getY() {
         return y;
     }
 
+    /**
+     * <p>getWidth.</p>
+     *
+     * @return a float.
+     */
     public float getWidth() {
         return w;
     }
 
+    /**
+     * <p>getHeight.</p>
+     *
+     * @return a float.
+     */
     public float getHeight() {
         return h;
     }

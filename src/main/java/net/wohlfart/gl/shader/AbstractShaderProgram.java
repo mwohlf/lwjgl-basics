@@ -18,6 +18,13 @@ class AbstractShaderProgram implements IShaderProgram {
 
     private int programId = -1;
 
+    /**
+     * <p>loadShader.</p>
+     *
+     * @param filename a {@link java.lang.String} object.
+     * @param shaderType a int.
+     * @return a int.
+     */
     protected int loadShader(final String filename, int shaderType) {
         int shader = 0;
         Scanner scanner = null;
@@ -57,7 +64,6 @@ class AbstractShaderProgram implements IShaderProgram {
      *
      * @param handles
      *            the shaders
-     * @return
      */
     protected void linkAndValidate(int... handles) {
         programId = GL20.glCreateProgram();
@@ -74,6 +80,11 @@ class AbstractShaderProgram implements IShaderProgram {
         }
     }
 
+    /**
+     * <p>unlink.</p>
+     *
+     * @param handles a int.
+     */
     protected void unlink(int... handles) {
         GL20.glUseProgram(0);
         for (final int handle : handles) {
@@ -84,30 +95,41 @@ class AbstractShaderProgram implements IShaderProgram {
         }
     }
 
+    /**
+     * <p>getLogInfo.</p>
+     *
+     * @param obj a int.
+     * @return a {@link java.lang.String} object.
+     */
     protected String getLogInfo(int obj) {
         return ARBShaderObjects.glGetInfoLogARB(obj, ARBShaderObjects.glGetObjectParameteriARB(obj, ARBShaderObjects.GL_OBJECT_INFO_LOG_LENGTH_ARB));
     }
 
+    /** {@inheritDoc} */
     @Override
     public int getProgramId() {
         return programId;
     }
 
+    /** {@inheritDoc} */
     @Override
     public void setup() {
         //
     }
 
+    /** {@inheritDoc} */
     @Override
     public void bind() {
         GL20.glUseProgram(programId);
     }
 
+    /** {@inheritDoc} */
     @Override
     public void unbind() {
         GL20.glUseProgram(0);
     }
 
+    /** {@inheritDoc} */
     @Override
     public void dispose() {
         GL20.glDeleteProgram(programId);

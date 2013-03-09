@@ -10,15 +10,15 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * @formatter:off
- * wrapping a GraphicContext, if we ever need to switch the GraphicContext
+ * <p>GraphicContextManager class.</p>
  *
- * todo: implement stuff from: http://www.lwjgl.org/wiki/index.php?title=GLSL_Utility_Class
- * @formatter:on
+ *
+ *
  */
 public enum GraphicContextManager {
     INSTANCE;
 
+    /** Constant <code>LOGGER</code> */
     protected static final Logger LOGGER = LoggerFactory.getLogger(GraphicContextManager.class);
 
 
@@ -51,6 +51,11 @@ public enum GraphicContextManager {
 
 
 
+    /**
+     * <p>Setter for the field <code>currentGraphicContext</code>.</p>
+     *
+     * @param graphicContext a {@link net.wohlfart.gl.shader.GraphicContextManager.IGraphicContext} object.
+     */
     public void setCurrentGraphicContext(IGraphicContext graphicContext) {
         LOGGER.debug("setting gfx context to '{}'", graphicContext);
         if (currentGraphicContext != null) {
@@ -62,6 +67,11 @@ public enum GraphicContextManager {
         }
     }
 
+    /**
+     * <p>Setter for the field <code>settings</code>.</p>
+     *
+     * @param settings a {@link net.wohlfart.basic.Settings} object.
+     */
     public void setSettings(Settings settings) {
         this.settings = settings;
         perspectiveProjMatrix = new PerspectiveProjection() .create(settings);
@@ -78,50 +88,108 @@ public enum GraphicContextManager {
 
 
 
+    /**
+     * <p>Getter for the field <code>perspectiveProjMatrix</code>.</p>
+     *
+     * @return a {@link org.lwjgl.util.vector.Matrix4f} object.
+     */
     public Matrix4f getPerspectiveProjMatrix() {
         return perspectiveProjMatrix;
     }
 
+    /**
+     * <p>Getter for the field <code>orthographicProjMatrix</code>.</p>
+     *
+     * @return a {@link org.lwjgl.util.vector.Matrix4f} object.
+     */
     public Matrix4f getOrthographicProjMatrix() {
         return orthographicProjMatrix;
     }
 
+    /**
+     * <p>getScreenWidth.</p>
+     *
+     * @return a int.
+     */
     public int getScreenWidth() {
         return settings.getWidth();
     }
 
+    /**
+     * <p>getScreenHeight.</p>
+     *
+     * @return a int.
+     */
     public int getScreenHeight() {
         return settings.getHeight();
     }
 
+    /**
+     * <p>getNearPlane.</p>
+     *
+     * @return a float.
+     */
     public float getNearPlane() {
         return settings.getNearPlane();    //   0.1
     }
 
+    /**
+     * <p>getFarPlane.</p>
+     *
+     * @return a float.
+     */
     public float getFarPlane() {
         return settings.getFarPlane();      // 100
     }
 
+    /**
+     * <p>getFieldOfView.</p>
+     *
+     * @return a float.
+     */
     public float getFieldOfView() {
         return settings.getFieldOfView();
     }
 
+    /**
+     * <p>Setter for the field <code>inputDispatcher</code>.</p>
+     *
+     * @param inputSource a {@link net.wohlfart.gl.input.DefaultInputDispatcher} object.
+     */
     public void setInputDispatcher(DefaultInputDispatcher inputSource) {
         this.inputDispatcher = inputSource;
     }
 
+    /**
+     * <p>Getter for the field <code>inputDispatcher</code>.</p>
+     *
+     * @return a {@link net.wohlfart.gl.input.InputDispatcher} object.
+     */
     public InputDispatcher getInputDispatcher() {
         return inputDispatcher;
     }
 
+    /**
+     * <p>Setter for the field <code>clock</code>.</p>
+     *
+     * @param clock a {@link net.wohlfart.basic.time.Clock} object.
+     */
     public void setClock(Clock clock) {
         this.clock = clock;
     }
 
+    /**
+     * <p>Getter for the field <code>clock</code>.</p>
+     *
+     * @return a {@link net.wohlfart.basic.time.Clock} object.
+     */
     public Clock getClock() {
         return clock;
     }
 
+    /**
+     * <p>destroy.</p>
+     */
     public void destroy() {
 
     }

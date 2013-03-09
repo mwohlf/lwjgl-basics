@@ -5,6 +5,12 @@ import org.lwjgl.opengl.GL15;
 import org.lwjgl.opengl.GL20;
 import org.lwjgl.opengl.GL30;
 
+/**
+ * <p>TriangleStripMesh class.</p>
+ *
+ *
+ *
+ */
 public class TriangleStripMesh implements IMesh {
 
     private final int vaoHandle;
@@ -26,6 +32,7 @@ public class TriangleStripMesh implements IMesh {
         this.indexOffset = 0;
     }
 
+    /** {@inheritDoc} */
     @Override
     public void draw() {
         GL30.glBindVertexArray(vaoHandle);
@@ -33,6 +40,7 @@ public class TriangleStripMesh implements IMesh {
         GL30.glBindVertexArray(0);
     }
 
+    /** {@inheritDoc} */
     @Override
     public void dispose() {
         // Disable the VBO index from the VAO attributes list

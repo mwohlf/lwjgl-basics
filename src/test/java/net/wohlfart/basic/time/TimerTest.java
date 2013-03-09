@@ -7,6 +7,13 @@ import java.util.List;
 
 import org.junit.Test;
 
+/**
+ * <p>TimerTest class.</p>
+ *
+ * @author michael
+ * @version $Id: $Id
+ * @since 0.0.1
+ */
 public class TimerTest {
 
     private static class TestClock implements Clock {
@@ -39,6 +46,9 @@ public class TimerTest {
 
     }
 
+    /**
+     * <p>simpleWrapAround.</p>
+     */
     @Test
     public void simpleWrapAround() {
 
@@ -67,6 +77,9 @@ public class TimerTest {
         assertEquals(5f, timer.getDelta(), 0.00001f);
     }
 
+    /**
+     * <p>defaultWrapAround.</p>
+     */
     @Test
     public void defaultWrapAround() {
 
@@ -95,6 +108,9 @@ public class TimerTest {
         assertEquals(2.5f, timer.getDelta(), 0.00001f);
     }
 
+    /**
+     * <p>longWrapAround.</p>
+     */
     @Test
     public void longWrapAround() {
 

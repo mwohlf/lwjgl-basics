@@ -34,6 +34,7 @@ import com.google.common.eventbus.Subscribe;
  *
  */
 class SimpleState implements GameState {
+    /** Constant <code>LOGGER</code> */
     protected static final Logger LOGGER = LoggerFactory.getLogger(SimpleState.class);
 
     private boolean quit = false;
@@ -59,6 +60,7 @@ class SimpleState implements GameState {
     private MousePicker mousePicker;
     private InputDispatcher inputDispatcher;
 
+    /** {@inheritDoc} */
     @Override
     public void setup() {
         inputDispatcher = graphContext.getInputDispatcher();
@@ -92,7 +94,7 @@ class SimpleState implements GameState {
             //elemBucket.add(frame.getCube());
             try (InputStream inputStream = ClassLoader.class.getResourceAsStream("/models/cube/cube.obj");) {
                 graphContext.setCurrentGraphicContext(wireframeGraphicContext);
-                GenericMeshBuilder builder = new ModelLoader().load(inputStream);
+                GenericMeshBuilder builder = new ModelLoader().getBuilder(inputStream);
                 elemBucket.add(builder.build());
             } catch (IOException ex) {
                 ex.printStackTrace();
@@ -109,11 +111,17 @@ class SimpleState implements GameState {
     }
 
 
+    /**
+     * <p>onExitTriggered.</p>
+     *
+     * @param exitEvent a {@link net.wohlfart.gl.input.CommandEvent.Exit} object.
+     */
     @Subscribe
     public synchronized void onExitTriggered(CommandEvent.Exit exitEvent) {
         quit = true;
     }
 
+    /** {@inheritDoc} */
     @Override
     public void update(float tpf) {
         LOGGER.debug("update called with tpf/fps {}/{}", tpf, 1f / tpf);
@@ -122,6 +130,7 @@ class SimpleState implements GameState {
         }
     }
 
+    /** {@inheritDoc} */
     @Override
     public void render() {
         if (skyboxOn) {
@@ -135,11 +144,13 @@ class SimpleState implements GameState {
         }
     }
 
+    /** {@inheritDoc} */
     @Override
     public boolean isDone() {
         return Display.isCloseRequested() || quit;
     }
 
+    /** {@inheritDoc} */
     @Override
     public void dispose() {
         defaultGraphicContext.dispose();

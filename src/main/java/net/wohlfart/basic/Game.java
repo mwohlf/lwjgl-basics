@@ -18,15 +18,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 
-
-
 /**
- *
- * bootstrapping the game and handling state changes within the game
- *
+ * This class does bootstrap the game and handles state changes within the game.
  */
 class Game {
-    protected static final Logger LOGGER = LoggerFactory.getLogger(Game.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(Game.class);
 
     protected Settings settings;
 
@@ -62,10 +58,20 @@ class Game {
         }
     }
 
+    /**
+     * <p>setGameSettings.</p>
+     *
+     * @param settings a {@link net.wohlfart.basic.Settings} object.
+     */
     public void setGameSettings(Settings settings) {
         this.settings = settings;
     }
 
+    /**
+     * <p>Setter for the field <code>platform</code>.</p>
+     *
+     * @param platform a {@link net.wohlfart.basic.Platform} object.
+     */
     public void setPlatform(Platform platform) {
         this.platform = platform;
     }
@@ -147,6 +153,11 @@ class Game {
     }
 
 
+    /**
+     * <p>Setter for the field <code>currentState</code>.</p>
+     *
+     * @param newState a {@link net.wohlfart.basic.states.GameStateEnum} object.
+     */
     public void setCurrentState(final GameStateEnum newState) {
         currentState.dispose();
         currentState = newState.getValue();

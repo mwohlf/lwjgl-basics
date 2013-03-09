@@ -7,6 +7,12 @@ package net.wohlfart.gl.input;
  *
  *
  */
+/**
+ * <p>InputAdaptor interface.</p>
+ *
+ *
+ *
+ */
 public interface InputAdaptor {
 
     interface KeyEventDispatcher {
@@ -30,8 +36,18 @@ public interface InputAdaptor {
     }
 
 
+    /**
+     * <p>getKeyboardDevice.</p>
+     *
+     * @return a {@link net.wohlfart.gl.input.InputAdaptor.KeyEventDispatcher} object.
+     */
     KeyEventDispatcher getKeyboardDevice();
 
+    /**
+     * <p>getMouseDevice.</p>
+     *
+     * @return a {@link net.wohlfart.gl.input.InputAdaptor.PositionEventDispatcher} object.
+     */
     PositionEventDispatcher getMouseDevice();
 
 
@@ -58,6 +74,9 @@ public interface InputAdaptor {
     }
     // @formatter:on
 
+    /**
+     * <p>destroy.</p>
+     */
     void destroy();
 
 }

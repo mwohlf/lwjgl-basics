@@ -9,6 +9,12 @@ import org.lwjgl.opengl.GL20;
 import org.lwjgl.opengl.GL30;
 import org.lwjgl.util.ReadableColor;
 
+/**
+ * <p>GenericMesh class.</p>
+ *
+ *
+ *
+ */
 public class GenericMesh implements Renderable {
 
     private final int vaoHandle;
@@ -37,6 +43,7 @@ public class GenericMesh implements Renderable {
 
 
 
+    /** {@inheritDoc} */
     @Override
     public void render() {
         final int colorAttrib = ShaderAttributeHandle.COLOR.getLocation();
@@ -55,6 +62,7 @@ public class GenericMesh implements Renderable {
         GL30.glBindVertexArray(0);
     }
 
+    /** {@inheritDoc} */
     @Override
     public void dispose() {
         // Disable the VBO index from the VAO attributes list

@@ -8,12 +8,22 @@ import org.junit.Before;
 import org.junit.Test;
 import org.lwjgl.util.vector.Vector3f;
 
+/**
+ * <p>PlanetTextureTest class.</p>
+ *
+ * @author michael
+ * @version $Id: $Id
+ * @since 0.0.1
+ */
 public class PlanetTextureTest {
 
     CelestialTexture planetTexture;
     int height;
     int width;
 
+    /**
+     * <p>runBeforeEveryTest.</p>
+     */
     @Before
     public void runBeforeEveryTest() {
         // use a big enough radius so we don't have rounding errors...
@@ -23,11 +33,17 @@ public class PlanetTextureTest {
         width = planetTexture.getHeight();
     }
 
+    /**
+     * <p>runAfterEveryTest.</p>
+     */
     @After
     public void runAfterEveryTest() {
         planetTexture = null;
     }
 
+    /**
+     * <p>size.</p>
+     */
     @Test
     public void size() {
         // Image image = planetTexture.getImage();
@@ -35,6 +51,9 @@ public class PlanetTextureTest {
         assertEquals(1257, planetTexture.getWidth());
     }
 
+    /**
+     * <p>poleVectors.</p>
+     */
     @Test
     public void poleVectors() {
         org.lwjgl.util.vector.Vector3f vec;
@@ -58,6 +77,9 @@ public class PlanetTextureTest {
         assertEqualVec(new Vector3f(0, -1, 0), vec);
     }
 
+    /**
+     * <p>equatorVectors.</p>
+     */
     @Test
     public void equatorVectors() {
         Vector3f vec;

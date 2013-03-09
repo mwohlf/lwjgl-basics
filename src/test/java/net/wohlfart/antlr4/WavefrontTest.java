@@ -8,10 +8,20 @@ import org.antlr.v4.runtime.tree.ParseTree;
 import org.antlr.v4.runtime.tree.ParseTreeWalker;
 import org.junit.Test;
 
+/**
+ * <p>WavefrontTest class.</p>
+ *
+ * @author michael
+ * @version $Id: $Id
+ * @since 0.0.1
+ */
 public class WavefrontTest {
 
 
 
+    /**
+     * <p>simpleParse.</p>
+     */
     @Test
     public void simpleParse() {
         ANTLRInputStream input = new ANTLRInputStream(getCube());
@@ -22,7 +32,7 @@ public class WavefrontTest {
         ParseTree tree = parser.wavefront();
 
         ParseTreeWalker walker = new ParseTreeWalker();
-        WavefrontReader reader = new WavefrontReader();
+        MeshBuilderProviderImpl reader = new MeshBuilderProviderImpl();
         walker.walk(reader, tree);
 
         assertEquals(12 * 3, reader.getMeshBuilder().getIndicesCount());
@@ -33,6 +43,11 @@ public class WavefrontTest {
     }
 
 
+    /**
+     * <p>getCube.</p>
+     *
+     * @return a {@link java.lang.String} object.
+     */
     protected String getCube() {
         return ""
                 +"# Blender v2.66 (sub 0) OBJ File: ''" + '\n'

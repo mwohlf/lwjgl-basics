@@ -10,18 +10,37 @@ import net.wohlfart.tools.SimpleMath;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.util.vector.Vector3f;
 
+/**
+ * <p>Circle class.</p>
+ *
+ *
+ *
+ */
 public class Circle extends AbstractRenderableGrid {
 
     private final int pieces = 15; // LOD
     private float radius = 1;
 
+    /**
+     * <p>Constructor for Circle.</p>
+     */
     public Circle() {
     }
 
+    /**
+     * <p>Constructor for Circle.</p>
+     *
+     * @param radius a float.
+     */
     public Circle(float radius) {
         this.radius = radius;
     }
 
+    /**
+     * <p>createVertices.</p>
+     *
+     * @return a {@link java.util.List} object.
+     */
     protected List<Vector3f> createVertices() {
         final List<Vector3f> result = new ArrayList<Vector3f>(pieces);
         for (int i = 0; i < pieces; i++) {
@@ -33,6 +52,11 @@ public class Circle extends AbstractRenderableGrid {
         return result;
     }
 
+    /**
+     * <p>createIndices.</p>
+     *
+     * @return an array of {@link java.lang.Integer} objects.
+     */
     protected Integer[] createIndices() {
         final List<Integer> result = new ArrayList<Integer>(pieces * 2);
         for (int i = 0; i < pieces; i++) {
@@ -42,6 +66,7 @@ public class Circle extends AbstractRenderableGrid {
         return result.toArray(new Integer[result.size()]);
     }
 
+    /** {@inheritDoc} */
     @Override
     protected IMesh setupMesh() {
         final WireframeMeshBuilder builder = new WireframeMeshBuilder();

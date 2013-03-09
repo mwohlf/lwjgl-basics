@@ -12,6 +12,12 @@ import org.lwjgl.opengl.GL11;
 import org.lwjgl.util.vector.Vector3f;
 
 // see: http://blog.andreaskahler.com/2009/06/creating-icosphere-mesh-in-code.html
+/**
+ * <p>IcosphereMesh class.</p>
+ *
+ *
+ *
+ */
 public class IcosphereMesh extends AbstractRenderableGrid {
 
     private int lod = 0;
@@ -49,14 +55,28 @@ public class IcosphereMesh extends AbstractRenderableGrid {
             9, 8, 8, 1, 1, 9,
     }; // @formatter:on
 
+    /**
+     * <p>Constructor for IcosphereMesh.</p>
+     */
     public IcosphereMesh() {
         this(0);
     }
 
+    /**
+     * <p>Constructor for IcosphereMesh.</p>
+     *
+     * @param lod a int.
+     */
     public IcosphereMesh(int lod) {
         this(lod, 1f);
     }
 
+    /**
+     * <p>Constructor for IcosphereMesh.</p>
+     *
+     * @param lod a int.
+     * @param radius a float.
+     */
     public IcosphereMesh(int lod, float radius) {
         this.lod = lod;
         this.radius = radius;
@@ -144,6 +164,7 @@ public class IcosphereMesh extends AbstractRenderableGrid {
         return new Vector3f((v1.x + v2.x) / 2f, (v1.y + v2.y) / 2f, (v1.z + v2.z) / 2f);
     }
 
+    /** {@inheritDoc} */
     @Override
     protected IMesh setupMesh() {
         splitPlanes(lod);

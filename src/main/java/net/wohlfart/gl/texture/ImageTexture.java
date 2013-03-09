@@ -19,6 +19,12 @@ class ImageTexture implements ITexture {
 
     protected int id;
 
+    /**
+     * <p>Constructor for ImageTexture.</p>
+     *
+     * @param inputStream a {@link java.io.InputStream} object.
+     * @throws java.io.IOException if any.
+     */
     public ImageTexture(final InputStream inputStream) throws IOException {
         final BufferedImage image = ImageIO.read(inputStream);
         width = image.getWidth();
@@ -31,20 +37,42 @@ class ImageTexture implements ITexture {
     }
 
     // for subclassing
+    /**
+     * <p>Constructor for ImageTexture.</p>
+     *
+     * @param texture a {@link java.nio.IntBuffer} object.
+     * @param width a int.
+     * @param height a int.
+     */
     protected ImageTexture(final IntBuffer texture, final int width, final int height) {
         this.width = width;
         this.height = height;
         this.texture = texture;
     }
 
+    /**
+     * <p>Getter for the field <code>width</code>.</p>
+     *
+     * @return a int.
+     */
     protected int getWidth() {
         return width;
     }
 
+    /**
+     * <p>Getter for the field <code>height</code>.</p>
+     *
+     * @return a int.
+     */
     protected int getHeight() {
         return height;
     }
 
+    /**
+     * <p>Getter for the field <code>texture</code>.</p>
+     *
+     * @return a {@link java.nio.IntBuffer} object.
+     */
     protected IntBuffer getTexture() {
         return texture;
     }
@@ -54,6 +82,7 @@ class ImageTexture implements ITexture {
      *
      * @see net.wohlfart.gl.tools.ITextur#init()
      */
+    /** {@inheritDoc} */
     @Override
     public void init() {
         GL11.glEnable(GL11.GL_TEXTURE_2D);
@@ -74,6 +103,7 @@ class ImageTexture implements ITexture {
      *
      * @see net.wohlfart.gl.tools.ITextur#bind()
      */
+    /** {@inheritDoc} */
     @Override
     public void bind() {
         GL11.glBindTexture(GL11.GL_TEXTURE_2D, id);
@@ -84,6 +114,7 @@ class ImageTexture implements ITexture {
      *
      * @see net.wohlfart.gl.tools.ITextur#unbind()
      */
+    /** {@inheritDoc} */
     @Override
     public void unbind() {
         GL11.glBindTexture(GL11.GL_TEXTURE_2D, 0);

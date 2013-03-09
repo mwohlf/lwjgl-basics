@@ -13,6 +13,7 @@ import java.util.zip.Inflater;
  * A PNGDecoder. The slick PNG decoder is based on this class :)
  *
  * @author Matthias Mann
+ *
  */
 public class PNGDecoder {
 
@@ -67,6 +68,12 @@ public class PNGDecoder {
     private byte[] paletteA;
     private byte[] transPixel;
 
+    /**
+     * <p>Constructor for PNGDecoder.</p>
+     *
+     * @param input a {@link java.io.InputStream} object.
+     * @throws java.io.IOException if any.
+     */
     public PNGDecoder(InputStream input) throws IOException {
         this.input = input;
         this.crc = new CRC32();
@@ -101,10 +108,20 @@ public class PNGDecoder {
         }
     }
 
+    /**
+     * <p>Getter for the field <code>height</code>.</p>
+     *
+     * @return a int.
+     */
     public int getHeight() {
         return height;
     }
 
+    /**
+     * <p>Getter for the field <code>width</code>.</p>
+     *
+     * @return a int.
+     */
     public int getWidth() {
         return width;
     }
@@ -125,11 +142,18 @@ public class PNGDecoder {
      * @return true if the image has transparency
      * @see #hasAlphaChannel()
      * @see #overwriteTRNS(byte, byte, byte)
+     * @see #hasAlphaChannel()
+     * @see #overwriteTRNS(byte, byte, byte)
      */
     public boolean hasAlpha() {
         return hasAlphaChannel() || paletteA != null || transPixel != null;
     }
 
+    /**
+     * <p>isRGB.</p>
+     *
+     * @return a boolean.
+     */
     public boolean isRGB() {
         return colorType == COLOR_TRUEALPHA || colorType == COLOR_TRUECOLOR || colorType == COLOR_INDEXED;
     }
@@ -149,7 +173,7 @@ public class PNGDecoder {
      *            the green component of the color to make transparent
      * @param b
      *            the blue component of the color to make transparent
-     * @throws UnsupportedOperationException
+     * @throws java.lang.UnsupportedOperationException
      *             if the tRNS chunk data can't be set
      * @see #hasAlphaChannel()
      */
@@ -176,7 +200,7 @@ public class PNGDecoder {
      * @param fmt
      *            the desired format
      * @return format which best matches the desired format
-     * @throws UnsupportedOperationException
+     * @throws java.lang.UnsupportedOperationException
      *             if this PNG file can't be decoded
      */
     public Format decideTextureFormat(Format fmt) {
@@ -235,11 +259,11 @@ public class PNGDecoder {
      *            the stride in bytes from start of a line to start of the next line, can be negative.
      * @param fmt
      *            the target format into which the image should be decoded.
-     * @throws IOException
+     * @throws java.io.IOException
      *             if a read or data error occurred
-     * @throws IllegalArgumentException
+     * @throws java.lang.IllegalArgumentException
      *             if the start position of a line falls outside the buffer
-     * @throws UnsupportedOperationException
+     * @throws java.lang.UnsupportedOperationException
      *             if the image can't be decoded into the desired format
      */
     public void decode(ByteBuffer buffer, int stride, Format fmt) throws IOException {
@@ -367,11 +391,11 @@ public class PNGDecoder {
      *            the stride in bytes from start of a line to start of the next line, must be positive.
      * @param fmt
      *            the target format into which the image should be decoded.
-     * @throws IOException
+     * @throws java.io.IOException
      *             if a read or data error occurred
-     * @throws IllegalArgumentException
+     * @throws java.lang.IllegalArgumentException
      *             if the start position of a line falls outside the buffer
-     * @throws UnsupportedOperationException
+     * @throws java.lang.UnsupportedOperationException
      *             if the image can't be decoded into the desired format
      */
     public void decodeFlipped(ByteBuffer buffer, int stride, Format fmt) throws IOException {

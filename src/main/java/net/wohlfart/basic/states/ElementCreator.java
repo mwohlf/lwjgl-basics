@@ -20,6 +20,12 @@ import org.lwjgl.util.ReadableColor;
 import org.lwjgl.util.vector.Quaternion;
 import org.lwjgl.util.vector.Vector3f;
 
+/**
+ * <p>ElementCreator class.</p>
+ *
+ *
+ *
+ */
 public class ElementCreator {
 
     protected GraphicContextManager graphContext = GraphicContextManager.INSTANCE;

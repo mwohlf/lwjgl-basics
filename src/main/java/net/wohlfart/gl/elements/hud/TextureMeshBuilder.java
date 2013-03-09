@@ -22,8 +22,12 @@ import org.slf4j.LoggerFactory;
 
 /**
  * layer for testing the txt features
+ *
+ *
+ *
  */
 public class TextureMeshBuilder {
+    /** Constant <code>LOGGER</code> */
     protected static final Logger LOGGER = LoggerFactory.getLogger(TextureMeshBuilder.class);
 
     private int texId;
@@ -31,6 +35,11 @@ public class TextureMeshBuilder {
     private Vector3f translation = new Vector3f();
 
 
+    /**
+     * <p>build.</p>
+     *
+     * @return a {@link net.wohlfart.gl.shader.mesh.IMesh} object.
+     */
     public IMesh build() {
 
         final Vector3f[] vectors = new Vector3f[] {
@@ -128,14 +137,29 @@ public class TextureMeshBuilder {
         // @formatter:on
     }
 
+    /**
+     * <p>setTextureId.</p>
+     *
+     * @param texId a int.
+     */
     public void setTextureId(int texId) {
         this.texId = texId;
     }
 
+    /**
+     * <p>Setter for the field <code>rotation</code>.</p>
+     *
+     * @param rotation a {@link org.lwjgl.util.vector.Quaternion} object.
+     */
     public void setRotation(Quaternion rotation) {
         this.rotation = rotation;
     }
 
+    /**
+     * <p>Setter for the field <code>translation</code>.</p>
+     *
+     * @param translation a {@link org.lwjgl.util.vector.Vector3f} object.
+     */
     public void setTranslation(Vector3f translation) {
         this.translation = translation;
     }

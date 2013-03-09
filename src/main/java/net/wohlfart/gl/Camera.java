@@ -15,15 +15,23 @@ import org.lwjgl.util.vector.Vector3f;
 // see: http://introcs.cs.princeton.edu/java/32class/Quaternion.java.html
 // see: http://www.mathworks.de/de/help/aeroblks/quaternionrotation.html
 // see: http://stackoverflow.com/questions/4870393/rotating-coordinate-system-via-a-quaternion
+/**
+ * <p>Camera class.</p>
+ *
+ *
+ *
+ */
 public class Camera implements CanRotate {
     private final SimpleQuaternion q = new SimpleQuaternion();
 
+    /** {@inheritDoc} */
     @Override
     public Quaternion getRotation() {
         return q;
     }
 
     // the (1,0,0) vector / X axis
+    /** {@inheritDoc} */
     @Override
     public Vector3f getRght(final Vector3f result) {
         result.x = 1f - 2f * (q.y * q.y + q.z * q.z);
@@ -33,6 +41,7 @@ public class Camera implements CanRotate {
     }
 
     // the (0,1,0) vector / Y axis
+    /** {@inheritDoc} */
     @Override
     public Vector3f getUp(final Vector3f result) {
         result.x = 2f * (q.x * q.y + q.w * q.z);
@@ -42,6 +51,7 @@ public class Camera implements CanRotate {
     }
 
     // the (0,0,1) vector / Z axis
+    /** {@inheritDoc} */
     @Override
     public Vector3f getDir(final Vector3f result) {
         result.x = 2f * (q.x * q.z - q.w * q.y);
@@ -50,12 +60,7 @@ public class Camera implements CanRotate {
         return result.normalise(new Vector3f());
     }
 
-    /**
-     * @param angle
-     *            rotation in rad
-     * @param axis
-     *            rotation axis, must be in the cam's coord system e.g. use (0,1,0)
-     */
+    /** {@inheritDoc} */
     @Override
     public void rotate(final float angle, final Vector3f axis) {
         axis.normalise();
@@ -72,6 +77,9 @@ public class Camera implements CanRotate {
         q.set(rot);
     }
 
+    /**
+     * <p>lookThrough.</p>
+     */
     public void lookThrough() {
         // GL11.glLoadIdentity();
         float x, y, z;
@@ -92,6 +100,7 @@ public class Camera implements CanRotate {
         GL11.glRotatef(SimpleMath.rad2deg(angle), x, y, z);
     }
 
+    /** {@inheritDoc} */
     @Override
     public String toString() {
         final Vector3f up = getUp(new Vector3f());

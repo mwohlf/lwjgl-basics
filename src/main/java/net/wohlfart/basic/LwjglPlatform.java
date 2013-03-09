@@ -7,13 +7,18 @@ import net.wohlfart.gl.input.InputSource;
 import net.wohlfart.gl.input.LwjglInputAdaptor;
 import net.wohlfart.gl.input.LwjglInputSource;
 
+/**
+ * <p>LwjglPlatform class.</p>
+ */
 public class LwjglPlatform implements Platform {
 
+    /** {@inheritDoc} */
     @Override
     public Clock createClock() {
         return new LwjglClockImpl();
     }
 
+    /** {@inheritDoc} */
     @Override
     public InputSource createInputSource(InputDispatcher inputDispatcher) {
         return new LwjglInputSource(new LwjglInputAdaptor(inputDispatcher));

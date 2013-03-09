@@ -28,6 +28,11 @@ class Celestial {
     private final float rotSpeed;
     private final Vector3f rotAxis;
 
+    /**
+     * <p>Constructor for Celestial.</p>
+     *
+     * @param seed a long.
+     */
     public Celestial(long seed) {
         this.seed = seed;
         this.random = new Random(seed);
@@ -56,16 +61,31 @@ class Celestial {
         texture.init();
     }
 
+    /**
+     * <p>Setter for the field <code>position</code>.</p>
+     *
+     * @param position a {@link org.lwjgl.util.vector.Vector3f} object.
+     */
     public void setPosition(final Vector3f position) {
         this.position.set(position);
     }
 
+    /**
+     * <p>Setter for the field <code>position</code>.</p>
+     *
+     * @param x a float.
+     * @param y a float.
+     * @param z a float.
+     */
     public void setPosition(float x, float y, float z) {
         this.position.x = x;
         this.position.y = y;
         this.position.z = z;
     }
 
+    /**
+     * <p>render.</p>
+     */
     public void render() {
         texture.bind();
 
@@ -82,10 +102,18 @@ class Celestial {
         GL11.glPopMatrix();
     }
 
+    /**
+     * <p>update.</p>
+     *
+     * @param tpf a float.
+     */
     public void update(final float tpf) {
 
     }
 
+    /**
+     * <p>distroy.</p>
+     */
     public void distroy() {
 
     }
@@ -94,30 +122,65 @@ class Celestial {
         return (1f - random.nextFloat()) * (max - min) + min;
     }
 
+    /**
+     * <p>Getter for the field <code>seed</code>.</p>
+     *
+     * @return a long.
+     */
     protected long getSeed() {
         return seed;
     }
 
+    /**
+     * <p>Getter for the field <code>rotAxis</code>.</p>
+     *
+     * @return a {@link org.lwjgl.util.vector.Vector3f} object.
+     */
     protected Vector3f getRotAxis() {
         return rotAxis;
     }
 
+    /**
+     * <p>Getter for the field <code>radius</code>.</p>
+     *
+     * @return a float.
+     */
     public float getRadius() {
         return radius;
     }
 
+    /**
+     * <p>Getter for the field <code>rotSpeed</code>.</p>
+     *
+     * @return a float.
+     */
     public float getRotSpeed() {
         return rotSpeed;
     }
 
+    /**
+     * <p>getType.</p>
+     *
+     * @return a {@link net.wohlfart.gl.texture.CelestialType} object.
+     */
     public CelestialType getType() {
         return planetType;
     }
 
+    /**
+     * <p>Getter for the field <code>pathRadius</code>.</p>
+     *
+     * @return a float.
+     */
     public float getPathRadius() {
         return pathRadius;
     }
 
+    /**
+     * <p>Getter for the field <code>pathArc</code>.</p>
+     *
+     * @return a float.
+     */
     public float getPathArc() {
         return pathArc;
     }

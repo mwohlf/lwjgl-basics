@@ -7,6 +7,9 @@ import net.wohlfart.gl.tools.SimplexNoise;
 
 /**
  * different strategies for building planets
+ *
+ *
+ *
  */
 public enum CelestialType {
 

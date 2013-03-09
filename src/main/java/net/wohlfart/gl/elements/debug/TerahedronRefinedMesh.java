@@ -12,6 +12,12 @@ import org.lwjgl.opengl.GL11;
 import org.lwjgl.util.vector.Vector3f;
 
 // see: http://blog.andreaskahler.com/2009/06/creating-icosphere-mesh-in-code.html
+/**
+ * <p>TerahedronRefinedMesh class.</p>
+ *
+ *
+ *
+ */
 public class TerahedronRefinedMesh extends AbstractRenderableGrid {
 
     private int lod = 0;
@@ -26,14 +32,28 @@ public class TerahedronRefinedMesh extends AbstractRenderableGrid {
 
     private Integer[] indices = new Integer[] { 0, 1, 1, 2, 2, 0, 0, 2, 2, 3, 3, 0, 0, 3, 3, 1, 1, 0, 3, 2, 2, 1, 1, 3, };
 
+    /**
+     * <p>Constructor for TerahedronRefinedMesh.</p>
+     */
     public TerahedronRefinedMesh() {
         this(0);
     }
 
+    /**
+     * <p>Constructor for TerahedronRefinedMesh.</p>
+     *
+     * @param lod a int.
+     */
     public TerahedronRefinedMesh(int lod) {
         this(lod, 1f);
     }
 
+    /**
+     * <p>Constructor for TerahedronRefinedMesh.</p>
+     *
+     * @param lod a int.
+     * @param radius a float.
+     */
     public TerahedronRefinedMesh(int lod, float radius) {
         this.lod = lod;
         this.radius = radius;
@@ -121,6 +141,7 @@ public class TerahedronRefinedMesh extends AbstractRenderableGrid {
         return new Vector3f((v1.x + v2.x) / 2f, (v1.y + v2.y) / 2f, (v1.z + v2.z) / 2f);
     }
 
+    /** {@inheritDoc} */
     @Override
     protected IMesh setupMesh() {
         splitPlanes(lod);

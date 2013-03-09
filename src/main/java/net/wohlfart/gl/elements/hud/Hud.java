@@ -12,6 +12,9 @@ import org.lwjgl.opengl.GL11;
 
 /**
  * this class is responsible for switching context and rendering the hud components
+ *
+ *
+ *
  */
 public class Hud implements Renderable {
 
@@ -22,15 +25,26 @@ public class Hud implements Renderable {
     private LayerImpl layer;
 
 
+    /**
+     * <p>init.</p>
+     *
+     * @param hudContext a {@link net.wohlfart.gl.shader.GraphicContextManager.IGraphicContext} object.
+     */
     public void init(IGraphicContext hudContext) {
         this.hudContext = hudContext;
         this.layer = new LayerImpl();
     }
 
+    /**
+     * <p>add.</p>
+     *
+     * @param label a {@link net.wohlfart.gl.elements.hud.widgets.AbstractTextComponent} object.
+     */
     public void add(AbstractTextComponent label) {
         layer.add(label);
     }
 
+    /** {@inheritDoc} */
     @Override
     public void render() {
         cxtManagert.setCurrentGraphicContext(hudContext);
@@ -43,6 +57,7 @@ public class Hud implements Renderable {
         layer.render();
     }
 
+    /** {@inheritDoc} */
     @Override
     public void dispose() {
         layer.dispose();

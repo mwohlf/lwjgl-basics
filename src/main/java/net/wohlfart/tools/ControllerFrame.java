@@ -21,6 +21,12 @@ import net.wohlfart.gl.elements.debug.AbstractRenderableGrid;
 import org.lwjgl.util.ReadableColor;
 import org.lwjgl.util.vector.Vector3f;
 
+/**
+ * <p>ControllerFrame class.</p>
+ *
+ *
+ *
+ */
 @SuppressWarnings("serial")
 public class ControllerFrame extends JFrame {
 
@@ -30,9 +36,15 @@ public class ControllerFrame extends JFrame {
     protected final JButton apply = new JButton("apply");
     private AbstractRenderableGrid cube;
 
+    /**
+     * <p>Constructor for ControllerFrame.</p>
+     */
     public ControllerFrame() {
     }
 
+    /**
+     * <p>init.</p>
+     */
     public void init() {
         try {
             EventQueue.invokeAndWait(new Runnable() {
@@ -63,6 +75,11 @@ public class ControllerFrame extends JFrame {
             }});
     }
 
+    /**
+     * <p>Getter for the field <code>cube</code>.</p>
+     *
+     * @return a {@link net.wohlfart.gl.elements.debug.AbstractRenderableGrid} object.
+     */
     public AbstractRenderableGrid getCube() {
         return cube;
     }
@@ -86,6 +103,7 @@ public class ControllerFrame extends JFrame {
         content.add(apply, BorderLayout.SOUTH);
     }
 
+    /** {@inheritDoc} */
     @Override
     public void setVisible(boolean isVisible) {
         super.setVisible(isVisible);

@@ -5,6 +5,12 @@ import net.wohlfart.tools.SimpleMath;
 /*
  * the high level commands, base class for all kind of high level events/commands
  */
+/**
+ * <p>CommandEvent class.</p>
+ *
+ *
+ *
+ */
 public class CommandEvent {
     private static final float ROTATION_SPEED = SimpleMath.TWO_PI;  // one rotation per sec
     private static final float MOVE_SPEED = 100f;                   // 100 units per sec
@@ -12,6 +18,11 @@ public class CommandEvent {
     protected float delta;
 
 
+    /**
+     * <p>Getter for the field <code>delta</code>.</p>
+     *
+     * @return a float.
+     */
     public float getDelta() {
         return delta;
     }

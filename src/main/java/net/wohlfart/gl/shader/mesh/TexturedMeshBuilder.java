@@ -22,7 +22,14 @@ import org.lwjgl.util.vector.Vector3f;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+/**
+ * <p>TexturedMeshBuilder class.</p>
+ *
+ *
+ *
+ */
 public class TexturedMeshBuilder {
+    /** Constant <code>LOGGER</code> */
     protected static final Logger LOGGER = LoggerFactory.getLogger(TexturedMeshBuilder.class);
 
     private String textureFilename;
@@ -31,6 +38,11 @@ public class TexturedMeshBuilder {
 
     private Vector3f translation;
 
+    /**
+     * <p>build.</p>
+     *
+     * @return a {@link net.wohlfart.gl.shader.mesh.IMesh} object.
+     */
     public IMesh build() {
 
         // load the texture
@@ -156,14 +168,29 @@ public class TexturedMeshBuilder {
          * vertices) { SimpleMath.add(translation, vec, vec); } }
          */}
 
+    /**
+     * <p>Setter for the field <code>textureFilename</code>.</p>
+     *
+     * @param textureFilename a {@link java.lang.String} object.
+     */
     public void setTextureFilename(final String textureFilename) {
         this.textureFilename = textureFilename;
     }
 
+    /**
+     * <p>Setter for the field <code>rotation</code>.</p>
+     *
+     * @param rotation a {@link org.lwjgl.util.vector.Quaternion} object.
+     */
     public void setRotation(Quaternion rotation) {
         this.rotation = rotation;
     }
 
+    /**
+     * <p>Setter for the field <code>translation</code>.</p>
+     *
+     * @param translation a {@link org.lwjgl.util.vector.Vector3f} object.
+     */
     public void setTranslation(Vector3f translation) {
         this.translation = translation;
     }

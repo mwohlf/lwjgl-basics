@@ -12,7 +12,9 @@ import org.lwjgl.util.vector.Vector3f;
 
 /**
  * 0 /|\ / | \ / | \ / 3 \ / - - \ 1 --------- 2
- * 
+ *
+ *
+ *
  */
 public class TetrahedronMesh extends AbstractRenderableGrid {
 
@@ -20,13 +22,26 @@ public class TetrahedronMesh extends AbstractRenderableGrid {
 
     private final Integer[] indices = new Integer[] { 0, 1, 1, 2, 2, 0, 0, 2, 2, 3, 3, 0, 0, 3, 3, 1, 1, 0, };
 
+    /**
+     * <p>Constructor for TetrahedronMesh.</p>
+     */
     public TetrahedronMesh() {
     }
 
+    /**
+     * <p>Constructor for TetrahedronMesh.</p>
+     *
+     * @param length a float.
+     */
     public TetrahedronMesh(float length) {
         this.length = length;
     }
 
+    /**
+     * <p>createVertices.</p>
+     *
+     * @return a {@link java.util.List} object.
+     */
     protected List<Vector3f> createVertices() {
         final float h = +SimpleMath.sqrt(2f / 3f) * length;
         final List<Vector3f> result = new ArrayList<Vector3f>(4);
@@ -37,6 +52,7 @@ public class TetrahedronMesh extends AbstractRenderableGrid {
         return result;
     }
 
+    /** {@inheritDoc} */
     @Override
     protected IMesh setupMesh() {
         final WireframeMeshBuilder builder = new WireframeMeshBuilder();

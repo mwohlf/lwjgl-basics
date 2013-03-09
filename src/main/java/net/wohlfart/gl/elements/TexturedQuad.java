@@ -3,8 +3,15 @@ package net.wohlfart.gl.elements;
 import net.wohlfart.gl.shader.mesh.IMesh;
 import net.wohlfart.gl.shader.mesh.TexturedMeshBuilder;
 
+/**
+ * <p>TexturedQuad class.</p>
+ *
+ *
+ *
+ */
 public class TexturedQuad extends AbstractRenderable {
 
+    /** {@inheritDoc} */
     @Override
     protected IMesh setupMesh() {
         final TexturedMeshBuilder builder = new TexturedMeshBuilder();

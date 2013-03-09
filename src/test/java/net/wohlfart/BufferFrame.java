@@ -21,9 +21,21 @@ import javax.swing.event.ChangeListener;
 
 import net.wohlfart.gl.texture.SimplexProcTexture;
 
+/**
+ * <p>BufferFrame class.</p>
+ *
+ * @author michael
+ * @version $Id: $Id
+ * @since 0.0.1
+ */
 @SuppressWarnings("serial")
 public class BufferFrame extends JFrame {
 
+    /**
+     * <p>main.</p>
+     *
+     * @param args an array of {@link java.lang.String} objects.
+     */
     public static void main(String[] args) {
         try {
             EventQueue.invokeAndWait(new Runnable() {
@@ -147,6 +159,7 @@ public class BufferFrame extends JFrame {
         }
     }
 
+    /** {@inheritDoc} */
     @Override
     public void setVisible(boolean isVisible) {
         super.setVisible(isVisible);

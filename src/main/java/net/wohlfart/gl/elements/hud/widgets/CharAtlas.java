@@ -13,6 +13,12 @@ import org.lwjgl.opengl.GL30;
  * mesh for a complete character set in a specified font and size
  * also serves as texture for building labels with text content
  */
+/**
+ * <p>CharAtlas class.</p>
+ *
+ *
+ *
+ */
 public class CharAtlas {
 
     HashMap<Character, CharInfo> map = new HashMap<Character, CharInfo>();
@@ -33,6 +39,11 @@ public class CharAtlas {
         setupTexture(GL13.GL_TEXTURE1);
     }
 
+    /**
+     * <p>setupTexture.</p>
+     *
+     * @param textureUnit a int.
+     */
     protected void setupTexture(int textureUnit) {
 
         final int width = buffImage.getWidth(null);
@@ -71,14 +82,30 @@ public class CharAtlas {
         GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER, GL11.GL_LINEAR_MIPMAP_LINEAR);
     }
 
+    /**
+     * <p>getImage.</p>
+     *
+     * @return a {@link java.awt.image.BufferedImage} object.
+     */
     public BufferedImage getImage() {
         return buffImage;
     }
 
+    /**
+     * <p>getCharInfo.</p>
+     *
+     * @param c a char.
+     * @return a {@link net.wohlfart.gl.elements.hud.widgets.CharInfo} object.
+     */
     public CharInfo getCharInfo(char c) {
         return map.get(c);
     }
 
+    /**
+     * <p>getTextureId.</p>
+     *
+     * @return a int.
+     */
     public int getTextureId() {
         return texId;
     }

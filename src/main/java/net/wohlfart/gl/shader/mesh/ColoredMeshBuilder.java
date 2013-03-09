@@ -14,9 +14,21 @@ import org.lwjgl.opengl.GL30;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+/**
+ * <p>ColoredMeshBuilder class.</p>
+ *
+ *
+ *
+ */
 public class ColoredMeshBuilder {
+    /** Constant <code>LOGGER</code> */
     protected static final Logger LOGGER = LoggerFactory.getLogger(ColoredMeshBuilder.class);
 
+    /**
+     * <p>build.</p>
+     *
+     * @return a {@link net.wohlfart.gl.shader.mesh.IMesh} object.
+     */
     public IMesh build() {
 
         // We'll define our quad using 4 vertices of the custom 'Vertex' class

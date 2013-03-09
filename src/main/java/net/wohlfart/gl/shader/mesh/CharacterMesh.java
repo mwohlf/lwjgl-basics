@@ -6,6 +6,12 @@ import org.lwjgl.opengl.GL15;
 import org.lwjgl.opengl.GL20;
 import org.lwjgl.opengl.GL30;
 
+/**
+ * <p>CharacterMesh class.</p>
+ *
+ *
+ *
+ */
 public class CharacterMesh implements IMesh {
 
     private final int vaoHandle;
@@ -22,6 +28,20 @@ public class CharacterMesh implements IMesh {
     private final int textureId;
 
     // package private, created by the builder
+    /**
+     * <p>Constructor for CharacterMesh.</p>
+     *
+     * @param vaoHandle a int.
+     * @param vboVerticesHandle a int.
+     * @param vboIndicesHandle a int.
+     * @param indicesType a int.
+     * @param indexElemSize a int.
+     * @param indicesCount a int.
+     * @param indexOffset a int.
+     * @param positionAttrib a int.
+     * @param textureAttrib a int.
+     * @param textureId a int.
+     */
     public CharacterMesh(
             int vaoHandle, int vboVerticesHandle,
             // index
@@ -44,6 +64,7 @@ public class CharacterMesh implements IMesh {
         this.textureId = textureId;
     }
 
+    /** {@inheritDoc} */
     @Override
     public void draw() {
         // Bind the texture
@@ -64,6 +85,7 @@ public class CharacterMesh implements IMesh {
         GL30.glBindVertexArray(0);
     }
 
+    /** {@inheritDoc} */
     @Override
     public void dispose() {
         // Disable the VBO index from the VAO attributes list

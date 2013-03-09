@@ -52,6 +52,7 @@ enum BoxSide {  // @formatter:off
 
 
     // FIXME: screensize, texture size and dist parameter need to match so we don't cut off the background
+    /** Constant <code>DOT_PROD_LIMIT=-0.0f</code> */
     public static final float DOT_PROD_LIMIT = -0.0f; // FIXME: this depends on the view angle
     private static final int SIZE = 1024;
 
@@ -140,6 +141,13 @@ enum BoxSide {  // @formatter:off
                 positionAttrib, textureAttrib, textureId, translation.negate(new Vector3f()));
     }
 
+    /**
+     * <p>createAndLoadTexture.</p>
+     *
+     * @param textureUnit a int.
+     * @param parameters a {@link net.wohlfart.gl.elements.skybox.SkyboxParameters} object.
+     * @return a int.
+     */
     protected int createAndLoadTexture(int textureUnit, SkyboxParameters parameters) {
         final int width = SIZE;
         final int height = SIZE;
@@ -169,6 +177,15 @@ enum BoxSide {  // @formatter:off
         return texId;
     }
 
+    /**
+     * <p>createClouds.</p>
+     *
+     * @param data an array of int.
+     * @param width a int.
+     * @param height a int.
+     * @param param a {@link net.wohlfart.gl.elements.skybox.SkyboxParameters.PerlinNoiseParameters} object.
+     * @return an array of int.
+     */
     protected int[] createClouds(int[] data, int width, int height, PerlinNoiseParameters param) {
         final float persistence = param.getPersistence();
         final int octaves = param.getOctaves();
@@ -187,6 +204,15 @@ enum BoxSide {  // @formatter:off
         return data;
     }
 
+    /**
+     * <p>createStars.</p>
+     *
+     * @param data an array of int.
+     * @param width a int.
+     * @param height a int.
+     * @param param a {@link net.wohlfart.gl.elements.skybox.SkyboxParameters.PerlinNoiseParameters} object.
+     * @return an array of int.
+     */
     protected int[] createStars(int[] data, int width, int height, PerlinNoiseParameters param) {
         final float persistence = param.getPersistence();
         final int octaves = param.getOctaves();
@@ -208,6 +234,15 @@ enum BoxSide {  // @formatter:off
     }
 
     // translate from the plane coords to 3d
+    /**
+     * <p>getVector.</p>
+     *
+     * @param x a int.
+     * @param y a int.
+     * @param width a int.
+     * @param height a int.
+     * @return a {@link org.lwjgl.util.vector.Vector3f} object.
+     */
     protected Vector3f getVector(int x, int y, int width, int height) {
         final float xx = +(x / (width / (dist * 2f)) - dist);
         final float yy = -(y / (height / (dist * 2f)) - dist);
@@ -215,18 +250,41 @@ enum BoxSide {  // @formatter:off
         return rotate(new Vector3f(xx, yy, -dist).normalise(new Vector3f()));
     }
 
+    /**
+     * <p>rotate.</p>
+     *
+     * @param in a {@link org.lwjgl.util.vector.Vector3f} object.
+     * @return a {@link org.lwjgl.util.vector.Vector3f} object.
+     */
     protected Vector3f rotate(Vector3f in) {
         final Vector3f result = new Vector3f();
         SimpleMath.mul(rotation, in, result);
         return result;
     }
 
+    /**
+     * <p>translate.</p>
+     *
+     * @param in a {@link org.lwjgl.util.vector.Vector3f} object.
+     * @return a {@link org.lwjgl.util.vector.Vector3f} object.
+     */
     protected Vector3f translate(Vector3f in) {
         final Vector3f result = new Vector3f();
         SimpleMath.add(translation, in, result);
         return result;
     }
 
+    /**
+     * <p>createNoise.</p>
+     *
+     * @param x a float.
+     * @param y a float.
+     * @param z a float.
+     * @param w a float.
+     * @param persistence a float.
+     * @param octaves a int.
+     * @return a double.
+     */
     protected double createNoise(final float x, final float y, final float z, final float w, final float persistence, final int octaves) {
         double result = 0;
         float max = 0;
@@ -239,6 +297,17 @@ enum BoxSide {  // @formatter:off
         return result / max;
     }
 
+    /**
+     * <p>createNoise.</p>
+     *
+     * @param x a float.
+     * @param y a float.
+     * @param z a float.
+     * @param w a float.
+     * @param amplitude a float.
+     * @param frequency a float.
+     * @return a double.
+     */
     protected double createNoise(final float x, final float y, final float z, final float w, final float amplitude, final float frequency) {
         // the noise returns [-1 .. +1]
         final double noise = SimplexNoise.noise(x * frequency, y * frequency, z * frequency, w * frequency);

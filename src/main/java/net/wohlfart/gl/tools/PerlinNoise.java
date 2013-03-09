@@ -2,8 +2,9 @@ package net.wohlfart.gl.tools;
 
 /**
  * see: http://freespace.virgin.net/hugo.elias/models/m_perlin.htm
- * 
+ *
  * @author Ken Perlin
+ *
  */
 public final class PerlinNoise {
 
@@ -11,9 +12,11 @@ public final class PerlinNoise {
     }
 
     /**
-     * @param x
-     * @param y
-     * @param z
+     * <p>noise.</p>
+     *
+     * @param x a double.
+     * @param y a double.
+     * @param z a double.
      * @return noise between -1 and +1
      */
     static public double noise(double x, double y, double z) {

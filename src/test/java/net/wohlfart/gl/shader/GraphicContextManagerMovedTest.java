@@ -10,6 +10,13 @@ import org.junit.Before;
 import org.junit.Test;
 import org.lwjgl.util.vector.Matrix4f;
 
+/**
+ * <p>GraphicContextManagerMovedTest class.</p>
+ *
+ * @author michael
+ * @version $Id: $Id
+ * @since 0.0.1
+ */
 public class GraphicContextManagerMovedTest {
 
     GraphicContextManager contxt;
@@ -33,6 +40,9 @@ public class GraphicContextManagerMovedTest {
     };
 
 
+    /**
+     * <p>setup.</p>
+     */
     @Before
     public void setup() {
         settings = createSettings();
@@ -52,6 +62,9 @@ public class GraphicContextManagerMovedTest {
         return settings;
     }
 
+    /**
+     * <p>testCenter.</p>
+     */
     @Test
     public void testCenter() {
         // createPickingRay for: 500.0,350.0
