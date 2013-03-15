@@ -2,12 +2,16 @@ package net.wohlfart.gl.shader.mesh;
 
 import net.wohlfart.gl.renderer.Renderable;
 import net.wohlfart.gl.shader.ShaderAttributeHandle;
+import net.wohlfart.gl.shader.ShaderUniformHandle;
+import net.wohlfart.tools.SimpleMath;
 
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL15;
 import org.lwjgl.opengl.GL20;
 import org.lwjgl.opengl.GL30;
 import org.lwjgl.util.ReadableColor;
+import org.lwjgl.util.vector.Matrix4f;
+import org.lwjgl.util.vector.Vector3f;
 
 /**
  * <p>GenericMesh class.</p>
@@ -23,6 +27,8 @@ public class GenericMesh implements Renderable {
     private final int indicesCount;
     private final int indexOffset;
     private final ReadableColor color;
+
+    private final Matrix4f model2world = SimpleMath.convert(new Vector3f(10, 30,10), new Matrix4f());
 
 
     // only called by the builder
@@ -45,6 +51,8 @@ public class GenericMesh implements Renderable {
     public void render() {
         final int colorAttrib = ShaderAttributeHandle.COLOR.getLocation();
         final int positionAttrib = ShaderAttributeHandle.POSITION.getLocation();
+
+        ShaderUniformHandle.MODEL_TO_WORLD.set(model2world);
 
         GL30.glBindVertexArray(vaoHandle);
         // wire width

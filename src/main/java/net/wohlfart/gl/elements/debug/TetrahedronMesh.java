@@ -11,16 +11,25 @@ import org.lwjgl.opengl.GL11;
 import org.lwjgl.util.vector.Vector3f;
 
 /**
- * 0 /|\ / | \ / | \ / 3 \ / - - \ 1 --------- 2
- *
- *
+ * @formatter:off
+ *         0
+ *        /|\
+ *       / | \
+ *      /  |  \
+ *     /   3   \
+ *    / -     - \
+ *   1 --------- 2
+ * @formatter:on
  *
  */
 public class TetrahedronMesh extends AbstractRenderableGrid {
 
     private float length = 1;
 
-    private final Integer[] indices = new Integer[] { 0, 1, 1, 2, 2, 0, 0, 2, 2, 3, 3, 0, 0, 3, 3, 1, 1, 0, };
+    private final Integer[] indices = new Integer[] { // @formatter:off
+            0, 1,  1, 2,  2, 0,
+            0, 2,  2, 3,  3, 0,
+            0, 3,  3, 1,  1, 0, };  // @formatter:on
 
     /**
      * <p>Constructor for TetrahedronMesh.</p>

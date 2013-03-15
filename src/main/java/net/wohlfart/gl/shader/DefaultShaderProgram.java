@@ -6,28 +6,10 @@ import org.slf4j.LoggerFactory;
 
 /**
  * <p>DefaultShaderProgram class.</p>
- *
- *
- *
  */
 public class DefaultShaderProgram extends AbstractShaderProgram {
     /** Constant <code>LOGGER</code> */
     protected static final Logger LOGGER = LoggerFactory.getLogger(DefaultShaderProgram.class);
-
-    /** Constant <code>DEFAULT_VERTEX_SHADER="/shaders/default/vertex.glsl"</code> */
-    public static final String DEFAULT_VERTEX_SHADER = "/shaders/default/vertex.glsl";
-    /** Constant <code>DEFAULT_FRAGMENT_SHADER="/shaders/default/fragment.glsl"</code> */
-    public static final String DEFAULT_FRAGMENT_SHADER = "/shaders/default/fragment.glsl";
-
-    /** Constant <code>WIREFRAME_VERTEX_SHADER="/shaders/wireframe/vertex.glsl"</code> */
-    public static final String WIREFRAME_VERTEX_SHADER = "/shaders/wireframe/vertex.glsl";
-    /** Constant <code>WIREFRAME_FRAGMENT_SHADER="/shaders/wireframe/fragment.glsl"</code> */
-    public static final String WIREFRAME_FRAGMENT_SHADER = "/shaders/wireframe/fragment.glsl";
-
-    /** Constant <code>HUD_VERTEX_SHADER="/shaders/hud/vertex.glsl"</code> */
-    public static final String HUD_VERTEX_SHADER = "/shaders/hud/vertex.glsl";
-    /** Constant <code>HUD_FRAGMENT_SHADER="/shaders/hud/fragment.glsl"</code> */
-    public static final String HUD_FRAGMENT_SHADER = "/shaders/hud/fragment.glsl";
 
     private int vertexShaderId = -1;
     private int fragmentShaderId = -1;

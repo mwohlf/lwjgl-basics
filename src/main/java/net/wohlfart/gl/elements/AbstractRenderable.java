@@ -11,9 +11,6 @@ import org.lwjgl.util.vector.Vector3f;
 
 /**
  * <p>Abstract AbstractRenderable class.</p>
- *
- *
- *
  */
 public abstract class AbstractRenderable implements Renderable {
 

@@ -14,9 +14,6 @@ import org.lwjgl.util.vector.Vector3f;
 // see: http://blog.andreaskahler.com/2009/06/creating-icosphere-mesh-in-code.html
 /**
  * <p>IcosphereMesh class.</p>
- *
- *
- *
  */
 public class IcosphereMesh extends AbstractRenderableGrid {
 
@@ -24,14 +21,13 @@ public class IcosphereMesh extends AbstractRenderableGrid {
     private float radius = 1;
 
     float t = (1.0f + SimpleMath.sqrt(5.0f)) / 2.0f;
-    private final List<Vector3f> vertices = new ArrayList<Vector3f>(Arrays.<Vector3f> asList(new Vector3f[] { new Vector3f(-1f, t, 0), new Vector3f(+1f, t, 0),
-            new Vector3f(-1f, -t, 0), new Vector3f(+1f, -t, 0),
+    private final List<Vector3f> vertices = new ArrayList<Vector3f>(
+            Arrays.<Vector3f> asList( new Vector3f[] { // @formatter:off
+                    new Vector3f(-1f, t, 0), new Vector3f(+1f, t, 0), new Vector3f(-1f, -t, 0),
+                    new Vector3f(+1f, -t, 0), new Vector3f(0f, -1, t), new Vector3f(0f, 1, t),
+                    new Vector3f(0f, -1, -t), new Vector3f(0f, 1, -t), new Vector3f(t, 0, -1),
+                    new Vector3f(t, 0, 1), new Vector3f(-t, 0, -1), new Vector3f(-t, 0, 1), }));
 
-            new Vector3f(0f, -1, t), new Vector3f(0f, 1, t), new Vector3f(0f, -1, -t), new Vector3f(0f, 1, -t),
-
-            new Vector3f(t, 0, -1), new Vector3f(t, 0, 1), new Vector3f(-t, 0, -1), new Vector3f(-t, 0, 1), }));
-
-    // @formatter:off
     private Integer[] indices = new Integer[] {
             0, 11, 11, 5, 5, 0,
             0, 5, 5, 1, 1, 0,

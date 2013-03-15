@@ -95,11 +95,10 @@ class Game implements InitializingBean {
             startPlatform();
             globalGameTimer = new TimerImpl(platform.createClock());
             userInputSource = platform.createInputSource(inputDispatcher);
-
             setCurrentState(GameStateEnum.SIMPLE);
             runApplicationLoop();
-            shutdownPlatform();
             shutdownGame();
+            shutdownPlatform();
         } catch (final LWJGLException ex) {
             LOGGER.warn("Application startup failed", ex);
         }

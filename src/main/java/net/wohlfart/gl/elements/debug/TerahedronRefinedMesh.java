@@ -11,12 +11,9 @@ import net.wohlfart.tools.SimpleMath;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.util.vector.Vector3f;
 
-// see: http://blog.andreaskahler.com/2009/06/creating-icosphere-mesh-in-code.html
 /**
  * <p>TerahedronRefinedMesh class.</p>
- *
- *
- *
+ * <p>see: http://blog.andreaskahler.com/2009/06/creating-icosphere-mesh-in-code.html<p/>
  */
 public class TerahedronRefinedMesh extends AbstractRenderableGrid {
 
@@ -30,7 +27,11 @@ public class TerahedronRefinedMesh extends AbstractRenderableGrid {
             new Vector3f(0f, -1f, +1 / SimpleMath.sqrt(2f)), // back
     }));
 
-    private Integer[] indices = new Integer[] { 0, 1, 1, 2, 2, 0, 0, 2, 2, 3, 3, 0, 0, 3, 3, 1, 1, 0, 3, 2, 2, 1, 1, 3, };
+    private Integer[] indices = new Integer[] { // @formatter:off
+            0, 1, 1, 2, 2, 0,
+            0, 2, 2, 3, 3, 0,
+            0, 3, 3, 1, 1, 0,
+            3, 2, 2, 1, 1, 3, }; // @formatter:on
 
     /**
      * <p>Constructor for TerahedronRefinedMesh.</p>

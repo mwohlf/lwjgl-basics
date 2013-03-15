@@ -5,9 +5,6 @@ import net.wohlfart.gl.shader.mesh.TexturedMeshBuilder;
 
 /**
  * <p>TexturedQuad class.</p>
- *
- *
- *
  */
 public class TexturedQuad extends AbstractRenderable {
 

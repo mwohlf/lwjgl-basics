@@ -12,9 +12,6 @@ import org.lwjgl.util.vector.Vector3f;
 
 /**
  * <p>Circle class.</p>
- *
- *
- *
  */
 public class Circle extends AbstractRenderableGrid {
 

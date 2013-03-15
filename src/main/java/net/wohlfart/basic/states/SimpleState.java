@@ -13,8 +13,8 @@ import net.wohlfart.gl.input.CommandEvent;
 import net.wohlfart.gl.input.InputDispatcher;
 import net.wohlfart.gl.renderer.RenderBucket;
 import net.wohlfart.gl.shader.DefaultGraphicContext;
-import net.wohlfart.gl.shader.DefaultShaderProgram;
 import net.wohlfart.gl.shader.GraphicContextManager;
+import net.wohlfart.gl.shader.ShaderRegistry;
 import net.wohlfart.gl.shader.mesh.GenericMeshBuilder;
 import net.wohlfart.gl.view.MousePicker;
 import net.wohlfart.model.Avatar;
@@ -43,6 +43,7 @@ class SimpleState implements GameState {
     private GraphicContextManager.IGraphicContext defaultGraphicContext;
     private GraphicContextManager.IGraphicContext wireframeGraphicContext;
     private GraphicContextManager.IGraphicContext hudGraphicContext;
+    private GraphicContextManager.IGraphicContext lightingGraphicContext;
 
     protected GraphicContextManager graphContext = GraphicContextManager.INSTANCE;
 
@@ -52,15 +53,16 @@ class SimpleState implements GameState {
     private final RenderBucket elemBucket = new RenderBucket();
     private final Hud hud = new Hud();
 
-    private final boolean skyboxOn = true;
-    private final boolean elementsOn = true;
-    private final boolean hudOn = true;
-    private final boolean controlFrameOn = true;
-
     private Statistics statistics;
     private MousePosition mousePosition;
     private MousePicker mousePicker;
     private InputDispatcher inputDispatcher;
+
+    private final boolean skyboxOn = true;
+    private final boolean elementsOn = true;
+    private final boolean hudOn = true;
+    private final boolean controlFrameOn = true;
+    private final boolean lighting = true;
 
     /** {@inheritDoc} */
     @Override
@@ -76,12 +78,10 @@ class SimpleState implements GameState {
         inputDispatcher.register(mousePosition);
         inputDispatcher.register(mousePicker);
 
-        wireframeGraphicContext = new DefaultGraphicContext(
-                new DefaultShaderProgram(DefaultShaderProgram.WIREFRAME_VERTEX_SHADER, DefaultShaderProgram.WIREFRAME_FRAGMENT_SHADER));
-        defaultGraphicContext = new DefaultGraphicContext(
-                new DefaultShaderProgram(DefaultShaderProgram.DEFAULT_VERTEX_SHADER, DefaultShaderProgram.DEFAULT_FRAGMENT_SHADER));
-        hudGraphicContext = new DefaultGraphicContext(
-                new DefaultShaderProgram(DefaultShaderProgram.HUD_VERTEX_SHADER, DefaultShaderProgram.HUD_FRAGMENT_SHADER));
+        wireframeGraphicContext = new DefaultGraphicContext(ShaderRegistry.WIREFRAME_SHADER);
+        defaultGraphicContext = new DefaultGraphicContext(ShaderRegistry.DEFAULT_SHADER);
+        hudGraphicContext = new DefaultGraphicContext(ShaderRegistry.HUD_SHADER);
+        lightingGraphicContext = new DefaultGraphicContext(ShaderRegistry.LIGHTING_SHADER);
 
         if (skyboxOn) {
             skybox.init(defaultGraphicContext, avatar);

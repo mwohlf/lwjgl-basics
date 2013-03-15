@@ -11,9 +11,6 @@ import org.lwjgl.util.vector.Vector3f;
 
 /**
  * <p>Arrow class.</p>
- *
- *
- *
  */
 public class Arrow extends AbstractRenderableGrid {
 

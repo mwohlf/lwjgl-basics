@@ -18,6 +18,7 @@
     <junit.version>4.11</junit.version>
     <logback.version>1.0.7</logback.version>
     <guava.version>14.0-rc3</guava.version>
+    <antlr.version>4.0</antlr.version>
     <natives.version>0.0.7</natives.version>
   </properties>
 
@@ -100,7 +101,7 @@
     <dependency>
       <groupId>org.antlr</groupId>
       <artifactId>antlr4</artifactId>
-      <version>4.0</version>
+      <version>${antlr.version}</version>
       <type>jar</type>
       <scope>compile</scope>
   </dependency>

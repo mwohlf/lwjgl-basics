@@ -10,14 +10,22 @@ import net.wohlfart.gl.shader.mesh.WireframeMeshBuilder;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.util.vector.Vector3f;
 
-/*
- * 5---------4 /| /| / | / | 1 ------- 0 | | | | | | 6 - - -|- 7 |/ |/ 2-------- 3
- */
+
 /**
+ * @formatter:off
+ *
+ *         5---------4
+ *        /|        /|
+ *       / |       / |
+ *      1 ------- 0  |
+ *      |  |      |  |
+ *      |  6 - - -|- 7
+ *      | /       | /
+ *      |/        |/
+ *      2-------- 3
+ *
+ * @formatter:on
  * <p>CubeMesh class.</p>
- *
- *
- *
  */
 public class CubeMesh extends AbstractRenderableGrid {
 

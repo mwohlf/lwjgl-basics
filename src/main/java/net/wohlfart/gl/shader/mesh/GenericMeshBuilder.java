@@ -24,7 +24,7 @@ import org.slf4j.LoggerFactory;
  */
 public class GenericMeshBuilder implements GenericMeshData {
     /** Constant <code>LOGGER</code> */
-    protected static final Logger LOGGER = LoggerFactory.getLogger(WireframeMeshBuilder.class);
+    protected static final Logger LOGGER = LoggerFactory.getLogger(GenericMeshBuilder.class);
 
     private final String name;
     private final List<Vector3f> vertices = new ArrayList<Vector3f>();
