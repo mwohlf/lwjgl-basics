@@ -8,7 +8,6 @@ import net.wohlfart.gl.elements.hud.widgets.CharAtlas;
 import net.wohlfart.gl.elements.hud.widgets.CharAtlasBuilder;
 import net.wohlfart.gl.renderer.IsRenderable;
 import net.wohlfart.gl.shader.GraphicContextManager;
-import net.wohlfart.gl.shader.mesh.IMesh;
 
 import org.lwjgl.util.vector.Vector3f;
 import org.slf4j.Logger;
@@ -26,16 +25,16 @@ class LayerImpl implements Layer {
 
     protected final Collection<IsRenderable> components = new HashSet<IsRenderable>();
 
-    protected IMesh meshData;
+    protected IsRenderable meshData;
 
     protected CharAtlas characterAtlas;
 
     /**
      * <p>setup.</p>
      *
-     * @return a {@link net.wohlfart.gl.shader.mesh.IMesh} object.
+     * @return a {@link net.wohlfart.gl.shader.mesh.IRenderable} object.
      */
-    protected IMesh setup() {
+    protected IsRenderable setup() {
         characterAtlas = new CharAtlasBuilder().build();
         final TextureMeshBuilder builder = new TextureMeshBuilder();
         builder.setTextureId(characterAtlas.getTextureId());
@@ -64,7 +63,7 @@ class LayerImpl implements Layer {
     /** {@inheritDoc} */
     @Override
     public void destroy() {
-        meshData.dispose();
+        meshData.destroy();
         meshData = null;
     }
 

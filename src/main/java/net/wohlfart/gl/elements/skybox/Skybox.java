@@ -76,7 +76,7 @@ public class Skybox implements IsRenderable, SkyboxParameters {
         // draw only the visible sides
         for (final BoxSideMesh side : sides) {
             if (Vector3f.dot(viewDirection, side.getNormal()) > BoxSide.DOT_PROD_LIMIT) {
-                side.draw();
+                side.render();
             }
         }
     }

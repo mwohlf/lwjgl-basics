@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import net.wohlfart.gl.shader.mesh.IMesh;
+import net.wohlfart.gl.renderer.IsRenderable;
 import net.wohlfart.gl.shader.mesh.WireframeMeshBuilder;
 
 import org.lwjgl.opengl.GL11;
@@ -108,7 +108,7 @@ public class CubeMesh extends AbstractRenderableGrid {
 
     /** {@inheritDoc} */
     @Override
-    protected IMesh setupMesh() {
+    protected IsRenderable setupMesh() {
         final WireframeMeshBuilder builder = new WireframeMeshBuilder();
         builder.setVertices(createVertices());
         builder.setIndices(createIndices());

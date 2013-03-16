@@ -36,7 +36,7 @@ public class Camera {
      * @param rotation a {@link net.wohlfart.gl.view.CanRotate} object.
      * @param movement a {@link net.wohlfart.gl.view.CanMove} object.
      */
-    public Camera(final CanRotate rotation, final CanMove movement) {
+    private Camera(final CanRotate rotation, final CanMove movement) {
         this.rotation = rotation;
         this.movement = movement;
     }

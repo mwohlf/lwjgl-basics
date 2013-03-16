@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import net.wohlfart.gl.shader.mesh.IMesh;
+import net.wohlfart.gl.renderer.IsRenderable;
 import net.wohlfart.gl.shader.mesh.WireframeMeshBuilder;
 import net.wohlfart.tools.SimpleMath;
 
@@ -162,7 +162,7 @@ public class IcosphereMesh extends AbstractRenderableGrid {
 
     /** {@inheritDoc} */
     @Override
-    protected IMesh setupMesh() {
+    protected IsRenderable setupMesh() {
         splitPlanes(lod);
         final WireframeMeshBuilder builder = new WireframeMeshBuilder();
         builder.setVertices(vertices);

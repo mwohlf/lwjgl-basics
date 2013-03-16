@@ -2,7 +2,8 @@ package net.wohlfart.gl.elements.hud.widgets;
 
 import java.util.Collection;
 
-import net.wohlfart.gl.shader.mesh.IMesh;
+import net.wohlfart.gl.renderer.IsRenderable;
+
 
 // a label is a quad for each character
 /**
@@ -16,7 +17,7 @@ public class Label extends AbstractTextComponent {
     final int x;
     final int y;
     private final String string;
-    private Collection<IMesh> characters;
+    private Collection<IsRenderable> characters;
 
     /**
      * <p>Constructor for Label.</p>
@@ -37,16 +38,16 @@ public class Label extends AbstractTextComponent {
         if (characters == null) {
             characters = createMeshSet(x, y, string);
         }
-        for (final IMesh mesh : characters) {
-            mesh.draw();
+        for (final IsRenderable renderable : characters) {
+            renderable.render();
         }
     }
 
     /** {@inheritDoc} */
     @Override
     public void destroy() {
-        for (final IMesh mesh : characters) {
-            mesh.dispose();
+        for (final IsRenderable renderable : characters) {
+            renderable.destroy();
         }
         characters = null;
     }

@@ -3,10 +3,10 @@ package net.wohlfart.gl.elements.hud.widgets;
 import java.nio.ByteBuffer;
 import java.nio.FloatBuffer;
 
+import net.wohlfart.gl.renderer.IsRenderable;
 import net.wohlfart.gl.shader.GraphicContextManager;
 import net.wohlfart.gl.shader.ShaderAttributeHandle;
 import net.wohlfart.gl.shader.mesh.CharacterMesh;
-import net.wohlfart.gl.shader.mesh.IMesh;
 import net.wohlfart.tools.SimpleMath;
 import net.wohlfart.tools.Vertex;
 
@@ -37,9 +37,9 @@ class CharMeshBuilder {
     /**
      * <p>build.</p>
      *
-     * @return a {@link net.wohlfart.gl.shader.mesh.IMesh} object.
+     * @return a {@link net.wohlfart.gl.shader.mesh.IRenderable} object.
      */
-    public IMesh build() {
+    public IsRenderable build() {
         float atlasWidth = atlas.getImage().getWidth();
         float atlasHeight = atlas.getImage().getHeight();
         float width = cxtManager.getScreenWidth();

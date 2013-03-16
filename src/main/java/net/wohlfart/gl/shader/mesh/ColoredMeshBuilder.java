@@ -3,6 +3,7 @@ package net.wohlfart.gl.shader.mesh;
 import java.nio.ByteBuffer;
 import java.nio.FloatBuffer;
 
+import net.wohlfart.gl.renderer.IsRenderable;
 import net.wohlfart.gl.shader.ShaderAttributeHandle;
 import net.wohlfart.tools.Vertex;
 
@@ -24,9 +25,9 @@ public class ColoredMeshBuilder {
     /**
      * <p>build.</p>
      *
-     * @return a {@link net.wohlfart.gl.shader.mesh.IMesh} object.
+     * @return a {@link net.wohlfart.gl.shader.mesh.IRenderable} object.
      */
-    public IMesh build() {
+    public IsRenderable build() {
 
         // We'll define our quad using 4 vertices of the custom 'Vertex' class
         final Vertex v0 = new Vertex();

@@ -2,7 +2,6 @@ package net.wohlfart.gl.elements;
 
 import net.wohlfart.gl.renderer.IsRenderable;
 import net.wohlfart.gl.shader.ShaderUniformHandle;
-import net.wohlfart.gl.shader.mesh.IMesh;
 import net.wohlfart.tools.SimpleMath;
 
 import org.lwjgl.util.vector.Matrix4f;
@@ -14,7 +13,7 @@ import org.lwjgl.util.vector.Vector3f;
  */
 public abstract class AbstractRenderable implements IsRenderable {
 
-    protected IMesh meshData;
+    protected IsRenderable meshData;
 
     // initial translation and rotation of the mesh
     protected final Vector3f translation = new Vector3f();
@@ -28,9 +27,9 @@ public abstract class AbstractRenderable implements IsRenderable {
     /**
      * <p>setupMesh.</p>
      *
-     * @return a {@link net.wohlfart.gl.shader.mesh.IMesh} object.
+     * @return a {@link net.wohlfart.gl.shader.mesh.IRenderable} object.
      */
-    protected abstract IMesh setupMesh();
+    protected abstract IsRenderable setupMesh();
 
     /**
      * <p>resetMeshData.</p>
@@ -89,7 +88,7 @@ public abstract class AbstractRenderable implements IsRenderable {
         }
         SimpleMath.convert(currentTranslation, currentRotation, modelToWorldMatrix);
         ShaderUniformHandle.MODEL_TO_WORLD.set(modelToWorldMatrix);
-        meshData.draw();
+        meshData.render();
     }
 
     @Override
@@ -100,7 +99,7 @@ public abstract class AbstractRenderable implements IsRenderable {
     /** {@inheritDoc} */
     @Override
     public void destroy() {
-        meshData.dispose();
+        meshData.destroy();
         meshData = null;
     }
 

@@ -1,5 +1,7 @@
 package net.wohlfart.gl.shader.mesh;
 
+import net.wohlfart.gl.renderer.IsRenderable;
+
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL15;
 import org.lwjgl.opengl.GL20;
@@ -13,7 +15,7 @@ import org.lwjgl.util.ReadableColor;
  *
  *
  */
-public class WireframeMesh implements IMesh {
+public class WireframeMesh implements IsRenderable {
 
     private final int vaoHandle;
     private final int vboVerticesHandle;
@@ -59,7 +61,7 @@ public class WireframeMesh implements IMesh {
 
     /** {@inheritDoc} */
     @Override
-    public void draw() {
+    public void render() {
         GL30.glBindVertexArray(vaoHandle);
         // wire width
         GL11.glLineWidth(lineWidth);
@@ -73,9 +75,14 @@ public class WireframeMesh implements IMesh {
         GL30.glBindVertexArray(0);
     }
 
+    @Override
+    public void update(float timeInSec) {
+        // nothing to do
+    }
+
     /** {@inheritDoc} */
     @Override
-    public void dispose() {
+    public void destroy() {
         // Disable the VBO index from the VAO attributes list
         GL20.glDisableVertexAttribArray(0);
         // Delete the index VBO

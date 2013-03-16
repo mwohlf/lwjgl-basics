@@ -2,7 +2,7 @@ package net.wohlfart.gl.elements.debug;
 
 import java.util.Arrays;
 
-import net.wohlfart.gl.shader.mesh.IMesh;
+import net.wohlfart.gl.renderer.IsRenderable;
 import net.wohlfart.gl.shader.mesh.WireframeMeshBuilder;
 import net.wohlfart.tools.SimpleMath;
 
@@ -69,7 +69,7 @@ public class Arrow extends AbstractRenderableGrid {
 
     /** {@inheritDoc} */
     @Override
-    protected IMesh setupMesh() {
+    protected IsRenderable setupMesh() {
         final WireframeMeshBuilder builder = new WireframeMeshBuilder();
         builder.setVertices(Arrays.<Vector3f> asList(vertices));
         builder.setIndices(indices);

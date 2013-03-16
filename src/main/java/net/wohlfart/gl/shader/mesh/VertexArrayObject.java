@@ -5,6 +5,7 @@ import java.nio.FloatBuffer;
 import java.util.ArrayList;
 import java.util.List;
 
+import net.wohlfart.gl.renderer.IsRenderable;
 import net.wohlfart.gl.shader.ShaderAttributeHandle;
 import net.wohlfart.tools.SimpleMath;
 
@@ -24,7 +25,7 @@ import org.lwjgl.util.vector.Vector3f;
  *
  *
  */
-public class VertexArrayObject implements IMesh {
+public class VertexArrayObject implements IsRenderable {
 
     private final int vaoHandle;
     private final int indicesCount;
@@ -162,15 +163,20 @@ public class VertexArrayObject implements IMesh {
 
     /** {@inheritDoc} */
     @Override
-    public void draw() {
+    public void render() {
         GL30.glBindVertexArray(vaoHandle);
         GL11.glDrawElements(GL11.GL_LINE_STRIP, indicesCount, GL11.GL_UNSIGNED_BYTE, 0);
         GL30.glBindVertexArray(0);
     }
 
+    @Override
+    public void update(float timeInSec) {
+        // nothing to do
+    }
+
     /** {@inheritDoc} */
     @Override
-    public void dispose() {
+    public void destroy() {
         // Disable the VBO index from the VAO attributes list
         GL20.glDisableVertexAttribArray(0);
 

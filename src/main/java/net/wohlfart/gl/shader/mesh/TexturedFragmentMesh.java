@@ -1,5 +1,7 @@
 package net.wohlfart.gl.shader.mesh;
 
+import net.wohlfart.gl.renderer.IsRenderable;
+
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL13;
 import org.lwjgl.opengl.GL15;
@@ -12,7 +14,7 @@ import org.lwjgl.opengl.GL30;
  *
  *
  */
-public class TexturedFragmentMesh implements IMesh {
+public class TexturedFragmentMesh implements IsRenderable {
 
     private final int vaoHandle;
     private final int vboVerticesHandle;
@@ -69,7 +71,7 @@ public class TexturedFragmentMesh implements IMesh {
 
     /** {@inheritDoc} */
     @Override
-    public void draw() {
+    public void render() {
         // Bind the texture
         GL13.glActiveTexture(GL13.GL_TEXTURE0);
         GL11.glBindTexture(GL11.GL_TEXTURE_2D, textureId);
@@ -90,9 +92,14 @@ public class TexturedFragmentMesh implements IMesh {
         GL30.glBindVertexArray(0);
     }
 
+    @Override
+    public void update(float timeInSec) {
+        // nothing to do
+    }
+
     /** {@inheritDoc} */
     @Override
-    public void dispose() {
+    public void destroy() {
         // Disable the VBO index from the VAO attributes list
         GL20.glDisableVertexAttribArray(0);
         // Delete the index VBO

@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import net.wohlfart.gl.renderer.IsRenderable;
 import net.wohlfart.gl.shader.ShaderAttributeHandle;
 import net.wohlfart.tools.SimpleMath;
 
@@ -45,9 +46,9 @@ public class WireframeMeshBuilder {
     /**
      * <p>build.</p>
      *
-     * @return a {@link net.wohlfart.gl.shader.mesh.IMesh} object.
+     * @return a {@link net.wohlfart.gl.shader.mesh.IRenderable} object.
      */
-    public IMesh build() {
+    public IsRenderable build() {
 
         applyRotationAndTranslation();
 

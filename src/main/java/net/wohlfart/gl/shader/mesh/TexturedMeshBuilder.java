@@ -6,10 +6,11 @@ import java.io.InputStream;
 import java.nio.ByteBuffer;
 import java.nio.FloatBuffer;
 
+import net.wohlfart.gl.renderer.IsRenderable;
 import net.wohlfart.gl.shader.ShaderAttributeHandle;
 import net.wohlfart.tools.PNGDecoder;
-import net.wohlfart.tools.Vertex;
 import net.wohlfart.tools.PNGDecoder.Format;
+import net.wohlfart.tools.Vertex;
 
 import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL11;
@@ -41,9 +42,9 @@ public class TexturedMeshBuilder {
     /**
      * <p>build.</p>
      *
-     * @return a {@link net.wohlfart.gl.shader.mesh.IMesh} object.
+     * @return a {@link net.wohlfart.gl.shader.mesh.IRenderable} object.
      */
-    public IMesh build() {
+    public IsRenderable build() {
 
         // load the texture
         final int textureId = loadPNGTexture(textureFilename, GL13.GL_TEXTURE0);

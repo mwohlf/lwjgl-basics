@@ -4,10 +4,11 @@ import org.lwjgl.util.Renderable;
 
 /**
  * <p>
- * The IsRenderable interface is implemented by anything that can be shown in a graphic context.
+ * The IsRenderable interface is implemented by anything that can be shown in a graphic context.<br/>
+ * <br/>
  * It also might have some kind of resources that need to be freed by calling destroy() and
  * also might have an internal time depending state that should be updated by calling the update()
- * method.
+ * method.<br/>
  * </p>
  */
 public interface IsRenderable extends Renderable {

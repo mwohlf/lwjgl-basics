@@ -3,8 +3,8 @@ package net.wohlfart.gl.elements.hud;
 import java.nio.ByteBuffer;
 import java.nio.FloatBuffer;
 
+import net.wohlfart.gl.renderer.IsRenderable;
 import net.wohlfart.gl.shader.ShaderAttributeHandle;
-import net.wohlfart.gl.shader.mesh.IMesh;
 import net.wohlfart.gl.shader.mesh.TexturedFragmentMesh;
 import net.wohlfart.tools.SimpleMath;
 import net.wohlfart.tools.Vertex;
@@ -38,9 +38,9 @@ public class TextureMeshBuilder {
     /**
      * <p>build.</p>
      *
-     * @return a {@link net.wohlfart.gl.shader.mesh.IMesh} object.
+     * @return a {@link net.wohlfart.gl.shader.mesh.IRenderable} object.
      */
-    public IMesh build() {
+    public IsRenderable build() {
 
         final Vector3f[] vectors = new Vector3f[] {
                 new Vector3f(-0.5f,+0.5f, 0),

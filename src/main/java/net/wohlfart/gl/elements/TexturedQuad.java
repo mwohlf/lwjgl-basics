@@ -1,6 +1,6 @@
 package net.wohlfart.gl.elements;
 
-import net.wohlfart.gl.shader.mesh.IMesh;
+import net.wohlfart.gl.renderer.IsRenderable;
 import net.wohlfart.gl.shader.mesh.TexturedMeshBuilder;
 
 /**
@@ -10,7 +10,7 @@ public class TexturedQuad extends AbstractRenderable {
 
     /** {@inheritDoc} */
     @Override
-    protected IMesh setupMesh() {
+    protected IsRenderable setupMesh() {
         final TexturedMeshBuilder builder = new TexturedMeshBuilder();
         builder.setTranslation(translation);
         builder.setRotation(rotation);

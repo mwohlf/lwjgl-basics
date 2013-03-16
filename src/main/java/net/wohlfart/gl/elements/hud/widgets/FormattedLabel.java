@@ -3,7 +3,8 @@ package net.wohlfart.gl.elements.hud.widgets;
 import java.text.MessageFormat;
 import java.util.Collection;
 
-import net.wohlfart.gl.shader.mesh.IMesh;
+import net.wohlfart.gl.renderer.IsRenderable;
+
 
 // a label is a quad for each character
 /**
@@ -16,7 +17,7 @@ public class FormattedLabel extends AbstractTextComponent {
 
     final int x;
     final int y;
-    private Collection<IMesh> characters;
+    private Collection<IsRenderable> characters;
     private final MessageFormat format;
     private Object[] arguments;
 
@@ -61,8 +62,8 @@ public class FormattedLabel extends AbstractTextComponent {
             String string = format.format(arguments, new StringBuffer(), null).toString();
             characters = createMeshSet(x, y, string);
         }
-        for (final IMesh mesh : characters) {
-            mesh.draw();
+        for (final IsRenderable renderable : characters) {
+            renderable.render();
         }
     }
 
@@ -70,8 +71,8 @@ public class FormattedLabel extends AbstractTextComponent {
         if (characters == null) {
             return;
         }
-        for (final IMesh mesh : characters) {
-            mesh.dispose();
+        for (final IsRenderable renderable : characters) {
+            renderable.destroy();
         }
         characters = null;
     }

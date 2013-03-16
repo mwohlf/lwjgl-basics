@@ -4,7 +4,6 @@ import java.util.HashSet;
 
 import net.wohlfart.gl.elements.hud.Layer;
 import net.wohlfart.gl.renderer.IsRenderable;
-import net.wohlfart.gl.shader.mesh.IMesh;
 
 /**
  * <p>Abstract AbstractTextComponent class.</p>
@@ -42,27 +41,27 @@ public abstract class AbstractTextComponent implements IsRenderable {
      * @param string a {@link java.lang.String} object.
      * @return a {@link java.util.HashSet} object.
      */
-    protected HashSet<IMesh> createMeshSet(int x, int y, String string) {
+    protected HashSet<IsRenderable> createMeshSet(int x, int y, String string) {
         assert string != null: "string to create MeshSet is null";
         final CharAtlas atlas = layer.getCharacterAtlas();
         int d = 0;
-        HashSet<IMesh> characters = new HashSet<IMesh>();
+        HashSet<IsRenderable> characters = new HashSet<IsRenderable>();
         final char[] charArray = string.toCharArray();
         for (final char c : charArray) {
             CharInfo info = atlas.getCharInfo(c);
             if (info == null) {
                 info = atlas.getCharInfo(CharAtlasBuilder.NULL_CHAR);
             }
-            final IMesh mesh = createSingleCharMesh(x + d, y, info, atlas);
+            final IsRenderable renderable = createSingleCharMesh(x + d, y, info, atlas);
             d += info.getWidth();
-            if (mesh != null) {
-                characters.add(mesh);
+            if (renderable != null) {
+                characters.add(renderable);
             }
         }
         return characters;
     }
 
-    private IMesh createSingleCharMesh(int x, int y, CharInfo info, CharAtlas characterAtlas) {
+    private IsRenderable createSingleCharMesh(int x, int y, CharInfo info, CharAtlas characterAtlas) {
         final CharMeshBuilder builder = new CharMeshBuilder();
         builder.setCharAtlas(characterAtlas);
         builder.setCharInfo(info);
