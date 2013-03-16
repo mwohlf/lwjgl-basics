@@ -1,6 +1,6 @@
 package net.wohlfart.gl.elements;
 
-import net.wohlfart.gl.renderer.Renderable;
+import net.wohlfart.gl.renderer.IsRenderable;
 import net.wohlfart.gl.shader.ShaderUniformHandle;
 import net.wohlfart.gl.shader.mesh.IMesh;
 import net.wohlfart.tools.SimpleMath;
@@ -12,7 +12,7 @@ import org.lwjgl.util.vector.Vector3f;
 /**
  * <p>Abstract AbstractRenderable class.</p>
  */
-public abstract class AbstractRenderable implements Renderable {
+public abstract class AbstractRenderable implements IsRenderable {
 
     protected IMesh meshData;
 
@@ -92,9 +92,14 @@ public abstract class AbstractRenderable implements Renderable {
         meshData.draw();
     }
 
+    @Override
+    public void update(float timeInSec) {
+        // nothing to update
+    }
+
     /** {@inheritDoc} */
     @Override
-    public void dispose() {
+    public void destroy() {
         meshData.dispose();
         meshData = null;
     }

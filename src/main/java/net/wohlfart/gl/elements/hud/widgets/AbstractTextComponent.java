@@ -3,7 +3,7 @@ package net.wohlfart.gl.elements.hud.widgets;
 import java.util.HashSet;
 
 import net.wohlfart.gl.elements.hud.Layer;
-import net.wohlfart.gl.renderer.Renderable;
+import net.wohlfart.gl.renderer.IsRenderable;
 import net.wohlfart.gl.shader.mesh.IMesh;
 
 /**
@@ -12,7 +12,7 @@ import net.wohlfart.gl.shader.mesh.IMesh;
  *
  *
  */
-public abstract class AbstractTextComponent implements Renderable {
+public abstract class AbstractTextComponent implements IsRenderable {
 
     private Layer layer;
 
@@ -71,4 +71,9 @@ public abstract class AbstractTextComponent implements Renderable {
         return builder.build();
     }
 
+
+    @Override
+    public void update(float timeInSec) {
+        // nothing to update
+    }
 }

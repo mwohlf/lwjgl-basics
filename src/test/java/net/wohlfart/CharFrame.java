@@ -60,9 +60,7 @@ public class CharFrame extends JFrame {
 
     private void setupDisplay() throws LWJGLException {
         final PixelFormat pixelFormat = new PixelFormat();
-        final ContextAttribs contextAtributes = new ContextAttribs(3, 3); // OpenGL versions
-        contextAtributes.withForwardCompatible(true);
-        contextAtributes.withProfileCore(true);
+        final ContextAttribs contextAtributes = new ContextAttribs(3, 3).withForwardCompatible(true).withProfileCore(true);
         Display.setDisplayMode(new DisplayMode(100, 100));
         Display.setResizable(false);
         Display.setTitle("testing");

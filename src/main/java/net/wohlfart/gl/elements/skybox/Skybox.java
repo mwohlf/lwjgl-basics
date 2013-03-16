@@ -3,11 +3,11 @@ package net.wohlfart.gl.elements.skybox;
 import java.util.ArrayList;
 import java.util.List;
 
-import net.wohlfart.gl.renderer.Renderable;
+import net.wohlfart.gl.renderer.IsRenderable;
 import net.wohlfart.gl.shader.GraphicContextManager;
 import net.wohlfart.gl.shader.GraphicContextManager.IGraphicContext;
 import net.wohlfart.gl.shader.ShaderUniformHandle;
-import net.wohlfart.model.Avatar;
+import net.wohlfart.model.Camera;
 import net.wohlfart.tools.SimpleMath;
 
 import org.lwjgl.opengl.GL11;
@@ -20,7 +20,7 @@ import org.lwjgl.util.vector.Vector3f;
  *
  *
  */
-public class Skybox implements Renderable, SkyboxParameters {
+public class Skybox implements IsRenderable, SkyboxParameters {
 
 
     private final Vector3f viewDirection = new Vector3f();
@@ -29,7 +29,7 @@ public class Skybox implements Renderable, SkyboxParameters {
 
     private BoxSideMesh[] sides;
 
-    private Avatar avatar;
+    private Camera camera;
 
     private IGraphicContext graphicContext;
 
@@ -37,10 +37,10 @@ public class Skybox implements Renderable, SkyboxParameters {
      * <p>init.</p>
      *
      * @param graphicContext a {@link net.wohlfart.gl.shader.GraphicContextManager.IGraphicContext} object.
-     * @param avatar a {@link net.wohlfart.model.Avatar} object.
+     * @param camera a {@link net.wohlfart.model.Camera} object.
      */
-    public void init(IGraphicContext graphicContext, Avatar avatar) {
-        this.avatar = avatar;
+    public void init(IGraphicContext graphicContext, Camera camera) {
+        this.camera = camera;
         this.graphicContext = graphicContext;
         // in order to build the mesh we need the unions and attribute positions, so we have to switch
         // to the gfx context used for rendering, maybe we could wait for the render call...
@@ -57,14 +57,14 @@ public class Skybox implements Renderable, SkyboxParameters {
     @Override
     public void render() {
         assert sides != null : "the skybox sides are null, make sure to call the init method";
-        assert avatar != null : "the avatar is null, make sure to call the init method";
+        assert camera != null : "the camera is null, make sure to call the init method";
         assert graphicContext != null : "the graphicContext is null, make sure to call the init method";
 
-        avatar.readDirection(viewDirection);
+        camera.readDirection(viewDirection);
         viewDirection.normalise(viewDirection);
 
         final Matrix4f camViewMatrix = GraphicContextManager.INSTANCE.getPerspectiveProjMatrix();
-        SimpleMath.convert(avatar.getRotation(), rotMatrix);
+        SimpleMath.convert(camera.getRotation(), rotMatrix);
 
         GraphicContextManager.INSTANCE.setCurrentGraphicContext(graphicContext);
         ShaderUniformHandle.MODEL_TO_WORLD.set(SimpleMath.UNION_MATRIX);
@@ -81,9 +81,14 @@ public class Skybox implements Renderable, SkyboxParameters {
         }
     }
 
+    @Override
+    public void update(float timeInSec) {
+        // nothing to do
+    }
+
     /** {@inheritDoc} */
     @Override
-    public void dispose() {
+    public void destroy() {
         sides = null;
     }
 

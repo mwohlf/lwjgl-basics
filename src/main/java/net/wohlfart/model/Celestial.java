@@ -13,12 +13,13 @@ import org.lwjgl.util.vector.Vector3f;
 
 class Celestial {
 
+    protected static final int LOD = 64;
+
     protected final Sphere sphere = new Sphere();
     protected final Vector3f position = new Vector3f();
     protected final float radius;
     // protected final IntBuffer texture;
 
-    protected final int lod = 64;
     private final ITexture texture;
     private final long seed;
     private final Random random;
@@ -98,7 +99,7 @@ class Celestial {
         sphere.setNormals(GLU.GLU_SMOOTH);
         sphere.setOrientation(GLU.GLU_OUTSIDE);
         sphere.setTextureFlag(true);
-        sphere.draw(radius, lod, lod);
+        sphere.draw(radius, LOD, LOD);
         GL11.glPopMatrix();
     }
 

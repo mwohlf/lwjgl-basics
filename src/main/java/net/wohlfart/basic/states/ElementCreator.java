@@ -12,7 +12,7 @@ import net.wohlfart.gl.elements.debug.CubeMesh;
 import net.wohlfart.gl.elements.debug.IcosphereMesh;
 import net.wohlfart.gl.elements.debug.TerahedronRefinedMesh;
 import net.wohlfart.gl.elements.debug.TetrahedronMesh;
-import net.wohlfart.gl.renderer.Renderable;
+import net.wohlfart.gl.renderer.IsRenderable;
 import net.wohlfart.gl.shader.GraphicContextManager;
 import net.wohlfart.tools.SimpleMath;
 
@@ -25,8 +25,8 @@ import org.lwjgl.util.vector.Vector3f;
  */
 final class ElementCreator {
 
-    static Collection<Renderable> createCircles() {
-        HashSet<Renderable> elemBucket = new HashSet<Renderable>();
+    static Collection<IsRenderable> createCircles() {
+        HashSet<IsRenderable> elemBucket = new HashSet<IsRenderable>();
         elemBucket.add(new Circle(1).lineWidth(2));
         elemBucket.add(new Circle(10).lineWidth(2));
         elemBucket.add(new Circle(20).lineWidth(2));
@@ -42,9 +42,9 @@ final class ElementCreator {
     }
 
 
-    static Collection<Renderable> createRandomElements() {
+    static Collection<IsRenderable> createRandomElements() {
 
-        HashSet<Renderable> elemBucket = new HashSet<Renderable>();
+        HashSet<IsRenderable> elemBucket = new HashSet<IsRenderable>();
 
         elemBucket.add(new Arrow(new Vector3f(1, 0, 0)).color(ReadableColor.RED));
         elemBucket.add(new Arrow(new Vector3f(0, 1, 0)).color(ReadableColor.GREEN));
@@ -73,8 +73,8 @@ final class ElementCreator {
     }
 
 
-    static Collection<Renderable> createSpheres() {
-        HashSet<Renderable> elemBucket = new HashSet<Renderable>();
+    static Collection<IsRenderable> createSpheres() {
+        HashSet<IsRenderable> elemBucket = new HashSet<IsRenderable>();
 
         GraphicContextManager graphContext = GraphicContextManager.INSTANCE;
 

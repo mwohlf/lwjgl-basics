@@ -8,7 +8,7 @@ import net.wohlfart.gl.shader.GraphicContextManager;
 import net.wohlfart.gl.shader.GraphicContextManager.IGraphicContext;
 import net.wohlfart.gl.shader.ShaderUniformHandle;
 import net.wohlfart.gl.view.HasCamProjectionModelViewMatrices;
-import net.wohlfart.model.Avatar;
+import net.wohlfart.model.Camera;
 import net.wohlfart.tools.SimpleMath;
 
 import org.lwjgl.util.vector.Matrix4f;
@@ -17,11 +17,11 @@ import org.lwjgl.util.vector.Vector3f;
 /**
  * <p>A set of Renderables that use the same GraphicContext.
  */
-public class RenderBucket implements Renderable, HasCamProjectionModelViewMatrices {
+public class RenderBucket implements IsRenderable, HasCamProjectionModelViewMatrices {
 
-    protected Set<Renderable> container = new HashSet<>(10100);
+    protected Set<IsRenderable> container = new HashSet<>(10100);
     private IGraphicContext graphicContext;
-    private Avatar avatar;
+    private Camera camera;
 
     // data for the render loop:
     private final Vector3f posVector = new Vector3f();
@@ -34,11 +34,11 @@ public class RenderBucket implements Renderable, HasCamProjectionModelViewMatric
      * <p>init.</p>
      *
      * @param wireframeGraphicContext a {@link net.wohlfart.gl.shader.GraphicContextManager.IGraphicContext} object.
-     * @param avatar a {@link net.wohlfart.model.Avatar} object.
+     * @param camera a {@link net.wohlfart.model.Camera} object.
      */
-    public void init(IGraphicContext wireframeGraphicContext, Avatar avatar) {
+    public void init(IGraphicContext wireframeGraphicContext, Camera camera) {
         this.graphicContext = wireframeGraphicContext;
-        this.avatar = avatar;
+        this.camera = camera;
     }
 
 
@@ -47,26 +47,26 @@ public class RenderBucket implements Renderable, HasCamProjectionModelViewMatric
      *
      * @param elements a {@link java.util.Collection} object.
      */
-    public void add(Collection<Renderable> elements) {
-        for (Renderable renderable : elements) {
-            add(renderable);
+    public void add(Collection<IsRenderable> elements) {
+        for (IsRenderable isRenderable : elements) {
+            add(isRenderable);
         }
     }
 
     /**
      * <p>add.</p>
      *
-     * @param renderable a {@link net.wohlfart.gl.renderer.Renderable} object.
+     * @param isRenderable a {@link net.wohlfart.gl.renderer.IsRenderable} object.
      */
-    public void add(Renderable renderable) {
-        container.add(renderable);
+    public void add(IsRenderable isRenderable) {
+        container.add(isRenderable);
     }
 
     /** {@inheritDoc} */
     @Override
     public void render() {
-        SimpleMath.convert(avatar.getPosition().negate(posVector), posMatrix);
-        SimpleMath.convert(avatar.getRotation(), rotMatrix);
+        SimpleMath.convert(camera.getPosition().negate(posVector), posMatrix);
+        SimpleMath.convert(camera.getRotation(), rotMatrix);
         Matrix4f.mul(rotMatrix, posMatrix, rotPosMatrix);
 
         GraphicContextManager.INSTANCE.setCurrentGraphicContext(graphicContext);
@@ -74,16 +74,21 @@ public class RenderBucket implements Renderable, HasCamProjectionModelViewMatric
         ShaderUniformHandle.WORLD_TO_CAM.set(rotPosMatrix);
         ShaderUniformHandle.CAM_TO_CLIP.set(GraphicContextManager.INSTANCE.getPerspectiveProjMatrix());
 
-        for (final Renderable renderable : container) {
-            renderable.render();
+        for (final IsRenderable isRenderable : container) {
+            isRenderable.render();
         }
+    }
+
+    @Override
+    public void update(float timeInSec) {
+        // nothing to do
     }
 
     /** {@inheritDoc} */
     @Override
-    public void dispose() {
-        for (final Renderable renderable : container) {
-            renderable.dispose();
+    public void destroy() {
+        for (final IsRenderable isRenderable : container) {
+            isRenderable.destroy();
         }
         container.clear();
     }

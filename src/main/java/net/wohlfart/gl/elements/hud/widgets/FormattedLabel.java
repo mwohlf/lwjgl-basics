@@ -78,7 +78,7 @@ public class FormattedLabel extends AbstractTextComponent {
 
     /** {@inheritDoc} */
     @Override
-    public void dispose() {
+    public void destroy() {
         disposeCharacters();
     }
 

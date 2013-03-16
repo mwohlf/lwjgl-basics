@@ -1,6 +1,6 @@
 package net.wohlfart.gl.shader.mesh;
 
-import net.wohlfart.gl.renderer.Renderable;
+import net.wohlfart.gl.renderer.IsRenderable;
 import net.wohlfart.gl.shader.ShaderAttributeHandle;
 import net.wohlfart.gl.shader.ShaderUniformHandle;
 import net.wohlfart.tools.SimpleMath;
@@ -16,7 +16,7 @@ import org.lwjgl.util.vector.Vector3f;
 /**
  * <p>GenericMesh class.</p>
  */
-public class GenericMesh implements Renderable {
+public class GenericMesh implements IsRenderable {
 
     private final int vaoHandle;
     private final int vboVerticesHandle;
@@ -67,9 +67,14 @@ public class GenericMesh implements Renderable {
         GL30.glBindVertexArray(0);
     }
 
+    @Override
+    public void update(float timeInSec) {
+        // nothing to do
+    }
+
     /** {@inheritDoc} */
     @Override
-    public void dispose() {
+    public void destroy() {
         // Disable the VBO index from the VAO attributes list
         GL20.glDisableVertexAttribArray(0);
         // Delete the index VBO

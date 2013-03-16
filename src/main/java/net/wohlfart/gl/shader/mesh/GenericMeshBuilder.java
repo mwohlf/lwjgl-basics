@@ -5,7 +5,7 @@ import java.nio.IntBuffer;
 import java.util.ArrayList;
 import java.util.List;
 
-import net.wohlfart.gl.renderer.Renderable;
+import net.wohlfart.gl.renderer.IsRenderable;
 import net.wohlfart.gl.shader.ShaderAttributeHandle;
 
 import org.lwjgl.BufferUtils;
@@ -49,9 +49,9 @@ public class GenericMeshBuilder implements GenericMeshData {
     /**
      * <p>build.</p>
      *
-     * @return a {@link net.wohlfart.gl.renderer.Renderable} object.
+     * @return a {@link net.wohlfart.gl.renderer.IsRenderable} object.
      */
-    public Renderable build() {
+    public IsRenderable build() {
         vaoHandle = GL30.glGenVertexArrays();
 
         GL30.glBindVertexArray(vaoHandle);

@@ -1,7 +1,7 @@
 package net.wohlfart.gl.elements.hud;
 
 import net.wohlfart.gl.elements.hud.widgets.AbstractTextComponent;
-import net.wohlfart.gl.renderer.Renderable;
+import net.wohlfart.gl.renderer.IsRenderable;
 import net.wohlfart.gl.shader.GraphicContextManager;
 import net.wohlfart.gl.shader.GraphicContextManager.IGraphicContext;
 import net.wohlfart.gl.shader.ShaderUniformHandle;
@@ -16,7 +16,7 @@ import org.lwjgl.opengl.GL11;
  *
  *
  */
-public class Hud implements Renderable {
+public class Hud implements IsRenderable {
 
     private final GraphicContextManager cxtManagert = GraphicContextManager.INSTANCE;
 
@@ -57,10 +57,15 @@ public class Hud implements Renderable {
         layer.render();
     }
 
+    @Override
+    public void update(float timeInSec) {
+        // nothing to do
+    }
+
     /** {@inheritDoc} */
     @Override
-    public void dispose() {
-        layer.dispose();
+    public void destroy() {
+        layer.destroy();
     }
 
 }

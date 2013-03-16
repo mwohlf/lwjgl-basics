@@ -15,7 +15,7 @@ import org.lwjgl.util.vector.Vector3f;
  */
 public class Circle extends AbstractRenderableGrid {
 
-    private final int pieces = 15; // LOD
+    private static final int pieces = 15; // LOD
     private float radius = 1;
 
     /**

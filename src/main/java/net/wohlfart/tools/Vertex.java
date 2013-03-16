@@ -2,12 +2,10 @@ package net.wohlfart.tools;
 
 import org.lwjgl.util.vector.Vector3f;
 
-// see: http://www.lwjgl.org/wiki/index.php?title=The_Quad_interleaved
 /**
- * <p>Vertex class.</p>
- *
- *
- *
+ * <p>Vertex class.<br/>
+ * see: http://www.lwjgl.org/wiki/index.php?title=The_Quad_interleaved
+ * </p>
  */
 public class Vertex {
     // Vertex data
@@ -15,8 +13,7 @@ public class Vertex {
     private float[] rgba = new float[] { 1f, 1f, 1f, 1f };
     private float[] st = new float[] { 0f, 0f };
 
-    // The amount of bytes an element(float) has
-    /** Constant <code>elementBytes=4</code> */
+    /** The amount of bytes an element(float) has */
     public static final int elementBytes = 4;
 
     // Elements per parameter
@@ -116,8 +113,7 @@ public class Vertex {
         this.rgba = new float[] { r, g, b, 1f };
     }
 
-    // Getters
-    // Getters
+
     /**
      * <p>getElements.</p>
      *

@@ -12,9 +12,9 @@ import org.lwjgl.util.vector.Vector3f;
 import com.google.common.eventbus.Subscribe;
 
 /**
- * <p>Avatar class.</p>
+ * <p>Camera class.</p>
  */
-public class Avatar {
+public class Camera {
     // used for key triggered rotations, default rotation speed is one rotation per second
     private static final float ROT_SPEED = 0.1f;
     // used for key triggered moves, default move is 100 units per second
@@ -24,19 +24,19 @@ public class Avatar {
     private final CanMove movement;
 
     /**
-     * <p>Constructor for Avatar.</p>
+     * <p>Constructor for Camera.</p>
      */
-    public Avatar() {
+    public Camera() {
         this(new CanRotateImpl(), new CanMoveImpl());
     }
 
     /**
-     * <p>Constructor for Avatar.</p>
+     * <p>Constructor for Camera.</p>
      *
      * @param rotation a {@link net.wohlfart.gl.view.CanRotate} object.
      * @param movement a {@link net.wohlfart.gl.view.CanMove} object.
      */
-    public Avatar(final CanRotate rotation, final CanMove movement) {
+    public Camera(final CanRotate rotation, final CanMove movement) {
         this.rotation = rotation;
         this.movement = movement;
     }

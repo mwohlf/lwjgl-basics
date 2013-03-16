@@ -11,11 +11,9 @@ import org.lwjgl.util.vector.Vector3f;
  */
 public abstract class ProceduralTexture implements TextureBuffer {
 
-    protected long seed;
     protected int width;
     protected int height;
     protected IntBuffer buffer;
-    protected int id;
 
     /**
      * <p>Constructor for ProceduralTexture.</p>

@@ -173,9 +173,7 @@ class Game implements InitializingBean {
         }
         rememberDisplayMode = Display.getDisplayMode();
         final PixelFormat pixelFormat = new PixelFormat();
-        final ContextAttribs contextAtributes = new ContextAttribs(3, 3); // OpenGL versions
-        contextAtributes.withForwardCompatible(true);
-        contextAtributes.withProfileCore(true);
+        final ContextAttribs contextAtributes = new ContextAttribs(3, 3).withForwardCompatible(true).withProfileCore(true);
         Display.setDisplayMode(bestFit);
         Display.setFullscreen(true);
         Display.setDisplayMode(bestFit);

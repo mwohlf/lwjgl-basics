@@ -44,7 +44,7 @@ public class Label extends AbstractTextComponent {
 
     /** {@inheritDoc} */
     @Override
-    public void dispose() {
+    public void destroy() {
         for (final IMesh mesh : characters) {
             mesh.dispose();
         }

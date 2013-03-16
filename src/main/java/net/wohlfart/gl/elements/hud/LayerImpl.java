@@ -3,10 +3,10 @@ package net.wohlfart.gl.elements.hud;
 import java.util.Collection;
 import java.util.HashSet;
 
+import net.wohlfart.gl.elements.hud.widgets.AbstractTextComponent;
 import net.wohlfart.gl.elements.hud.widgets.CharAtlas;
 import net.wohlfart.gl.elements.hud.widgets.CharAtlasBuilder;
-import net.wohlfart.gl.elements.hud.widgets.AbstractTextComponent;
-import net.wohlfart.gl.renderer.Renderable;
+import net.wohlfart.gl.renderer.IsRenderable;
 import net.wohlfart.gl.shader.GraphicContextManager;
 import net.wohlfart.gl.shader.mesh.IMesh;
 
@@ -24,7 +24,7 @@ class LayerImpl implements Layer {
 
     private final GraphicContextManager cxtManager = GraphicContextManager.INSTANCE;
 
-    protected final Collection<Renderable> components = new HashSet<Renderable>();
+    protected final Collection<IsRenderable> components = new HashSet<IsRenderable>();
 
     protected IMesh meshData;
 
@@ -51,14 +51,19 @@ class LayerImpl implements Layer {
             meshData = setup();
         }
         //meshData.draw();
-        for (final Renderable component : components) {
+        for (final IsRenderable component : components) {
             component.render();
         }
     }
 
+    @Override
+    public void update(float timeInSec) {
+        // nothing to do
+    }
+
     /** {@inheritDoc} */
     @Override
-    public void dispose() {
+    public void destroy() {
         meshData.dispose();
         meshData = null;
     }

@@ -17,7 +17,7 @@ import net.wohlfart.gl.shader.GraphicContextManager;
 import net.wohlfart.gl.shader.ShaderRegistry;
 import net.wohlfart.gl.shader.mesh.GenericMeshBuilder;
 import net.wohlfart.gl.view.MousePicker;
-import net.wohlfart.model.Avatar;
+import net.wohlfart.model.Camera;
 import net.wohlfart.tools.ControllerFrame;
 
 import org.lwjgl.opengl.Display;
@@ -47,7 +47,7 @@ class SimpleState implements GameState {
 
     protected GraphicContextManager graphContext = GraphicContextManager.INSTANCE;
 
-    private final Avatar avatar = new Avatar();
+    private final Camera camera = new Camera();
 
     private final Skybox skybox = new Skybox();
     private final RenderBucket elemBucket = new RenderBucket();
@@ -73,7 +73,7 @@ class SimpleState implements GameState {
         mousePicker = new MousePicker(elemBucket, graphContext.getScreenWidth(), graphContext.getScreenHeight());
 
         // event bus registration
-        inputDispatcher.register(avatar);
+        inputDispatcher.register(camera);
         inputDispatcher.register(this);
         inputDispatcher.register(mousePosition);
         inputDispatcher.register(mousePicker);
@@ -84,11 +84,11 @@ class SimpleState implements GameState {
         lightingGraphicContext = new DefaultGraphicContext(ShaderRegistry.LIGHTING_SHADER);
 
         if (skyboxOn) {
-            skybox.init(defaultGraphicContext, avatar);
+            skybox.init(defaultGraphicContext, camera);
         }
 
         if (elementsOn) {
-            elemBucket.init(wireframeGraphicContext, avatar);
+            elemBucket.init(wireframeGraphicContext, camera);
             elemBucket.add(ElementCreator.createCircles());
             elemBucket.add(ElementCreator.createSpheres());
             elemBucket.add(ElementCreator.createRandomElements());
@@ -165,7 +165,7 @@ class SimpleState implements GameState {
         hudGraphicContext.dispose();
         // event bus unregistration
         inputDispatcher.unregister(this);
-        inputDispatcher.unregister(avatar);
+        inputDispatcher.unregister(camera);
     }
 
 }

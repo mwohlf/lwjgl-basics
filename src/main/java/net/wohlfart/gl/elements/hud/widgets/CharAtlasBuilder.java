@@ -38,7 +38,7 @@ public class CharAtlasBuilder {
     static final char NULL_CHAR = '_';
     private static final String CHARS = " abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789;:,.-_#+?!\"()";
     {
-        if (!CHARS.contains(new String("" + NULL_CHAR))) {
+        if (!CHARS.contains(String.valueOf(NULL_CHAR))) {
             throw new IllegalStateException("need NULL_CHAR in char sequence");
         }
     };
