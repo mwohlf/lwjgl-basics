@@ -15,9 +15,8 @@ import net.wohlfart.gl.renderer.RenderBucket;
 import net.wohlfart.gl.shader.DefaultGraphicContext;
 import net.wohlfart.gl.shader.GraphicContextManager;
 import net.wohlfart.gl.shader.ShaderRegistry;
-import net.wohlfart.gl.shader.mesh.GenericMeshBuilder;
+import net.wohlfart.gl.view.Camera;
 import net.wohlfart.gl.view.MousePicker;
-import net.wohlfart.model.Camera;
 import net.wohlfart.tools.ControllerFrame;
 
 import org.lwjgl.opengl.Display;
@@ -95,8 +94,7 @@ class SimpleState implements GameState {
 
             try (InputStream inputStream = ClassLoader.class.getResourceAsStream("/models/cube/cube.obj");) {
                 graphContext.setCurrentGraphicContext(wireframeGraphicContext);
-                GenericMeshBuilder builder = new ModelLoader().getBuilder(inputStream);
-                elemBucket.add(builder.build());
+                elemBucket.add(new ModelLoader().getRenderable(inputStream));
             } catch (IOException ex) {
                 ex.printStackTrace();
             }

@@ -1,10 +1,6 @@
-package net.wohlfart.model;
+package net.wohlfart.gl.view;
 
 import net.wohlfart.gl.input.CommandEvent;
-import net.wohlfart.gl.view.CanMove;
-import net.wohlfart.gl.view.CanMoveImpl;
-import net.wohlfart.gl.view.CanRotate;
-import net.wohlfart.gl.view.CanRotateImpl;
 
 import org.lwjgl.util.vector.Quaternion;
 import org.lwjgl.util.vector.Vector3f;

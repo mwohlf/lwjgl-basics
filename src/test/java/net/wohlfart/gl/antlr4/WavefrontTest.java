@@ -27,11 +27,11 @@ public class WavefrontTest {
         ParseTree tree = parser.wavefront();
 
         ParseTreeWalker walker = new ParseTreeWalker();
-        MeshBuilderProviderImpl reader = new MeshBuilderProviderImpl();
-        walker.walk(reader, tree);
+        ModelLoader loader = new ModelLoader();
+        walker.walk(loader, tree);
 
-        assertEquals(12 * 3, reader.getMeshBuilder().getIndicesCount());
-        assertEquals(8, reader.getMeshBuilder().getVerticesCount());
+        assertEquals(12 * 3, loader.getMeshBuilder().getIndicesCount());
+        assertEquals(8, loader.getMeshBuilder().getVerticesCount());
 
     }
 

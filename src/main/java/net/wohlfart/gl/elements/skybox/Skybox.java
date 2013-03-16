@@ -7,7 +7,7 @@ import net.wohlfart.gl.renderer.IsRenderable;
 import net.wohlfart.gl.shader.GraphicContextManager;
 import net.wohlfart.gl.shader.GraphicContextManager.IGraphicContext;
 import net.wohlfart.gl.shader.ShaderUniformHandle;
-import net.wohlfart.model.Camera;
+import net.wohlfart.gl.view.Camera;
 import net.wohlfart.tools.SimpleMath;
 
 import org.lwjgl.opengl.GL11;
@@ -37,7 +37,7 @@ public class Skybox implements IsRenderable, SkyboxParameters {
      * <p>init.</p>
      *
      * @param graphicContext a {@link net.wohlfart.gl.shader.GraphicContextManager.IGraphicContext} object.
-     * @param camera a {@link net.wohlfart.model.Camera} object.
+     * @param camera a {@link net.wohlfart.gl.view.Camera} object.
      */
     public void init(IGraphicContext graphicContext, Camera camera) {
         this.camera = camera;

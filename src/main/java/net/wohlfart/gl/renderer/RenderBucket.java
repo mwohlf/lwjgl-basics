@@ -7,8 +7,8 @@ import java.util.Set;
 import net.wohlfart.gl.shader.GraphicContextManager;
 import net.wohlfart.gl.shader.GraphicContextManager.IGraphicContext;
 import net.wohlfart.gl.shader.ShaderUniformHandle;
+import net.wohlfart.gl.view.Camera;
 import net.wohlfart.gl.view.HasCamProjectionModelViewMatrices;
-import net.wohlfart.model.Camera;
 import net.wohlfart.tools.SimpleMath;
 
 import org.lwjgl.util.vector.Matrix4f;
@@ -34,7 +34,7 @@ public class RenderBucket implements IsRenderable, HasCamProjectionModelViewMatr
      * <p>init.</p>
      *
      * @param wireframeGraphicContext a {@link net.wohlfart.gl.shader.GraphicContextManager.IGraphicContext} object.
-     * @param camera a {@link net.wohlfart.model.Camera} object.
+     * @param camera a {@link net.wohlfart.gl.view.Camera} object.
      */
     public void init(IGraphicContext wireframeGraphicContext, Camera camera) {
         this.graphicContext = wireframeGraphicContext;

@@ -7,9 +7,6 @@ import org.lwjgl.util.vector.Vector3f;
 
 /**
  * <p>CanRotateImpl class.</p>
- *
- *
- *
  */
 @SuppressWarnings("serial")
 public class CanRotateImpl extends Quaternion implements CanRotate {
