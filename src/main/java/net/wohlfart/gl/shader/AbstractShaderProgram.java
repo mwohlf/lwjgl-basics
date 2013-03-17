@@ -74,9 +74,11 @@ class AbstractShaderProgram implements IShaderProgram {
 
         GL20.glValidateProgram(programId);
         final int error = GL11.glGetError();
-        if (error != GL11.GL_NO_ERROR) {
-            throw new ShaderException("" + "error validating shader, error string is '" + GLU.gluErrorString(error) + "' \n" + "programmId is '" + programId
-                    + "' \n" + "handles are: " + Arrays.toString(handles));
+        if (error != GL11.GL_NO_ERROR) { // @formatter:off
+            throw new ShaderException(""
+                    + "error validating shader, error string is '" + GLU.gluErrorString(error)
+                    + "' \n" + "programmId is '" + programId
+                    + "' \n" + "handles are: " + Arrays.toString(handles));  // @formatter:on
         }
     }
 

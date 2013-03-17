@@ -3,7 +3,7 @@ package net.wohlfart.basic.states;
 import java.io.IOException;
 import java.io.InputStream;
 
-import net.wohlfart.gl.antlr4.ModelLoader;
+import net.wohlfart.gl.antlr4.GenericMeshLoader;
 import net.wohlfart.gl.elements.hud.Hud;
 import net.wohlfart.gl.elements.hud.widgets.Label;
 import net.wohlfart.gl.elements.hud.widgets.MousePosition;
@@ -94,7 +94,7 @@ class SimpleState implements GameState {
 
             try (InputStream inputStream = ClassLoader.class.getResourceAsStream("/models/cube/cube.obj");) {
                 graphContext.setCurrentGraphicContext(wireframeGraphicContext);
-                elemBucket.add(new ModelLoader().getRenderable(inputStream));
+                elemBucket.add(new GenericMeshLoader().getRenderable(inputStream));
             } catch (IOException ex) {
                 ex.printStackTrace();
             }

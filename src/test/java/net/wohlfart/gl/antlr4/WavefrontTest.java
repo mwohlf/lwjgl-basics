@@ -27,7 +27,7 @@ public class WavefrontTest {
         ParseTree tree = parser.wavefront();
 
         ParseTreeWalker walker = new ParseTreeWalker();
-        ModelLoader loader = new ModelLoader();
+        GenericMeshLoader loader = new GenericMeshLoader();
         walker.walk(loader, tree);
 
         assertEquals(12 * 3, loader.getMeshBuilder().getIndicesCount());
