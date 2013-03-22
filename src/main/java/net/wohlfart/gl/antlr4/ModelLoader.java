@@ -11,7 +11,6 @@ import net.wohlfart.gl.antlr4.WavefrontParser.ObjectNameContext;
 import net.wohlfart.gl.antlr4.WavefrontParser.VertNormIdxContext;
 import net.wohlfart.gl.antlr4.WavefrontParser.VertexContext;
 import net.wohlfart.gl.renderer.IsRenderable;
-import net.wohlfart.gl.shader.mesh.GenericMeshBuilder;
 
 import org.antlr.v4.runtime.ANTLRInputStream;
 import org.antlr.v4.runtime.CommonTokenStream;
@@ -19,10 +18,10 @@ import org.antlr.v4.runtime.tree.ParseTree;
 import org.antlr.v4.runtime.tree.ParseTreeWalker;
 import org.antlr.v4.runtime.tree.TerminalNode;
 
+public class ModelLoader extends WavefrontBaseListener {
 
-public class GenericMeshLoader extends WavefrontBaseListener {
+    private ModelBuilder currentBuilder;
 
-    private GenericMeshBuilder currentBuilder;
 
     public IsRenderable getRenderable(InputStream input) throws GenericGameException {
         try {
@@ -38,7 +37,7 @@ public class GenericMeshLoader extends WavefrontBaseListener {
         }
     }
 
-    GenericMeshBuilder getMeshBuilder() {
+    ModelBuilder getMeshBuilder() {
         return currentBuilder;
     }
 
@@ -46,7 +45,7 @@ public class GenericMeshLoader extends WavefrontBaseListener {
     @Override
     public void exitObjectName(ObjectNameContext ctx) {
         final String objectName = ctx.IDENTIFIER().getText();
-        currentBuilder = new GenericMeshBuilder(objectName);
+        currentBuilder = new ModelBuilder(objectName);
     }
 
     @Override

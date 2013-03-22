@@ -6,10 +6,8 @@ import org.lwjgl.util.Color;
 import org.lwjgl.util.ReadableColor;
 
 /**
- * <p>Abstract AbstractRenderableGrid class.</p>
- *
- *
- *
+ * <p>The Abstract AbstractRenderableGrid class is the base of a set of wireframe mesh classes
+ * that can be used to debug a scene.</p>
  */
 public abstract class AbstractRenderableGrid extends AbstractRenderable {
 
@@ -22,9 +20,9 @@ public abstract class AbstractRenderableGrid extends AbstractRenderable {
      * @param color a {@link org.lwjgl.util.ReadableColor} object.
      * @return a {@link net.wohlfart.gl.elements.debug.AbstractRenderableGrid} object.
      */
-    public AbstractRenderableGrid color(ReadableColor color) {
+    public AbstractRenderableGrid withColor(ReadableColor color) {
         this.color = color;
-        resetMeshData();
+        destroyMeshData();
         return this;
     }
 
@@ -34,9 +32,9 @@ public abstract class AbstractRenderableGrid extends AbstractRenderable {
      * @param lineWidth a float.
      * @return a {@link net.wohlfart.gl.elements.debug.AbstractRenderableGrid} object.
      */
-    public AbstractRenderableGrid lineWidth(float lineWidth) {
+    public AbstractRenderableGrid withLineWidth(float lineWidth) {
         this.lineWidth = lineWidth;
-        meshData = null;
+        destroyMeshData();
         return this;
     }
 

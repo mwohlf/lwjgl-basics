@@ -31,7 +31,6 @@ public class Arrow extends AbstractRenderableGrid {
             5, 0, // tip4
     };
 
-
     /**
      * <p>createLink.</p>
      *
@@ -40,10 +39,10 @@ public class Arrow extends AbstractRenderableGrid {
      * @return a {@link net.wohlfart.gl.elements.debug.Arrow} object.
      */
     public static Arrow createLink(Vector3f start, Vector3f end) {
-        Arrow result = new Arrow(new Vector3f(end.x - start.x,
+        final Arrow result = new Arrow(new Vector3f(end.x - start.x,
                                               end.y - start.y,
                                               end.z - start.z));
-        result.translate(start);
+        result.withTranslation(start);
         return result;
     }
 
@@ -59,8 +58,8 @@ public class Arrow extends AbstractRenderableGrid {
      *
      * @param tip a {@link org.lwjgl.util.vector.Vector3f} object.
      */
-    public Arrow(final Vector3f tip) {
-        float length = tip.length();
+    public Arrow(Vector3f tip) {
+        final float length = tip.length();
         for (final Vector3f vec : vertices) {
             vec.z *= length;
         }

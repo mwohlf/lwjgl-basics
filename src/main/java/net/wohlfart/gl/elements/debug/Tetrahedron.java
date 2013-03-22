@@ -22,7 +22,7 @@ import org.lwjgl.util.vector.Vector3f;
  * @formatter:on
  *
  */
-public class TetrahedronMesh extends AbstractRenderableGrid {
+public class Tetrahedron extends AbstractRenderableGrid {
 
     private float length = 1;
 
@@ -32,17 +32,17 @@ public class TetrahedronMesh extends AbstractRenderableGrid {
             0, 3,  3, 1,  1, 0, };  // @formatter:on
 
     /**
-     * <p>Constructor for TetrahedronMesh.</p>
+     * <p>Constructor for Tetrahedron.</p>
      */
-    public TetrahedronMesh() {
+    public Tetrahedron() {
     }
 
     /**
-     * <p>Constructor for TetrahedronMesh.</p>
+     * <p>Constructor for Tetrahedron.</p>
      *
      * @param length a float.
      */
-    public TetrahedronMesh(float length) {
+    public Tetrahedron(float length) {
         this.length = length;
     }
 

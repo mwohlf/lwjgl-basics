@@ -16,7 +16,7 @@ import javax.swing.JTextField;
 import javax.swing.WindowConstants;
 
 import net.wohlfart.gl.elements.debug.AbstractRenderableGrid;
-import net.wohlfart.gl.elements.debug.CubeMesh;
+import net.wohlfart.gl.elements.debug.Cube;
 
 import org.lwjgl.util.ReadableColor;
 import org.lwjgl.util.vector.Vector3f;
@@ -82,9 +82,9 @@ public class ControllerFrame extends JFrame {
     }
 
     private void setupCube() {
-        cube = new CubeMesh(1f)
-            .lineWidth(4)
-            .color(ReadableColor.RED);
+        cube = new Cube(1f)
+            .withLineWidth(4)
+            .withColor(ReadableColor.RED);
     }
 
     private void setupContent() {

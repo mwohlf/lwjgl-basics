@@ -49,7 +49,7 @@ public class MousePicker {
         float y = clickEvent.getY();
 
         PickingRay ray = createPickingRay(x, y, elemBucket);
-        elemBucket.add(Arrow.createLink(ray.getStart(), ray.getEnd()).lineWidth(1f));
+        elemBucket.add(Arrow.createLink(ray.getStart(), ray.getEnd()).withLineWidth(1f));
     }
 
 

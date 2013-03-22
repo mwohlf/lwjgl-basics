@@ -33,6 +33,21 @@ public class Circle extends AbstractRenderableGrid {
         this.radius = radius;
     }
 
+    /** {@inheritDoc} */
+    @Override
+    protected IsRenderable setupMesh() {
+        final WireframeMeshBuilder builder = new WireframeMeshBuilder();
+        builder.setVertices(createVertices());
+        builder.setIndices(createIndices());
+        builder.setIndicesStructure(GL11.GL_LINE_LOOP); // loop!
+        builder.setIndexElemSize(GL11.GL_UNSIGNED_INT);
+        builder.setColor(color);
+        builder.setLineWidth(lineWidth);
+        builder.setRotation(rotation);
+        builder.setTranslation(translation);
+        return builder.build();
+    }
+
     /**
      * <p>createVertices.</p>
      *
@@ -58,24 +73,9 @@ public class Circle extends AbstractRenderableGrid {
         final List<Integer> result = new ArrayList<Integer>(pieces * 2);
         for (int i = 0; i < pieces; i++) {
             result.add(i * 2, i);
-            result.add(i * 2 + 1, (i + 1) % pieces);
+            result.add(i * 2 + 1, (i + 1) % pieces);  // FIXME: modulo should not be neccessary if we use LOOP primitive for drawing
         }
         return result.toArray(new Integer[result.size()]);
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    protected IsRenderable setupMesh() {
-        final WireframeMeshBuilder builder = new WireframeMeshBuilder();
-        builder.setVertices(createVertices());
-        builder.setIndices(createIndices());
-        builder.setIndicesStructure(GL11.GL_LINE_LOOP); // loop!
-        builder.setIndexElemSize(GL11.GL_UNSIGNED_INT);
-        builder.setColor(color);
-        builder.setLineWidth(lineWidth);
-        builder.setRotation(rotation);
-        builder.setTranslation(translation);
-        return builder.build();
     }
 
 }

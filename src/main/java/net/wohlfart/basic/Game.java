@@ -13,6 +13,7 @@ import org.lwjgl.opengl.ContextAttribs;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.DisplayMode;
 import org.lwjgl.opengl.GL11;
+import org.lwjgl.opengl.GL20;
 import org.lwjgl.opengl.PixelFormat;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -95,7 +96,8 @@ class Game implements InitializingBean {
             startPlatform();
             globalGameTimer = new TimerImpl(platform.createClock());
             userInputSource = platform.createInputSource(inputDispatcher);
-            setCurrentState(GameStateEnum.SIMPLE);
+            //setCurrentState(GameStateEnum.SIMPLE);
+            setCurrentState(GameStateEnum.LIGHTING);
             runApplicationLoop();
             shutdownGame();
             shutdownPlatform();
@@ -147,6 +149,8 @@ class Game implements InitializingBean {
         // GL11.glEnable(GL11.GL_CULL_FACE);
         LOGGER.info("Vendor: " + GL11.glGetString(GL11.GL_VENDOR));
         LOGGER.info("Version: " + GL11.glGetString(GL11.GL_VERSION));
+        LOGGER.info("max. Vertex Attributes: " + GL11.glGetInteger(GL20.GL_MAX_VERTEX_ATTRIBS));
+        LOGGER.info("max. Texture Image Units: " + GL11.glGetInteger(GL20.GL_MAX_TEXTURE_IMAGE_UNITS));
     }
 
     // see: http://lwjgl.org/forum/index.php/topic,2951.0.html

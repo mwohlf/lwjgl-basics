@@ -8,10 +8,9 @@ import net.wohlfart.gl.elements.TexturedQuad;
 import net.wohlfart.gl.elements.debug.AbstractRenderableGrid;
 import net.wohlfart.gl.elements.debug.Arrow;
 import net.wohlfart.gl.elements.debug.Circle;
-import net.wohlfart.gl.elements.debug.CubeMesh;
-import net.wohlfart.gl.elements.debug.IcosphereMesh;
-import net.wohlfart.gl.elements.debug.TerahedronRefinedMesh;
-import net.wohlfart.gl.elements.debug.TetrahedronMesh;
+import net.wohlfart.gl.elements.debug.Cube;
+import net.wohlfart.gl.elements.debug.Icosphere;
+import net.wohlfart.gl.elements.debug.Tetrahedron;
 import net.wohlfart.gl.renderer.IsRenderable;
 import net.wohlfart.gl.shader.GraphicContextManager;
 import net.wohlfart.tools.SimpleMath;
@@ -27,17 +26,17 @@ final class ElementCreator {
 
     static Collection<IsRenderable> createCircles() {
         HashSet<IsRenderable> elemBucket = new HashSet<IsRenderable>();
-        elemBucket.add(new Circle(1).lineWidth(2));
-        elemBucket.add(new Circle(10).lineWidth(2));
-        elemBucket.add(new Circle(20).lineWidth(2));
-        elemBucket.add(new Circle(30).lineWidth(2));
-        elemBucket.add(new Circle(40).lineWidth(2));
-        elemBucket.add(new Circle(50).lineWidth(2));
-        elemBucket.add(new Circle(60).lineWidth(2));
-        elemBucket.add(new Circle(70).lineWidth(2));
-        elemBucket.add(new Circle(80).lineWidth(2));
-        elemBucket.add(new Circle(90).lineWidth(2));
-        elemBucket.add(new Circle(100).lineWidth(2));
+        elemBucket.add(new Circle(1).withLineWidth(2));
+        elemBucket.add(new Circle(10).withLineWidth(2));
+        elemBucket.add(new Circle(20).withLineWidth(2));
+        elemBucket.add(new Circle(30).withLineWidth(2));
+        elemBucket.add(new Circle(40).withLineWidth(2));
+        elemBucket.add(new Circle(50).withLineWidth(2));
+        elemBucket.add(new Circle(60).withLineWidth(2));
+        elemBucket.add(new Circle(70).withLineWidth(2));
+        elemBucket.add(new Circle(80).withLineWidth(2));
+        elemBucket.add(new Circle(90).withLineWidth(2));
+        elemBucket.add(new Circle(100).withLineWidth(2));
         return elemBucket;
     }
 
@@ -46,28 +45,28 @@ final class ElementCreator {
 
         HashSet<IsRenderable> elemBucket = new HashSet<IsRenderable>();
 
-        elemBucket.add(new Arrow(new Vector3f(1, 0, 0)).color(ReadableColor.RED));
-        elemBucket.add(new Arrow(new Vector3f(0, 1, 0)).color(ReadableColor.GREEN));
-        elemBucket.add(new Arrow(new Vector3f(0, 0, 1)).color(ReadableColor.BLUE));
+        elemBucket.add(new Arrow(new Vector3f(1, 0, 0)).withColor(ReadableColor.RED));
+        elemBucket.add(new Arrow(new Vector3f(0, 1, 0)).withColor(ReadableColor.GREEN));
+        elemBucket.add(new Arrow(new Vector3f(0, 0, 1)).withColor(ReadableColor.BLUE));
 
-        elemBucket.add(new TerahedronRefinedMesh(2, 1).lineWidth(1).color(ReadableColor.RED).translate(new Vector3f(3, 5, 0)));
-        elemBucket.add(new TerahedronRefinedMesh(2, 2).lineWidth(2).color(ReadableColor.GREEN).translate(new Vector3f(0, 5, 0)));
-        elemBucket.add(new TerahedronRefinedMesh(2, 1).lineWidth(2).color(ReadableColor.BLUE).translate(new Vector3f(-3, 5, 0)));
+        elemBucket.add(new Icosphere(2, 1).withLineWidth(1).withColor(ReadableColor.RED).withTranslation(new Vector3f(3, 5, 0)));
+        elemBucket.add(new Icosphere(2, 2).withLineWidth(2).withColor(ReadableColor.GREEN).withTranslation(new Vector3f(0, 5, 0)));
+        elemBucket.add(new Icosphere(2, 1).withLineWidth(2).withColor(ReadableColor.BLUE).withTranslation(new Vector3f(-3, 5, 0)));
 
-        elemBucket.add(new TetrahedronMesh(3).lineWidth(2).color(ReadableColor.WHITE).translate(new Vector3f(-3, -5, 0)));
+        elemBucket.add(new Tetrahedron(3).withLineWidth(2).withColor(ReadableColor.WHITE).withTranslation(new Vector3f(-3, -5, 0)));
 
-        elemBucket.add(new CubeMesh(1).lineWidth(1).color(ReadableColor.ORANGE).translate(new Vector3f(-3, -2, 0))
-                .rotate(SimpleMath.createQuaternion(new Vector3f(1, 0, -1), new Vector3f(0, 1, 0), new Quaternion())));
+        elemBucket.add(new Cube(1).withLineWidth(1).withColor(ReadableColor.ORANGE).withTranslation(new Vector3f(-3, -2, 0))
+                .withRotation(SimpleMath.createQuaternion(new Vector3f(1, 0, -1), new Vector3f(0, 1, 0), new Quaternion())));
 
-        elemBucket.add(new Circle(1).lineWidth(2).translate(new Vector3f(3, 2, 0)));
+        elemBucket.add(new Circle(1).withLineWidth(2).withTranslation(new Vector3f(3, 2, 0)));
 
-        elemBucket.add(new IcosphereMesh(1, 1).lineWidth(1).color(ReadableColor.RED).translate(new Vector3f(5, -7, 0)));
-        elemBucket.add(new IcosphereMesh(1, 2).lineWidth(2).color(ReadableColor.GREEN).translate(new Vector3f(0, -7, 0)));
-        elemBucket.add(new IcosphereMesh(1, 1).lineWidth(2).color(ReadableColor.BLUE).translate(new Vector3f(-5, -7, 0)));
+        elemBucket.add(new Icosphere(1, 1).withLineWidth(1).withColor(ReadableColor.RED).withTranslation(new Vector3f(5, -7, 0)));
+        elemBucket.add(new Icosphere(1, 2).withLineWidth(2).withColor(ReadableColor.GREEN).withTranslation(new Vector3f(0, -7, 0)));
+        elemBucket.add(new Icosphere(1, 1).withLineWidth(2).withColor(ReadableColor.BLUE).withTranslation(new Vector3f(-5, -7, 0)));
 
 
-        elemBucket.add(new TexturedQuad().translate(new Vector3f(-1, 5, 0)));
-        elemBucket.add(new ColoredQuad().translate(new Vector3f(-1, 5, 0)));
+        elemBucket.add(new TexturedQuad().withTranslation(new Vector3f(-1, 5, 0)));
+        elemBucket.add(new ColoredQuad().withTranslation(new Vector3f(-1, 5, 0)));
 
         return elemBucket;
     }
@@ -84,7 +83,7 @@ final class ElementCreator {
             final float y = SimpleMath.random(-farPlane, farPlane);
             final float z = SimpleMath.random(-farPlane, farPlane);
 
-            AbstractRenderableGrid mesh = new IcosphereMesh(1, 1).lineWidth(1).color(ReadableColor.CYAN);
+            AbstractRenderableGrid mesh = new Icosphere(1, 1).withLineWidth(1).withColor(ReadableColor.CYAN);
             mesh.setTranslation(new Vector3f(x, y, z));
             elemBucket.add(mesh);
         }

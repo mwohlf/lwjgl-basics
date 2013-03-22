@@ -28,7 +28,8 @@ public class GenericMesh implements IsRenderable {
     private final int indexOffset;
     private final ReadableColor color;
 
-    private final Matrix4f model2world = SimpleMath.convert(new Vector3f(10, 30,10), new Matrix4f());
+    // this is usually mapped with translation(vector) and rotation(quaternion)
+    private final Matrix4f model2world = SimpleMath.convert(new Vector3f(0, 0,0), new Matrix4f());
 
 
     // only called by the builder

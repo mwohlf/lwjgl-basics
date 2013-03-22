@@ -7,7 +7,9 @@ package net.wohlfart.basic.states;
 public enum GameStateEnum {
     // @formatter:off
     NULL(new NullState()),
-    SIMPLE(new SimpleState());
+    SIMPLE(new SimpleState()),
+    LIGHTING(new LightingState()),
+    ;
     // @formatter:on
 
     private GameState state;

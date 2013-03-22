@@ -7,20 +7,17 @@ import com.google.common.eventbus.Subscribe;
 
 
 /**
- * <p>MousePosition class.</p>
- *
- *
- *
+ * <p>MousePositionLabel class.</p>
  */
-public class MousePosition extends FormattedLabel {
+public class MousePositionLabel extends FormattedLabel {
 
     /**
-     * <p>Constructor for MousePosition.</p>
+     * <p>Constructor for MousePositionLabel.</p>
      *
      * @param x a int.
      * @param y a int.
      */
-    public MousePosition(int x, int y) {
+    public MousePositionLabel(int x, int y) {
         super(x, y, "Mouse Position: {0, number, ###},{1, number, ###}");
     }
 

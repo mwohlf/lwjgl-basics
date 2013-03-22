@@ -32,7 +32,9 @@ public final class SimpleMath {
     public static final Vector3f Z_AXIS = new Vector3f(0, 0, 1);
 
     /** Constant <code>UNION_MATRIX</code> */
-    public static final Matrix4f UNION_MATRIX = new Matrix4f();
+    public static final Matrix4f UNION_MATRIX = Matrix4f.setIdentity(new Matrix4f());
+    /** Constant <code>NULL_MATRIX</code> this is used to indicate a marix that is not yet initialized */
+    public static final Matrix4f NULL_MATRIX = Matrix4f.setZero(new Matrix4f());
 
 
     private SimpleMath() {

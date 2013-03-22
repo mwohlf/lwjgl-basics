@@ -6,10 +6,9 @@ import java.io.InputStream;
 import net.wohlfart.gl.antlr4.GenericMeshLoader;
 import net.wohlfart.gl.elements.hud.Hud;
 import net.wohlfart.gl.elements.hud.widgets.Label;
-import net.wohlfart.gl.elements.hud.widgets.MousePosition;
+import net.wohlfart.gl.elements.hud.widgets.MousePositionLabel;
 import net.wohlfart.gl.elements.hud.widgets.Statistics;
 import net.wohlfart.gl.elements.skybox.Skybox;
-import net.wohlfart.gl.input.CommandEvent;
 import net.wohlfart.gl.input.InputDispatcher;
 import net.wohlfart.gl.renderer.RenderBucket;
 import net.wohlfart.gl.shader.DefaultGraphicContext;
@@ -19,11 +18,8 @@ import net.wohlfart.gl.view.Camera;
 import net.wohlfart.gl.view.MousePicker;
 import net.wohlfart.tools.ControllerFrame;
 
-import org.lwjgl.opengl.Display;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import com.google.common.eventbus.Subscribe;
 
 
 /*
@@ -33,18 +29,12 @@ import com.google.common.eventbus.Subscribe;
  * - hud
  *
  */
-class SimpleState implements GameState {
-    /** Constant <code>LOGGER</code> */
-    protected static final Logger LOGGER = LoggerFactory.getLogger(SimpleState.class);
-
-    private boolean quit = false;
+final class SimpleState extends AbstractGraphicState {
+    private static final Logger LOGGER = LoggerFactory.getLogger(SimpleState.class);
 
     private GraphicContextManager.IGraphicContext defaultGraphicContext;
     private GraphicContextManager.IGraphicContext wireframeGraphicContext;
     private GraphicContextManager.IGraphicContext hudGraphicContext;
-    private GraphicContextManager.IGraphicContext lightingGraphicContext;
-
-    protected GraphicContextManager graphContext = GraphicContextManager.INSTANCE;
 
     private final Camera camera = new Camera();
 
@@ -53,34 +43,30 @@ class SimpleState implements GameState {
     private final Hud hud = new Hud();
 
     private Statistics statistics;
-    private MousePosition mousePosition;
+    private MousePositionLabel mousePositionLabel;
     private MousePicker mousePicker;
-    private InputDispatcher inputDispatcher;
 
     private final boolean skyboxOn = true;
     private final boolean elementsOn = true;
     private final boolean hudOn = true;
     private final boolean controlFrameOn = true;
-    private final boolean lighting = true;
 
     /** {@inheritDoc} */
     @Override
     public void setup() {
-        inputDispatcher = graphContext.getInputDispatcher();
+        super.setup();
         statistics = new Statistics(0, -40);
-        mousePosition = new MousePosition(0, -20);
-        mousePicker = new MousePicker(elemBucket, graphContext.getScreenWidth(), graphContext.getScreenHeight());
+        mousePositionLabel = new MousePositionLabel(0, -20);
+        mousePicker = new MousePicker(elemBucket, getScreenWidth(), getScreenHeight());
 
         // event bus registration
-        inputDispatcher.register(camera);
-        inputDispatcher.register(this);
-        inputDispatcher.register(mousePosition);
+        InputDispatcher inputDispatcher = getInputDispatcher();
+        inputDispatcher.register(mousePositionLabel);
         inputDispatcher.register(mousePicker);
 
         wireframeGraphicContext = new DefaultGraphicContext(ShaderRegistry.WIREFRAME_SHADER);
         defaultGraphicContext = new DefaultGraphicContext(ShaderRegistry.DEFAULT_SHADER);
         hudGraphicContext = new DefaultGraphicContext(ShaderRegistry.HUD_SHADER);
-        lightingGraphicContext = new DefaultGraphicContext(ShaderRegistry.LIGHTING_SHADER);
 
         if (skyboxOn) {
             skybox.init(defaultGraphicContext, camera);
@@ -93,7 +79,7 @@ class SimpleState implements GameState {
             elemBucket.add(ElementCreator.createRandomElements());
 
             try (InputStream inputStream = ClassLoader.class.getResourceAsStream("/models/cube/cube.obj");) {
-                graphContext.setCurrentGraphicContext(wireframeGraphicContext);
+                setCurrentGraphicContext(wireframeGraphicContext);
                 elemBucket.add(new GenericMeshLoader().getRenderable(inputStream));
             } catch (IOException ex) {
                 ex.printStackTrace();
@@ -109,22 +95,12 @@ class SimpleState implements GameState {
         if (hudOn) {
             hud.init(hudGraphicContext);
             hud.add(statistics);
-            hud.add(mousePosition);
+            hud.add(mousePositionLabel);
             hud.add(new Label(0, 0, "hello world at (0,0)"));
         }
-
     }
 
 
-    /**
-     * <p>onExitTriggered.</p>
-     *
-     * @param exitEvent a {@link net.wohlfart.gl.input.CommandEvent.Exit} object.
-     */
-    @Subscribe
-    public synchronized void onExitTriggered(CommandEvent.Exit exitEvent) {
-        quit = true;
-    }
 
     /** {@inheritDoc} */
     @Override
@@ -151,17 +127,12 @@ class SimpleState implements GameState {
 
     /** {@inheritDoc} */
     @Override
-    public boolean isDone() {
-        return Display.isCloseRequested() || quit;
-    }
-
-    /** {@inheritDoc} */
-    @Override
     public void destroy() {
         defaultGraphicContext.dispose();
         wireframeGraphicContext.dispose();
         hudGraphicContext.dispose();
         // event bus unregistration
+        InputDispatcher inputDispatcher = getInputDispatcher();
         inputDispatcher.unregister(this);
         inputDispatcher.unregister(camera);
     }

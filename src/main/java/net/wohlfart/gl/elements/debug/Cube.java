@@ -25,24 +25,24 @@ import org.lwjgl.util.vector.Vector3f;
  *      2-------- 3
  *
  * @formatter:on
- * <p>CubeMesh class.</p>
+ * <p>Cube class.</p>
  */
-public class CubeMesh extends AbstractRenderableGrid {
+public class Cube extends AbstractRenderableGrid {
 
     private float length = 1;
 
     /**
-     * <p>Constructor for CubeMesh.</p>
+     * <p>Constructor for Cube.</p>
      */
-    public CubeMesh() {
+    public Cube() {
     }
 
     /**
-     * <p>Constructor for CubeMesh.</p>
+     * <p>Constructor for Cube.</p>
      *
      * @param length a float.
      */
-    public CubeMesh(float length) {
+    public Cube(float length) {
         this.length = length;
     }
 

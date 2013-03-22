@@ -13,40 +13,45 @@ import org.lwjgl.util.vector.Vector3f;
  */
 public abstract class AbstractRenderable implements IsRenderable {
 
-    protected IsRenderable meshData;
-
     // initial translation and rotation of the mesh
     protected final Vector3f translation = new Vector3f();
     protected final Quaternion rotation = new Quaternion();
+    // a static mesh that is created lazy
+    private IsRenderable delegate;
 
     // dynamic translation and rotation
+    private boolean matrixIsOutdated = true;
     private Vector3f currentTranslation = new Vector3f();
     private Quaternion currentRotation = new Quaternion();
-    private final Matrix4f modelToWorldMatrix = new Matrix4f();
+    private final Matrix4f modelToWorldMatrix = Matrix4f.setZero(new Matrix4f());
 
     /**
-     * <p>setupMesh.</p>
+     * <p>This is the core method that needs to be implemented by subclasses,
+     * use the  </p>
      *
      * @return a {@link net.wohlfart.gl.shader.mesh.IRenderable} object.
      */
     protected abstract IsRenderable setupMesh();
 
     /**
-     * <p>resetMeshData.</p>
+     * <p>This method has to be called to whenever something in the object data was changed
+     *   in order to recreate the mesh data.</p>
      */
-    protected void resetMeshData() {
-        meshData = null;
+    protected void destroyMeshData() {
+        delegate = null;
     }
 
     /**
-     * <p>translate.</p>
+     * <p>For setting up an initial translation, note this method is not
+     * meant for moving this object around, it is rather used for setting
+     * up an initial displacement of the object away from the origin.</p>
      *
      * @param translation a {@link org.lwjgl.util.vector.Vector3f} object.
      * @return a {@link net.wohlfart.gl.elements.AbstractRenderable} object.
      */
-    public AbstractRenderable translate(Vector3f translation) {
+    public AbstractRenderable withTranslation(Vector3f translation) {
         this.translation.set(translation);
-        resetMeshData();
+        destroyMeshData();
         return this;
     }
 
@@ -56,9 +61,9 @@ public abstract class AbstractRenderable implements IsRenderable {
      * @param rotation a {@link org.lwjgl.util.vector.Quaternion} object.
      * @return a {@link net.wohlfart.gl.elements.AbstractRenderable} object.
      */
-    public AbstractRenderable rotate(Quaternion rotation) {
+    public AbstractRenderable withRotation(Quaternion rotation) {
         this.rotation.set(rotation);
-        resetMeshData();
+        destroyMeshData();
         return this;
     }
 
@@ -69,6 +74,7 @@ public abstract class AbstractRenderable implements IsRenderable {
      */
     public void setTranslation(Vector3f currentTranslation) {
         this.currentTranslation = currentTranslation;
+        matrixIsOutdated = true;
     }
 
     /**
@@ -78,17 +84,21 @@ public abstract class AbstractRenderable implements IsRenderable {
      */
     public void setRotation(Quaternion currentRotation) {
         this.currentRotation = currentRotation;
+        matrixIsOutdated = true;
     }
 
     /** {@inheritDoc} */
     @Override
     public void render() {
-        if (meshData == null) {
-            meshData = setupMesh();
+        if (delegate == null) {
+            delegate = setupMesh();
         }
-        SimpleMath.convert(currentTranslation, currentRotation, modelToWorldMatrix);
+        if (matrixIsOutdated) {
+            SimpleMath.convert(currentTranslation, currentRotation, modelToWorldMatrix);
+            matrixIsOutdated = false;
+        }
         ShaderUniformHandle.MODEL_TO_WORLD.set(modelToWorldMatrix);
-        meshData.render();
+        delegate.render();
     }
 
     @Override
@@ -99,8 +109,8 @@ public abstract class AbstractRenderable implements IsRenderable {
     /** {@inheritDoc} */
     @Override
     public void destroy() {
-        meshData.destroy();
-        meshData = null;
+        delegate.destroy();
+        delegate = null;
     }
 
 }
