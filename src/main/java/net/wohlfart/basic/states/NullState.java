@@ -1,6 +1,9 @@
 package net.wohlfart.basic.states;
 
-class NullState implements GameState {
+/**
+ * A simple state that does nothing.
+ */
+class NullState implements GameState { // REVIEWED
 
     /** {@inheritDoc} */
     @Override

@@ -17,7 +17,7 @@ import org.lwjgl.util.vector.Vector3f;
 /**
  * <p>A set of Renderables that use the same GraphicContext.
  */
-public class RenderBucket implements IsRenderable, HasCamProjectionModelViewMatrices {
+public class RenderBucket implements IsRenderable, IsUpdateable, HasCamProjectionModelViewMatrices {
 
     protected Set<IsRenderable> container = new HashSet<>(10100);
     private IGraphicContext graphicContext;

@@ -1,4 +1,4 @@
-package net.wohlfart.gl.shader.mesh;
+package net.wohlfart.gl.elements.debug;
 
 import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
@@ -18,28 +18,17 @@ import org.lwjgl.opengl.GL30;
 import org.lwjgl.util.ReadableColor;
 import org.lwjgl.util.vector.Quaternion;
 import org.lwjgl.util.vector.Vector3f;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
- * <p>WireframeMeshBuilder class.</p>
- *
- *
- *
+ * <p>A Builder class for creating debug elements. for a scene.</p>
  */
-public class WireframeMeshBuilder {
-    /** Constant <code>LOGGER</code> */
-    protected static final Logger LOGGER = LoggerFactory.getLogger(WireframeMeshBuilder.class);
+public class WireframeMeshBuilder { // REVIEWED
 
     private final List<Vector3f> vertices = new ArrayList<Vector3f>();
-
     private final List<Integer> indices = new ArrayList<Integer>();
-    private int indicesStructure;
-    private int indexElemSize;
+    private int linePrimitive;
 
-    private float lineWidth = 1f;
     private ReadableColor color = ReadableColor.GREY;
-
     private Vector3f translation;
     private Quaternion rotation;
 
@@ -49,25 +38,27 @@ public class WireframeMeshBuilder {
      * @return a {@link net.wohlfart.gl.shader.mesh.IRenderable} object.
      */
     public IsRenderable build() {
-
         applyRotationAndTranslation();
 
         final int vaoHandle = GL30.glGenVertexArrays();
-
         GL30.glBindVertexArray(vaoHandle);
-        final int vboVerticesHandle = createVboHandle(getVertices(), ShaderAttributeHandle.POSITION);
-        final int vboIndicesHandle = createElementArrayBuffer();
+
+        GL20.glDisableVertexAttribArray(ShaderAttributeHandle.COLOR.getLocation());
+        GL20.glDisableVertexAttribArray(ShaderAttributeHandle.NORMAL.getLocation());
+        final int vboHandle = createVboHandle(getVertices(), ShaderAttributeHandle.POSITION);
+        GL20.glDisableVertexAttribArray(ShaderAttributeHandle.TEXTURE_COORD.getLocation());
+
+        final int idxBufferHandle = createIdxBufferHandle(getIndices());
 
         GL30.glBindVertexArray(0);
 
+        final int indexElemSize = GL11.GL_UNSIGNED_INT;
         final int indicesCount = getIndices().length;
-        final int colorAttrib = ShaderAttributeHandle.COLOR.getLocation();
-        final int positionAttrib = ShaderAttributeHandle.POSITION.getLocation();
-        final int textureAttrib = ShaderAttributeHandle.TEXTURE_COORD.getLocation();
         final int offset = 0;
 
-        return new WireframeMesh(vaoHandle, vboVerticesHandle, vboIndicesHandle, indicesStructure, indexElemSize, indicesCount, offset, colorAttrib,
-                positionAttrib, textureAttrib, color, lineWidth);
+        return new WireframeMesh(vaoHandle, vboHandle, idxBufferHandle,
+                linePrimitive, indexElemSize, indicesCount, offset,
+                color);
     }
 
     private void applyRotationAndTranslation() {
@@ -83,16 +74,15 @@ public class WireframeMeshBuilder {
         }
     }
 
-    private int createElementArrayBuffer() {
-        final int vboIndicesHandle = GL15.glGenBuffers();
-        GL15.glBindBuffer(GL15.GL_ELEMENT_ARRAY_BUFFER, vboIndicesHandle);
-        // FIXME: check the vertex count and use a byte or short buffer here if the number of vertices is low enough
-        final int[] buffer = getIndices();
-        final IntBuffer indicesBuffer = BufferUtils.createIntBuffer(buffer.length);
-        indicesBuffer.put(buffer);
+    private int createIdxBufferHandle(int[] indices) {
+        final IntBuffer indicesBuffer = BufferUtils.createIntBuffer(indices.length);
+        indicesBuffer.put(indices);
         indicesBuffer.flip();
+
+        final int idxBufferHandle = GL15.glGenBuffers();
+        GL15.glBindBuffer(GL15.GL_ELEMENT_ARRAY_BUFFER, idxBufferHandle);
         GL15.glBufferData(GL15.GL_ELEMENT_ARRAY_BUFFER, indicesBuffer, GL15.GL_STATIC_DRAW);
-        return vboIndicesHandle;
+        return idxBufferHandle;
     }
 
     private int createVboHandle(float[] floatBuff, final ShaderAttributeHandle attrHandle) {
@@ -133,8 +123,6 @@ public class WireframeMeshBuilder {
         }
         return result;
     }
-
-    // --
 
     /**
      * <p>Setter for the field <code>vertices</code>.</p>
@@ -182,30 +170,15 @@ public class WireframeMeshBuilder {
     }
 
     /**
-     * <p>Setter for the field <code>lineWidth</code>.</p>
+     * <p>Setter for the field <code>linePrimitive</code> defines how the indices are
+     * turned into lines, valid values are
+     * GL_LINES, GL_LINE_STRIP, GL_LINE_LOOP.
+     * </p>
      *
-     * @param lineWidth a float.
+     * @param linePrimitive a int.
      */
-    public void setLineWidth(float lineWidth) {
-        this.lineWidth = lineWidth;
-    }
-
-    /**
-     * <p>Setter for the field <code>indicesStructure</code>.</p>
-     *
-     * @param indicesStructure a int.
-     */
-    public void setIndicesStructure(int indicesStructure) {
-        this.indicesStructure = indicesStructure;
-    }
-
-    /**
-     * <p>Setter for the field <code>indexElemSize</code>.</p>
-     *
-     * @param indexElemSize a int.
-     */
-    public void setIndexElemSize(int indexElemSize) {
-        this.indexElemSize = indexElemSize;
+    public void setLinePrimitive(int linePrimitive) {
+        this.linePrimitive = linePrimitive;
     }
 
 }

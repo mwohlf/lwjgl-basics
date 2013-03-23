@@ -92,11 +92,6 @@ public class TexturedFragmentMesh implements IsRenderable {
         GL30.glBindVertexArray(0);
     }
 
-    @Override
-    public void update(float timeInSec) {
-        // nothing to do
-    }
-
     /** {@inheritDoc} */
     @Override
     public void destroy() {

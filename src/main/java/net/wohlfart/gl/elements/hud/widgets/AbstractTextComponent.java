@@ -71,8 +71,4 @@ public abstract class AbstractTextComponent implements IsRenderable {
     }
 
 
-    @Override
-    public void update(float timeInSec) {
-        // nothing to update
-    }
 }

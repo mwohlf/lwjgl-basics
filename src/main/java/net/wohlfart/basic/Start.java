@@ -6,8 +6,9 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 /**
  * <p>This is the application entry point.</p>
  */
-public class Start {
+public class Start { // REVIEWED
 
+    /** path to the application config file */
     private static final String CONFIG_FILE = "config/applicationContext.xml";
 
     /**

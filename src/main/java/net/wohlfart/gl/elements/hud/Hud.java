@@ -57,10 +57,6 @@ public class Hud implements IsRenderable {
         layer.render();
     }
 
-    @Override
-    public void update(float timeInSec) {
-        // nothing to do
-    }
 
     /** {@inheritDoc} */
     @Override

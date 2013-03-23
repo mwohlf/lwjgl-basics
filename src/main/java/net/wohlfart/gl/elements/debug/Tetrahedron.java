@@ -3,8 +3,8 @@ package net.wohlfart.gl.elements.debug;
 import java.util.ArrayList;
 import java.util.List;
 
+import net.wohlfart.gl.elements.AbstractRenderable;
 import net.wohlfart.gl.renderer.IsRenderable;
-import net.wohlfart.gl.shader.mesh.WireframeMeshBuilder;
 import net.wohlfart.tools.SimpleMath;
 
 import org.lwjgl.opengl.GL11;
@@ -22,7 +22,7 @@ import org.lwjgl.util.vector.Vector3f;
  * @formatter:on
  *
  */
-public class Tetrahedron extends AbstractRenderableGrid {
+public class Tetrahedron extends AbstractRenderable { // REVIEWED
 
     private float length = 1;
 
@@ -35,6 +35,7 @@ public class Tetrahedron extends AbstractRenderableGrid {
      * <p>Constructor for Tetrahedron.</p>
      */
     public Tetrahedron() {
+        // nothing to do
     }
 
     /**
@@ -44,6 +45,20 @@ public class Tetrahedron extends AbstractRenderableGrid {
      */
     public Tetrahedron(float length) {
         this.length = length;
+    }
+
+
+    /** {@inheritDoc} */
+    @Override
+    protected IsRenderable setupMesh() {
+        final WireframeMeshBuilder builder = new WireframeMeshBuilder();
+        builder.setVertices(createVertices());
+        builder.setIndices(indices);
+        builder.setLinePrimitive(GL11.GL_LINES);
+        builder.setColor(color);
+        builder.setRotation(rotation);
+        builder.setTranslation(translation);
+        return builder.build();
     }
 
     /**
@@ -59,21 +74,6 @@ public class Tetrahedron extends AbstractRenderableGrid {
         result.add(new Vector3f(+length / 2f, -h / 2f, +h / 2f));
         result.add(new Vector3f(0, -h / 2f, -h / 2f));
         return result;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    protected IsRenderable setupMesh() {
-        final WireframeMeshBuilder builder = new WireframeMeshBuilder();
-        builder.setVertices(createVertices());
-        builder.setIndices(indices);
-        builder.setIndicesStructure(GL11.GL_LINES);
-        builder.setIndexElemSize(GL11.GL_UNSIGNED_INT);
-        builder.setColor(color);
-        builder.setLineWidth(lineWidth);
-        builder.setRotation(rotation);
-        builder.setTranslation(translation);
-        return builder.build();
     }
 
 }

@@ -3,7 +3,7 @@ package net.wohlfart.basic.time;
 /**
  * <p>A generic clock interface.</p>
  */
-public interface Clock {
+public interface Clock { // REVIEWED
 
     /**
      * <p>The current number of ticks for this clock, starts at 0 and wraps around.</p>
@@ -13,7 +13,7 @@ public interface Clock {
     long getTicks();
 
     /**
-     * <p>The current ticks per second of this clock.</p>
+     * <p>The ticks per second of this clock.</p>
      *
      * @return a long.
      */

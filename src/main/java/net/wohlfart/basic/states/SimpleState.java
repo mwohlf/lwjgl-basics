@@ -1,9 +1,5 @@
 package net.wohlfart.basic.states;
 
-import java.io.IOException;
-import java.io.InputStream;
-
-import net.wohlfart.gl.antlr4.GenericMeshLoader;
 import net.wohlfart.gl.elements.hud.Hud;
 import net.wohlfart.gl.elements.hud.widgets.Label;
 import net.wohlfart.gl.elements.hud.widgets.MousePositionLabel;
@@ -14,7 +10,6 @@ import net.wohlfart.gl.renderer.RenderBucket;
 import net.wohlfart.gl.shader.DefaultGraphicContext;
 import net.wohlfart.gl.shader.GraphicContextManager;
 import net.wohlfart.gl.shader.ShaderRegistry;
-import net.wohlfart.gl.view.Camera;
 import net.wohlfart.gl.view.MousePicker;
 import net.wohlfart.tools.ControllerFrame;
 
@@ -36,8 +31,6 @@ final class SimpleState extends AbstractGraphicState {
     private GraphicContextManager.IGraphicContext wireframeGraphicContext;
     private GraphicContextManager.IGraphicContext hudGraphicContext;
 
-    private final Camera camera = new Camera();
-
     private final Skybox skybox = new Skybox();
     private final RenderBucket elemBucket = new RenderBucket();
     private final Hud hud = new Hud();
@@ -46,10 +39,10 @@ final class SimpleState extends AbstractGraphicState {
     private MousePositionLabel mousePositionLabel;
     private MousePicker mousePicker;
 
-    private final boolean skyboxOn = true;
+    private final boolean skyboxOn = false;
     private final boolean elementsOn = true;
     private final boolean hudOn = true;
-    private final boolean controlFrameOn = true;
+    private final boolean controlFrameOn = false;
 
     /** {@inheritDoc} */
     @Override
@@ -69,22 +62,28 @@ final class SimpleState extends AbstractGraphicState {
         hudGraphicContext = new DefaultGraphicContext(ShaderRegistry.HUD_SHADER);
 
         if (skyboxOn) {
-            skybox.init(defaultGraphicContext, camera);
+            skybox.init(defaultGraphicContext, getCamera());
         }
 
         if (elementsOn) {
-            elemBucket.init(wireframeGraphicContext, camera);
-            elemBucket.add(ElementCreator.createCircles());
-            elemBucket.add(ElementCreator.createSpheres());
-            elemBucket.add(ElementCreator.createRandomElements());
+            elemBucket.init(wireframeGraphicContext, getCamera());
+            //elemBucket.add(SceneCreator.createCircledTarget());
+            //elemBucket.add(SceneCreator.createRandomLocatedSpheres());
+            //elemBucket.add(SceneCreator.createRandomElements());
+            elemBucket.add(SceneCreator.createOriginAxis());
+            elemBucket.add(SceneCreator.createDebugElements());
 
+            /*
             try (InputStream inputStream = ClassLoader.class.getResourceAsStream("/models/cube/cube.obj");) {
                 setCurrentGraphicContext(wireframeGraphicContext);
                 elemBucket.add(new GenericMeshLoader().getRenderable(inputStream));
             } catch (IOException ex) {
                 ex.printStackTrace();
             }
+            */
         }
+
+
 
         if (controlFrameOn) {
             ControllerFrame frame = new ControllerFrame();
@@ -131,10 +130,7 @@ final class SimpleState extends AbstractGraphicState {
         defaultGraphicContext.dispose();
         wireframeGraphicContext.dispose();
         hudGraphicContext.dispose();
-        // event bus unregistration
-        InputDispatcher inputDispatcher = getInputDispatcher();
-        inputDispatcher.unregister(this);
-        inputDispatcher.unregister(camera);
+        super.destroy();
     }
 
 }

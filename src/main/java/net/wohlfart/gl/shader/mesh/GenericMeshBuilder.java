@@ -52,7 +52,6 @@ public class GenericMeshBuilder implements GenericMeshData {
      */
     public IsRenderable build() {
         vaoHandle = GL30.glGenVertexArrays();
-
         GL30.glBindVertexArray(vaoHandle);
         vboVerticesHandle = createVboVerticesHandle();
         vboIndicesHandle = createVboIndicesHandle();
@@ -97,25 +96,28 @@ public class GenericMeshBuilder implements GenericMeshData {
 
 
     private int createVboIndicesHandle() {
-        final int[] buffer = getIndices();
         final int vboIndicesHandle = GL15.glGenBuffers();
         GL15.glBindBuffer(GL15.GL_ELEMENT_ARRAY_BUFFER, vboIndicesHandle);
+
+        final int[] buffer = getIndices();
         final IntBuffer indicesBuffer = BufferUtils.createIntBuffer(buffer.length);
         indicesBuffer.put(buffer);
         indicesBuffer.flip();
+
         GL15.glBufferData(GL15.GL_ELEMENT_ARRAY_BUFFER, indicesBuffer, GL15.GL_STATIC_DRAW);
         return vboIndicesHandle;
     }
 
     private int createVboVerticesHandle() {
-        final float[] floatBuff = getVertices();
         final int vboVerticesHandle = GL15.glGenBuffers();
         GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, vboVerticesHandle);
+
+        final float[] floatBuff = getVertices();
         final FloatBuffer verticesBuffer = BufferUtils.createFloatBuffer(floatBuff.length);
         verticesBuffer.put(floatBuff);
         verticesBuffer.flip();
-        GL15.glBufferData(GL15.GL_ARRAY_BUFFER, verticesBuffer, GL15.GL_STATIC_DRAW);
 
+        GL15.glBufferData(GL15.GL_ARRAY_BUFFER, verticesBuffer, GL15.GL_STATIC_DRAW);
         final int positionAttrib = ShaderAttributeHandle.POSITION.getLocation();
         GL20.glEnableVertexAttribArray(positionAttrib);
         GL20.glVertexAttribPointer(positionAttrib, ShaderAttributeHandle.POSITION.getSize(), GL11.GL_FLOAT, false, 0, 0);

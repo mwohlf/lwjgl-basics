@@ -2,18 +2,12 @@ package net.wohlfart.gl.input;
 
 import com.google.common.eventbus.EventBus;
 
-/*
- * public interface for abstracting the platform dependent input devices
- */
 /**
- * <p>DefaultInputDispatcher class.</p>
- *
- *
- *
+ * <p>DefaultInputDispatcher class implements an event
+ *    bus for anything coming from the user as input.</p>
  */
 public class DefaultInputDispatcher extends EventBus implements InputDispatcher {
-    /** Constant <code>EVENTBUS_NAME="inputProcessor"</code> */
-    public static final String EVENTBUS_NAME = "inputProcessor";
+    static final String EVENTBUS_NAME = "inputProcessor";
 
     /**
      * <p>Constructor for DefaultInputDispatcher.</p>

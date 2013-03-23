@@ -4,6 +4,8 @@ import net.wohlfart.gl.renderer.IsRenderable;
 import net.wohlfart.gl.shader.ShaderUniformHandle;
 import net.wohlfart.tools.SimpleMath;
 
+import org.lwjgl.util.Color;
+import org.lwjgl.util.ReadableColor;
 import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Quaternion;
 import org.lwjgl.util.vector.Vector3f;
@@ -13,9 +15,10 @@ import org.lwjgl.util.vector.Vector3f;
  */
 public abstract class AbstractRenderable implements IsRenderable {
 
-    // initial translation and rotation of the mesh
+    // initial properties of the mesh
     protected final Vector3f translation = new Vector3f();
     protected final Quaternion rotation = new Quaternion();
+    protected ReadableColor color = Color.BLUE;
     // a static mesh that is created lazy
     private IsRenderable delegate;
 
@@ -68,6 +71,18 @@ public abstract class AbstractRenderable implements IsRenderable {
     }
 
     /**
+     * <p>color.</p>
+     *
+     * @param color a {@link org.lwjgl.util.ReadableColor} object.
+     * @return a {@link net.wohlfart.gl.elements.debug.AbstractRenderableWireframe} object.
+     */
+    public AbstractRenderable withColor(ReadableColor color) {
+        this.color = color;
+        destroyMeshData();
+        return this;
+    }
+
+    /**
      * <p>Setter for the field <code>translation</code>.</p>
      *
      * @param currentTranslation a {@link org.lwjgl.util.vector.Vector3f} object.
@@ -99,11 +114,6 @@ public abstract class AbstractRenderable implements IsRenderable {
         }
         ShaderUniformHandle.MODEL_TO_WORLD.set(modelToWorldMatrix);
         delegate.render();
-    }
-
-    @Override
-    public void update(float timeInSec) {
-        // nothing to update
     }
 
     /** {@inheritDoc} */

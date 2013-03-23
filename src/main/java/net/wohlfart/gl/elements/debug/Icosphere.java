@@ -4,18 +4,21 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import net.wohlfart.gl.elements.AbstractRenderable;
 import net.wohlfart.gl.renderer.IsRenderable;
-import net.wohlfart.gl.shader.mesh.WireframeMeshBuilder;
 import net.wohlfart.tools.SimpleMath;
 
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.util.vector.Vector3f;
 
-// see: http://blog.andreaskahler.com/2009/06/creating-icosphere-mesh-in-code.html
+//
 /**
  * <p>Icosphere class.</p>
+ * <p>
+ * see: http://blog.andreaskahler.com/2009/06/creating-icosphere-mesh-in-code.html
+ * </p>
  */
-public class Icosphere extends AbstractRenderableGrid {
+public class Icosphere extends AbstractRenderable { // REVIEWED
 
     private int lod = 0;
     private float radius = 1;
@@ -23,10 +26,18 @@ public class Icosphere extends AbstractRenderableGrid {
     float t = (1.0f + SimpleMath.sqrt(5.0f)) / 2.0f;
     private final List<Vector3f> vertices = new ArrayList<Vector3f>(
             Arrays.<Vector3f> asList( new Vector3f[] { // @formatter:off
-                    new Vector3f(-1f, t, 0), new Vector3f(+1f, t, 0), new Vector3f(-1f, -t, 0),
-                    new Vector3f(+1f, -t, 0), new Vector3f(0f, -1, t), new Vector3f(0f, 1, t),
-                    new Vector3f(0f, -1, -t), new Vector3f(0f, 1, -t), new Vector3f(t, 0, -1),
-                    new Vector3f(t, 0, 1), new Vector3f(-t, 0, -1), new Vector3f(-t, 0, 1), }));
+                    new Vector3f(-1f, t, 0),
+                    new Vector3f(+1f, t, 0),
+                    new Vector3f(-1f, -t, 0),
+                    new Vector3f(+1f, -t, 0),
+                    new Vector3f(0f, -1, t),
+                    new Vector3f(0f, 1, t),
+                    new Vector3f(0f, -1, -t),
+                    new Vector3f(0f, 1, -t),
+                    new Vector3f(t, 0, -1),
+                    new Vector3f(t, 0, 1),
+                    new Vector3f(-t, 0, -1),
+                    new Vector3f(-t, 0, 1), }));
 
     private Integer[] indices = new Integer[] {
             0, 11, 11, 5, 5, 0,
@@ -77,6 +88,20 @@ public class Icosphere extends AbstractRenderableGrid {
         this.lod = lod;
         this.radius = radius;
         normalize();
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    protected IsRenderable setupMesh() {
+        splitPlanes(lod);
+        final WireframeMeshBuilder builder = new WireframeMeshBuilder();
+        builder.setVertices(vertices);
+        builder.setIndices(indices);
+        builder.setLinePrimitive(GL11.GL_LINES);
+        builder.setColor(color);
+        builder.setRotation(rotation);
+        builder.setTranslation(translation);
+        return builder.build();
     }
 
     private void normalize() {
@@ -158,22 +183,6 @@ public class Icosphere extends AbstractRenderableGrid {
 
     private Vector3f splitLine(final Vector3f v1, final Vector3f v2) {
         return new Vector3f((v1.x + v2.x) / 2f, (v1.y + v2.y) / 2f, (v1.z + v2.z) / 2f);
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    protected IsRenderable setupMesh() {
-        splitPlanes(lod);
-        final WireframeMeshBuilder builder = new WireframeMeshBuilder();
-        builder.setVertices(vertices);
-        builder.setIndices(indices);
-        builder.setIndicesStructure(GL11.GL_LINES);
-        builder.setIndexElemSize(GL11.GL_UNSIGNED_INT);
-        builder.setColor(color);
-        builder.setRotation(rotation);
-        builder.setTranslation(translation);
-        builder.setLineWidth(lineWidth);
-        return builder.build();
     }
 
 }

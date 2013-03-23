@@ -3,7 +3,7 @@ package net.wohlfart.basic.time;
 /**
  * <p>A Timer implementation that works with any clock.</p>
  */
-public class TimerImpl implements Timer {
+public class TimerImpl implements Timer { // REVIEWED
 
     private final Clock clock;
     private final long maxValidCount;

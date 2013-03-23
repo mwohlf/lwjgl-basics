@@ -3,19 +3,19 @@ package net.wohlfart.gl.elements.debug;
 import java.util.ArrayList;
 import java.util.List;
 
+import net.wohlfart.gl.elements.AbstractRenderable;
 import net.wohlfart.gl.renderer.IsRenderable;
-import net.wohlfart.gl.shader.mesh.WireframeMeshBuilder;
 import net.wohlfart.tools.SimpleMath;
 
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.util.vector.Vector3f;
 
 /**
- * <p>Circle class.</p>
+ * <p>A simple Circle class.</p>
  */
-public class Circle extends AbstractRenderableGrid {
+public class Circle extends AbstractRenderable {  // REVIEWED
 
-    private static final int pieces = 15; // LOD
+    private int pieces = 15; // LOD
     private float radius = 1;
 
     /**
@@ -33,16 +33,25 @@ public class Circle extends AbstractRenderableGrid {
         this.radius = radius;
     }
 
+    /**
+     * <p>Constructor for Circle.</p>
+     *
+     * @param radius a float.
+     * @param pieces the level of detail.
+     */
+    public Circle(float radius, int pieces) {
+        this.radius = radius;
+        this.pieces = pieces;
+    }
+
     /** {@inheritDoc} */
     @Override
     protected IsRenderable setupMesh() {
         final WireframeMeshBuilder builder = new WireframeMeshBuilder();
         builder.setVertices(createVertices());
         builder.setIndices(createIndices());
-        builder.setIndicesStructure(GL11.GL_LINE_LOOP); // loop!
-        builder.setIndexElemSize(GL11.GL_UNSIGNED_INT);
+        builder.setLinePrimitive(GL11.GL_LINES);
         builder.setColor(color);
-        builder.setLineWidth(lineWidth);
         builder.setRotation(rotation);
         builder.setTranslation(translation);
         return builder.build();
@@ -72,8 +81,8 @@ public class Circle extends AbstractRenderableGrid {
     protected Integer[] createIndices() {
         final List<Integer> result = new ArrayList<Integer>(pieces * 2);
         for (int i = 0; i < pieces; i++) {
-            result.add(i * 2, i);
-            result.add(i * 2 + 1, (i + 1) % pieces);  // FIXME: modulo should not be neccessary if we use LOOP primitive for drawing
+            result.add(i);
+            result.add((i + 1) % pieces);
         }
         return result.toArray(new Integer[result.size()]);
     }

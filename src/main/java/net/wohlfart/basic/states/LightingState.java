@@ -13,6 +13,13 @@ import net.wohlfart.gl.shader.ShaderRegistry;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+
+/**
+ * REVIEW:
+ *
+ * @author michael
+ *
+ */
 final class LightingState extends AbstractGraphicState {
     private static final Logger LOGGER = LoggerFactory.getLogger(LightingState.class);
 
@@ -49,7 +56,7 @@ final class LightingState extends AbstractGraphicState {
 
     @Override
     public void destroy() {
-
+        super.destroy();
     }
 
 }

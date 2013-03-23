@@ -5,7 +5,7 @@ import org.lwjgl.Sys;
 /**
  * <p>A lwjgl specific clock implementation.</p>
  */
-public class LwjglClockImpl implements Clock {
+public class LwjglClockImpl implements Clock { // REVIEWED
 
     /** {@inheritDoc} */
     @Override

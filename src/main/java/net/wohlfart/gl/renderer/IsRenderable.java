@@ -22,16 +22,7 @@ public interface IsRenderable extends Renderable {
         public void render() {}
         @Override
         public void destroy() {}
-        @Override
-        public void update(float timeInSec) {}
     };
-
-    /**
-     * call to update the internal state
-     *
-     * @param timeInSec the time since the last call to this method in sec
-     */
-    void update(float timeInSec);
 
     /**
      * <p>Display this IsRenderable in the current graphic context.</p>

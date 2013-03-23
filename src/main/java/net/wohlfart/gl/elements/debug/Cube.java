@@ -4,8 +4,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import net.wohlfart.gl.elements.AbstractRenderable;
 import net.wohlfart.gl.renderer.IsRenderable;
-import net.wohlfart.gl.shader.mesh.WireframeMeshBuilder;
 
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.util.vector.Vector3f;
@@ -25,9 +25,9 @@ import org.lwjgl.util.vector.Vector3f;
  *      2-------- 3
  *
  * @formatter:on
- * <p>Cube class.</p>
+ * <p>A simple Cube class.</p>
  */
-public class Cube extends AbstractRenderableGrid {
+public class Cube extends AbstractRenderable {  // REVIEWED
 
     private float length = 1;
 
@@ -35,6 +35,7 @@ public class Cube extends AbstractRenderableGrid {
      * <p>Constructor for Cube.</p>
      */
     public Cube() {
+        // nothing to do
     }
 
     /**
@@ -44,6 +45,19 @@ public class Cube extends AbstractRenderableGrid {
      */
     public Cube(float length) {
         this.length = length;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    protected IsRenderable setupMesh() {
+        final WireframeMeshBuilder builder = new WireframeMeshBuilder();
+        builder.setVertices(createVertices());
+        builder.setIndices(createIndices());
+        builder.setLinePrimitive(GL11.GL_LINES);
+        builder.setColor(color);
+        builder.setRotation(rotation);
+        builder.setTranslation(translation);
+        return builder.build();
     }
 
     /**
@@ -104,21 +118,6 @@ public class Cube extends AbstractRenderableGrid {
         result.add(i4);
         result.add(i1);
         return result;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    protected IsRenderable setupMesh() {
-        final WireframeMeshBuilder builder = new WireframeMeshBuilder();
-        builder.setVertices(createVertices());
-        builder.setIndices(createIndices());
-        builder.setIndicesStructure(GL11.GL_LINES);
-        builder.setIndexElemSize(GL11.GL_UNSIGNED_INT);
-        builder.setColor(color);
-        builder.setLineWidth(lineWidth);
-        builder.setRotation(rotation);
-        builder.setTranslation(translation);
-        return builder.build();
     }
 
 }

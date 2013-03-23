@@ -84,10 +84,6 @@ public class CharacterMesh implements IsRenderable {
         GL30.glBindVertexArray(0);
     }
 
-    @Override
-    public void update(float timeInSec) {
-        // nothing to do
-    }
 
     /** {@inheritDoc} */
     @Override

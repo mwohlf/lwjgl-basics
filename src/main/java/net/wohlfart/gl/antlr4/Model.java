@@ -1,8 +1,9 @@
 package net.wohlfart.gl.antlr4;
 
 import net.wohlfart.gl.renderer.IsRenderable;
+import net.wohlfart.gl.renderer.IsUpdateable;
 
-public class Model implements IsRenderable {
+public class Model implements IsRenderable, IsUpdateable {
 
 
 

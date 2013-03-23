@@ -2,9 +2,9 @@ package net.wohlfart.basic.time;
 
 /**
  * <p>A generic Timer interface,
- *    a timer is usually based on a clock.</p>
+ *    a timer is based on a clock.</p>
  */
-public interface Timer {
+public interface Timer { // REVIEWED
 
     /**
      * <p>Returns the time in seconds since the last call.</p>

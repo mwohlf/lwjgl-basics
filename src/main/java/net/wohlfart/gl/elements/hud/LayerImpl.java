@@ -55,11 +55,6 @@ class LayerImpl implements Layer {
         }
     }
 
-    @Override
-    public void update(float timeInSec) {
-        // nothing to do
-    }
-
     /** {@inheritDoc} */
     @Override
     public void destroy() {
