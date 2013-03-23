@@ -78,13 +78,13 @@ public class Circle extends AbstractRenderable {  // REVIEWED
      *
      * @return an array of {@link java.lang.Integer} objects.
      */
-    protected Integer[] createIndices() {
+    protected List<Integer> createIndices() {
         final List<Integer> result = new ArrayList<Integer>(pieces * 2);
         for (int i = 0; i < pieces; i++) {
             result.add(i);
             result.add((i + 1) % pieces);
         }
-        return result.toArray(new Integer[result.size()]);
+        return result;
     }
 
 }

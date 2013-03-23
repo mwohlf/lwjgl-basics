@@ -29,8 +29,9 @@ wavefront:   (SL_COMMENT | element)+ EOF;
 element
   : matlib
   | objectName
-  | vertex
+  | position
   | normal
+  | textureCoord
   | material
   | surface
   | face
@@ -40,9 +41,11 @@ matlib: 'mtllib' FILENAME;
   
 objectName: 'o' IDENTIFIER;
 
-vertex: 'v' REAL REAL REAL;
+position: 'v' REAL REAL REAL;
 
 normal: 'vn' REAL REAL REAL;
+
+textureCoord: 'vt' REAL REAL;
 
 material: 'usemtl' IDENTIFIER;
 
@@ -50,7 +53,7 @@ surface: 's' ('on'|'off');
 
 face: 'f' vertNormIdx vertNormIdx vertNormIdx;
 
-vertNormIdx: NATURAL '//' NATURAL;
+vertNormIdx: NATURAL '/' NATURAL? '/' NATURAL;
 
 // ------- lexer  
 

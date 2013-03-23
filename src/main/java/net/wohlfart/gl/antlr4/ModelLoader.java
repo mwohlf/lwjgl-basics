@@ -8,8 +8,9 @@ import net.wohlfart.basic.GenericGameException;
 import net.wohlfart.gl.antlr4.WavefrontParser.FaceContext;
 import net.wohlfart.gl.antlr4.WavefrontParser.NormalContext;
 import net.wohlfart.gl.antlr4.WavefrontParser.ObjectNameContext;
+import net.wohlfart.gl.antlr4.WavefrontParser.PositionContext;
+import net.wohlfart.gl.antlr4.WavefrontParser.TextureCoordContext;
 import net.wohlfart.gl.antlr4.WavefrontParser.VertNormIdxContext;
-import net.wohlfart.gl.antlr4.WavefrontParser.VertexContext;
 import net.wohlfart.gl.renderer.IsRenderable;
 
 import org.antlr.v4.runtime.ANTLRInputStream;
@@ -18,10 +19,10 @@ import org.antlr.v4.runtime.tree.ParseTree;
 import org.antlr.v4.runtime.tree.ParseTreeWalker;
 import org.antlr.v4.runtime.tree.TerminalNode;
 
+
 public class ModelLoader extends WavefrontBaseListener {
 
-    private ModelBuilder currentBuilder;
-
+    private Model currentModel;
 
     public IsRenderable getRenderable(InputStream input) throws GenericGameException {
         try {
@@ -31,27 +32,22 @@ public class ModelLoader extends WavefrontBaseListener {
             final WavefrontParser parser = new WavefrontParser(tokenStream);
             final ParseTree tree = parser.wavefront();
             new ParseTreeWalker().walk(this, tree);
-            return currentBuilder.build();
+            return currentModel;
         } catch (IOException ex) {
             throw new GenericGameException("exception while parsing input stream", ex);
         }
     }
 
-    ModelBuilder getMeshBuilder() {
-        return currentBuilder;
-    }
-
-
     @Override
     public void exitObjectName(ObjectNameContext ctx) {
         final String objectName = ctx.IDENTIFIER().getText();
-        currentBuilder = new ModelBuilder(objectName);
+        currentModel = new Model(objectName);
     }
 
     @Override
-    public void exitVertex(VertexContext ctx) {
+    public void exitPosition(PositionContext ctx) {
         final List<TerminalNode> coords = ctx.REAL();
-        currentBuilder.addVertex(
+        currentModel.addPosition(
                 Float.parseFloat(coords.get(0).getText()),
                 Float.parseFloat(coords.get(1).getText()),
                 Float.parseFloat(coords.get(2).getText()));
@@ -60,17 +56,28 @@ public class ModelLoader extends WavefrontBaseListener {
     @Override
     public void exitNormal(NormalContext ctx) {
         final List<TerminalNode> coords = ctx.REAL();
-        currentBuilder.addNormal(
+        currentModel.addNormal(
                 Float.parseFloat(coords.get(0).getText()),
                 Float.parseFloat(coords.get(1).getText()),
                 Float.parseFloat(coords.get(2).getText()));
     }
 
     @Override
+    public void exitTextureCoord(TextureCoordContext ctx) {
+        final List<TerminalNode> coords = ctx.REAL();
+        currentModel.addTextureCoord(
+                Float.parseFloat(coords.get(0).getText()),
+                Float.parseFloat(coords.get(1).getText()));
+    }
+
+    @Override
     public void exitFace(FaceContext ctx) {
         final List<VertNormIdxContext> vertNormIdx = ctx.vertNormIdx();
         for (final VertNormIdxContext n : vertNormIdx) {
-            currentBuilder.addVertexIndex(Integer.parseInt(n.NATURAL(0).getText()) - 1);
+            currentModel.addVertexForStream(
+                    Integer.parseInt(n.NATURAL(0).getText()) - 1,   // position
+                    Integer.parseInt(n.NATURAL(1).getText()) - 1,   // textureCoords
+                    Integer.parseInt(n.NATURAL(2).getText()) - 1);  // normal
         }
     }
 

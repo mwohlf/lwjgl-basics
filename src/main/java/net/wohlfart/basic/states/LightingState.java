@@ -3,7 +3,7 @@ package net.wohlfart.basic.states;
 import java.io.IOException;
 import java.io.InputStream;
 
-import net.wohlfart.gl.antlr4.GenericMeshLoader;
+import net.wohlfart.gl.antlr4.ModelLoader;
 import net.wohlfart.gl.elements.debug.Circle;
 import net.wohlfart.gl.renderer.RenderBucket;
 import net.wohlfart.gl.shader.DefaultGraphicContext;
@@ -36,7 +36,7 @@ final class LightingState extends AbstractGraphicState {
 
         try (InputStream inputStream = ClassLoader.class.getResourceAsStream("/models/cube/cube.obj");) {
             setCurrentGraphicContext(lightingGraphicContext);
-            elemBucket.add(new GenericMeshLoader().getRenderable(inputStream));
+            elemBucket.add(new ModelLoader().getRenderable(inputStream));
             elemBucket.add(new Circle(3f));
         } catch (IOException ex) {
             ex.printStackTrace();

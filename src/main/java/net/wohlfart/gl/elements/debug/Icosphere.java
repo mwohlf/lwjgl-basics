@@ -39,7 +39,7 @@ public class Icosphere extends AbstractRenderable { // REVIEWED
                     new Vector3f(-t, 0, -1),
                     new Vector3f(-t, 0, 1), }));
 
-    private Integer[] indices = new Integer[] {
+    private List<Integer> indices = Arrays.asList(new Integer[] {
             0, 11, 11, 5, 5, 0,
             0, 5, 5, 1, 1, 0,
             0, 1, 1, 7, 7, 0,
@@ -60,7 +60,7 @@ public class Icosphere extends AbstractRenderable { // REVIEWED
             6, 2, 2, 10, 10, 6,
             8, 6, 6, 7, 7, 8,
             9, 8, 8, 1, 1, 9,
-    }; // @formatter:on
+    }); // @formatter:on
 
     /**
      * <p>Constructor for Icosphere.</p>
@@ -119,16 +119,16 @@ public class Icosphere extends AbstractRenderable { // REVIEWED
 
     private void splitPlanes() {
         // for each side we have 4 new smaller sides now
-        final Integer[] indices2 = new Integer[indices.length * 4];
+        final Integer[] indices2 = new Integer[indices.size() * 4];
         final int indicesPerSide = 6;
         final int newIndices = indicesPerSide * 4;
 
-        for (int i = 0; i < indices.length; i += indicesPerSide) { // 6 is the number of indices per side
+        for (int i = 0; i < indices.size(); i += indicesPerSide) { // 6 is the number of indices per side
 
             // get the start of the lines of a side
-            final Vector3f v1 = vertices.get(indices[i + 0]); // top
-            final Vector3f v2 = vertices.get(indices[i + 2]); // left
-            final Vector3f v3 = vertices.get(indices[i + 4]); // right
+            final Vector3f v1 = vertices.get(indices.get(i + 0)); // top
+            final Vector3f v2 = vertices.get(indices.get(i + 2)); // left
+            final Vector3f v3 = vertices.get(indices.get(i + 4)); // right
 
             // find the midpoints
             final Vector3f n1 = splitLine(v1, v2); // mid-left
@@ -147,17 +147,17 @@ public class Icosphere extends AbstractRenderable { // REVIEWED
 
             // top triangle
             final int j = i / indicesPerSide * newIndices;
-            indices2[j + 0] = indices[i + 0]; // top
+            indices2[j + 0] = indices.get(i + 0); // top
             indices2[j + 1] = offset + 0;
             indices2[j + 2] = offset + 0; // mid-left
             indices2[j + 3] = offset + 2;
             indices2[j + 4] = offset + 2; // mid-right
-            indices2[j + 5] = indices[i + 0];
+            indices2[j + 5] = indices.get(i + 0);
 
             // left triangle
             indices2[j + 6] = offset + 0; // mid-left
-            indices2[j + 7] = indices[i + 2];
-            indices2[j + 8] = indices[i + 2]; // left
+            indices2[j + 7] = indices.get(i + 2);
+            indices2[j + 8] = indices.get(i + 2); // left
             indices2[j + 9] = offset + 1;
             indices2[j + 10] = offset + 1; // mid-bottom
             indices2[j + 11] = offset + 0;
@@ -166,8 +166,8 @@ public class Icosphere extends AbstractRenderable { // REVIEWED
             indices2[j + 12] = offset + 2; // mid-right
             indices2[j + 13] = offset + 1;
             indices2[j + 14] = offset + 1; // mid-bottom
-            indices2[j + 15] = indices[i + 4];
-            indices2[j + 16] = indices[i + 4]; // right
+            indices2[j + 15] = indices.get(i + 4);
+            indices2[j + 16] = indices.get(i + 4); // right
             indices2[j + 17] = offset + 2;
 
             // center triangle
@@ -178,7 +178,7 @@ public class Icosphere extends AbstractRenderable { // REVIEWED
             indices2[j + 22] = offset + 2; // mid-right
             indices2[j + 23] = offset + 0;
         }
-        indices = indices2;
+        indices = Arrays.asList(indices2);
     }
 
     private Vector3f splitLine(final Vector3f v1, final Vector3f v2) {

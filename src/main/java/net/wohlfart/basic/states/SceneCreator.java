@@ -1,8 +1,11 @@
 package net.wohlfart.basic.states;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.Collection;
 import java.util.HashSet;
 
+import net.wohlfart.gl.antlr4.ModelLoader;
 import net.wohlfart.gl.elements.AbstractRenderable;
 import net.wohlfart.gl.elements.ColoredQuad;
 import net.wohlfart.gl.elements.TexturedQuad;
@@ -79,7 +82,6 @@ final class SceneCreator {
 
 
     static Collection<IsRenderable> createRandomElements() {
-
         HashSet<IsRenderable> elemBucket = new HashSet<IsRenderable>();
 
         elemBucket.add(new Arrow(new Vector3f(1, 0, 0)).withColor(ReadableColor.RED));
@@ -105,6 +107,16 @@ final class SceneCreator {
         elemBucket.add(new TexturedQuad().withTranslation(new Vector3f(-1, 5, 0)));
         elemBucket.add(new ColoredQuad().withTranslation(new Vector3f(-1, 5, 0)));
 
+        return elemBucket;
+    }
+
+    public static Collection<IsRenderable> loadFromFile(String path) {
+        HashSet<IsRenderable> elemBucket = new HashSet<IsRenderable>();
+        try (InputStream inputStream = ClassLoader.class.getResourceAsStream(path);) {
+            elemBucket.add(new ModelLoader().getRenderable(inputStream));
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
         return elemBucket;
     }
 

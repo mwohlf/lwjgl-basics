@@ -3,7 +3,6 @@ package net.wohlfart.gl.elements.debug;
 import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import net.wohlfart.gl.renderer.IsRenderable;
@@ -138,8 +137,8 @@ public class WireframeMeshBuilder { // REVIEWED
      *
      * @param indices an array of {@link java.lang.Integer} objects.
      */
-    public void setIndices(final Integer[] indices) {
-        this.indices.addAll(Arrays.asList(indices));
+    public void setIndices(final List<Integer> indices) {
+        this.indices.addAll(indices);
     }
 
     /**

@@ -2,10 +2,11 @@ package net.wohlfart.gl.antlr4;
 
 import static org.junit.Assert.assertEquals;
 
-import org.antlr.v4.runtime.ANTLRInputStream;
-import org.antlr.v4.runtime.CommonTokenStream;
-import org.antlr.v4.runtime.tree.ParseTree;
-import org.antlr.v4.runtime.tree.ParseTreeWalker;
+import java.io.ByteArrayInputStream;
+import java.io.UnsupportedEncodingException;
+
+import net.wohlfart.basic.GenericGameException;
+
 import org.junit.Test;
 
 /**
@@ -16,23 +17,16 @@ public class WavefrontTest {
 
     /**
      * <p>simpleParse.</p>
+     * @throws UnsupportedEncodingException
+     * @throws GenericGameException
      */
     @Test
-    public void simpleParse() {
-        ANTLRInputStream input = new ANTLRInputStream(getCube());
-        WavefrontLexer lexer = new WavefrontLexer(input);
-        CommonTokenStream tokens = new CommonTokenStream(lexer);
-        WavefrontParser parser = new WavefrontParser(tokens);
-
-        ParseTree tree = parser.wavefront();
-
-        ParseTreeWalker walker = new ParseTreeWalker();
-        GenericMeshLoader loader = new GenericMeshLoader();
-        walker.walk(loader, tree);
-
-        assertEquals(12 * 3, loader.getMeshBuilder().getIndicesCount());
-        assertEquals(8, loader.getMeshBuilder().getVerticesCount());
-
+    public void simpleParse() throws GenericGameException, UnsupportedEncodingException {
+        Model model = (Model) new ModelLoader().getRenderable(new ByteArrayInputStream(getCube().getBytes("UTF-8")));
+        // 6 faces 2 triangles each face, 3 vertices each triangle
+        assertEquals(6 * 2 * 3, model.getAttrIndices().size());
+        // 8 edges of a cube
+        assertEquals(8, model.getPositions().size());
     }
 
 
@@ -43,38 +37,62 @@ public class WavefrontTest {
      */
     protected String getCube() {
         return ""
-                +"# Blender v2.66 (sub 0) OBJ File: ''" + '\n'
-                +"# www.blender.org" + '\n'
-                +"mtllib cube.mtl" + '\n'
-                +"o Cube" + '\n'
-                +"v -1.000000 -1.000000 -1.000000" + '\n'
-                +"v 1.000000 -1.000000 1.000000" + '\n'
-                +"v -1.000000 -1.000000 1.000000" + '\n'
-                +"v -1.000000 -1.000000 -1.000000" + '\n'
-                +"v 1.000000 1.000000 -0.999999" + '\n'
-                +"v 0.999999 1.000000 1.000001" + '\n'
-                +"v -1.000000 1.000000 1.000000" + '\n'
-                +"v -1.000000 1.000000 -1.000000" + '\n'
-                +"vn 0.000000 -1.000000 0.000000" + '\n'
-                +"vn -0.000000 1.000000 0.000000" + '\n'
-                +"vn 1.000000 -0.000000 0.000001" + '\n'
-                +"vn -0.000000 -0.000000 1.000000" + '\n'
-                +"vn -1.000000 -0.000000 -0.000000" + '\n'
-                +"vn 0.000000 0.000000 -1.000000" + '\n'
-                +"vn 1.000000 0.000000 -0.000000" + '\n'
-                +"usemtl Material" + '\n'
-                +"s off" + '\n'
-                +"f 1//1 2//1 3//1" + '\n'
-                +"f 5//2 8//2 7//2" + '\n'
-                +"f 1//3 5//3 6//3" + '\n'
-                +"f 2//4 6//4 3//4" + '\n'
-                +"f 3//5 7//5 4//5" + '\n'
-                +"f 5//6 1//6 4//6" + '\n'
-                +"f 4//1 1//1 3//1" + '\n'
-                +"f 6//2 5//2 7//2" + '\n'
-                +"f 2//7 1//7 6//7" + '\n'
-                +"f 6//4 7//4 3//4" + '\n'
-                +"f 7//5 8//5 4//5" + '\n'
-                +"f 8//6 5//6 4//6";
+                + "# Blender v2.66 (sub 1) OBJ File: ''\n"
+                + "# www.blender.org\n"
+                + "mtllib cube2.mtl\n"
+                + "o Cube\n"
+                + "v 1.000000 -1.000000 -1.000000\n"
+                + "v 1.000000 -1.000000 1.000000\n"
+                + "v -1.000000 -1.000000 1.000000\n"
+                + "v -1.000000 -1.000000 -1.000000\n"
+                + "v 1.000000 1.000000 -0.999999\n"
+                + "v 0.999999 1.000000 1.000001\n"
+                + "v -1.000000 1.000000 1.000000\n"
+                + "v -1.000000 1.000000 -1.000000\n"
+                + "vt 0.332332 0.001001\n"
+                + "vt 0.001001 0.001001\n"
+                + "vt 0.001001 0.332332\n"
+                + "vt 0.665666 0.334334\n"
+                + "vt 0.334334 0.334334\n"
+                + "vt 0.334334 0.665666\n"
+                + "vt 0.332332 0.334334\n"
+                + "vt 0.001001 0.334334\n"
+                + "vt 0.001001 0.665666\n"
+                + "vt 0.665666 0.001001\n"
+                + "vt 0.334334 0.001001\n"
+                + "vt 0.665666 0.332332\n"
+                + "vt 0.998999 0.667668\n"
+                + "vt 0.667668 0.667668\n"
+                + "vt 0.998999 0.998999\n"
+                + "vt 0.665666 0.667668\n"
+                + "vt 0.334334 0.667668\n"
+                + "vt 0.334334 0.998999\n"
+                + "vt 0.332332 0.332332\n"
+                + "vt 0.665666 0.665666\n"
+                + "vt 0.332332 0.665666\n"
+                + "vt 0.334334 0.332332\n"
+                + "vt 0.667668 0.998999\n"
+                + "vt 0.665666 0.998999\n"
+                + "vn 0.000000 -1.000000 0.000000\n"
+                + "vn -0.000000 1.000000 0.000000\n"
+                + "vn 1.000000 -0.000000 0.000001\n"
+                + "vn -0.000000 -0.000000 1.000000\n"
+                + "vn -1.000000 -0.000000 -0.000000\n"
+                + "vn 0.000000 0.000000 -1.000000\n"
+                + "vn 1.000000 0.000000 -0.000000\n"
+                + "usemtl Material\n"
+                + "s off\n"
+                + "f 1/1/1 2/2/1 3/3/1\n"
+                + "f 5/4/2 8/5/2 7/6/2\n"
+                + "f 1/7/3 5/8/3 6/9/3\n"
+                + "f 2/10/4 6/11/4 3/12/4\n"
+                + "f 3/13/5 7/14/5 4/15/5\n"
+                + "f 5/16/6 1/17/6 4/18/6\n"
+                + "f 4/19/1 1/1/1 3/3/1\n"
+                + "f 6/20/2 5/4/2 7/6/2\n"
+                + "f 2/21/7 1/7/7 6/9/7\n"
+                + "f 6/11/4 7/22/4 3/12/4\n"
+                + "f 7/14/5 8/23/5 4/15/5\n"
+                + "f 8/24/6 5/16/6 4/18/6\n";
     }
 }

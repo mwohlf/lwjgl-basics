@@ -1,6 +1,7 @@
 package net.wohlfart.gl.elements.debug;
 
 import java.util.Arrays;
+import java.util.List;
 
 import net.wohlfart.gl.elements.AbstractRenderable;
 import net.wohlfart.gl.renderer.IsRenderable;
@@ -24,13 +25,13 @@ public class Arrow extends AbstractRenderable { // REVIEWED
             new Vector3f(+0.02f, -0.02f, +0.90f), // tip bottom  @formatter:on
     };
 
-    private final Integer[] indices = new Integer[] {
+    private final List<Integer> indices = Arrays.asList(new Integer[] {
             1, 0, // shaft
             2, 0, // tip1
             3, 0, // tip2
             4, 0, // tip3
             5, 0, // tip4
-    };
+    });
 
     /**
      * <p>This creates an arrow that points from start to end.</p>

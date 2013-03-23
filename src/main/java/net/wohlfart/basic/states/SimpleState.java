@@ -70,17 +70,15 @@ final class SimpleState extends AbstractGraphicState {
             //elemBucket.add(SceneCreator.createCircledTarget());
             //elemBucket.add(SceneCreator.createRandomLocatedSpheres());
             //elemBucket.add(SceneCreator.createRandomElements());
-            elemBucket.add(SceneCreator.createOriginAxis());
-            elemBucket.add(SceneCreator.createDebugElements());
+            //elemBucket.add(SceneCreator.createOriginAxis());
+            //elemBucket.add(SceneCreator.createDebugElements());
 
-            /*
-            try (InputStream inputStream = ClassLoader.class.getResourceAsStream("/models/cube/cube.obj");) {
-                setCurrentGraphicContext(wireframeGraphicContext);
-                elemBucket.add(new GenericMeshLoader().getRenderable(inputStream));
-            } catch (IOException ex) {
-                ex.printStackTrace();
-            }
-            */
+            setCurrentGraphicContext(wireframeGraphicContext);
+
+            //elemBucket.add(SceneCreator.loadFromFile("/models/cube1/cube1.obj"));
+            elemBucket.add(SceneCreator.loadFromFile("/models/cube2/cube2.obj"));
+
+
         }
 
 

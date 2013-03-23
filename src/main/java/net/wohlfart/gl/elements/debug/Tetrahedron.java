@@ -1,6 +1,7 @@
 package net.wohlfart.gl.elements.debug;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import net.wohlfart.gl.elements.AbstractRenderable;
@@ -26,10 +27,10 @@ public class Tetrahedron extends AbstractRenderable { // REVIEWED
 
     private float length = 1;
 
-    private final Integer[] indices = new Integer[] { // @formatter:off
+    private final List<Integer> indices = Arrays.asList(new Integer[] { // @formatter:off
             0, 1,  1, 2,  2, 0,
             0, 2,  2, 3,  3, 0,
-            0, 3,  3, 1,  1, 0, };  // @formatter:on
+            0, 3,  3, 1,  1, 0, });  // @formatter:on
 
     /**
      * <p>Constructor for Tetrahedron.</p>

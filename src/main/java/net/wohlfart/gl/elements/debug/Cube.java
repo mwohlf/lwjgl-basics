@@ -84,7 +84,7 @@ public class Cube extends AbstractRenderable {  // REVIEWED
      *
      * @return an array of {@link java.lang.Integer} objects.
      */
-    protected Integer[] createIndices() {
+    protected List<Integer> createIndices() {
         final List<Integer> result = new ArrayList<Integer>(6 * 2 * 3);
         result.addAll(createIndices(0, 1, 2, 3));
         result.addAll(createIndices(4, 0, 3, 7));
@@ -92,7 +92,7 @@ public class Cube extends AbstractRenderable {  // REVIEWED
         result.addAll(createIndices(1, 5, 6, 2));
         result.addAll(createIndices(0, 4, 5, 1));
         result.addAll(createIndices(3, 2, 6, 7));
-        return result.toArray(new Integer[result.size()]);
+        return result;
     }
 
     /**
