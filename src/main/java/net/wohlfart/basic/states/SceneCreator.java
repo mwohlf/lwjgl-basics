@@ -112,7 +112,7 @@ final class SceneCreator {
     }
 
     public static Collection<IsRenderable> loadFromFile(String path) {
-        HashSet<IsRenderable> elemBucket = new HashSet<IsRenderable>();
+        final HashSet<IsRenderable> elemBucket = new HashSet<IsRenderable>();
         try (InputStream inputStream = ClassLoader.class.getResourceAsStream(path);) {
             if (inputStream == null) {
                 throw new GenericGameException("input stream is null for path '" + path + "'");

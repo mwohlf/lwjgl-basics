@@ -20,32 +20,33 @@ public class Model extends AbstractRenderable {
 
     private final List<VertexAttr> attrIdices = new ArrayList<VertexAttr>();
 
-
     public static class VertexAttr {
         int positionIdx;
         int normalIdx;
         int textureCoordIdx;
     }
 
-
     public Model(String name) {
         this.name = name;
     }
 
+    public String getName() {
+        return name;
+    }
 
     @Override
     protected IsRenderable setupMesh() {
         final ModelMeshBuilder builder = new ModelMeshBuilder();
         builder.setIndices(getIndices());
-        builder.setVertexStream(createVertexPositionStream());
+        builder.setVertexStream(createVertexStream());
         builder.setTrianglePrimitive(GL11.GL_TRIANGLES);
         return builder.build();
     }
 
-
-    byte[] getIndices() {
-        byte[] result = new byte[attrIdices.size()];
-        for (byte index = 0 ; index < result.length; index++) {
+    int[] getIndices() {
+        // TODO: reuse vertices
+        int[] result = new int[attrIdices.size()];
+        for (int index = 0 ; index < result.length; index++) {
             result[index] = index;
         }
         return result;
@@ -63,6 +64,7 @@ public class Model extends AbstractRenderable {
      */
 
     float[] createVertexStream() {
+        // TODO: check if the size of the attributes fits in the array
         int index = 0;
         float[] result = new float[attrIdices.size() * (
                 ShaderAttributeHandle.POSITION.getFloatCount()
@@ -114,7 +116,6 @@ public class Model extends AbstractRenderable {
             normalIdx = normal;
         }});
     }
-
 
     List<Vector3f> getPositions() {
         return positions;

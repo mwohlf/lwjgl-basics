@@ -9,4 +9,4 @@ Ks 0.500000 0.500000 0.500000
 Ni 1.000000
 d 1.000000
 illum 2
-map_Kd /home/michael/Projects/jMonkey/eclipse_workspace/basic/src/main/resources/images/ash_uvgrid02.png
+map_Kd cube.png
