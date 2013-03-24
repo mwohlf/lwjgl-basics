@@ -146,9 +146,9 @@ class Game implements InitializingBean {
         GL11.glClearColor(0.5f, 0.5f, 0.5f, 0f);
         //GL11.glClearColor(0.0f, 0.0f, 0.0f, 0f);
         // turn culling off so it will be drawn regardless of which way a surface is facing
-        GL11.glDisable(GL11.GL_CULL_FACE);
-        //GL11.glEnable(GL11.GL_CULL_FACE);
-        // GL11.glEnable(GL11.GL_CULL_FACE);
+        GL11.glDisable(GL11.GL_CULL_FACE);  // enable for production
+        GL11.glDisable(GL11.GL_DEPTH_TEST); // enable for production and check how this works with the skybox
+
         LOGGER.info("Vendor: " + GL11.glGetString(GL11.GL_VENDOR));
         LOGGER.info("Version: " + GL11.glGetString(GL11.GL_VERSION));
         LOGGER.info("max. Vertex Attributes: " + GL11.glGetInteger(GL20.GL_MAX_VERTEX_ATTRIBS));

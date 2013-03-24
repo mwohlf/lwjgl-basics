@@ -39,10 +39,10 @@ final class SimpleState extends AbstractGraphicState {
     private MousePositionLabel mousePositionLabel;
     private MousePicker mousePicker;
 
-    private final boolean skyboxOn = false;
+    private final boolean skyboxOn = true;
     private final boolean elementsOn = true;
     private final boolean hudOn = true;
-    private final boolean controlFrameOn = false;
+    private final boolean controlFrameOn = true;
 
     /** {@inheritDoc} */
     @Override
@@ -67,11 +67,11 @@ final class SimpleState extends AbstractGraphicState {
 
         if (elementsOn) {
             elemBucket.init(wireframeGraphicContext, getCamera());
-            //elemBucket.add(SceneCreator.createCircledTarget());
-            //elemBucket.add(SceneCreator.createRandomLocatedSpheres());
-            //elemBucket.add(SceneCreator.createRandomElements());
-            //elemBucket.add(SceneCreator.createOriginAxis());
-            //elemBucket.add(SceneCreator.createDebugElements());
+            elemBucket.add(SceneCreator.createCircledTarget());
+            elemBucket.add(SceneCreator.createRandomLocatedSpheres());
+            elemBucket.add(SceneCreator.createRandomElements());
+            elemBucket.add(SceneCreator.createOriginAxis());
+            elemBucket.add(SceneCreator.createDebugElements());
 
             setCurrentGraphicContext(wireframeGraphicContext);
             elemBucket.add(SceneCreator.loadFromFile("/models/cube/cube.obj"));
