@@ -15,7 +15,11 @@ public class GenericGameException extends RuntimeException {
      * @param cause a {@link java.lang.Throwable} object, usually the wrpaaed real reason for this exception
      */
     public GenericGameException(String message, Throwable cause) {
-        super (message, cause);
+        super(message, cause);
+    }
+
+    public GenericGameException(String message) {
+        super(message);
     }
 
 }

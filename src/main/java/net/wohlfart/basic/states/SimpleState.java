@@ -74,11 +74,7 @@ final class SimpleState extends AbstractGraphicState {
             //elemBucket.add(SceneCreator.createDebugElements());
 
             setCurrentGraphicContext(wireframeGraphicContext);
-
-            //elemBucket.add(SceneCreator.loadFromFile("/models/cube1/cube1.obj"));
-            elemBucket.add(SceneCreator.loadFromFile("/models/cube2/cube2.obj"));
-
-
+            elemBucket.add(SceneCreator.loadFromFile("/models/cube/cube.obj"));
         }
 
 

@@ -120,16 +120,16 @@ public class GenericMeshBuilder implements GenericMeshData {
         GL15.glBufferData(GL15.GL_ARRAY_BUFFER, verticesBuffer, GL15.GL_STATIC_DRAW);
         final int positionAttrib = ShaderAttributeHandle.POSITION.getLocation();
         GL20.glEnableVertexAttribArray(positionAttrib);
-        GL20.glVertexAttribPointer(positionAttrib, ShaderAttributeHandle.POSITION.getSize(), GL11.GL_FLOAT, false, 0, 0);
+        GL20.glVertexAttribPointer(positionAttrib, ShaderAttributeHandle.POSITION.getFloatCount(), GL11.GL_FLOAT, false, 0, 0);
         return vboVerticesHandle;
     }
 
     private float[] getVertices() {
-        final int posSize = ShaderAttributeHandle.POSITION.getSize();
+        final int posSize = ShaderAttributeHandle.POSITION.getFloatCount();
         if (posSize < 4) {
             throw new IllegalArgumentException("vertex position size should be 4");
         }
-        final float[] result = new float[vertices.size() * ShaderAttributeHandle.POSITION.getSize()];
+        final float[] result = new float[vertices.size() * ShaderAttributeHandle.POSITION.getFloatCount()];
         int i = 0;
         for (final Vector3f v : vertices) {
             result[i++] = v.x;

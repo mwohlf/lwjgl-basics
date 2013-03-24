@@ -96,8 +96,8 @@ class Game implements InitializingBean {
             startPlatform();
             globalGameTimer = new TimerImpl(platform.createClock());
             userInputSource = platform.createInputSource(inputDispatcher);
-            setCurrentState(GameStateEnum.SIMPLE);
-            //setCurrentState(GameStateEnum.LIGHTING);
+            //setCurrentState(GameStateEnum.SIMPLE);
+            setCurrentState(GameStateEnum.LIGHTING);
             runApplicationLoop();
             shutdownGame();
             shutdownPlatform();
@@ -143,10 +143,11 @@ class Game implements InitializingBean {
         GL11.glViewport(0, 0, settings.width, settings.height);
         // used for GL11.glClear(GL11.GL_COLOR_BUFFER_BIT); not really needed if we have a skybox anyways
         GL11.glHint(GL11.GL_LINE_SMOOTH_HINT,GL11.GL_NICEST);
-        GL11.glClearColor(0.1f, 0.1f, 0.1f, 0f);
+        GL11.glClearColor(0.5f, 0.5f, 0.5f, 0f);
         //GL11.glClearColor(0.0f, 0.0f, 0.0f, 0f);
         // turn culling off so it will be drawn regardless of which way a surface is facing
         GL11.glDisable(GL11.GL_CULL_FACE);
+        //GL11.glEnable(GL11.GL_CULL_FACE);
         // GL11.glEnable(GL11.GL_CULL_FACE);
         LOGGER.info("Vendor: " + GL11.glGetString(GL11.GL_VENDOR));
         LOGGER.info("Version: " + GL11.glGetString(GL11.GL_VERSION));

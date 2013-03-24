@@ -51,9 +51,9 @@ material: 'usemtl' IDENTIFIER;
 
 surface: 's' ('on'|'off');
 
-face: 'f' vertNormIdx vertNormIdx vertNormIdx;
+face: 'f' vertIndices vertIndices vertIndices;
 
-vertNormIdx: NATURAL '/' NATURAL? '/' NATURAL;
+vertIndices: NATURAL '/' NATURAL '/' NATURAL;
 
 // ------- lexer  
 

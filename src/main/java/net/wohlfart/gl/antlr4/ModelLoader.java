@@ -10,7 +10,7 @@ import net.wohlfart.gl.antlr4.WavefrontParser.NormalContext;
 import net.wohlfart.gl.antlr4.WavefrontParser.ObjectNameContext;
 import net.wohlfart.gl.antlr4.WavefrontParser.PositionContext;
 import net.wohlfart.gl.antlr4.WavefrontParser.TextureCoordContext;
-import net.wohlfart.gl.antlr4.WavefrontParser.VertNormIdxContext;
+import net.wohlfart.gl.antlr4.WavefrontParser.VertIndicesContext;
 import net.wohlfart.gl.renderer.IsRenderable;
 
 import org.antlr.v4.runtime.ANTLRInputStream;
@@ -72,8 +72,8 @@ public class ModelLoader extends WavefrontBaseListener {
 
     @Override
     public void exitFace(FaceContext ctx) {
-        final List<VertNormIdxContext> vertNormIdx = ctx.vertNormIdx();
-        for (final VertNormIdxContext n : vertNormIdx) {
+        final List<VertIndicesContext> vertNormIdx = ctx.vertIndices();
+        for (final VertIndicesContext n : vertNormIdx) {
             currentModel.addVertexForStream(
                     Integer.parseInt(n.NATURAL(0).getText()) - 1,   // position
                     Integer.parseInt(n.NATURAL(1).getText()) - 1,   // textureCoords

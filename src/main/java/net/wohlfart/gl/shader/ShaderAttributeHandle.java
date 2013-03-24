@@ -13,15 +13,15 @@ public enum ShaderAttributeHandle { // @formatter:off
     COLOR("in_Color", 4),
     POSITION("in_Position", 4),
     TEXTURE_COORD("in_TexCoord", 2),
-    NORMAL("in_Normal", 2);
+    NORMAL("in_Normal", 4);
     // @formatter:on
 
     private final String lookupString;
-    private final int size;
+    private final int floatCount;
 
-    ShaderAttributeHandle(String lookupString, int size) {
+    ShaderAttributeHandle(String lookupString, int floatCount) {
         this.lookupString = lookupString;
-        this.size = size;
+        this.floatCount = floatCount;
     }
 
     String getLookupString() {
@@ -29,12 +29,21 @@ public enum ShaderAttributeHandle { // @formatter:off
     }
 
     /**
-     * <p>Getter for the field <code>size</code>.</p>
+     * <p>Returns the number of floats this attribute uses.</p>
      *
      * @return a int.
      */
-    public int getSize() {
-        return size;
+    public int getFloatCount() {
+        return floatCount;
+    }
+
+    /**
+     * <p>Returns the number of bytes this attribute uses.</p>
+     *
+     * @return a int.
+     */
+    public int getByteCount() {
+        return floatCount * 4;
     }
 
     /**

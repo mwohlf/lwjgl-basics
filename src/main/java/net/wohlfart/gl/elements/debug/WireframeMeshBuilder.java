@@ -85,25 +85,26 @@ public class WireframeMeshBuilder { // REVIEWED
     }
 
     private int createVboHandle(float[] floatBuff, final ShaderAttributeHandle attrHandle) {
-        final int vboVerticesHandle = GL15.glGenBuffers();
-        GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, vboVerticesHandle);
         final FloatBuffer verticesBuffer = BufferUtils.createFloatBuffer(floatBuff.length);
         verticesBuffer.put(floatBuff);
         verticesBuffer.flip();
+
+        final int vboVerticesHandle = GL15.glGenBuffers();
+        GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, vboVerticesHandle);
         GL15.glBufferData(GL15.GL_ARRAY_BUFFER, verticesBuffer, GL15.GL_STATIC_DRAW);
 
-        final int positionAttrib = attrHandle.getLocation();
-        GL20.glEnableVertexAttribArray(positionAttrib);
-        GL20.glVertexAttribPointer(positionAttrib, attrHandle.getSize(), GL11.GL_FLOAT, false, 0, 0);
+        final int attribLocation = attrHandle.getLocation();
+        GL20.glEnableVertexAttribArray(attribLocation);
+        GL20.glVertexAttribPointer(attribLocation, attrHandle.getFloatCount(), GL11.GL_FLOAT, false, 0, 0);
         return vboVerticesHandle;
     }
 
     private float[] getVertices() {
-        final int posSize = ShaderAttributeHandle.POSITION.getSize();
+        final int posSize = ShaderAttributeHandle.POSITION.getFloatCount();
         if (posSize < 4) {
             throw new IllegalArgumentException("vertex position size should be 4");
         }
-        final float[] result = new float[vertices.size() * ShaderAttributeHandle.POSITION.getSize()];
+        final float[] result = new float[vertices.size() * ShaderAttributeHandle.POSITION.getFloatCount()];
         int i = 0;
         for (final Vector3f v : vertices) {
             result[i++] = v.x;

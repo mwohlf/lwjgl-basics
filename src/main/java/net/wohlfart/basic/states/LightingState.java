@@ -1,9 +1,5 @@
 package net.wohlfart.basic.states;
 
-import java.io.IOException;
-import java.io.InputStream;
-
-import net.wohlfart.gl.antlr4.ModelLoader;
 import net.wohlfart.gl.elements.debug.Circle;
 import net.wohlfart.gl.renderer.RenderBucket;
 import net.wohlfart.gl.shader.DefaultGraphicContext;
@@ -33,20 +29,14 @@ final class LightingState extends AbstractGraphicState {
         super.setup();
         lightingGraphicContext = new DefaultGraphicContext(ShaderRegistry.LIGHTING_SHADER);
         elemBucket.init(lightingGraphicContext, getCamera());
-
-        try (InputStream inputStream = ClassLoader.class.getResourceAsStream("/models/cube/cube.obj");) {
-            setCurrentGraphicContext(lightingGraphicContext);
-            elemBucket.add(new ModelLoader().getRenderable(inputStream));
-            elemBucket.add(new Circle(3f));
-        } catch (IOException ex) {
-            ex.printStackTrace();
-        }
+        elemBucket.add(SceneCreator.loadFromFile("/models/cube/cube.obj"));
+        elemBucket.add(new Circle(3f));
     }
 
 
     @Override
     public void update(float tpf) {
-        LOGGER.debug("update called with tpf/fps {}/{}", tpf, 1f / tpf);
+        // LOGGER.debug("update called with tpf/fps {}/{}", tpf, 1f / tpf);
     }
 
     @Override
