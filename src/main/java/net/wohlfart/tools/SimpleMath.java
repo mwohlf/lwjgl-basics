@@ -512,7 +512,7 @@ public final class SimpleMath {
      * @param vec a {@link org.lwjgl.util.vector.Vector3f} object.
      * @return a {@link org.lwjgl.util.vector.Vector3f} object.
      */
-    public Vector3f multLocal(Vector3f vec, Quaternion q) {
+    public static Vector3f multLocal(Vector3f vec, Quaternion q) {
         float xx, yy, zz;
         // @formatter:off
         xx = q.w * q.w * vec.x + 2 * q.y * q.w * vec.z

@@ -20,6 +20,7 @@
     <guava.version>14.0.1</guava.version>
     <antlr.version>4.0</antlr.version>
     <natives.version>0.0.7</natives.version>
+    <caliper.version>0.5-rc1</caliper.version>
   </properties>
 
   <dependencies>
@@ -46,6 +47,13 @@
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
       <version>${junit.version}</version>
+      <scope>test</scope>
+    </dependency>
+    
+    <dependency>
+      <groupId>com.google.caliper</groupId>
+      <artifactId>caliper</artifactId>
+      <version>${caliper.version}</version>
       <scope>test</scope>
     </dependency>
     
