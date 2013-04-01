@@ -73,9 +73,7 @@ public enum GraphicContextManager {
         this.settings = settings;
         perspectiveProjMatrix = new PerspectiveProjection() .create(settings);
         orthographicProjMatrix = new OrthographicProjection() .create(settings);
-        //normalMatrix = getNormalMatrix(perspectiveProjMatrix);
     }
-
 
     // the following methods are package private,
     // and shold only used by ShaderAttributeHandle and ShaderUniformHandle
@@ -83,8 +81,6 @@ public enum GraphicContextManager {
     IGraphicContext getCurrentGraphicContext() {
         return currentGraphicContext;
     }
-
-
 
     /**
      * <p>Getter for the field <code>perspectiveProjMatrix</code>.</p>
@@ -103,18 +99,6 @@ public enum GraphicContextManager {
     public Matrix4f getOrthographicProjMatrix() {
         return orthographicProjMatrix;
     }
-
-
-
-    /**
-     * <p>Getter for the field <code>normalMatrix</code>.</p>
-     *
-     * @return a {@link org.lwjgl.util.vector.Matrix3f} object.
-     */
-//    public Matrix3f getNormalMatrix() {
-//        return normalMatrix;
-//    }
-
 
     /**
      * <p>getScreenWidth.</p>

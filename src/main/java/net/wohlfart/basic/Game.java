@@ -82,8 +82,6 @@ class Game implements InitializingBean {
         Assert.notNull(settings, "settings missing, you probably forgot to inject settings in the Game");
         Assert.notNull(inputDispatcher, "inputDispatcher missing, you probably forgot to inject inputDispatcher in the Game");
 
-        graphContext.setSettings(settings);
-        graphContext.setInputDispatcher(inputDispatcher);
     }
 
 
@@ -94,6 +92,10 @@ class Game implements InitializingBean {
     void start() {
         try {
             startPlatform();
+            // delayed since the width/height in settings might be changed
+            graphContext.setSettings(settings);
+            graphContext.setInputDispatcher(inputDispatcher);
+
             globalGameTimer = new TimerImpl(platform.createClock());
             userInputSource = platform.createInputSource(inputDispatcher);
             //setCurrentState(GameStateEnum.SIMPLE);
@@ -170,20 +172,36 @@ class Game implements InitializingBean {
     }
 
     private void setupFullscreen() throws LWJGLException {
-        // TODO: figure out which one is the best mode and use it
-        DisplayMode[] modes = Display.getAvailableDisplayModes();
-        DisplayMode bestFit = modes[0];
+        final DisplayMode[] modes = Display.getAvailableDisplayModes();
+        DisplayMode requestedResolution = null;
+        DisplayMode bestResolution = null;
         for (DisplayMode mode : modes) {
-            if ((bestFit == null) || (mode.getWidth() > bestFit.getWidth())) {
- //               bestFit = mode;
+            if ((bestResolution == null)
+                    || (mode.getWidth() > bestResolution.getWidth())
+                    || (mode.getHeight() > bestResolution.getHeight())) {
+                bestResolution = mode;
+            }
+            if ((mode.getWidth() == settings.width)
+                && (mode.getHeight() == settings.height)) {
+                requestedResolution = mode;
             }
         }
         rememberDisplayMode = Display.getDisplayMode();
         final PixelFormat pixelFormat = new PixelFormat();
         final ContextAttribs contextAtributes = new ContextAttribs(3, 3).withForwardCompatible(true).withProfileCore(true);
-        Display.setDisplayMode(bestFit);
+        Display.setDisplayMode(bestResolution);
         Display.setFullscreen(true);
-        Display.setDisplayMode(bestFit);
+        if (requestedResolution != null) {
+            Display.setDisplayMode(requestedResolution);
+        }
+        else {
+            Display.setDisplayMode(bestResolution);
+            int width = bestResolution.getWidth();
+            int height = bestResolution.getHeight();
+            LOGGER.info("fixing width/height to: {}/{}", width, height);
+            settings.setWidth(width);
+            settings.setHeight(height);
+        }
         Display.create(pixelFormat, contextAtributes); // creates the GL context
     }
 
