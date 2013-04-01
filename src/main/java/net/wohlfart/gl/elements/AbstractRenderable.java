@@ -1,7 +1,13 @@
 package net.wohlfart.gl.elements;
 
+import net.wohlfart.gl.action.Action;
 import net.wohlfart.gl.renderer.IsRenderable;
+import net.wohlfart.gl.renderer.IsUpdateable;
 import net.wohlfart.gl.shader.ShaderUniformHandle;
+import net.wohlfart.gl.view.CanMove;
+import net.wohlfart.gl.view.CanMoveImpl;
+import net.wohlfart.gl.view.CanRotate;
+import net.wohlfart.gl.view.CanRotateImpl;
 import net.wohlfart.tools.SimpleMath;
 
 import org.lwjgl.util.Color;
@@ -13,7 +19,7 @@ import org.lwjgl.util.vector.Vector3f;
 /**
  * <p>Abstract AbstractRenderable class.</p>
  */
-public abstract class AbstractRenderable implements IsRenderable {
+public abstract class AbstractRenderable implements IsRenderable, IsUpdateable, CanRotate, CanMove {
 
     // initial properties of the mesh
     protected final Vector3f translation = new Vector3f();
@@ -24,9 +30,11 @@ public abstract class AbstractRenderable implements IsRenderable {
 
     // dynamic translation and rotation
     private boolean matrixIsOutdated = true;
-    private Vector3f currentTranslation = new Vector3f();
-    private Quaternion currentRotation = new Quaternion();
+    private final CanMoveImpl currentTranslation = new CanMoveImpl();
+    private final CanRotateImpl currentRotation = new CanRotateImpl();
     private final Matrix4f modelToWorldMatrix = Matrix4f.setZero(new Matrix4f());
+    private Action action = Action.NULL;
+
 
     /**
      * <p>This is the core method that needs to be implemented by subclasses,
@@ -87,8 +95,8 @@ public abstract class AbstractRenderable implements IsRenderable {
      *
      * @param currentTranslation a {@link org.lwjgl.util.vector.Vector3f} object.
      */
-    public void setTranslation(Vector3f currentTranslation) {
-        this.currentTranslation = currentTranslation;
+    public void setTranslation(Vector3f vector) {
+        this.currentTranslation.setPosition(vector);
         matrixIsOutdated = true;
     }
 
@@ -97,8 +105,9 @@ public abstract class AbstractRenderable implements IsRenderable {
      *
      * @param currentRotation a {@link org.lwjgl.util.vector.Quaternion} object.
      */
-    public void setRotation(Quaternion currentRotation) {
-        this.currentRotation = currentRotation;
+    @Override
+    public void setRotation(Quaternion quaternion) {
+        this.currentRotation.setRotation(quaternion);
         matrixIsOutdated = true;
     }
 
@@ -121,6 +130,55 @@ public abstract class AbstractRenderable implements IsRenderable {
     public void destroy() {
         delegate.destroy();
         delegate = null;
+    }
+
+    @Override
+    public void move(Vector3f vector) {
+        currentTranslation.move(vector);
+    }
+
+    @Override
+    public Vector3f getPosition() {
+        return currentTranslation.getPosition();
+    }
+
+    @Override
+    public void setPosition(Vector3f vector) {
+        currentTranslation.setPosition(vector);
+    }
+
+    @Override
+    public void rotate(float deltaAngle, Vector3f axis) {
+        currentRotation.rotate(deltaAngle, axis);
+    }
+
+    @Override
+    public Quaternion getRotation() {
+        return currentRotation.getRotation();
+    }
+
+    @Override
+    public Vector3f getRght(Vector3f vector3f) {
+        return currentRotation.getRght(vector3f);
+    }
+
+    @Override
+    public Vector3f getUp(Vector3f result) {
+        return currentRotation.getUp(result);
+    }
+
+    @Override
+    public Vector3f getDir(Vector3f result) {
+        return currentRotation.getDir(result);
+    }
+
+    public Action setAction(Action action) {
+        return this.action = action;
+    }
+
+    @Override
+    public void update(float timeInSec) {
+        action.update(timeInSec);
     }
 
 }

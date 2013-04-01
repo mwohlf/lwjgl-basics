@@ -1,8 +1,9 @@
 package net.wohlfart.basic.states;
 
-import net.wohlfart.gl.elements.debug.Circle;
+import net.wohlfart.gl.action.RotateAction;
+import net.wohlfart.gl.antlr4.Model;
 import net.wohlfart.gl.elements.skybox.Skybox;
-import net.wohlfart.gl.renderer.RenderBucket;
+import net.wohlfart.gl.renderer.ModelBucket;
 import net.wohlfart.gl.shader.DefaultGraphicContext;
 import net.wohlfart.gl.shader.GraphicContextManager;
 import net.wohlfart.gl.shader.ShaderRegistry;
@@ -25,7 +26,7 @@ final class LightingState extends AbstractGraphicState {
 
     private final Skybox skybox = new Skybox();
 
-    private final RenderBucket elemBucket = new RenderBucket();
+    private final ModelBucket modelBucket = new ModelBucket();
 
 
 
@@ -35,25 +36,28 @@ final class LightingState extends AbstractGraphicState {
         lightingGraphicContext = new DefaultGraphicContext(ShaderRegistry.LIGHTING_SHADER);
         defaultGraphicContext = new DefaultGraphicContext(ShaderRegistry.DEFAULT_SHADER);
 
-
         skybox.init(defaultGraphicContext, getCamera());
 
-        elemBucket.init(lightingGraphicContext, getCamera());
+        modelBucket.init(lightingGraphicContext, getCamera());
         //elemBucket.add(SceneCreator.loadFromFile("/models/cube/cube.obj"));
-        elemBucket.add(SceneCreator.loadFromFile("/models/icosphere/icosphere.obj"));
-        elemBucket.add(new Circle(3f));
+        Model icosphere = SceneCreator.loadModelFromFile("/models/icosphere/icosphere.obj");
+        icosphere.setAction(new RotateAction(icosphere));
+        //Model cube = SceneCreator.loadModelFromFile("/models/cube/cube.obj");
+
+        modelBucket.add(icosphere);
+        //modelBucket.add(cube);
     }
 
 
     @Override
     public void update(float tpf) {
-        // LOGGER.debug("update called with tpf/fps {}/{}", tpf, 1f / tpf);
+        modelBucket.update(tpf);
     }
 
     @Override
     public void render() {
         skybox.render();
-        elemBucket.render();
+        modelBucket.render();
     }
 
     @Override

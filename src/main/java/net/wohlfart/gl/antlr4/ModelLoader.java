@@ -11,7 +11,6 @@ import net.wohlfart.gl.antlr4.WavefrontParser.ObjectNameContext;
 import net.wohlfart.gl.antlr4.WavefrontParser.PositionContext;
 import net.wohlfart.gl.antlr4.WavefrontParser.TextureCoordContext;
 import net.wohlfart.gl.antlr4.WavefrontParser.VertIndicesContext;
-import net.wohlfart.gl.renderer.IsRenderable;
 
 import org.antlr.v4.runtime.ANTLRInputStream;
 import org.antlr.v4.runtime.CommonTokenStream;
@@ -24,7 +23,7 @@ public class ModelLoader extends WavefrontBaseListener {
 
     private Model currentModel;
 
-    public IsRenderable getRenderable(InputStream input) throws GenericGameException {
+    public Model getModel(InputStream input) throws GenericGameException {
         try {
             final ANTLRInputStream antlrInput = new ANTLRInputStream(input);
             final WavefrontLexer lexer = new WavefrontLexer(antlrInput);

@@ -17,6 +17,6 @@ void main(void) {
 
     // Override out_Color with our texture pixel
     out_Color = texture2D(texture01, pass_TextureCoord) 
-            * max(dot(pass_Normal, lightdir), 0.0)
+            * max(dot(pass_Normal, lightdir), 0.2)
             * light;
 }

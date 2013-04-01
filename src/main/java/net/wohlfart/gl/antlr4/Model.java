@@ -3,6 +3,7 @@ package net.wohlfart.gl.antlr4;
 import java.util.ArrayList;
 import java.util.List;
 
+import net.wohlfart.gl.action.Action;
 import net.wohlfart.gl.elements.AbstractRenderable;
 import net.wohlfart.gl.renderer.IsRenderable;
 import net.wohlfart.gl.shader.ShaderAttributeHandle;
@@ -19,6 +20,9 @@ public class Model extends AbstractRenderable {
     private final List<Vector2f> textureCoords = new ArrayList<Vector2f>();
 
     private final List<VertexAttr> attrIdices = new ArrayList<VertexAttr>();
+
+
+    private Action action;
 
     public static class VertexAttr {
         int positionIdx;

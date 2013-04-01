@@ -8,6 +8,14 @@ import org.lwjgl.util.vector.Vector3f;
 @SuppressWarnings("serial")
 public class CanMoveImpl extends Vector3f implements CanMove {
 
+    @Override
+    public void move(Vector3f vector) {
+        this.x += vector.x;
+        this.y += vector.y;
+        this.z += vector.z;
+    }
+
+
     /** {@inheritDoc} */
     @Override
     public Vector3f getPosition() {

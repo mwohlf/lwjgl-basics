@@ -6,6 +6,7 @@ import java.util.Collection;
 import java.util.HashSet;
 
 import net.wohlfart.basic.GenericGameException;
+import net.wohlfart.gl.antlr4.Model;
 import net.wohlfart.gl.antlr4.ModelLoader;
 import net.wohlfart.gl.elements.AbstractRenderable;
 import net.wohlfart.gl.elements.ColoredQuad;
@@ -111,17 +112,15 @@ final class SceneCreator {
         return elemBucket;
     }
 
-    public static Collection<IsRenderable> loadFromFile(String path) {
-        final HashSet<IsRenderable> elemBucket = new HashSet<IsRenderable>();
+    public static Model loadModelFromFile(String path) {
         try (InputStream inputStream = ClassLoader.class.getResourceAsStream(path);) {
             if (inputStream == null) {
                 throw new GenericGameException("input stream is null for path '" + path + "'");
             }
-            elemBucket.add(new ModelLoader().getRenderable(inputStream));
+            return new ModelLoader().getModel(inputStream);
         } catch (IOException ex) {
             throw new GenericGameException("i/O Error while loading model from file with path '" + path + "'", ex);
         }
-        return elemBucket;
     }
 
 

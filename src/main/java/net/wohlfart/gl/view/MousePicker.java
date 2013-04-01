@@ -2,7 +2,7 @@ package net.wohlfart.gl.view;
 
 import net.wohlfart.gl.elements.debug.Arrow;
 import net.wohlfart.gl.input.CommandEvent;
-import net.wohlfart.gl.renderer.RenderBucket;
+import net.wohlfart.gl.renderer.RenderableBucket;
 
 import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector3f;
@@ -19,7 +19,7 @@ public class MousePicker {
 
     private Matrix4f transformMatrix = new Matrix4f();
 
-    private final RenderBucket elemBucket;
+    private final RenderableBucket elemBucket;
 
     private final float width;
     private final float height;
@@ -28,11 +28,11 @@ public class MousePicker {
     /**
      * <p>Constructor for MousePicker.</p>
      *
-     * @param elemBucket a {@link net.wohlfart.gl.renderer.RenderBucket} object.
+     * @param elemBucket a {@link net.wohlfart.gl.renderer.RenderableBucket} object.
      * @param width a float.
      * @param height a float.
      */
-    public MousePicker(RenderBucket elemBucket, float width, float height) {
+    public MousePicker(RenderableBucket elemBucket, float width, float height) {
         this.elemBucket = elemBucket;
         this.width = width;
         this.height = height;

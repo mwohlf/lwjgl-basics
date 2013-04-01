@@ -6,7 +6,7 @@ import net.wohlfart.gl.elements.hud.widgets.MousePositionLabel;
 import net.wohlfart.gl.elements.hud.widgets.Statistics;
 import net.wohlfart.gl.elements.skybox.Skybox;
 import net.wohlfart.gl.input.InputDispatcher;
-import net.wohlfart.gl.renderer.RenderBucket;
+import net.wohlfart.gl.renderer.RenderableBucket;
 import net.wohlfart.gl.shader.DefaultGraphicContext;
 import net.wohlfart.gl.shader.GraphicContextManager;
 import net.wohlfart.gl.shader.ShaderRegistry;
@@ -32,7 +32,7 @@ final class SimpleState extends AbstractGraphicState {
     private GraphicContextManager.IGraphicContext hudGraphicContext;
 
     private final Skybox skybox = new Skybox();
-    private final RenderBucket elemBucket = new RenderBucket();
+    private final RenderableBucket elemBucket = new RenderableBucket();
     private final Hud hud = new Hud();
 
     private Statistics statistics;
@@ -72,9 +72,6 @@ final class SimpleState extends AbstractGraphicState {
             elemBucket.add(SceneCreator.createRandomElements());
             elemBucket.add(SceneCreator.createOriginAxis());
             elemBucket.add(SceneCreator.createDebugElements());
-
-            setCurrentGraphicContext(wireframeGraphicContext);
-            elemBucket.add(SceneCreator.loadFromFile("/models/cube/cube.obj"));
         }
 
 
