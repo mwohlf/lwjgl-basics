@@ -8,7 +8,6 @@ import net.wohlfart.gl.shader.DefaultGraphicContext;
 import net.wohlfart.gl.shader.GraphicContextManager;
 import net.wohlfart.gl.shader.ShaderRegistry;
 
-import org.lwjgl.util.vector.Vector3f;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -37,20 +36,25 @@ final class LightingState extends AbstractGraphicState {
         lightingGraphicContext = new DefaultGraphicContext(ShaderRegistry.LIGHTING_SHADER);
         defaultGraphicContext = new DefaultGraphicContext(ShaderRegistry.DEFAULT_SHADER);
 
- //       skybox.init(defaultGraphicContext, getCamera());
-
+        skybox.init(defaultGraphicContext, getCamera());
         modelBucket.init(lightingGraphicContext, getCamera());
-        //elemBucket.add(SceneCreator.loadFromFile("/models/cube/cube.obj"));
-        Model icosphere = SceneCreator.loadModelFromFile("/models/icosphere/icosphere.obj");
-        icosphere.setPosition(new Vector3f(0,0,0));
-        icosphere.setAction(new RotateAction(icosphere));
 
-        Model cube = SceneCreator.loadModelFromFile("/models/cube/cube.obj");
-        cube.setPosition(new Vector3f(3,3,3));
-        cube.setAction(new RotateAction(cube));
+        int count = 16;
 
-        modelBucket.add(icosphere);
-        modelBucket.add(cube);
+        for (int i = 0; i < count ; i++) {
+            Model icosphere = SceneCreator.loadModelFromFile("/models/icosphere/icosphere.obj");
+            icosphere.setPosition(SceneCreator.getRandomPosition());
+            icosphere.setAction(new RotateAction(icosphere));
+            modelBucket.add(icosphere);
+        }
+
+        for (int i = 0; i < count ; i++) {
+            Model cube = SceneCreator.loadModelFromFile("/models/cube/cube.obj");
+            cube.setPosition(SceneCreator.getRandomPosition());
+            cube.setAction(new RotateAction(cube));
+            modelBucket.add(cube);
+        }
+
     }
 
 
@@ -62,7 +66,7 @@ final class LightingState extends AbstractGraphicState {
 
     @Override
     public void render() {
- //       skybox.render();
+        skybox.render();
         modelBucket.render();
     }
 

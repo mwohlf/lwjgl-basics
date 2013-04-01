@@ -12,6 +12,7 @@ import net.wohlfart.tools.SimpleMath;
 
 import org.lwjgl.util.Color;
 import org.lwjgl.util.ReadableColor;
+import org.lwjgl.util.vector.Matrix3f;
 import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Quaternion;
 import org.lwjgl.util.vector.Vector3f;
@@ -33,6 +34,8 @@ public abstract class AbstractRenderable implements IsRenderable, IsUpdateable, 
     private final CanMoveImpl currentTranslation = new CanMoveImpl();
     private final CanRotateImpl currentRotation = new CanRotateImpl();
     private final Matrix4f modelToWorldMatrix = Matrix4f.setZero(new Matrix4f());
+    private final Matrix3f normalMatrix = Matrix3f.setZero(new Matrix3f());
+
     private Action action = Action.NULL;
 
 
@@ -119,10 +122,11 @@ public abstract class AbstractRenderable implements IsRenderable, IsUpdateable, 
         }
         if (matrixIsOutdated) {
             SimpleMath.convert(currentTranslation, currentRotation, modelToWorldMatrix);
+            SimpleMath.calculateNormalMatrix(modelToWorldMatrix, normalMatrix);
             matrixIsOutdated = false;
         }
         ShaderUniformHandle.MODEL_TO_WORLD.set(modelToWorldMatrix);
-        ShaderUniformHandle.NORMAL.set(SimpleMath.calculateNormalMatrix(modelToWorldMatrix));
+        ShaderUniformHandle.NORMAL.set(normalMatrix);
 
         delegate.render();
     }

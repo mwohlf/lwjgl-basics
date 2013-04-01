@@ -481,9 +481,11 @@ public final class SimpleMath {
         return result.normalise(new Vector3f());
     }
 
+    // TODO: fix this: without allocating new memory...
+    // it woudl also be nice to be threadsafe...
+    final static Quaternion rot = new Quaternion();
     public static void rotate(Quaternion q, float angle, Vector3f axis) {
         axis.normalise();
-        final Quaternion rot = new Quaternion();
         final double n = Math.sqrt(axis.x * axis.x + axis.y * axis.y + axis.z * axis.z);
         final float sin = (float) (Math.sin(0.5 * angle) / n);
         rot.x = axis.x * sin;
@@ -547,8 +549,7 @@ public final class SimpleMath {
      * @param m4 the model to world matrix
      * @return
      */
-    public static Matrix3f calculateNormalMatrix(Matrix4f m4) {
-        Matrix3f m3 = new Matrix3f();
+    public static Matrix3f calculateNormalMatrix(Matrix4f m4, Matrix3f m3) {
         m3.m00 = m4.m00;
         m3.m01 = m4.m01;
         m3.m02 = m4.m02;

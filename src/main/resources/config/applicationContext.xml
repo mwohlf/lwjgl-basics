@@ -21,6 +21,7 @@
     <bean name="gameSettings" class="net.wohlfart.basic.Settings">
       <property name="width" value="${display.width}" />
       <property name="height" value="${display.height}" />
+      <property name="sync" value="${display.sync}" />
       <property name="fullscreen" value="${display.fullscreen}" />
       <property name="fieldOfView" value="${projection.fieldOfView}" />
       <property name="nearPlane" value="${projection.nearPlane}" />

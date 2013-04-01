@@ -2,6 +2,8 @@ package net.wohlfart.basic;
 
 /**
  * <p>A collection of application settings that can be configured at startup.</p>
+ *
+ * TODO: use a overriding property placeholder here
  */
 public class Settings {
 
@@ -125,7 +127,18 @@ public class Settings {
     public void setFarPlane(float farPlane) {
         this.farPlane = farPlane;
     }
+    /**
+     * <p>Getter for the field <code>sync</code>.</p>
+     *
+     * @return a int.
+     */
+    public int getSync() {
+        return sync;
+    }
 
+    public void setSync(int sync) {
+        this.sync = sync;
+    }
     /**
      * <p>Getter for the field <code>title</code>.</p>
      *
@@ -135,13 +148,5 @@ public class Settings {
         return title;
     }
 
-    /**
-     * <p>Getter for the field <code>sync</code>.</p>
-     *
-     * @return a int.
-     */
-    public int getSync() {
-        return sync;
-    }
 
 }

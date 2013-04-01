@@ -112,7 +112,7 @@ final class SceneCreator {
         return elemBucket;
     }
 
-    public static Model loadModelFromFile(String path) {
+    static Model loadModelFromFile(String path) {
         try (InputStream inputStream = ClassLoader.class.getResourceAsStream(path);) {
             if (inputStream == null) {
                 throw new GenericGameException("input stream is null for path '" + path + "'");
@@ -121,6 +121,12 @@ final class SceneCreator {
         } catch (IOException ex) {
             throw new GenericGameException("i/O Error while loading model from file with path '" + path + "'", ex);
         }
+    }
+
+    static Vector3f getRandomPosition() {
+        return new Vector3f(SimpleMath.random(-30, +30),
+                SimpleMath.random(-30, +30),
+                SimpleMath.random(-30, +30));
     }
 
 
