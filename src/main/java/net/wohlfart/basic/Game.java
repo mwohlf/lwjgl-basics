@@ -144,6 +144,7 @@ class Game implements InitializingBean {
         // used for GL11.glClear(GL11.GL_COLOR_BUFFER_BIT); not really needed if we have a skybox anyways
         GL11.glHint(GL11.GL_LINE_SMOOTH_HINT,GL11.GL_NICEST);
         GL11.glClearColor(0.5f, 0.5f, 0.5f, 0f);
+        GL11.glClearDepth(1f);
         //GL11.glClearColor(0.0f, 0.0f, 0.0f, 0f);
         // turn culling off so it will be drawn regardless of which way a surface is facing
         GL11.glDisable(GL11.GL_CULL_FACE);  // enable for production

@@ -11,6 +11,7 @@ import net.wohlfart.gl.view.Camera;
 import net.wohlfart.gl.view.HasCamProjectionModelViewMatrices;
 import net.wohlfart.tools.SimpleMath;
 
+import org.lwjgl.opengl.GL11;
 import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector3f;
 
@@ -73,6 +74,11 @@ public class RenderBucket implements IsRenderable, IsUpdateable, HasCamProjectio
         ShaderUniformHandle.MODEL_TO_WORLD.set(SimpleMath.UNION_MATRIX);
         ShaderUniformHandle.WORLD_TO_CAM.set(rotPosMatrix);
         ShaderUniformHandle.CAM_TO_CLIP.set(GraphicContextManager.INSTANCE.getPerspectiveProjMatrix());
+        ShaderUniformHandle.NORMAL.set(GraphicContextManager.INSTANCE.getNormalMatrix());
+
+
+        GL11.glEnable(GL11.GL_DEPTH_TEST);
+        GL11.glClear(GL11.GL_DEPTH_BUFFER_BIT);
 
         for (final IsRenderable isRenderable : container) {
             isRenderable.render();

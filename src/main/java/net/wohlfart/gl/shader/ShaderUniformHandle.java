@@ -7,6 +7,7 @@ import java.nio.FloatBuffer;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL20;
 import org.lwjgl.util.ReadableColor;
+import org.lwjgl.util.vector.Matrix3f;
 import org.lwjgl.util.vector.Matrix4f;
 
 // handlers for uniforms used in the shader
@@ -16,12 +17,14 @@ import org.lwjgl.util.vector.Matrix4f;
 public enum ShaderUniformHandle { // @formatter:off
     MODEL_TO_WORLD("modelToWorldMatrix"),
     WORLD_TO_CAM("worldToCameraMatrix"),  // model view matrix
-    CAM_TO_CLIP("cameraToClipMatrix");    // projection matrix
+    CAM_TO_CLIP("cameraToClipMatrix"),    // projection matrix
+    NORMAL("normalMatrix");
     // @formatter:on
 
     private final String lookupString;
     private final FloatBuffer colorBuffer = BufferUtils.createFloatBuffer(4);
-    private final FloatBuffer matrixBuffer = BufferUtils.createFloatBuffer(16);
+    private final FloatBuffer matrix4Buffer = BufferUtils.createFloatBuffer(16);
+    private final FloatBuffer matrix3Buffer = BufferUtils.createFloatBuffer(9);
 
     ShaderUniformHandle(String lookupString) {
         this.lookupString = lookupString;
@@ -46,9 +49,20 @@ public enum ShaderUniformHandle { // @formatter:off
      * @param matrix a {@link org.lwjgl.util.vector.Matrix4f} object.
      */
     public void set(Matrix4f matrix) {
-        matrix.store(matrixBuffer);
-        matrixBuffer.flip();
-        GL20.glUniformMatrix4(getLocation(), false, matrixBuffer);
+        matrix.store(matrix4Buffer);
+        matrix4Buffer.flip();
+        GL20.glUniformMatrix4(getLocation(), false, matrix4Buffer);
+    }
+
+    /**
+     * <p>set.</p>
+     *
+     * @param matrix a {@link org.lwjgl.util.vector.Matrix3f} object.
+     */
+    public void set(Matrix3f matrix) {
+        matrix.store(matrix3Buffer);
+        matrix3Buffer.flip();
+        GL20.glUniformMatrix3(getLocation(), false, matrix3Buffer);
     }
 
     /**

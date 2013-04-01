@@ -1,9 +1,9 @@
 package net.wohlfart.gl.shader;
 
 import net.wohlfart.basic.Settings;
-import net.wohlfart.basic.time.Clock;
 import net.wohlfart.gl.input.InputDispatcher;
 
+import org.lwjgl.util.vector.Matrix3f;
 import org.lwjgl.util.vector.Matrix4f;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -40,13 +40,12 @@ public enum GraphicContextManager {
     // pre-calculated projection matrices to select from
     private Matrix4f perspectiveProjMatrix;
     private Matrix4f orthographicProjMatrix;
+    private Matrix3f normalMatrix;
 
     // game settings from the config file
     private Settings settings;
     // user input
     private InputDispatcher inputDispatcher;
-    // timer
-    private Clock clock;
 
 
 
@@ -75,6 +74,7 @@ public enum GraphicContextManager {
         this.settings = settings;
         perspectiveProjMatrix = new PerspectiveProjection() .create(settings);
         orthographicProjMatrix = new OrthographicProjection() .create(settings);
+        normalMatrix = getNormalMatrix(perspectiveProjMatrix);
     }
 
 
@@ -104,6 +104,18 @@ public enum GraphicContextManager {
     public Matrix4f getOrthographicProjMatrix() {
         return orthographicProjMatrix;
     }
+
+
+
+    /**
+     * <p>Getter for the field <code>normalMatrix</code>.</p>
+     *
+     * @return a {@link org.lwjgl.util.vector.Matrix3f} object.
+     */
+    public Matrix3f getNormalMatrix() {
+        return normalMatrix;
+    }
+
 
     /**
      * <p>getScreenWidth.</p>
@@ -167,6 +179,24 @@ public enum GraphicContextManager {
     public InputDispatcher getInputDispatcher() {
         return inputDispatcher;
     }
+
+
+    public Matrix3f getNormalMatrix(Matrix4f m4) {
+        Matrix3f m3 = new Matrix3f();
+        m3.m00 = m4.m00;
+        m3.m01 = m4.m01;
+        m3.m02 = m4.m02;
+        m3.m10 = m4.m10;
+        m3.m11 = m4.m11;
+        m3.m12 = m4.m12;
+        m3.m20 = m4.m20;
+        m3.m21 = m4.m21;
+        m3.m22 = m4.m22;
+        Matrix3f.transpose(m3, m3);
+        return m3;
+    }
+
+
 
     /**
      * <p>destroy.</p>
