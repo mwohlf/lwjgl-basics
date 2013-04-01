@@ -9,6 +9,7 @@ import org.lwjgl.opengl.GL20;
 import org.lwjgl.util.ReadableColor;
 import org.lwjgl.util.vector.Matrix3f;
 import org.lwjgl.util.vector.Matrix4f;
+import org.lwjgl.util.vector.Vector3f;
 
 // handlers for uniforms used in the shader
 /**
@@ -18,7 +19,8 @@ public enum ShaderUniformHandle { // @formatter:off
     MODEL_TO_WORLD("modelToWorldMatrix"),
     WORLD_TO_CAM("worldToCameraMatrix"),  // model view matrix
     CAM_TO_CLIP("cameraToClipMatrix"),    // projection matrix
-    NORMAL("normalMatrix");
+    NORMAL("normalMatrix"),
+    LIGHT("lightPosition");
     // @formatter:on
 
     private final String lookupString;
@@ -68,6 +70,15 @@ public enum ShaderUniformHandle { // @formatter:off
     /**
      * <p>set.</p>
      *
+     * @param matrix a {@link org.lwjgl.util.vector.Vector3f} object.
+     */
+    public void set(Vector3f vector) {
+        GL20.glUniform3f(getLocation(), vector.x, vector.y, vector.z);
+    }
+
+    /**
+     * <p>set.</p>
+     *
      * @param readableColor a {@link org.lwjgl.util.ReadableColor} object.
      */
     public void set(ReadableColor readableColor) {
@@ -85,7 +96,7 @@ public enum ShaderUniformHandle { // @formatter:off
      *
      * @param colorBuffer a {@link java.nio.FloatBuffer} object.
      */
-    public void set(final FloatBuffer colorBuffer) {
+    public void set(FloatBuffer colorBuffer) {
         GL20.glUniform4(getLocation(), colorBuffer);
     }
 

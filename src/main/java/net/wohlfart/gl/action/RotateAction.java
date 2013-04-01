@@ -13,7 +13,7 @@ public class RotateAction implements Action {
     private final Vector3f axis;
 
 
-    public RotateAction(CanRotate canRotate) {
+    public RotateAction(CanRotate canRotate) {  // TODO: remove the param from the constructor and add a double dispatch
         this(canRotate, 10f, new Vector3f(0,1,0));
     }
 

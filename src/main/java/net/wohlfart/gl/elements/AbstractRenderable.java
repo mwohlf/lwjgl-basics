@@ -122,6 +122,8 @@ public abstract class AbstractRenderable implements IsRenderable, IsUpdateable, 
             matrixIsOutdated = false;
         }
         ShaderUniformHandle.MODEL_TO_WORLD.set(modelToWorldMatrix);
+        ShaderUniformHandle.NORMAL.set(SimpleMath.calculateNormalMatrix(modelToWorldMatrix));
+
         delegate.render();
     }
 

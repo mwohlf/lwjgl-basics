@@ -74,7 +74,7 @@ public class RenderableBucket implements IsRenderable, IsUpdateable, HasCamProje
         ShaderUniformHandle.MODEL_TO_WORLD.set(SimpleMath.UNION_MATRIX);
         ShaderUniformHandle.WORLD_TO_CAM.set(rotPosMatrix);
         ShaderUniformHandle.CAM_TO_CLIP.set(GraphicContextManager.INSTANCE.getPerspectiveProjMatrix());
-        ShaderUniformHandle.NORMAL.set(GraphicContextManager.INSTANCE.getNormalMatrix());
+        //ShaderUniformHandle.NORMAL.set(GraphicContextManager.INSTANCE.getNormalMatrix());
 
 
         GL11.glEnable(GL11.GL_DEPTH_TEST);
