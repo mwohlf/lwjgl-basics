@@ -125,8 +125,8 @@ final class SceneCreator {
 
     static Vector3f getRandomPosition() {
         return new Vector3f(SimpleMath.random(-30, +30),
-                SimpleMath.random(-30, +30),
-                SimpleMath.random(-30, +30));
+                SimpleMath.random(-30f, +30f),
+                SimpleMath.random(-30f, +30f));
     }
 
 

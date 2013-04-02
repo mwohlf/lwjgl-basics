@@ -106,8 +106,16 @@ public class ModelMeshBuilder {
         return vboVerticesHandle;
     }
 
+
+    // FIXME: ugly hack to keep the same textureID
+    private static int staticTextId = 0;
+
     private int createTextureHandle(String filename, int textureUnit) {
         int texId = 0;
+
+        if (staticTextId != 0) {
+            return staticTextId;
+        }
 
         // InputStream inputStream = new FileInputStream(filename);
         try (InputStream inputStream = ClassLoader.class.getResourceAsStream(filename);) {
@@ -143,6 +151,7 @@ public class ModelMeshBuilder {
         } catch (final IOException ex) {
             LOGGER.error("can't load texture image", ex);
         }
+        staticTextId = texId;
         return texId;
     }
 
