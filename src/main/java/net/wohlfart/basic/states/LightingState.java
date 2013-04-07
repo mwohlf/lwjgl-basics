@@ -1,6 +1,6 @@
 package net.wohlfart.basic.states;
 
-import net.wohlfart.gl.action.RotateAction;
+import net.wohlfart.gl.action.OrbitAction;
 import net.wohlfart.gl.antlr4.Model;
 import net.wohlfart.gl.elements.hud.widgets.MousePositionLabel;
 import net.wohlfart.gl.elements.hud.widgets.Statistics;
@@ -11,8 +11,8 @@ import net.wohlfart.gl.shader.DefaultGraphicContext;
 import net.wohlfart.gl.shader.GraphicContextManager;
 import net.wohlfart.gl.shader.ShaderRegistry;
 import net.wohlfart.gl.view.MousePicker;
-import net.wohlfart.tools.SimpleMath;
 
+import org.lwjgl.util.vector.Vector3f;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -52,28 +52,47 @@ final class LightingState extends AbstractGraphicState {
         wireframeGraphicContext = new DefaultGraphicContext(ShaderRegistry.WIREFRAME_SHADER);
 
 
-        skybox.init(defaultGraphicContext, getCamera());
+        //skybox.init(defaultGraphicContext, getCamera());
         modelBucket.init(lightingGraphicContext, getCamera());
         elemBucket.init(wireframeGraphicContext, getCamera());
 
         getInputDispatcher().register(mousePicker);
 
 
-        int count = 50;
+
+        Model icosphere = SceneCreator.loadModelFromFile("/models/icosphere/icosphere.obj");
+        icosphere.setPosition(new Vector3f(0,0,-5));
+        icosphere.setAction(OrbitAction.create());
+        //icosphere.setAction(new MoveAction());
+        //icosphere.setAction(new MoveAction());
+        modelBucket.add(icosphere);
+
+
+        Model icosphere2 = SceneCreator.loadModelFromFile("/models/icosphere/icosphere.obj");
+        icosphere2.setPosition(new Vector3f(0,0,0));
+        //icosphere2.setAction(new OrbitAction());
+        //icosphere.setAction(new MoveAction());
+        //icosphere.setAction(new MoveAction());
+        modelBucket.add(icosphere2);
+
+
+        /*
+        int count = 1;
 
         for (int i = 0; i < count ; i++) {
             Model icosphere = SceneCreator.loadModelFromFile("/models/icosphere/icosphere.obj");
             icosphere.setPosition(SceneCreator.getRandomPosition());
-            icosphere.setAction(new RotateAction(icosphere, SimpleMath.random(6f, 30f)));
+            icosphere.setAction(new RotateAction(SimpleMath.random(3f, 100f)));
             modelBucket.add(icosphere);
         }
 
         for (int i = 0; i < count ; i++) {
             Model cube = SceneCreator.loadModelFromFile("/models/cube/cube.obj");
             cube.setPosition(SceneCreator.getRandomPosition());
-            cube.setAction(new RotateAction(cube, SimpleMath.random(6f, 30f)));
+            cube.setAction(new RotateAction(SimpleMath.random(3f, 100f)));
             modelBucket.add(cube);
         }
+        */
 
     }
 
@@ -86,7 +105,7 @@ final class LightingState extends AbstractGraphicState {
 
     @Override
     public void render() {
-        skybox.render();
+        //skybox.render();
         modelBucket.render();
         elemBucket.render();
     }

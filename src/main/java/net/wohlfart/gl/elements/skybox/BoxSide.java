@@ -6,6 +6,7 @@ import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
 
 import net.wohlfart.gl.elements.skybox.SkyboxParameters.PerlinNoiseParameters;
+import net.wohlfart.gl.shader.GraphicContextManager;
 import net.wohlfart.gl.shader.ShaderAttributeHandle;
 import net.wohlfart.tools.ColorGradient;
 import net.wohlfart.tools.SimpleMath;
@@ -51,13 +52,14 @@ enum BoxSide {  // @formatter:off
         }};  // @formatter:on
 
 
-    // FIXME: screensize, texture size and dist parameter need to match so we don't cut off the background
-    /** Constant <code>DOT_PROD_LIMIT=-0.0f</code> */
-    public static final float DOT_PROD_LIMIT = -0.0f; // FIXME: this depends on the view angle
+    // FIXME: screensize, texture size and dist parameter need to match so we don't cut off parts of the background
+    public static final float DOT_PROD_LIMIT = 0.0f; // FIXME: this also depends on the view angle
     private static final int SIZE = 1024;
 
     // distance from the origin to the wall of the skybox and also the length of the edge
-    protected float dist = 1f;
+    protected float dist = SimpleMath.sqrt(
+            SimpleMath.sqare(GraphicContextManager.INSTANCE.getNearPlane())
+            + SimpleMath.sqare(GraphicContextManager.INSTANCE.getNearPlane()));
     protected Vector3f translation;
     protected Quaternion rotation;
 
@@ -233,9 +235,9 @@ enum BoxSide {  // @formatter:off
         return data;
     }
 
-    // translate from the plane coords to 3d
+    //
     /**
-     * <p>getVector.</p>
+     * <p>translate from the 2D plane coords to 3D</p>
      *
      * @param x a int.
      * @param y a int.
@@ -285,7 +287,7 @@ enum BoxSide {  // @formatter:off
      * @param octaves a int.
      * @return a double.
      */
-    protected double createNoise(final float x, final float y, final float z, final float w, final float persistence, final int octaves) {
+    protected double createNoise(float x, float y, float z, float w, float persistence, int octaves) {
         double result = 0;
         float max = 0;
         for (int i = 0; i < octaves; i++) {
@@ -308,7 +310,7 @@ enum BoxSide {  // @formatter:off
      * @param frequency a float.
      * @return a double.
      */
-    protected double createNoise(final float x, final float y, final float z, final float w, final float amplitude, final float frequency) {
+    protected double createNoise(float x, float y, float z, float w, float amplitude, float frequency) {
         // the noise returns [-1 .. +1]
         final double noise = SimplexNoise.noise(x * frequency, y * frequency, z * frequency, w * frequency);
         return amplitude * noise;

@@ -16,9 +16,6 @@ import org.lwjgl.util.vector.Vector3f;
 
 /**
  * <p>Skybox class.</p>
- *
- *
- *
  */
 public class Skybox implements IsRenderable, SkyboxParameters {
 
@@ -42,38 +39,41 @@ public class Skybox implements IsRenderable, SkyboxParameters {
     public void init(IGraphicContext graphicContext, Camera camera) {
         this.camera = camera;
         this.graphicContext = graphicContext;
-        // in order to build the mesh we need the unions and attribute positions, so we have to switch
-        // to the gfx context used for rendering, maybe we could wait for the render call...
-        GraphicContextManager.INSTANCE.setCurrentGraphicContext(graphicContext);
+    }
+
+    private void createSides() {
         final BoxSide[] values = BoxSide.values();
-        final List<BoxSideMesh> array = new ArrayList<BoxSideMesh>(values.length);
+        final List<BoxSideMesh> newSides = new ArrayList<BoxSideMesh>(values.length);
         for (final BoxSide side : values) {
-            array.add(side.build(this));
+            newSides.add(side.build(this));
         }
-        sides = array.toArray(new BoxSideMesh[values.length]);
+        sides = newSides.toArray(new BoxSideMesh[values.length]);
     }
 
     /** {@inheritDoc} */
     @Override
     public void render() {
-        assert sides != null : "the skybox sides are null, make sure to call the init method";
-        assert camera != null : "the camera is null, make sure to call the init method";
         assert graphicContext != null : "the graphicContext is null, make sure to call the init method";
+        assert camera != null : "the camera is null, make sure to call the init method";
 
-        camera.readDirection(viewDirection);
-        viewDirection.normalise(viewDirection);
+        GraphicContextManager.INSTANCE.setCurrentGraphicContext(graphicContext);
+        if (sides == null) {
+            createSides();
+        }
 
         final Matrix4f camViewMatrix = GraphicContextManager.INSTANCE.getPerspectiveProjMatrix();
         SimpleMath.convert(camera.getRotation(), rotMatrix);
 
-        GraphicContextManager.INSTANCE.setCurrentGraphicContext(graphicContext);
         ShaderUniformHandle.MODEL_TO_WORLD.set(SimpleMath.UNION_MATRIX);
         ShaderUniformHandle.WORLD_TO_CAM.set(rotMatrix);
         ShaderUniformHandle.CAM_TO_CLIP.set(camViewMatrix);
 
         GL11.glDisable(GL11.GL_BLEND);
+        GL11.glDisable(GL11.GL_DEPTH_TEST);
 
         // draw only the visible sides
+        camera.readDirection(viewDirection);
+        viewDirection.normalise(viewDirection);
         for (final BoxSideMesh side : sides) {
             if (Vector3f.dot(viewDirection, side.getNormal()) > BoxSide.DOT_PROD_LIMIT) {
                 side.render();

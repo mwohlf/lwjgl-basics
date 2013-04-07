@@ -121,7 +121,7 @@ class Game implements InitializingBean {
             // call the models to do their things
             currentState.update(delta);
             // clear the screen buffer, not needed if we have a skybox working
-            GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT);
+            GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT | GL11.GL_STENCIL_BUFFER_BIT);
             // do the render magic
             currentState.render();
             Display.sync(settings.getSync());

@@ -1,6 +1,7 @@
 package net.wohlfart.gl.elements;
 
 import net.wohlfart.gl.action.Action;
+import net.wohlfart.gl.action.Action.Actor;
 import net.wohlfart.gl.renderer.IsRenderable;
 import net.wohlfart.gl.renderer.IsUpdateable;
 import net.wohlfart.gl.shader.ShaderUniformHandle;
@@ -20,7 +21,7 @@ import org.lwjgl.util.vector.Vector3f;
 /**
  * <p>Abstract AbstractRenderable class.</p>
  */
-public abstract class AbstractRenderable implements IsRenderable, IsUpdateable, CanRotate, CanMove {
+public abstract class AbstractRenderable implements IsRenderable, IsUpdateable, CanRotate, CanMove, Actor {
 
     // initial properties of the mesh
     protected final Vector3f translation = new Vector3f();
@@ -98,7 +99,8 @@ public abstract class AbstractRenderable implements IsRenderable, IsUpdateable, 
      *
      * @param currentTranslation a {@link org.lwjgl.util.vector.Vector3f} object.
      */
-    public void setTranslation(Vector3f vector) {
+    @Override
+    public void setPosition(Vector3f vector) {
         this.currentTranslation.setPosition(vector);
         matrixIsOutdated = true;
     }
@@ -149,11 +151,6 @@ public abstract class AbstractRenderable implements IsRenderable, IsUpdateable, 
     }
 
     @Override
-    public void setPosition(Vector3f vector) {
-        currentTranslation.setPosition(vector);
-    }
-
-    @Override
     public void rotate(float deltaAngle, Vector3f axis) {
         currentRotation.rotate(deltaAngle, axis);
     }
@@ -178,13 +175,14 @@ public abstract class AbstractRenderable implements IsRenderable, IsUpdateable, 
         return currentRotation.getDir(result);
     }
 
-    public Action setAction(Action action) {
-        return this.action = action;
+    @Override
+    public void setAction(Action action) {
+        this.action = action;
     }
 
     @Override
     public void update(float timeInSec) {
-        action.update(timeInSec);
+        action.perform(this, timeInSec);
     }
 
 }

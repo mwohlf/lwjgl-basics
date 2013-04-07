@@ -3,6 +3,7 @@ package net.wohlfart.gl.antlr4;
 import java.util.ArrayList;
 import java.util.List;
 
+import net.wohlfart.gl.action.Action.Actor;
 import net.wohlfart.gl.elements.AbstractRenderable;
 import net.wohlfart.gl.renderer.IsRenderable;
 import net.wohlfart.gl.shader.ShaderAttributeHandle;
@@ -11,7 +12,7 @@ import org.lwjgl.opengl.GL11;
 import org.lwjgl.util.vector.Vector2f;
 import org.lwjgl.util.vector.Vector3f;
 
-public class Model extends AbstractRenderable {
+public class Model extends AbstractRenderable implements Actor {
     private final String name;
 
     private final List<Vector3f> positions = new ArrayList<Vector3f>();
@@ -20,10 +21,10 @@ public class Model extends AbstractRenderable {
 
     private final List<VertexAttr> attrIdices = new ArrayList<VertexAttr>();
 
-    public static class VertexAttr {
-        int positionIdx;
-        int normalIdx;
-        int textureCoordIdx;
+    private static class VertexAttr {
+        protected int positionIdx;
+        protected int normalIdx;
+        protected int textureCoordIdx;
     }
 
     public Model(String name) {
@@ -62,7 +63,6 @@ public class Model extends AbstractRenderable {
      *
      * @return
      */
-
     float[] createVertexStream() {
         // TODO: check if the size of the attributes fits in the array
         int index = 0;
@@ -111,9 +111,9 @@ public class Model extends AbstractRenderable {
 
     void addVertexForStream(final int position, final int textureCoords, final int normal) {
         attrIdices.add(new VertexAttr() {{
-            positionIdx = position;
-            textureCoordIdx = textureCoords;
-            normalIdx = normal;
+            this.positionIdx = position;
+            this.textureCoordIdx = textureCoords;
+            this.normalIdx = normal;
         }});
     }
 

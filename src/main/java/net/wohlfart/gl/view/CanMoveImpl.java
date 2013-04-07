@@ -9,10 +9,10 @@ import org.lwjgl.util.vector.Vector3f;
 public class CanMoveImpl extends Vector3f implements CanMove {
 
     @Override
-    public void move(Vector3f vector) {
-        this.x += vector.x;
-        this.y += vector.y;
-        this.z += vector.z;
+    public void move(Vector3f delta) {
+        this.x += delta.x;
+        this.y += delta.y;
+        this.z += delta.z;
     }
 
 
@@ -24,7 +24,7 @@ public class CanMoveImpl extends Vector3f implements CanMove {
 
     /** {@inheritDoc} */
     @Override
-    public void setPosition(final Vector3f vector) {
+    public void setPosition(Vector3f vector) {
         this.x = vector.x;
         this.y = vector.y;
         this.z = vector.z;

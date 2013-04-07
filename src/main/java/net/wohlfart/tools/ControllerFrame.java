@@ -68,7 +68,7 @@ public class ControllerFrame extends JFrame {
                 float x = Float.parseFloat(xcoord.getText());
                 float y = Float.parseFloat(ycoord.getText());
                 float z = Float.parseFloat(zcoord.getText());
-                cube.setTranslation(new Vector3f(x,y,z));
+                cube.setPosition(new Vector3f(x,y,z));
             }});
     }
 

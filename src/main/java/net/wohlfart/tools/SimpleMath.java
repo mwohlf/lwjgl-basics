@@ -50,7 +50,7 @@ public final class SimpleMath {
      * @param f a float.
      * @return a float.
      */
-    public static float sin(final float f) {
+    public static float sin(float f) {
         return (float) Math.sin(f);
     }
 
@@ -60,7 +60,7 @@ public final class SimpleMath {
      * @param f a float.
      * @return a float.
      */
-    public static float cos(final float f) {
+    public static float cos(float f) {
         return (float) Math.cos(f);
     }
 
@@ -100,7 +100,7 @@ public final class SimpleMath {
      * @param angle a float.
      * @return a float.
      */
-    public static float coTan(final float angle) {
+    public static float coTan(float angle) {
         return (float) (1f / Math.tan(angle));
     }
 
@@ -110,9 +110,14 @@ public final class SimpleMath {
      * @param f a float.
      * @return a float.
      */
-    public static float sqrt(final float f) {
+    public static float sqrt(float f) {
         return (float) Math.sqrt(f);
     }
+
+    public static float sqare(float nearPlane) {
+        return nearPlane * nearPlane;
+    }
+
 
     // --------- random function
 
@@ -179,17 +184,13 @@ public final class SimpleMath {
         result.z = zz;
     }
 
-    /**
-     * add one vector to another vecto
-     *
-     * @param translation a {@link org.lwjgl.util.vector.Vector3f} object.
-     * @param vec a {@link org.lwjgl.util.vector.Vector3f} object.
-     * @param result a {@link org.lwjgl.util.vector.Vector3f} object.
-     */
-    public static void add(final Vector3f translation, final Vector3f vec, final Vector3f result) {
-        result.x = vec.x + translation.x;
-        result.y = vec.y + translation.y;
-        result.z = vec.z + translation.z;
+
+
+    public static Vector3f scale(Vector3f in, float scale, Vector3f out) {
+        out.x = in.x * scale;
+        out.y = in.y * scale;
+        out.z = in.z * scale;
+        return out;
     }
 
     /**
@@ -202,7 +203,7 @@ public final class SimpleMath {
      * @param result a {@link org.lwjgl.util.vector.Quaternion} object.
      * @return a {@link org.lwjgl.util.vector.Quaternion} object.
      */
-    public static Quaternion createQuaternion(final Vector3f start, final Vector3f end, final Quaternion result) {
+    public static Quaternion createQuaternion(Vector3f start, Vector3f end, Quaternion result) {
 
         final Vector3f startNorm = start.normalise(new Vector3f());
         final Vector3f endNorm = end.normalise(new Vector3f());
@@ -433,15 +434,41 @@ public final class SimpleMath {
     /**
      * <p>sum.</p>
      *
-     * @param target a {@link org.lwjgl.util.vector.Vector3f} object.
+     * @param result a {@link org.lwjgl.util.vector.Vector3f} object.
      * @param a a {@link org.lwjgl.util.vector.Vector3f} object.
      * @param b a {@link org.lwjgl.util.vector.Vector3f} object.
      * @param c a {@link org.lwjgl.util.vector.Vector3f} object.
      */
-    public static void sum(Vector3f target, Vector3f a, Vector3f b, Vector3f c) {
-        target.x = a.x + b.x + c.x;
-        target.y = a.y + b.y + c.y;
-        target.z = a.z + b.z + c.z;
+    public static void add(Vector3f a, Vector3f b, Vector3f c, Vector3f result) {
+        result.x = a.x + b.x + c.x;
+        result.y = a.y + b.y + c.y;
+        result.z = a.z + b.z + c.z;
+    }
+
+    /**
+     * add one vector to another vector
+     *
+     * @param a a {@link org.lwjgl.util.vector.Vector3f} object.
+     * @param b a {@link org.lwjgl.util.vector.Vector3f} object.
+     * @param result a {@link org.lwjgl.util.vector.Vector3f} object.
+     */
+    public static void add(Vector3f a, Vector3f b, Vector3f result) {
+        result.x = a.x + b.x;
+        result.y = a.y + b.y;
+        result.z = a.z + b.z;
+    }
+
+    /**
+     * substract one vector from another vector
+     *
+     * @param a a {@link org.lwjgl.util.vector.Vector3f} object.
+     * @param b a {@link org.lwjgl.util.vector.Vector3f} object.
+     * @param result a {@link org.lwjgl.util.vector.Vector3f} object.
+     */
+    public static void sub(Vector3f a, Vector3f b, Vector3f result) {
+        result.x = a.x - b.x;
+        result.y = a.y - b.y;
+        result.z = a.z - b.z;
     }
 
     /**
@@ -482,7 +509,7 @@ public final class SimpleMath {
     }
 
     // TODO: fix this: without allocating new memory...
-    // it woudl also be nice to be threadsafe...
+    // it would also be nice to be thread-safe...
     final static Quaternion rot = new Quaternion();
     public static void rotate(Quaternion q, float angle, Vector3f axis) {
         axis.normalise();
@@ -564,6 +591,12 @@ public final class SimpleMath {
         return m3;
     }
 
-
+    public static float distance(Vector3f a, Vector3f b) {
+        return (float)Math.sqrt(
+                  (a.x - b.x) * (a.x - b.x)
+                + (a.y - b.y) * (a.y - b.y)
+                + (a.z - b.z) * (a.z - b.z)
+                );
+    }
 
 }

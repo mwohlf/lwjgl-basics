@@ -55,7 +55,7 @@ final class SceneCreator {
             final float z = SimpleMath.random(-farPlane, farPlane);
 
             AbstractRenderable mesh = new Icosphere(1, 1).withColor(ReadableColor.CYAN);
-            mesh.setTranslation(new Vector3f(x, y, z));
+            mesh.setPosition(new Vector3f(x, y, z));
             elemBucket.add(mesh);
         }
         return elemBucket;
@@ -124,9 +124,11 @@ final class SceneCreator {
     }
 
     static Vector3f getRandomPosition() {
-        return new Vector3f(SimpleMath.random(-30, +30),
-                SimpleMath.random(-30f, +30f),
-                SimpleMath.random(-30f, +30f));
+        float a = 100f;
+        return new Vector3f(
+                SimpleMath.random(-a, +a),
+                SimpleMath.random(-a, +a),
+                SimpleMath.random(-a, +a));
     }
 
 

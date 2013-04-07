@@ -1,29 +1,40 @@
 package net.wohlfart.gl.action;
 
-import net.wohlfart.gl.view.CanMove;
+import net.wohlfart.tools.SimpleMath;
 
 import org.lwjgl.util.vector.Vector3f;
 
 public class MoveAction implements Action {
 
-    private final CanMove canMove;
-    private final Vector3f movePerSec;
+    private float speed;  // the time for moving one unit
+    private Vector3f direction;
 
+    private final Vector3f tmp = new Vector3f();
 
-    public MoveAction(CanMove canMove) {
-        this(canMove, new Vector3f(0,1,0));
+    private MoveAction() {
+        // use the factory method
     }
 
-    public MoveAction(CanMove canMove, Vector3f movePerSec) {
-        this.canMove = canMove;
-        this.movePerSec = movePerSec;
+    public static MoveAction create() {
+        MoveAction result = new MoveAction();
+        result.speed = 10f;
+        result.direction = new Vector3f(0,0,-1).normalise(null);
+        return result;
+    }
+
+    public static MoveAction create(float speed, Vector3f direction) {
+        MoveAction result = new MoveAction();
+        result.speed = speed;
+        result.direction = direction.normalise(result.direction);
+        return result;
     }
 
     @Override
-    public void update(float timeInSec) {
-        Vector3f v = canMove.getPosition();
-       // SimpleMath.add(v, movePerSec.scale(1f/timeInSec), v);
-        canMove.setPosition(v);
+    public void perform(Actor actor, float time) {
+        Vector3f v = actor.getPosition();
+        SimpleMath.scale(direction, (time / speed), tmp);
+        SimpleMath.add(v, tmp, v);
+        actor.setPosition(v);
     }
 
 }

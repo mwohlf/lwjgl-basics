@@ -2,9 +2,6 @@ package net.wohlfart.gl.elements.skybox;
 
 /**
  * <p>SkyboxParameters interface.</p>
- *
- *
- *
  */
 public interface SkyboxParameters {
 
