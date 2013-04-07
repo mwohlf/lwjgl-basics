@@ -6,9 +6,9 @@ import org.lwjgl.util.vector.Vector3f;
 
 public class OrbitAction implements Action {
 
+    private float orbitTime; // in sec
     private Vector3f center;
     private Vector3f axis;
-    private float speed;
 
     private final Vector3f tmp1 = new Vector3f();
     private final Vector3f tmp2 = new Vector3f();
@@ -19,17 +19,25 @@ public class OrbitAction implements Action {
 
     public static OrbitAction create() {
         OrbitAction result = new OrbitAction();
+        result.orbitTime = 5f;
         result.center = new Vector3f(0, 0, 0);
         result.axis = new Vector3f(0, 1, 0);
-        result.speed = 1f/2f;
         return result;
     }
 
-    public static OrbitAction create(final Vector3f center, final float speed) {
+    public static OrbitAction create(float orbitTime, Vector3f center) {
         OrbitAction result = new OrbitAction();
+        result.orbitTime = orbitTime;
         result.center = center;
         result.axis = new Vector3f(0, 1, 0);
-        result.speed = speed;
+        return result;
+    }
+
+    public static OrbitAction create(float orbitTime, Vector3f center, Vector3f axis) {
+        OrbitAction result = new OrbitAction();
+        result.orbitTime = orbitTime;
+        result.center = center;
+        result.axis = axis;
         return result;
     }
 
@@ -40,7 +48,7 @@ public class OrbitAction implements Action {
         float radius = tmp1.length();                // tmp1: from the center to the position
 
         Vector3f.cross(axis, tmp1, tmp2);            // tmp2: move direction
-        tmp2.scale(timeInSec * speed);
+        tmp2.scale(timeInSec / orbitTime);
 
         SimpleMath.add(tmp2, v, tmp1);               // tmp1: new position off the radius
 

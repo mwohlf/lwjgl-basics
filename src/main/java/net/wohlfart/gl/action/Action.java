@@ -3,6 +3,8 @@ package net.wohlfart.gl.action;
 import net.wohlfart.gl.view.CanMove;
 import net.wohlfart.gl.view.CanRotate;
 
+
+// action and actor ideas ... shameless stolen from libgdx
 public interface Action {
 
     public interface Actor extends CanMove, CanRotate {

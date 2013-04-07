@@ -21,7 +21,7 @@ public class RotateAction implements Action {
         return result;
     }
 
-    public static RotateAction create(final float rotTime, final Vector3f axis) {
+    public static RotateAction create(float rotTime, Vector3f axis) {
         RotateAction result = new RotateAction();
         result.rotTime = rotTime;
         result.axis = axis;

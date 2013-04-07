@@ -6,6 +6,10 @@ import java.util.Collection;
 import java.util.HashSet;
 
 import net.wohlfart.basic.GenericGameException;
+import net.wohlfart.gl.action.Action;
+import net.wohlfart.gl.action.OrbitAction;
+import net.wohlfart.gl.action.ParallelAction;
+import net.wohlfart.gl.action.RotateAction;
 import net.wohlfart.gl.antlr4.Model;
 import net.wohlfart.gl.antlr4.ModelLoader;
 import net.wohlfart.gl.elements.AbstractRenderable;
@@ -124,11 +128,23 @@ final class SceneCreator {
     }
 
     static Vector3f getRandomPosition() {
-        float a = 100f;
+        return getRandomPosition(100f);
+    }
+
+    static Vector3f getRandomPosition(float range) {
         return new Vector3f(
-                SimpleMath.random(-a, +a),
-                SimpleMath.random(-a, +a),
-                SimpleMath.random(-a, +a));
+                SimpleMath.random(-range, +range),
+                SimpleMath.random(-range, +range),
+                SimpleMath.random(-range, +range));
+    }
+
+
+    static Action getRandomAction() {
+        // return RotateAction.create(SimpleMath.random(5f,  50f), getRandomPosition());
+        // return OrbitAction.create();
+        return ParallelAction.create(
+                        OrbitAction.create(SimpleMath.random(25f,  50f), new Vector3f(0,0,0), getRandomPosition(1)),
+                        RotateAction.create(SimpleMath.random(5f,  50f), getRandomPosition()));
     }
 
 
