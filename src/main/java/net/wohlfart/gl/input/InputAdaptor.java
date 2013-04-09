@@ -27,6 +27,8 @@ public interface InputAdaptor {
 
     interface PositionEventDispatcher {
 
+        void wheel(int amount);
+
         void down(int key, int x, int y, float time);
 
         void up(int key, int x, int y, float time);
@@ -49,30 +51,6 @@ public interface InputAdaptor {
      * @return a {@link net.wohlfart.gl.input.InputAdaptor.PositionEventDispatcher} object.
      */
     PositionEventDispatcher getMouseDevice();
-
-
-    // @formatter:off
-    public enum Command {
-        MOVE_LEFT,
-        MOVE_RIGHT,
-        MOVE_UP,
-        MOVE_DOWN,
-        MOVE_FORWARD,
-        MOVE_BACKWARD,
-
-        MOVE_FORWARD_WHEEL,
-        MOVE_BACKWARD_WHEEL,
-
-        ROTATE_LEFT,
-        ROTATE_RIGHT,
-        ROTATE_UP,
-        ROTATE_DOWN,
-        ROTATE_CLOCKWISE,
-        ROTATE_COUNTER_CLOCKWISE,
-
-        EXIT,
-    }
-    // @formatter:on
 
     /**
      * <p>destroy.</p>

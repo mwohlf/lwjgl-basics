@@ -14,6 +14,7 @@ import net.wohlfart.tools.SimpleMath;
 public class CommandEvent {
     private static final float ROTATION_SPEED = SimpleMath.TWO_PI;  // one rotation per sec
     private static final float MOVE_SPEED = 100f;                   // 100 units per sec
+    private static final float WHEEL_SENSITIVITY = 0.01f;            //
 
     protected float delta;
 
@@ -27,7 +28,7 @@ public class CommandEvent {
         return delta;
     }
 
-    void setDelta(float delta) {
+    protected void setDelta(float delta) {
         this.delta = delta;
     }
 
@@ -85,6 +86,9 @@ public class CommandEvent {
         @Override
         public void setTime(float time) {
             super.setDelta(MOVE_SPEED * time);
+        }
+        public void setWheelAmount(int amount) {
+            super.setDelta(WHEEL_SENSITIVITY * amount);
         }
     }
 

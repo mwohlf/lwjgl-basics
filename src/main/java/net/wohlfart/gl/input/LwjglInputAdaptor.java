@@ -46,6 +46,9 @@ public class LwjglInputAdaptor implements InputAdaptor {
         put(1, new CommandEvent.RightClick());
         put(2, new CommandEvent.MiddleClick());
     }};
+    private final CommandEvent.MoveForward wheelForward =  new CommandEvent.MoveForward();
+    private final CommandEvent.MoveBackward wheelBackward =  new CommandEvent.MoveBackward();
+
 
     PositionPointer positionPointer = new PositionPointer();
     // @formatter:on
@@ -59,7 +62,7 @@ public class LwjglInputAdaptor implements InputAdaptor {
         this.inputDispatcher = inputDispatcher;
     }
 
-    private final KeyEventDispatcher keyboardDigitalDevice = new KeyEventDispatcher() {
+    private final KeyEventDispatcher keyboardDevice = new KeyEventDispatcher() {
 
         @Override
         public void down(int key) {
@@ -81,7 +84,18 @@ public class LwjglInputAdaptor implements InputAdaptor {
 
     };
 
-    private final PositionEventDispatcher mouseDigitalDevice = new PositionEventDispatcher() {
+    private final PositionEventDispatcher mouseDevice = new PositionEventDispatcher() {
+
+        @Override
+        public void wheel(int amount) {
+            if (amount > 0) {
+                wheelForward.setWheelAmount(amount);
+                inputDispatcher.post(wheelForward);
+            } else {
+                wheelBackward.setWheelAmount(-amount);
+                inputDispatcher.post(wheelBackward);
+            }
+        }
 
         @Override
         public void up(int key, int x, int y, float time) {
@@ -107,13 +121,13 @@ public class LwjglInputAdaptor implements InputAdaptor {
     /** {@inheritDoc} */
     @Override
     public KeyEventDispatcher getKeyboardDevice() {
-        return keyboardDigitalDevice;
+        return keyboardDevice;
     }
 
     /** {@inheritDoc} */
     @Override
     public PositionEventDispatcher getMouseDevice() {
-        return mouseDigitalDevice;
+        return mouseDevice;
     }
 
     /** {@inheritDoc} */

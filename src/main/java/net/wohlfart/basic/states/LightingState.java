@@ -11,6 +11,7 @@ import net.wohlfart.gl.shader.GraphicContextManager;
 import net.wohlfart.gl.shader.ShaderRegistry;
 import net.wohlfart.gl.view.MousePicker;
 
+import org.lwjgl.util.vector.Vector3f;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -74,8 +75,18 @@ final class LightingState extends AbstractGraphicState {
         */
 
 
+        /*
 
-        int count = 5000;
+        int count = 500;
+
+        for (int i = 0; i < count ; i++) {
+            Model icosphere = SceneCreator.loadModelFromFile("/models/ship/ship.obj");
+            icosphere.setPosition(SceneCreator.getRandomPosition());
+            icosphere.setAction(SceneCreator.getRandomAction());
+            modelBucket.add(icosphere);
+        }
+
+
 
         for (int i = 0; i < count ; i++) {
             Model icosphere = SceneCreator.loadModelFromFile("/models/icosphere/icosphere.obj");
@@ -91,6 +102,13 @@ final class LightingState extends AbstractGraphicState {
             modelBucket.add(cube);
         }
 
+         */
+
+
+        Model icosphere = SceneCreator.loadModelFromFile("/models/ship/ship.obj");
+        icosphere.setPosition(new Vector3f(0,0,-10));
+      //  icosphere.setAction(SceneCreator.getRandomAction());
+        modelBucket.add(icosphere);
 
 
     }

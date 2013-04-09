@@ -11,11 +11,11 @@ import org.lwjgl.LWJGLException;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 
-// central input processor for handling Mouse, Keyboard and Controllers
 /**
- * <p>LwjglInputSource class.</p>
- *
- *
+ * <p>
+ * LwjglInputSource class is the central input processor
+ * for handling Mouse, Keyboard and Controllers.
+ * </p>
  *
  */
 public class LwjglInputSource implements InputSource {
@@ -51,6 +51,7 @@ public class LwjglInputSource implements InputSource {
         processKeyboardState(delta);
         processMouseChanges(delta);
         processMouseState(delta);
+        processMouseWheel(delta);
     }
 
     /** {@inheritDoc} */
@@ -86,6 +87,12 @@ public class LwjglInputSource implements InputSource {
                 it.remove();
             }
         }
+    }
+
+
+    private void processMouseWheel(final float delta) {
+        final int deltaWheel = Mouse.getDWheel();
+        positionDevice.wheel(deltaWheel);
     }
 
 
