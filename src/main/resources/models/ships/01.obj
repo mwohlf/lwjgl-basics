@@ -1,7 +1,7 @@
 # Blender v2.66 (sub 1) OBJ File: 'ship.blend'
 # www.blender.org
 mtllib ship.mtl
-o ship_Cube
+o ship
 v -0.938682 -0.748716 -1.014707
 v -0.675767 -0.266855 1.418752
 v -0.833259 0.842133 -0.926252

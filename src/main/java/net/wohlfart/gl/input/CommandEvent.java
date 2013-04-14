@@ -14,7 +14,7 @@ import net.wohlfart.tools.SimpleMath;
 public class CommandEvent {
     private static final float ROTATION_SPEED = SimpleMath.TWO_PI;  // one rotation per sec
     private static final float MOVE_SPEED = 100f;                   // 100 units per sec
-    private static final float WHEEL_SENSITIVITY = 0.01f;            //
+    private static final float WHEEL_SENSITIVITY = 0.5f;            //
 
     protected float delta;
 

@@ -21,12 +21,12 @@ import org.lwjgl.input.Mouse;
 public class LwjglInputSource implements InputSource {
 
     private final KeyEventDispatcher keyboardDevice;
-    private final PositionEventDispatcher positionDevice;
+    private final PositionEventDispatcher mouseDevice;
 
     // the current keyboard state
     private final HashSet<Integer> pressedKeys = new HashSet<Integer>(8);
     private final HashSet<Integer> pressedButtons = new HashSet<Integer>(4);
-
+    private Integer lastButton = 0;
 
     /**
      * <p>Constructor for LwjglInputSource.</p>
@@ -36,7 +36,7 @@ public class LwjglInputSource implements InputSource {
     public LwjglInputSource(InputAdaptor inputAdaptor) {
         try {
             keyboardDevice = inputAdaptor.getKeyboardDevice();
-            positionDevice = inputAdaptor.getMouseDevice();
+            mouseDevice = inputAdaptor.getMouseDevice();
             Keyboard.enableRepeatEvents(false);
             Mouse.create();
         } catch (LWJGLException ex) {
@@ -49,9 +49,10 @@ public class LwjglInputSource implements InputSource {
     public void createInputEvents(float delta) {
         processKeyboardChanges(delta);
         processKeyboardState(delta);
-        processMouseChanges(delta);
-        processMouseState(delta);
+        processMouseButtonChanges(delta);
+        processMousePosition(delta);
         processMouseWheel(delta);
+        processMouseMove(delta);
     }
 
     /** {@inheritDoc} */
@@ -92,30 +93,39 @@ public class LwjglInputSource implements InputSource {
 
     private void processMouseWheel(final float delta) {
         final int deltaWheel = Mouse.getDWheel();
-        positionDevice.wheel(deltaWheel);
+        mouseDevice.wheel(deltaWheel);
     }
 
 
-    private void processMouseChanges(final float delta) {
+    private void processMouseButtonChanges(final float delta) {
         while (Mouse.next()) {
             final boolean pressed = Mouse.getEventButtonState();
             final int buttonCode = Mouse.getEventButton();
             final int x = Mouse.getEventX();
             final int y = Mouse.getEventY();
             if (pressed) {
-                positionDevice.down(buttonCode, x, y, delta);
+                lastButton = buttonCode;
+                mouseDevice.down(buttonCode, x, y, delta);
                 pressedButtons.add(buttonCode);
             } else {
-                positionDevice.up(buttonCode, x, y, delta);
+                lastButton = 0;
+                mouseDevice.up(buttonCode, x, y, delta);
                 pressedButtons.remove(buttonCode);
             }
         }
     }
 
-    private void processMouseState(float delta) {
+    private void processMousePosition(float delta) {
         int screenX = Mouse.getX();
         int screenY = Mouse.getY();
-        positionDevice.position(screenX, screenY);
+        mouseDevice.position(screenX, screenY);
+    }
+
+    private void processMouseMove(float delta) {
+        int deltaX = Mouse.getDX();
+        int deltaY = Mouse.getDY();
+        final Iterator<Integer> it = pressedButtons.iterator();
+        mouseDevice.move(lastButton, deltaX, deltaY);
     }
 
 }

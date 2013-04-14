@@ -35,6 +35,8 @@ public interface InputAdaptor {
 
         void position(int posX, int posY);
 
+        void move(int key, int deltaX, int deltaY);
+
     }
 
 

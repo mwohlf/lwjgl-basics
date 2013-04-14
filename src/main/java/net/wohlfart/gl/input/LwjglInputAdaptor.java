@@ -40,17 +40,21 @@ public class LwjglInputAdaptor implements InputAdaptor {
             put(Keyboard.KEY_X, new CommandEvent.MoveDown());
     }};
 
+
+    public static final int MOUSE_KEY0 = 0;
+    public static final int MOUSE_KEY1 = 1;
+    public static final int MOUSE_KEY2 = 2;
     @SuppressWarnings("serial")
     private final HashMap<Integer, PositionEvent> mouseMap = new HashMap<Integer, PositionEvent>() {{
-        put(0, new CommandEvent.LeftClick());
-        put(1, new CommandEvent.RightClick());
-        put(2, new CommandEvent.MiddleClick());
+        put(MOUSE_KEY0, new CommandEvent.LeftClick());
+        put(MOUSE_KEY1, new CommandEvent.RightClick());
+        put(MOUSE_KEY2, new CommandEvent.MiddleClick());
     }};
     private final CommandEvent.MoveForward wheelForward =  new CommandEvent.MoveForward();
     private final CommandEvent.MoveBackward wheelBackward =  new CommandEvent.MoveBackward();
 
 
-    PositionPointer positionPointer = new PositionPointer();
+    private final PositionPointer positionPointer = new PositionPointer();
     // @formatter:on
 
     /**
@@ -112,6 +116,18 @@ public class LwjglInputAdaptor implements InputAdaptor {
         public void position(int posX, int posY) {
             positionPointer.setPosition(posX, posY);
             inputDispatcher.post(positionPointer);
+        }
+
+        @Override
+        public void move(int key, int deltaX, int deltaY) {
+            switch (key) {
+            case MOUSE_KEY0:
+                break;
+            case MOUSE_KEY1:
+                break;
+            case MOUSE_KEY2:
+                break;
+            }
         }
 
     };

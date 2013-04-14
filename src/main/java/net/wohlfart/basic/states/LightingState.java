@@ -105,7 +105,7 @@ final class LightingState extends AbstractGraphicState {
          */
 
 
-        Model icosphere = SceneCreator.loadModelFromFile("/models/ship/ship.obj");
+        Model icosphere = SceneCreator.loadModelFromFile("/models/ships/02.obj");
         icosphere.setPosition(new Vector3f(0,0,-10));
       //  icosphere.setAction(SceneCreator.getRandomAction());
         modelBucket.add(icosphere);
