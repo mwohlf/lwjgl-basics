@@ -1,18 +1,21 @@
 package net.wohlfart.tools;
 
+import java.util.Arrays;
 import java.util.Comparator;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
 /**
- * A resizable, ordered or unordered array of objects. If unordered, this class avoids a memory copy when removing elements (the last element is moved to the
- * removed element's position).
+ * A resizable, ordered or unordered array of objects.
+ * If unordered, this class avoids a memory copy when removing elements
+ * (the last element is moved to the removed element's position).
  *
  * @author Nathan Sweet
  */
 class Array<T> implements Iterable<T> {
     /**
-     * Provides direct access to the underlying array. If the Array's generic type is not Object, this field may only be accessed if the
+     * Provides direct access to the underlying array.
+     * If the Array's generic type is not Object, this field may only be accessed if the
      * {@link Array#Array(boolean, int, Class)} constructor was used.
      */
     public T[] items;
@@ -97,7 +100,8 @@ class Array<T> implements Iterable<T> {
     }
 
     /**
-     * Creates a new array containing the elements in the specified array. The new array will have the same type of backing array. The capacity is set to the
+     * Creates a new array containing the elements in the specified array. The new array will have the same
+     * type of backing array. The capacity is set to the
      * number of elements, so any subsequent elements added will cause the backing array to be grown.
      *
      * @param ordered
@@ -571,6 +575,18 @@ class Array<T> implements Iterable<T> {
         }
         return true;
     }
+
+    /** {@inheritDoc} */
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + Arrays.hashCode(items);
+        result = prime * result + (ordered ? 1231 : 1237);
+        result = prime * result + size;
+        return result;
+    }
+
 
     /** {@inheritDoc} */
     @Override
