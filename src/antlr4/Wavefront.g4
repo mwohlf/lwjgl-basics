@@ -1,11 +1,13 @@
 //
-// Define a grammar called Wavefront
+// Define part of a grammar called Wavefront
 // for reading *.obj files
 // 
 // see: http://www.antlr.org/wiki/display/ANTLR3/Quick+Starter+on+Parser+Grammars+-+No+Past+Experience+Required
 //      http://meri-stuff.blogspot.de/2011/08/antlr-tutorial-hello-word.html
 //      http://www.antlr.org/wiki/display/ANTLR4/Actions+and+Attributes
-//      
+//      http://projects.blender.org/tracker/?func=detail&atid=498&aid=31693&group_id=9
+//
+// Export/Import Wavefront *.obj file switches Y and Z axes to -Z and Y axes
 
 grammar Wavefront;
 
@@ -55,7 +57,8 @@ face: 'f' vertIndices vertIndices vertIndices;
 
 vertIndices: NATURAL '/' NATURAL '/' NATURAL;
 
-// ------- lexer  
+
+// ------- lexer, the order matters here...
 
 SL_COMMENT: '#' .*? '\n' -> channel(COMMENTS) ;
 
