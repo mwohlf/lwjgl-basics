@@ -32,7 +32,9 @@ class Game implements InitializingBean {
 
     protected final GraphicContextManager graphContext = GraphicContextManager.INSTANCE;
 
-    protected GameState currentState = GameStateEnum.NULL.getValue();
+    protected GameState initialState = GameStateEnum.NULL;
+
+    protected GameState currentState = GameStateEnum.NULL;
 
     // lwjgl, ... jogl, webgl (hopefully one day)
     protected Platform platform;
@@ -74,6 +76,10 @@ class Game implements InitializingBean {
     }
 
 
+    public void setInitialState(GameStateEnum initialState) {
+        this.initialState = initialState;
+    }
+
 
     @Override
     public void afterPropertiesSet() throws Exception {
@@ -81,7 +87,6 @@ class Game implements InitializingBean {
         Assert.notNull(platform, "platform missing, you probably forgot to inject platform in the Game");
         Assert.notNull(settings, "settings missing, you probably forgot to inject settings in the Game");
         Assert.notNull(inputDispatcher, "inputDispatcher missing, you probably forgot to inject inputDispatcher in the Game");
-
     }
 
 
@@ -98,8 +103,7 @@ class Game implements InitializingBean {
 
             globalGameTimer = new TimerImpl(platform.createClock());
             userInputSource = platform.createInputSource(inputDispatcher);
-            //setCurrentState(GameStateEnum.SIMPLE);
-            setCurrentState(GameStateEnum.LIGHTING);
+            setCurrentState(initialState);
             runApplicationLoop();
             shutdownGame();
             shutdownPlatform();
@@ -211,9 +215,9 @@ class Game implements InitializingBean {
      *
      * @param newState a {@link net.wohlfart.basic.states.GameStateEnum} object.
      */
-    public void setCurrentState(final GameStateEnum newState) {
+    public void setCurrentState(final GameState newState) {
         currentState.destroy();
-        currentState = newState.getValue();
+        currentState = newState;
         currentState.setup();
     }
 

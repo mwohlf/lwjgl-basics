@@ -4,7 +4,7 @@ package net.wohlfart.basic.states;
 /**
  * <p>Enum class for all valid game states.</p>
  */
-public enum GameStateEnum {
+public enum GameStateEnum implements GameState {
     // @formatter:off
     NULL(new NullState()),
     SIMPLE(new SimpleState()),
@@ -12,19 +12,35 @@ public enum GameStateEnum {
     ;
     // @formatter:on
 
-    private GameState state;
+    private GameState delegate;
 
     GameStateEnum(GameState state) {
-        this.state = state;
+        this.delegate = state;
     }
 
-    /**
-     * <p>getValue.</p>
-     *
-     * @return a {@link net.wohlfart.basic.states.GameState} object.
-     */
-    public GameState getValue() {
-        return state;
+    @Override
+    public void setup() {
+        delegate.setup();
+    }
+
+    @Override
+    public void update(float tpf) {
+        delegate.update(tpf);
+    }
+
+    @Override
+    public void render() {
+        delegate.render();
+    }
+
+    @Override
+    public boolean isDone() {
+        return delegate.isDone();
+    }
+
+    @Override
+    public void destroy() {
+        delegate.destroy();
     }
 
 }

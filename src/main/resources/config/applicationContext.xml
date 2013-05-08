@@ -1,24 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://www.springframework.org/schema/beans
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans
        http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
 
-	<bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
-		<property name="locations">
-		   <list>
+    <bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+        <property name="locations">
+           <list>
              <value>config/default.properties</value>
              <value>config/settings.properties</value>
-		   </list>
-		</property>
-	</bean>
+           </list>
+        </property>
+    </bean>
 
-	<bean class="net.wohlfart.basic.Game" >
-	   <property name="gameSettings" ref="gameSettings" />
-	   <property name="platform" ref="lwjglPlatform" />
-	   <property name="inputDispatcher" ref="inputDispatcher" />
-	</bean>
-	
+    <bean class="net.wohlfart.basic.Game" >
+       <property name="gameSettings" ref="gameSettings" />
+       <property name="platform" ref="lwjglPlatform" />
+       <property name="inputDispatcher" ref="inputDispatcher" />
+       <property name="initialState" value="LIGHTING " />
+    </bean>
 
     <bean name="gameSettings" class="net.wohlfart.basic.Settings">
       <property name="width" value="${display.width}" />
@@ -33,5 +33,5 @@
     <bean id="lwjglPlatform" class="net.wohlfart.basic.LwjglPlatform" />
 
     <bean id="inputDispatcher" class="net.wohlfart.gl.input.DefaultInputDispatcher" />
-    	
+
 </beans>
