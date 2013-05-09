@@ -20,7 +20,7 @@
        <property name="initialState" value="LIGHTING " />
     </bean>
 
-    <bean name="gameSettings" class="net.wohlfart.basic.Settings">
+    <bean id="gameSettings" class="net.wohlfart.basic.Settings">
       <property name="width" value="${display.width}" />
       <property name="height" value="${display.height}" />
       <property name="sync" value="${display.sync}" />
@@ -33,5 +33,39 @@
     <bean id="lwjglPlatform" class="net.wohlfart.basic.LwjglPlatform" />
 
     <bean id="inputDispatcher" class="net.wohlfart.gl.input.DefaultInputDispatcher" />
+
+
+    <bean id="GameState.NULL" class="net.wohlfart.basic.states.NullState" />
+
+    <bean id="GameState.SIMPLE" class="net.wohlfart.basic.states.SimpleState" />
+
+    <bean id="GameState.LIGHTING" class="net.wohlfart.basic.states.LightingState" >
+        <property name="skybox" ref="nullSkybox" />
+    </bean>
+
+
+    <!-- skyboxes -->
+
+    <bean id="defaultSkybox" class="net.wohlfart.gl.elements.skybox.SkyboxImpl" />
+
+    <bean id="nullSkybox" class="net.wohlfart.gl.elements.skybox.NullSkybox" />
+
+
+    <!-- renderer
+
+     doesn't work without existing OpenGL context
+     which we don'T have during startup, only after
+
+    <bean id="defaultGraphicContext" class="net.wohlfart.gl.shader.DefaultGraphicContext">
+        <constructor-arg>
+            <bean class="net.wohlfart.gl.shader.DefaultShaderProgram">
+               <constructor-arg index="0" value="/shaders/default/vertex.glsl" />
+               <constructor-arg index="1" value="/shaders/default/fragment.glsl" />
+            </bean>
+        </constructor-arg>
+    </bean>
+
+-->
+
 
 </beans>

@@ -1,5 +1,7 @@
 package net.wohlfart.basic;
 
+import net.wohlfart.basic.states.GameStateEnum;
+
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
@@ -20,6 +22,9 @@ public class Start { // REVIEWED
         final ApplicationContext appContext = new ClassPathXmlApplicationContext(CONFIG_FILE);
         final IGameContext context = new GameContext(appContext);
         final Game game = context.getBeanOfType(Game.class);
+        for (GameStateEnum state : GameStateEnum.values()) {
+            state.inject(context);
+        }
         game.start();
     }
 

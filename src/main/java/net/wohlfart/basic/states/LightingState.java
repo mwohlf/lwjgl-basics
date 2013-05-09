@@ -14,6 +14,8 @@ import net.wohlfart.gl.view.MousePicker;
 import org.lwjgl.util.vector.Vector3f;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.InitializingBean;
+import org.springframework.util.Assert;
 
 
 /**
@@ -22,7 +24,7 @@ import org.slf4j.LoggerFactory;
  * @author michael
  *
  */
-final class LightingState extends AbstractGraphicState {
+final class LightingState extends AbstractGraphicState implements InitializingBean {
     private static final Logger LOGGER = LoggerFactory.getLogger(LightingState.class);
 
     private GraphicContextManager.IGraphicContext lightingGraphicContext;
@@ -30,13 +32,24 @@ final class LightingState extends AbstractGraphicState {
     private GraphicContextManager.IGraphicContext wireframeGraphicContext;
 
 
-    private final Skybox skybox = new Skybox();
+    private Skybox skybox;
     private final RenderableBucket elemBucket = new RenderableBucket();
     private final ModelBucket modelBucket = new ModelBucket();
 
     private Statistics statistics;
     private MousePositionLabel mousePositionLabel;
     private MousePicker mousePicker;
+
+
+    public void setSkybox(Skybox skybox) {
+        this.skybox = skybox;
+    }
+
+    @Override
+    public void afterPropertiesSet() throws Exception {
+        LOGGER.debug("<afterPropertiesSet>");
+        Assert.notNull(skybox, "skyboxImpl missing, you probably forgot to inject skyboxImpl in the LightingState");
+    }
 
 
     @Override
@@ -51,7 +64,8 @@ final class LightingState extends AbstractGraphicState {
         wireframeGraphicContext = new DefaultGraphicContext(ShaderRegistry.WIREFRAME_SHADER);
 
 
-        skybox.init(defaultGraphicContext, getCamera());
+        skybox.setCamera(getCamera());
+        skybox.setGraphicContext(defaultGraphicContext);
         modelBucket.init(lightingGraphicContext, getCamera());
         elemBucket.init(wireframeGraphicContext, getCamera());
 
@@ -135,5 +149,7 @@ final class LightingState extends AbstractGraphicState {
     public void destroy() {
         super.destroy();
     }
+
+
 
 }

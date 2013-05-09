@@ -10,7 +10,7 @@ import com.google.common.eventbus.Subscribe;
 /**
  * <p>Camera class.</p>
  */
-public class Camera {
+public class Camera implements CanRotate, CanMove {
     // used for key triggered rotations, default rotation speed is one rotation per second
     private static final float ROT_SPEED = 0.1f;
     // used for key triggered moves, default move is 100 units per second
@@ -38,20 +38,11 @@ public class Camera {
     }
 
     /**
-     * <p>readDirection.</p>
-     *
-     * @param vector a {@link org.lwjgl.util.vector.Vector3f} object.
-     * @return a {@link org.lwjgl.util.vector.Vector3f} object.
-     */
-    public Vector3f readDirection(Vector3f vector) {
-        return rotation.getDir(vector);
-    }
-
-    /**
      * <p>Getter for the field <code>rotation</code>.</p>
      *
      * @return a {@link org.lwjgl.util.vector.Quaternion} object.
      */
+    @Override
     public Quaternion getRotation() {
         return rotation.getRotation();
     }
@@ -62,6 +53,7 @@ public class Camera {
      * @param vec a {@link org.lwjgl.util.vector.Vector3f} object.
      * @return a {@link org.lwjgl.util.vector.Vector3f} object.
      */
+    @Override
     public Vector3f getDir(Vector3f vec) {
         return rotation.getDir(vec);
     }
@@ -72,6 +64,7 @@ public class Camera {
      * @param vec a {@link org.lwjgl.util.vector.Vector3f} object.
      * @return a {@link org.lwjgl.util.vector.Vector3f} object.
      */
+    @Override
     public Vector3f getUp(Vector3f vec) {
         return rotation.getUp(vec);
     }
@@ -82,6 +75,7 @@ public class Camera {
      * @param vec a {@link org.lwjgl.util.vector.Vector3f} object.
      * @return a {@link org.lwjgl.util.vector.Vector3f} object.
      */
+    @Override
     public Vector3f getRght(Vector3f vec) {
         return rotation.getRght(vec);
     }
@@ -91,6 +85,7 @@ public class Camera {
      *
      * @return a {@link org.lwjgl.util.vector.Vector3f} object.
      */
+    @Override
     public Vector3f getPosition() {
         return movement.getPosition();
     }
@@ -221,8 +216,28 @@ public class Camera {
         rotation.rotate(evt.getDelta() * ROT_SPEED, new Vector3f(0, 0, -1));
     }
 
+    @Override
+    public void rotate(float deltaAngle, Vector3f axis) {
+        rotation.rotate(deltaAngle, axis);
+    }
 
-    /** {@inheritDoc} */
+    @Override
+    public void setRotation(Quaternion quaternion) {
+        rotation.setRotation(quaternion);
+    }
+
+
+    @Override
+    public void move(Vector3f vector) {
+        movement.move(vector);
+    }
+
+    @Override
+    public void setPosition(Vector3f vector) {
+        movement.setPosition(vector);
+    }
+
+
     @Override
     public String toString() {
         Vector3f pos = movement.getPosition();
@@ -232,5 +247,6 @@ public class Camera {
            + "Position: (" + pos.x + "," + pos.y + "," + pos.z + ") "
            + "Direction: (" + dir.x + "," + dir.y + "," + dir.z + ") Up: (" + up.x + "," + up.y + "," + up.z + ")";
     }
+
 
 }

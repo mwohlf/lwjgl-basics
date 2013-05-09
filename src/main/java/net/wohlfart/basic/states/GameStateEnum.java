@@ -1,21 +1,26 @@
 package net.wohlfart.basic.states;
 
+import net.wohlfart.basic.IGameContext;
+
 // wrapper for state objects
 /**
  * <p>Enum class for all valid game states.</p>
  */
 public enum GameStateEnum implements GameState {
     // @formatter:off
-    NULL(new NullState()),
-    SIMPLE(new SimpleState()),
-    LIGHTING(new LightingState()),
+    NULL,
+    SIMPLE,
+    LIGHTING,
     ;
     // @formatter:on
 
+    // for context lookup
+    private static final String GAME_STATE_PREFIX = "GameState";
+
     private GameState delegate;
 
-    GameStateEnum(GameState state) {
-        this.delegate = state;
+    public void inject(IGameContext context) {
+        delegate = context.getBeanOfName(GameState.class, GAME_STATE_PREFIX + "." + this.name());
     }
 
     @Override
@@ -42,5 +47,6 @@ public enum GameStateEnum implements GameState {
     public void destroy() {
         delegate.destroy();
     }
+
 
 }

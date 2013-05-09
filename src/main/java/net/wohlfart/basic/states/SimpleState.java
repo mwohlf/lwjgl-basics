@@ -4,7 +4,7 @@ import net.wohlfart.gl.elements.hud.Hud;
 import net.wohlfart.gl.elements.hud.widgets.Label;
 import net.wohlfart.gl.elements.hud.widgets.MousePositionLabel;
 import net.wohlfart.gl.elements.hud.widgets.Statistics;
-import net.wohlfart.gl.elements.skybox.Skybox;
+import net.wohlfart.gl.elements.skybox.SkyboxImpl;
 import net.wohlfart.gl.input.InputDispatcher;
 import net.wohlfart.gl.renderer.RenderableBucket;
 import net.wohlfart.gl.shader.DefaultGraphicContext;
@@ -19,7 +19,7 @@ import org.slf4j.LoggerFactory;
 
 /*
  * state implementation that consists of (in the order of rendering):
- * - skybox
+ * - skyboxImpl
  * - elementBucket
  * - hud
  *
@@ -31,7 +31,7 @@ final class SimpleState extends AbstractGraphicState {
     private GraphicContextManager.IGraphicContext wireframeGraphicContext;
     private GraphicContextManager.IGraphicContext hudGraphicContext;
 
-    private final Skybox skybox = new Skybox();
+    private final SkyboxImpl skyboxImpl = new SkyboxImpl();
     private final RenderableBucket elemBucket = new RenderableBucket();
     private final Hud hud = new Hud();
 
@@ -62,7 +62,8 @@ final class SimpleState extends AbstractGraphicState {
         hudGraphicContext = new DefaultGraphicContext(ShaderRegistry.HUD_SHADER);
 
         if (skyboxOn) {
-            skybox.init(defaultGraphicContext, getCamera());
+            skyboxImpl.setCamera(getCamera());
+            skyboxImpl.setGraphicContext(defaultGraphicContext);
         }
 
         if (elementsOn) {
@@ -105,7 +106,7 @@ final class SimpleState extends AbstractGraphicState {
     @Override
     public void render() {
         if (skyboxOn) {
-            skybox.render();
+            skyboxImpl.render();
         }
         if (elementsOn) {
             elemBucket.render();

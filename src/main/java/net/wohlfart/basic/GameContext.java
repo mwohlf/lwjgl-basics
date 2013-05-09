@@ -15,7 +15,6 @@ class GameContext implements IGameContext {
         this.delegate = context;
     }
 
-    /** {@inheritDoc} */
     @Override
     public <T> T getBeanOfType(Class<T> clazz) {
         final Set<Entry<String, T>> set = delegate.getBeansOfType(clazz).entrySet();
@@ -27,6 +26,16 @@ class GameContext implements IGameContext {
         }
         final T t = set.iterator().next().getValue();
         return t;
+    }
+
+    @Override
+    public <T> T getBeanOfName(Class<T> clazz, String name) {
+        T bean = delegate.getBean(name, clazz);
+        if (bean == null) {
+            throw new IllegalStateException("No bean with type '" + clazz + "' and name '" + name
+                    + "'found in application context, can't start application");
+        }
+        return bean;
     }
 
 }
