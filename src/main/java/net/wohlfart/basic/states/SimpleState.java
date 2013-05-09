@@ -4,7 +4,7 @@ import net.wohlfart.gl.elements.hud.Hud;
 import net.wohlfart.gl.elements.hud.widgets.Label;
 import net.wohlfart.gl.elements.hud.widgets.MousePositionLabel;
 import net.wohlfart.gl.elements.hud.widgets.Statistics;
-import net.wohlfart.gl.elements.skybox.SkyboxImpl;
+import net.wohlfart.gl.elements.skybox.Skybox;
 import net.wohlfart.gl.input.InputDispatcher;
 import net.wohlfart.gl.renderer.RenderableBucket;
 import net.wohlfart.gl.shader.DefaultGraphicContext;
@@ -15,34 +15,54 @@ import net.wohlfart.tools.ControllerFrame;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.InitializingBean;
+import org.springframework.util.Assert;
 
 
 /*
  * state implementation that consists of (in the order of rendering):
  * - skyboxImpl
  * - elementBucket
- * - hud
+ * - hudImpl
  *
  */
-final class SimpleState extends AbstractGraphicState {
+final class SimpleState extends AbstractGraphicState implements InitializingBean {
     private static final Logger LOGGER = LoggerFactory.getLogger(SimpleState.class);
 
     private GraphicContextManager.IGraphicContext defaultGraphicContext;
     private GraphicContextManager.IGraphicContext wireframeGraphicContext;
     private GraphicContextManager.IGraphicContext hudGraphicContext;
 
-    private final SkyboxImpl skyboxImpl = new SkyboxImpl();
     private final RenderableBucket elemBucket = new RenderableBucket();
-    private final Hud hud = new Hud();
 
     private Statistics statistics;
     private MousePositionLabel mousePositionLabel;
     private MousePicker mousePicker;
 
-    private final boolean skyboxOn = true;
     private final boolean elementsOn = true;
-    private final boolean hudOn = true;
     private final boolean controlFrameOn = true;
+
+    private Skybox skybox;
+    private Hud hud;
+
+
+
+    public void setSkybox(Skybox skybox) {
+        this.skybox = skybox;
+    }
+
+    public void setHud(Hud hud) {
+        this.hud = hud;
+    }
+
+
+    @Override
+    public void afterPropertiesSet() throws Exception {
+        LOGGER.debug("<afterPropertiesSet>");
+        Assert.notNull(skybox, "skybox missing, you probably forgot to inject skybox in the configs");
+        Assert.notNull(hud, "hud missing, you probably forgot to inject hud in the configs");
+    }
+
 
     /** {@inheritDoc} */
     @Override
@@ -61,10 +81,10 @@ final class SimpleState extends AbstractGraphicState {
         defaultGraphicContext = new DefaultGraphicContext(ShaderRegistry.DEFAULT_SHADER);
         hudGraphicContext = new DefaultGraphicContext(ShaderRegistry.HUD_SHADER);
 
-        if (skyboxOn) {
-            skyboxImpl.setCamera(getCamera());
-            skyboxImpl.setGraphicContext(defaultGraphicContext);
-        }
+
+        skybox.setCamera(getCamera());
+        skybox.setGraphicContext(defaultGraphicContext);
+
 
         if (elementsOn) {
             elemBucket.init(wireframeGraphicContext, getCamera());
@@ -83,12 +103,11 @@ final class SimpleState extends AbstractGraphicState {
             elemBucket.add(frame.getCube());
         }
 
-        if (hudOn) {
-            hud.init(hudGraphicContext);
+            hud.setGraphicContext(hudGraphicContext);
             hud.add(statistics);
             hud.add(mousePositionLabel);
             hud.add(new Label(0, 0, "hello world at (0,0)"));
-        }
+
     }
 
 
@@ -97,23 +116,19 @@ final class SimpleState extends AbstractGraphicState {
     @Override
     public void update(float tpf) {
         LOGGER.debug("update called with tpf/fps {}/{}", tpf, 1f / tpf);
-        if (hudOn) {
-            statistics.update(tpf);
-        }
+        statistics.update(tpf);
     }
 
     /** {@inheritDoc} */
     @Override
     public void render() {
-        if (skyboxOn) {
-            skyboxImpl.render();
-        }
+        skybox.render();
+
         if (elementsOn) {
             elemBucket.render();
         }
-        if (hudOn) {
-            hud.render();
-        }
+
+        hud.render();
     }
 
     /** {@inheritDoc} */

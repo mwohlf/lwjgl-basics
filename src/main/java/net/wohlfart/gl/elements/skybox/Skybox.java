@@ -6,7 +6,6 @@ import net.wohlfart.gl.view.CanRotate;
 
 public interface Skybox extends IsRenderable {
 
-
     public void setGraphicContext(IGraphicContext graphicContext);
 
     public void setCamera(CanRotate camera);

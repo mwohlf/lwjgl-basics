@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://www.springframework.org/schema/beans
-       http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+                           http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
 
     <bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
         <property name="locations">
@@ -17,7 +17,7 @@
        <property name="gameSettings" ref="gameSettings" />
        <property name="platform" ref="lwjglPlatform" />
        <property name="inputDispatcher" ref="inputDispatcher" />
-       <property name="initialState" value="LIGHTING " />
+       <property name="initialState" value="SIMPLE" />
     </bean>
 
     <bean id="gameSettings" class="net.wohlfart.basic.Settings">
@@ -37,18 +37,30 @@
 
     <bean id="GameState.NULL" class="net.wohlfart.basic.states.NullState" />
 
-    <bean id="GameState.SIMPLE" class="net.wohlfart.basic.states.SimpleState" />
+    <bean id="GameState.SIMPLE" class="net.wohlfart.basic.states.SimpleState">
+        <property name="skybox" ref="nullSkybox" />
+        <property name="hud" ref="defaultHud" />
+    </bean>
 
     <bean id="GameState.LIGHTING" class="net.wohlfart.basic.states.LightingState" >
         <property name="skybox" ref="nullSkybox" />
     </bean>
 
 
+    <!-- huds -->
+
+    <bean id="nullHud" class="net.wohlfart.gl.elements.hud.NullHud" />
+
+    <bean id="defaultHud" class="net.wohlfart.gl.elements.hud.HudImpl" />
+
+
+
     <!-- skyboxes -->
+
+    <bean id="nullSkybox" class="net.wohlfart.gl.elements.skybox.NullSkybox" />
 
     <bean id="defaultSkybox" class="net.wohlfart.gl.elements.skybox.SkyboxImpl" />
 
-    <bean id="nullSkybox" class="net.wohlfart.gl.elements.skybox.NullSkybox" />
 
 
     <!-- renderer
