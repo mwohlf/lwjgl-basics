@@ -3,12 +3,12 @@ package net.wohlfart.gl.action;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-public class SequentalAction implements Action {
+public final class SequentalAction implements Action {
 
     ArrayList<Action> actions = new ArrayList<>();
 
     private SequentalAction() {
-
+        // use the factory method
     }
 
     public static SequentalAction create(Action... actions) {

@@ -127,7 +127,7 @@ public class TexturedMeshBuilder {
         int texId = 0;
 
         // InputStream inputStream = new FileInputStream(filename);
-        try (InputStream inputStream = ClassLoader.class.getResourceAsStream(filename);) {
+        try (InputStream inputStream = ClassLoader.class.getResourceAsStream(filename)) {
 
             // Link the PNG decoder to this stream
             final PNGDecoder decoder = new PNGDecoder(inputStream);

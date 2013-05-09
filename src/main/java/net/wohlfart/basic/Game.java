@@ -1,5 +1,10 @@
 package net.wohlfart.basic;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URL;
+import java.nio.ByteBuffer;
+
 import net.wohlfart.basic.states.GameState;
 import net.wohlfart.basic.states.GameStateEnum;
 import net.wohlfart.basic.time.Timer;
@@ -7,6 +12,7 @@ import net.wohlfart.basic.time.TimerImpl;
 import net.wohlfart.gl.input.InputDispatcher;
 import net.wohlfart.gl.input.InputSource;
 import net.wohlfart.gl.shader.GraphicContextManager;
+import net.wohlfart.tools.PNGDecoder;
 
 import org.lwjgl.LWJGLException;
 import org.lwjgl.opengl.ContextAttribs;
@@ -39,6 +45,7 @@ class Game implements InitializingBean {
     // lwjgl, ... jogl, webgl (hopefully one day)
     protected Platform platform;
     protected Settings settings;
+    protected ResourceManager resourceManager;
     protected InputDispatcher inputDispatcher;
 
     protected Timer globalGameTimer;
@@ -67,6 +74,16 @@ class Game implements InitializingBean {
     }
 
     /**
+     * <p>setResourceManager.</p>
+     *
+     * @param settings a {@link net.wohlfart.basic.ResourceManager} object.
+     */
+    public void setResourceManager(ResourceManager resourceManager) {
+        this.resourceManager = resourceManager;
+    }
+
+
+    /**
      * <p>setting the event bus for user input</P>
      *
      * @param inputDispatcher
@@ -87,6 +104,7 @@ class Game implements InitializingBean {
         Assert.notNull(platform, "platform missing, you probably forgot to inject platform in the Game");
         Assert.notNull(settings, "settings missing, you probably forgot to inject settings in the Game");
         Assert.notNull(inputDispatcher, "inputDispatcher missing, you probably forgot to inject inputDispatcher in the Game");
+        Assert.notNull(resourceManager, "resourceManager missing, you probably forgot to inject resourceManager in the Game");
     }
 
 
@@ -96,8 +114,9 @@ class Game implements InitializingBean {
      */
     void start() {
         try {
+            // side effect during startup is fixing the setting's height/width value
             startPlatform();
-            // delayed since the width/height in settings might be changed
+            // delayed since the width/height in settings might be changed in startPlatform()
             graphContext.setSettings(settings);
             graphContext.setInputDispatcher(inputDispatcher);
 
@@ -107,7 +126,7 @@ class Game implements InitializingBean {
             runApplicationLoop();
             shutdownGame();
             shutdownPlatform();
-        } catch (final LWJGLException ex) {
+        } catch (final LWJGLException | IOException ex) {
             LOGGER.warn("Application startup failed", ex);
         }
     }
@@ -137,9 +156,16 @@ class Game implements InitializingBean {
     }
 
     /**
-     * setup a OpenGL 3.3 environment
+     * setup a OpenGL 3.3 environment,
+     * side effect is fixing height/width in the settings
+     * @throws IOException
      */
-    private void startPlatform() throws LWJGLException {
+    private void startPlatform() throws LWJGLException, IOException {
+        Display.setIcon(new ByteBuffer[] {
+                loadIcon(resourceManager.getGfxUrl("icons/main128.png")),
+                loadIcon(resourceManager.getGfxUrl("icons/main32.png")),
+                loadIcon(resourceManager.getGfxUrl("icons/main16.png")),
+        });
         if (settings.getFullscreen()) {
             setupFullscreen();
         } else {
@@ -238,5 +264,17 @@ class Game implements InitializingBean {
         globalGameTimer.destroy();
         userInputSource.destroy();
     }
+
+    private ByteBuffer loadIcon(URL url) throws IOException {
+        try (InputStream is = url.openStream()) {
+            PNGDecoder decoder = new PNGDecoder(is);
+            ByteBuffer byteBuffer = ByteBuffer.allocateDirect(4 * decoder.getWidth() * decoder.getHeight());
+            decoder.decode(byteBuffer, decoder.getWidth() * 4, PNGDecoder.Format.RGBA);
+            byteBuffer.flip();
+            return byteBuffer;
+        }
+    }
+
+
 
 }

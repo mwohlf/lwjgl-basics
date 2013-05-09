@@ -3,12 +3,12 @@ package net.wohlfart.gl.action;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-public class ParallelAction implements Action {
+public final class ParallelAction implements Action {
 
     ArrayList<Action> actions = new ArrayList<>();
 
     private ParallelAction() {
-
+        // use the factory method
     }
 
     public static ParallelAction create(Action... actions) {

@@ -13,14 +13,16 @@
         </property>
     </bean>
 
-    <bean class="net.wohlfart.basic.Game" >
+    <bean class="net.wohlfart.basic.Game" scope="singleton">
        <property name="gameSettings" ref="gameSettings" />
+       <property name="resourceManager" ref="resourceManager" />
        <property name="platform" ref="lwjglPlatform" />
        <property name="inputDispatcher" ref="inputDispatcher" />
        <property name="initialState" value="SIMPLE" />
     </bean>
 
-    <bean id="gameSettings" class="net.wohlfart.basic.Settings">
+    <bean id="gameSettings" class="net.wohlfart.basic.Settings" scope="singleton">
+      <property name="title" value="${title}" />
       <property name="width" value="${display.width}" />
       <property name="height" value="${display.height}" />
       <property name="sync" value="${display.sync}" />
@@ -30,7 +32,16 @@
       <property name="farPlane" value="${projection.farPlane}" />
     </bean>
 
+    <bean id="resourceManager" class="net.wohlfart.basic.ResourceManager" scope="singleton">
+      <property name="fontDirectory" value="${dir.resources.fonts}" />
+      <property name="gfxDirectory" value="${dir.resources.gfx}" />
+      <property name="modelsDirectory" value="${dir.resources.models}" />
+      <property name="shadersDirectory" value="${dir.resources.shaders}" />
+    </bean>
+
+
     <bean id="lwjglPlatform" class="net.wohlfart.basic.LwjglPlatform" />
+
 
     <bean id="inputDispatcher" class="net.wohlfart.gl.input.DefaultInputDispatcher" />
 
@@ -68,7 +79,8 @@
      doesn't work without existing OpenGL context
      which we don'T have during startup, only after
 
-    <bean id="defaultGraphicContext" class="net.wohlfart.gl.shader.DefaultGraphicContext">
+    <bean id="defaultGraphicContext" class="net.wohlfart.gl.shader.DefaultGraphicContext"
+          >
         <constructor-arg>
             <bean class="net.wohlfart.gl.shader.DefaultShaderProgram">
                <constructor-arg index="0" value="/shaders/default/vertex.glsl" />
@@ -76,8 +88,8 @@
             </bean>
         </constructor-arg>
     </bean>
-
 -->
+
 
 
 </beans>

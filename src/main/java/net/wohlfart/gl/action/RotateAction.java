@@ -5,7 +5,7 @@ import net.wohlfart.tools.SimpleMath;
 import org.lwjgl.util.vector.Quaternion;
 import org.lwjgl.util.vector.Vector3f;
 
-public class RotateAction implements Action {
+public final class RotateAction implements Action {
 
     private float rotTime;  // the time for one single rotation
     private Vector3f axis;

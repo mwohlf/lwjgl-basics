@@ -1,11 +1,11 @@
 package net.wohlfart.basic;
 
+
 /**
  * <p>A collection of application settings that can be configured at startup.</p>
  *
- * TODO: use a overriding property placeholder here
  */
-public class Settings {
+public final class Settings {
 
     protected String title = "lwjgl";
 
@@ -19,6 +19,7 @@ public class Settings {
     protected float farPlane = 100f;
 
     private boolean fullscreen = false;
+
 
     /**
      * <p>Getter for the field <code>width</code>.</p>
@@ -148,5 +149,8 @@ public class Settings {
         return title;
     }
 
+    public void setTitle(String title) {
+        this.title = title;
+    }
 
 }

@@ -4,7 +4,7 @@ import net.wohlfart.tools.SimpleMath;
 
 import org.lwjgl.util.vector.Vector3f;
 
-public class MoveAction implements Action {
+public final class MoveAction implements Action {
 
     private float speed;  // the time for moving one unit
     private Vector3f direction;

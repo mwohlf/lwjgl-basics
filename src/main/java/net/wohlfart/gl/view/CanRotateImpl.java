@@ -10,7 +10,6 @@ import org.lwjgl.util.vector.Vector3f;
  */
 @SuppressWarnings("serial")
 public class CanRotateImpl extends Quaternion implements CanRotate {
-    final Quaternion rot = new Quaternion();
 
     /** {@inheritDoc} */
     @Override
@@ -28,16 +27,7 @@ public class CanRotateImpl extends Quaternion implements CanRotate {
     /** {@inheritDoc} */
     @Override
     public void rotate(float deltaAngle, Vector3f axis) {
-        axis.normalise();
-        final double n = Math.sqrt(axis.x * axis.x + axis.y * axis.y + axis.z * axis.z);
-        final float sin = (float) (Math.sin(0.5 * deltaAngle) / n);
-        rot.x = axis.x * sin;
-        rot.y = axis.y * sin;
-        rot.z = axis.z * sin;
-        rot.w = (float) Math.cos(0.5 * deltaAngle);
-        Quaternion.mul(rot, this, rot);
-        SimpleMath.normalizeLocal(rot);
-        set(rot);
+        SimpleMath.rotate(this, deltaAngle, axis);
     }
 
     /** the (1,0,0) vector / X axis */

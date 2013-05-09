@@ -8,13 +8,12 @@ import net.wohlfart.gl.shader.mesh.TexturedMeshBuilder;
  */
 public class TexturedQuad extends AbstractRenderable {
 
-    /** {@inheritDoc} */
     @Override
     protected IsRenderable setupMesh() {
         final TexturedMeshBuilder builder = new TexturedMeshBuilder();
         builder.setTranslation(translation);
         builder.setRotation(rotation);
-        builder.setTextureFilename("/images/ash_uvgrid01.png");
+        builder.setTextureFilename("/gfx/images/ash_uvgrid01.png");
         return builder.build();
     }
 

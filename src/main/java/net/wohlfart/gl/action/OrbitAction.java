@@ -4,7 +4,7 @@ import net.wohlfart.tools.SimpleMath;
 
 import org.lwjgl.util.vector.Vector3f;
 
-public class OrbitAction implements Action {
+public final class OrbitAction implements Action {
 
     private float orbitTime; // in sec
     private Vector3f center;
