@@ -1,9 +1,11 @@
 package net.wohlfart.basic.states;
 
 import net.wohlfart.gl.elements.hud.Hud;
+import net.wohlfart.gl.elements.hud.NullHud;
 import net.wohlfart.gl.elements.hud.widgets.Label;
 import net.wohlfart.gl.elements.hud.widgets.MousePositionLabel;
 import net.wohlfart.gl.elements.hud.widgets.Statistics;
+import net.wohlfart.gl.elements.skybox.NullSkybox;
 import net.wohlfart.gl.elements.skybox.Skybox;
 import net.wohlfart.gl.input.InputDispatcher;
 import net.wohlfart.gl.renderer.RenderableBucket;
@@ -42,9 +44,8 @@ final class SimpleState extends AbstractGraphicState implements InitializingBean
     private final boolean elementsOn = true;
     private final boolean controlFrameOn = true;
 
-    private Skybox skybox;
-    private Hud hud;
-
+    private Skybox skybox = new NullSkybox();
+    private Hud hud = new NullHud();
 
 
     public void setSkybox(Skybox skybox) {
@@ -54,7 +55,6 @@ final class SimpleState extends AbstractGraphicState implements InitializingBean
     public void setHud(Hud hud) {
         this.hud = hud;
     }
-
 
     @Override
     public void afterPropertiesSet() throws Exception {
@@ -103,10 +103,10 @@ final class SimpleState extends AbstractGraphicState implements InitializingBean
             elemBucket.add(frame.getCube());
         }
 
-            hud.setGraphicContext(hudGraphicContext);
-            hud.add(statistics);
-            hud.add(mousePositionLabel);
-            hud.add(new Label(0, 0, "hello world at (0,0)"));
+        hud.setGraphicContext(hudGraphicContext);
+        hud.add(statistics);
+        hud.add(mousePositionLabel);
+        hud.add(new Label(0, 0, "hello world at (0,0)"));
 
     }
 

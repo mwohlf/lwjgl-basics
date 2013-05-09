@@ -65,8 +65,9 @@ public class SkyboxImpl implements Skybox, SkyboxParameters {
         ShaderUniformHandle.WORLD_TO_CAM.set(rotMatrix);
         ShaderUniformHandle.CAM_TO_CLIP.set(camViewMatrix);
 
-        GL11.glDisable(GL11.GL_BLEND);
         GL11.glDisable(GL11.GL_DEPTH_TEST);
+        GL11.glClear(GL11.GL_DEPTH_BUFFER_BIT);
+        GL11.glDisable(GL11.GL_BLEND);
 
         // draw only the visible sides
         camera.getDir(viewDirection);

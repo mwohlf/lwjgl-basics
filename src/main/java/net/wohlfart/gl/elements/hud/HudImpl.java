@@ -17,16 +17,14 @@ import org.lwjgl.opengl.GL11;
  */
 public class HudImpl implements Hud {
 
-    private final GraphicContextManager cxtManagert = GraphicContextManager.INSTANCE;
-
-    private IGraphicContext hudContext;
+    private IGraphicContext graphicContext;
 
     private LayerImpl layer;
 
 
     @Override
-    public void setGraphicContext(IGraphicContext hudContext) {
-        this.hudContext = hudContext;
+    public void setGraphicContext(IGraphicContext graphicContext) {
+        this.graphicContext = graphicContext;
         this.layer = new LayerImpl();  // FIXME: this looks strange
     }
 
@@ -43,13 +41,18 @@ public class HudImpl implements Hud {
     /** {@inheritDoc} */
     @Override
     public void render() {
-        cxtManagert.setCurrentGraphicContext(hudContext);
+        assert graphicContext != null : "the graphicContext is null, make sure to call the init method";
+
+        GraphicContextManager.INSTANCE.setCurrentGraphicContext(graphicContext);
+
         ShaderUniformHandle.MODEL_TO_WORLD.set(SimpleMath.UNION_MATRIX);
         ShaderUniformHandle.WORLD_TO_CAM.set(SimpleMath.UNION_MATRIX);
-        ShaderUniformHandle.CAM_TO_CLIP.set(cxtManagert.getPerspectiveProjMatrix());
-        //ShaderUniformHandle.CAM_TO_CLIP.set(contextManagert.getOrthographicProjMatrix());
-        //ShaderUniformHandle.CAM_TO_CLIP.set(SimpleMath.UNION_MATRIX);
+        ShaderUniformHandle.CAM_TO_CLIP.set(GraphicContextManager.INSTANCE.getPerspectiveProjMatrix());
+
+        GL11.glDisable(GL11.GL_DEPTH_TEST);
+        GL11.glClear(GL11.GL_DEPTH_BUFFER_BIT);
         GL11.glEnable(GL11.GL_BLEND);
+
         layer.render();
     }
 

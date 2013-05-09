@@ -1,8 +1,12 @@
 package net.wohlfart.basic.states;
 
 import net.wohlfart.gl.antlr4.Model;
+import net.wohlfart.gl.elements.hud.Hud;
+import net.wohlfart.gl.elements.hud.NullHud;
+import net.wohlfart.gl.elements.hud.widgets.Label;
 import net.wohlfart.gl.elements.hud.widgets.MousePositionLabel;
 import net.wohlfart.gl.elements.hud.widgets.Statistics;
+import net.wohlfart.gl.elements.skybox.NullSkybox;
 import net.wohlfart.gl.elements.skybox.Skybox;
 import net.wohlfart.gl.renderer.ModelBucket;
 import net.wohlfart.gl.renderer.RenderableBucket;
@@ -30,9 +34,9 @@ final class LightingState extends AbstractGraphicState implements InitializingBe
     private GraphicContextManager.IGraphicContext lightingGraphicContext;
     private GraphicContextManager.IGraphicContext defaultGraphicContext;
     private GraphicContextManager.IGraphicContext wireframeGraphicContext;
+    private GraphicContextManager.IGraphicContext hudGraphicContext;
 
 
-    private Skybox skybox;
     private final RenderableBucket elemBucket = new RenderableBucket();
     private final ModelBucket modelBucket = new ModelBucket();
 
@@ -41,8 +45,16 @@ final class LightingState extends AbstractGraphicState implements InitializingBe
     private MousePicker mousePicker;
 
 
+    private Skybox skybox = new NullSkybox();
+    private Hud hud = new NullHud();
+
+
     public void setSkybox(Skybox skybox) {
         this.skybox = skybox;
+    }
+
+    public void setHud(Hud hud) {
+        this.hud = hud;
     }
 
     @Override
@@ -62,12 +74,19 @@ final class LightingState extends AbstractGraphicState implements InitializingBe
         lightingGraphicContext = new DefaultGraphicContext(ShaderRegistry.LIGHTING_SHADER);
         defaultGraphicContext = new DefaultGraphicContext(ShaderRegistry.DEFAULT_SHADER);
         wireframeGraphicContext = new DefaultGraphicContext(ShaderRegistry.WIREFRAME_SHADER);
+        hudGraphicContext = new DefaultGraphicContext(ShaderRegistry.HUD_SHADER);
 
 
         skybox.setCamera(getCamera());
         skybox.setGraphicContext(defaultGraphicContext);
         modelBucket.init(lightingGraphicContext, getCamera());
         elemBucket.init(wireframeGraphicContext, getCamera());
+
+        hud.setGraphicContext(hudGraphicContext);
+        hud.add(statistics);
+        hud.add(mousePositionLabel);
+        hud.add(new Label(0, 0, "hello world at (0,0)"));
+
 
         getInputDispatcher().register(mousePicker);
 
@@ -143,6 +162,7 @@ final class LightingState extends AbstractGraphicState implements InitializingBe
         skybox.render();
         modelBucket.render();
         elemBucket.render();
+        hud.render();
     }
 
     @Override

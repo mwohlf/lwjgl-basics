@@ -4,6 +4,8 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans
                            http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
 
+    <import resource="models.xml"/>
+
     <bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
         <property name="locations">
            <list>
@@ -18,7 +20,7 @@
        <property name="resourceManager" ref="resourceManager" />
        <property name="platform" ref="lwjglPlatform" />
        <property name="inputDispatcher" ref="inputDispatcher" />
-       <property name="initialState" value="SIMPLE" />
+       <property name="initialState" value="LIGHTING" />
     </bean>
 
     <bean id="gameSettings" class="net.wohlfart.basic.Settings" scope="singleton">
@@ -50,11 +52,12 @@
 
     <bean id="GameState.SIMPLE" class="net.wohlfart.basic.states.SimpleState">
         <property name="skybox" ref="nullSkybox" />
-        <property name="hud" ref="defaultHud" />
+        <property name="hud" ref="nullHud" />
     </bean>
 
     <bean id="GameState.LIGHTING" class="net.wohlfart.basic.states.LightingState" >
         <property name="skybox" ref="nullSkybox" />
+        <property name="hud" ref="defaultHud" />
     </bean>
 
 
