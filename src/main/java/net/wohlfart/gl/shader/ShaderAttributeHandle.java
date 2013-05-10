@@ -2,12 +2,9 @@ package net.wohlfart.gl.shader;
 
 import static net.wohlfart.gl.shader.GraphicContextManager.INSTANCE;
 
-// handler for vertex attributes used in the shader
+//
 /**
- * <p>ShaderAttributeHandle class.</p>
- *
- *
- *
+ * <p>All handlers for vertex attributes used in any shader.</p>
  */
 public enum ShaderAttributeHandle { // @formatter:off
     COLOR("in_Color", 4),

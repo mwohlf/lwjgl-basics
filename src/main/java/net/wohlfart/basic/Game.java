@@ -50,6 +50,7 @@ class Game implements InitializingBean {
     private DisplayMode origDisplayMode;
 
 
+
     public void setGameSettings(Settings settings) {
         this.settings = settings;
     }
@@ -73,6 +74,7 @@ class Game implements InitializingBean {
     public void setInitialState(GameStateEnum initialState) {
         this.initialState = initialState;
     }
+
 
 
     @Override
@@ -143,10 +145,14 @@ class Game implements InitializingBean {
         } else {
             setupWindow();
         }
+
+        // after this point we have a valid OpenGL context
+
+
         // map the internal OpenGL coordinate system to the entire viewport
         GL11.glViewport(0, 0, settings.width, settings.height);
         // used for GL11.glClear(GL11.GL_COLOR_BUFFER_BIT); not really needed if we have a skybox anyways
-        GL11.glHint(GL11.GL_LINE_SMOOTH_HINT,GL11.GL_NICEST);
+        GL11.glHint(GL11.GL_LINE_SMOOTH_HINT, GL11.GL_NICEST);
         GL11.glClearColor(0.5f, 0.5f, 0.5f, 0f);
         GL11.glClearDepth(1f);
         //GL11.glClearColor(0.0f, 0.0f, 0.0f, 0f);
@@ -159,7 +165,6 @@ class Game implements InitializingBean {
         graphContext.setInputDispatcher(inputDispatcher);
 
         inputSource.setInputDispatcher(graphContext.getInputDispatcher());
-
         setCurrentState(initialState);
 
 
@@ -255,7 +260,5 @@ class Game implements InitializingBean {
             return byteBuffer;
         }
     }
-
-
 
 }

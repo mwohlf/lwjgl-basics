@@ -37,4 +37,10 @@ public final class ResourceManager {
         this.shadersDirectory = shadersDirectory;
     }
 
+
+    public void setupShaders() {
+        // TODO Auto-generated method stub
+
+    }
+
 }

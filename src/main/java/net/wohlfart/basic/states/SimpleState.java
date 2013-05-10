@@ -11,7 +11,6 @@ import net.wohlfart.gl.input.InputDispatcher;
 import net.wohlfart.gl.renderer.RenderableBucket;
 import net.wohlfart.gl.shader.DefaultGraphicContext;
 import net.wohlfart.gl.shader.GraphicContextManager;
-import net.wohlfart.gl.shader.ShaderRegistry;
 import net.wohlfart.gl.view.MousePicker;
 import net.wohlfart.tools.ControllerFrame;
 
@@ -56,11 +55,26 @@ final class SimpleState extends AbstractGraphicState implements InitializingBean
         this.hud = hud;
     }
 
+    public void setWireframeGraphicContext(DefaultGraphicContext wireframeGraphicContext) {
+        this.wireframeGraphicContext = wireframeGraphicContext;
+    }
+
+    public void setDefaultGraphicContext(DefaultGraphicContext defaultGraphicContext) {
+        this.defaultGraphicContext = defaultGraphicContext;
+    }
+
+    public void setHudGraphicContext(DefaultGraphicContext hudGraphicContext) {
+        this.hudGraphicContext = hudGraphicContext;
+    }
+
     @Override
     public void afterPropertiesSet() throws Exception {
         LOGGER.debug("<afterPropertiesSet>");
         Assert.notNull(skybox, "skybox missing, you probably forgot to inject skybox in the configs");
         Assert.notNull(hud, "hud missing, you probably forgot to inject hud in the configs");
+        Assert.notNull(wireframeGraphicContext);
+        Assert.notNull(defaultGraphicContext);
+        Assert.notNull(hudGraphicContext);
     }
 
 
@@ -72,15 +86,14 @@ final class SimpleState extends AbstractGraphicState implements InitializingBean
         mousePositionLabel = new MousePositionLabel(0, -20);
         mousePicker = new MousePicker(elemBucket, getScreenWidth(), getScreenHeight());
 
+        defaultGraphicContext.setup();
+        wireframeGraphicContext.setup();
+        hudGraphicContext.setup();
+
         // event bus registration
         InputDispatcher inputDispatcher = getInputDispatcher();
         inputDispatcher.register(mousePositionLabel);
         inputDispatcher.register(mousePicker);
-
-        wireframeGraphicContext = new DefaultGraphicContext(ShaderRegistry.WIREFRAME_SHADER);
-        defaultGraphicContext = new DefaultGraphicContext(ShaderRegistry.DEFAULT_SHADER);
-        hudGraphicContext = new DefaultGraphicContext(ShaderRegistry.HUD_SHADER);
-
 
         skybox.setCamera(getCamera());
         skybox.setGraphicContext(defaultGraphicContext);

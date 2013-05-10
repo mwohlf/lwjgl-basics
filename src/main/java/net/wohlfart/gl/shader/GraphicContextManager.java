@@ -26,6 +26,8 @@ public enum GraphicContextManager {
 
         int getLocation(ShaderUniformHandle shaderUniformHandle);
 
+        void setup();
+
         void bind();
 
         void unbind();

@@ -7,15 +7,17 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * modeling an OpenGL Context: - shader - attribute location - uniform locations
+ * @formatter:off
+ * modeling an OpenGL Context:
+ *   - shader
+ *   - attribute location
+ *   - uniform locations
+ * @formatter:on
  *
  * see: http://www.opengl.org/wiki/OpenGL_Context
  *
- *
- *
  */
 public class DefaultGraphicContext implements GraphicContextManager.IGraphicContext {
-    /** Constant <code>LOGGER</code> */
     private static final Logger LOGGER = LoggerFactory.getLogger(DefaultGraphicContext.class);
 
     private final IShaderProgram shaderProgram;
@@ -30,6 +32,11 @@ public class DefaultGraphicContext implements GraphicContextManager.IGraphicCont
      */
     public DefaultGraphicContext(IShaderProgram shaderProgram) {
         this.shaderProgram = shaderProgram;
+    }
+
+    // this needs to be called after the OpenGL setup is done
+    @Override
+    public void setup() {
         this.shaderProgram.setup();
         this.shaderProgram.bind();
         initMaps();

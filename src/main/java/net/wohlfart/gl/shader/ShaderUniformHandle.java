@@ -11,9 +11,8 @@ import org.lwjgl.util.vector.Matrix3f;
 import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector3f;
 
-// handlers for uniforms used in the shader
 /**
- * <p>ShaderUniformHandle class.</p>
+ * <p>All handlers for uniforms used in any shader.</p>
  */
 public enum ShaderUniformHandle { // @formatter:off
     MODEL_TO_WORLD("modelToWorldMatrix"),

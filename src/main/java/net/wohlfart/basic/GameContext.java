@@ -1,5 +1,6 @@
 package net.wohlfart.basic;
 
+import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 
@@ -27,6 +28,12 @@ class GameContext implements IGameContext {
         final T t = set.iterator().next().getValue();
         return t;
     }
+
+    @Override
+    public <T> Map<String, T> getBeansOfType(Class<T> clazz) {
+        return delegate.getBeansOfType(clazz);
+    }
+
 
     @Override
     public <T> T getBeanOfName(Class<T> clazz, String name) {
