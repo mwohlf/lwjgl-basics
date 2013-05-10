@@ -9,6 +9,14 @@ package net.wohlfart.gl.input;
 public interface InputSource {
 
     /**
+     * <p>set the event sink.</p>
+     *
+     * @param delta a float.
+     */
+    void setInputDispatcher(InputDispatcher inputDispatcher);
+
+
+    /**
      * <p>createInputEvents.</p>
      *
      * @param delta a float.
@@ -19,5 +27,6 @@ public interface InputSource {
      * <p>destroy.</p>
      */
     void destroy();
+
 
 }

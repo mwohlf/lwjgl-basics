@@ -16,11 +16,12 @@
     </bean>
 
     <bean class="net.wohlfart.basic.Game" scope="singleton">
+       <property name="initialState" value="LIGHTING" />
        <property name="gameSettings" ref="gameSettings" />
        <property name="resourceManager" ref="resourceManager" />
-       <property name="platform" ref="lwjglPlatform" />
+       <property name="globalTimer" ref="globalTimer" />
+       <property name="inputSource" ref="inputSource" />
        <property name="inputDispatcher" ref="inputDispatcher" />
-       <property name="initialState" value="LIGHTING" />
     </bean>
 
     <bean id="gameSettings" class="net.wohlfart.basic.Settings" scope="singleton">
@@ -42,11 +43,18 @@
     </bean>
 
 
-    <bean id="lwjglPlatform" class="net.wohlfart.basic.LwjglPlatform" />
+    <bean id="globalTimer" class="net.wohlfart.basic.time.TimerImpl" >
+       <constructor-arg >
+          <bean class="net.wohlfart.basic.time.LwjglClockImpl" />
+       </constructor-arg>
+    </bean>
 
+
+
+    <bean id="inputSource" class="net.wohlfart.gl.input.LwjglInputSource" />    
 
     <bean id="inputDispatcher" class="net.wohlfart.gl.input.DefaultInputDispatcher" />
-
+    
 
     <bean id="GameState.NULL" class="net.wohlfart.basic.states.NullState" />
 

@@ -57,11 +57,7 @@ public class LwjglInputAdaptor implements InputAdaptor {
     private final PositionPointer positionPointer = new PositionPointer();
     // @formatter:on
 
-    /**
-     * <p>Constructor for LwjglInputAdaptor.</p>
-     *
-     * @param inputDispatcher a {@link net.wohlfart.gl.input.InputDispatcher} object.
-     */
+
     public LwjglInputAdaptor(InputDispatcher inputDispatcher) {
         this.inputDispatcher = inputDispatcher;
     }

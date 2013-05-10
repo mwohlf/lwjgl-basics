@@ -20,21 +20,19 @@ import org.lwjgl.input.Mouse;
  */
 public class LwjglInputSource implements InputSource {
 
-    private final KeyEventDispatcher keyboardDevice;
-    private final PositionEventDispatcher mouseDevice;
-
     // the current keyboard state
     private final HashSet<Integer> pressedKeys = new HashSet<Integer>(8);
     private final HashSet<Integer> pressedButtons = new HashSet<Integer>(4);
     private Integer lastButton = 0;
 
-    /**
-     * <p>Constructor for LwjglInputSource.</p>
-     *
-     * @param inputAdaptor a {@link net.wohlfart.gl.input.InputAdaptor} object.
-     */
-    public LwjglInputSource(InputAdaptor inputAdaptor) {
+    private KeyEventDispatcher keyboardDevice;
+    private PositionEventDispatcher mouseDevice;
+
+
+    // the lwjgl Display must be created before calling this method
+    public void setInputDispatcher(InputDispatcher inputDispatcher) {
         try {
+            InputAdaptor inputAdaptor = new LwjglInputAdaptor(inputDispatcher);
             keyboardDevice = inputAdaptor.getKeyboardDevice();
             mouseDevice = inputAdaptor.getMouseDevice();
             Keyboard.enableRepeatEvents(false);
