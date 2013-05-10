@@ -1,6 +1,5 @@
 package net.wohlfart.basic;
 
-import java.util.Map;
 
 
 /**
@@ -18,17 +17,10 @@ public interface IGameContext { // REVIEWED
      */
     <T> T getBeanOfType(Class<T> clazz);
 
-
-    /**
-     * <p>This method returns all beans of the provided class from the application context.</p>
-     */
-    <U> Map<String, U> getBeansOfType(Class<U> clazz);
-
     /**
      * <p>This method returns a bean of the provided class and with the provided name
      * from the application context.</p>
      */
     <V> V getBeanOfName(Class<V> clazz, String name);
-
 
 }

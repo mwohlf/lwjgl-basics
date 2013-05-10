@@ -25,6 +25,8 @@ public class DefaultGraphicContext implements GraphicContextManager.IGraphicCont
     private final int[] attributeMap = new int[ShaderAttributeHandle.values().length];
     private final int[] uniformMap = new int[ShaderUniformHandle.values().length];
 
+    private boolean isInitialized = false;
+
     /**
      * <p>Constructor for DefaultGraphicContext.</p>
      *
@@ -34,13 +36,21 @@ public class DefaultGraphicContext implements GraphicContextManager.IGraphicCont
         this.shaderProgram = shaderProgram;
     }
 
-    // this needs to be called after the OpenGL setup is done
+    /**
+     *  this needs to be called after the OpenGL setup is done
+     *  this method might be called multiple times if the same shader is
+     *  used in multiple states
+     */
     @Override
     public void setup() {
+        if (isInitialized) {
+            return;
+        }
         this.shaderProgram.setup();
         this.shaderProgram.bind();
         initMaps();
         this.shaderProgram.unbind();
+        isInitialized = true;
     }
 
     // read uniforms and attribute locations and buffer them

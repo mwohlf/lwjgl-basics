@@ -1,6 +1,5 @@
 package net.wohlfart.basic;
 
-import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 
@@ -29,12 +28,7 @@ class GameContext implements IGameContext {
         return t;
     }
 
-    @Override
-    public <T> Map<String, T> getBeansOfType(Class<T> clazz) {
-        return delegate.getBeansOfType(clazz);
-    }
-
-
+    // this is used by the enums to pick up their config from the spring context
     @Override
     public <T> T getBeanOfName(Class<T> clazz, String name) {
         T bean = delegate.getBean(name, clazz);
