@@ -1,7 +1,5 @@
 package net.wohlfart.gl.elements.skybox;
 
-import net.wohlfart.gl.shader.GraphicContextManager.IGraphicContext;
-import net.wohlfart.gl.view.CanRotate;
 
 public class NullSkybox implements Skybox {
 
@@ -16,12 +14,12 @@ public class NullSkybox implements Skybox {
     }
 
     @Override
-    public void setGraphicContext(IGraphicContext graphicContext) {
+    public void setup() {
         // do nothing
     }
 
     @Override
-    public void setCamera(CanRotate camera) {
+    public void dispose() {
         // do nothing
     }
 

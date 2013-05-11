@@ -1,7 +1,6 @@
 package net.wohlfart.gl.elements.hud;
 
 import net.wohlfart.gl.elements.hud.widgets.AbstractTextComponent;
-import net.wohlfart.gl.shader.GraphicContextManager.IGraphicContext;
 
 public class NullHud implements Hud {
 
@@ -16,12 +15,17 @@ public class NullHud implements Hud {
     }
 
     @Override
-    public void setGraphicContext(IGraphicContext hudContext) {
+    public void setup() {
         // do nothing
     }
 
     @Override
     public void add(AbstractTextComponent label) {
+        // do nothing
+    }
+
+    @Override
+    public void dispose() {
         // do nothing
     }
 

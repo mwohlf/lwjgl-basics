@@ -28,14 +28,17 @@ public class SkyboxImpl implements Skybox, SkyboxParameters {
 
     private IGraphicContext graphicContext;
 
-    @Override
     public void setGraphicContext(IGraphicContext graphicContext) {
         this.graphicContext = graphicContext;
     }
 
-    @Override
     public void setCamera(CanRotate camera) {
         this.camera = camera;
+    }
+
+    @Override
+    public void setup() {
+        graphicContext.setup();
     }
 
     private void createSides() {
@@ -144,5 +147,10 @@ public class SkyboxImpl implements Skybox, SkyboxParameters {
         }
 
     };
+
+    @Override
+    public void dispose() {
+        //
+    }
 
 }

@@ -20,7 +20,7 @@ import org.lwjgl.util.vector.Vector3f;
  */
 public class RenderableBucket implements IsRenderable, IsUpdateable, HasCamProjectionModelViewMatrices {
 
-    protected Set<IsRenderable> container = new HashSet<>(10100);
+    protected final Set<IsRenderable> content = new HashSet<>(10100);
     private IGraphicContext graphicContext;
     private Camera camera;
 
@@ -31,39 +31,31 @@ public class RenderableBucket implements IsRenderable, IsUpdateable, HasCamProje
     private final Matrix4f rotPosMatrix = new Matrix4f();
 
 
-    /**
-     * <p>init.</p>
-     *
-     * @param wireframeGraphicContext a {@link net.wohlfart.gl.shader.GraphicContextManager.IGraphicContext} object.
-     * @param camera a {@link net.wohlfart.gl.view.Camera} object.
-     */
-    public void init(IGraphicContext wireframeGraphicContext, Camera camera) {
-        this.graphicContext = wireframeGraphicContext;
+    public void setGraphicContext(IGraphicContext graphicContext) {
+        this.graphicContext = graphicContext;
+    }
+
+    public void setCamera(Camera camera) {
         this.camera = camera;
     }
 
 
-    /**
-     * <p>add.</p>
-     *
-     * @param elements a {@link java.util.Collection} object.
-     */
-    public void add(Collection<IsRenderable> elements) {
-        for (IsRenderable isRenderable : elements) {
-            add(isRenderable);
+    public void setup() {
+        graphicContext.setup();
+    }
+
+    public void setContent(Collection<IsRenderable> newContent) {
+        for (final IsRenderable isRenderable : content) {
+            isRenderable.destroy();
         }
+        content.clear();
+        content.addAll(newContent);
     }
 
-    /**
-     * <p>add.</p>
-     *
-     * @param isRenderable a {@link net.wohlfart.gl.renderer.IsRenderable} object.
-     */
-    public void add(IsRenderable isRenderable) {
-        container.add(isRenderable);
+    public void addContentElement(IsRenderable renderable) {
+        content.add(renderable);
     }
 
-    /** {@inheritDoc} */
     @Override
     public void render() {
         SimpleMath.convert(camera.getPosition().negate(posVector), posMatrix);
@@ -80,7 +72,7 @@ public class RenderableBucket implements IsRenderable, IsUpdateable, HasCamProje
         GL11.glEnable(GL11.GL_DEPTH_TEST);
         GL11.glClear(GL11.GL_DEPTH_BUFFER_BIT);
 
-        for (final IsRenderable isRenderable : container) {
+        for (final IsRenderable isRenderable : content) {
             isRenderable.render();
         }
     }
@@ -90,25 +82,28 @@ public class RenderableBucket implements IsRenderable, IsUpdateable, HasCamProje
         // nothing to do
     }
 
-    /** {@inheritDoc} */
     @Override
     public void destroy() {
-        for (final IsRenderable isRenderable : container) {
+        for (final IsRenderable isRenderable : content) {
             isRenderable.destroy();
         }
-        container.clear();
+        content.clear();
     }
 
-    /** {@inheritDoc} */
     @Override
     public Matrix4f getProjectionMatrix() {
         return GraphicContextManager.INSTANCE.getPerspectiveProjMatrix();
     }
 
-    /** {@inheritDoc} */
     @Override
     public Matrix4f getModelViewMatrix() {
         return rotPosMatrix;
     }
+
+    public void dispose() {
+        // TODO maybe destroy ?
+    }
+
+
 
 }

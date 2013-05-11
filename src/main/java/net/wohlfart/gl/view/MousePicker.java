@@ -16,7 +16,6 @@ import com.google.common.eventbus.Subscribe;
  */
 public class MousePicker {
 
-
     private Matrix4f transformMatrix = new Matrix4f();
 
     private final RenderableBucket elemBucket;
@@ -48,24 +47,28 @@ public class MousePicker {
         float x = clickEvent.getX();
         float y = clickEvent.getY();
 
+
         PickingRay ray = createPickingRay(x, y, elemBucket);
-        elemBucket.add(Arrow.createLink(ray.getStart(), ray.getEnd()));
+        elemBucket.addContentElement(Arrow.createLink(ray.getStart(), ray.getEnd()));
     }
 
 
 
-    // see: http://gamedev.stackexchange.com/questions/8974/converting-a-mouse-click-to-a-ray
+    //
     /**
-     * <p>createPickingRay.</p>
+     * <p>
+     * createPickingRay<br/>
+     * see: http://gamedev.stackexchange.com/questions/8974/converting-a-mouse-click-to-a-ray
+     * </p>
      *
      * @param x a float.
      * @param y a float.
      * @param hasMatrices a {@link net.wohlfart.gl.view.HasCamProjectionModelViewMatrices} object.
      * @return a {@link net.wohlfart.gl.view.PickingRay} object.
      */
-    public PickingRay createPickingRay(float x, float y, HasCamProjectionModelViewMatrices hasMatrices){
+    public PickingRay createPickingRay(float x, float y, HasCamProjectionModelViewMatrices elemBucket) {
 
-        Matrix4f.mul(hasMatrices.getProjectionMatrix(), hasMatrices.getModelViewMatrix(), transformMatrix);
+        Matrix4f.mul(elemBucket.getProjectionMatrix(), elemBucket.getModelViewMatrix(), transformMatrix);
         transformMatrix = Matrix4f.invert(transformMatrix, transformMatrix);
 
 

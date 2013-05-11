@@ -19,14 +19,19 @@ public class HudImpl implements Hud {
 
     private IGraphicContext graphicContext;
 
-    private LayerImpl layer;
+    private final LayerImpl layer = new LayerImpl();
+
+
+    public void setGraphicContext(IGraphicContext graphicContext) {
+        this.graphicContext = graphicContext;
+    }
 
 
     @Override
-    public void setGraphicContext(IGraphicContext graphicContext) {
-        this.graphicContext = graphicContext;
-        this.layer = new LayerImpl();  // FIXME: this looks strange
+    public void setup() {
+        graphicContext.setup();
     }
+
 
     /**
      * <p>add.</p>
@@ -61,6 +66,11 @@ public class HudImpl implements Hud {
     @Override
     public void destroy() {
         layer.destroy();
+    }
+
+    @Override
+    public void dispose() {
+
     }
 
 }

@@ -59,26 +59,27 @@ public class DefaultGraphicContext implements GraphicContextManager.IGraphicCont
         LOGGER.debug("init gfx context, shader.programId: '{}'", programId);
 
         for (final ShaderAttributeHandle attributeHandle : ShaderAttributeHandle.values()) {
-            // int location = attributeHandle.getLocation(shaderProgram);
             final int location = GL20.glGetAttribLocation(programId, attributeHandle.getLookupString());
             attributeMap[attributeHandle.ordinal()] = location;
             if (location < 0) {
-                LOGGER.warn("location for AttributeHandle '{}' is '{}' wich is <0, the programId is '{}'",
+                LOGGER.debug("location for AttributeHandle '{}' is '{}' wich is <0, the programId is '{}'",
                         new Object[] { attributeHandle, location, programId });
             } else {
-                LOGGER.debug("attributeMap lookup: '{}({})' to '{}'", new Object[] { attributeHandle.name(), attributeHandle.ordinal(), location });
+                LOGGER.debug("attributeMap lookup: '{}({})' to '{}'",
+                        new Object[] { attributeHandle.name(), attributeHandle.ordinal(), location });
             }
         }
         LOGGER.debug("attributeMap setup: '{}'", Arrays.toString(attributeMap));
 
         for (final ShaderUniformHandle matrixHandle : ShaderUniformHandle.values()) {
-            // int location = matrixHandle.getLocation(shaderProgram);
             final int location = GL20.glGetUniformLocation(programId, matrixHandle.getLookupString());
             uniformMap[matrixHandle.ordinal()] = location;
             if (location < 0) {
-                LOGGER.warn("location for UniformHandle '{}' is '{}' wich is <0, the programId is '{}'", new Object[] { matrixHandle, location, programId });
+                LOGGER.debug("location for UniformHandle '{}' is '{}' wich is <0, the programId is '{}'",
+                        new Object[] { matrixHandle, location, programId });
             } else {
-                LOGGER.debug("matrixMap lookup: '{}({})' to '{}'", new Object[] { matrixHandle.name(), matrixHandle.ordinal(), location });
+                LOGGER.debug("matrixMap lookup: '{}({})' to '{}'",
+                        new Object[] { matrixHandle.name(), matrixHandle.ordinal(), location });
             }
         }
         LOGGER.debug("matrixMap setup: '{}'", Arrays.toString(uniformMap));

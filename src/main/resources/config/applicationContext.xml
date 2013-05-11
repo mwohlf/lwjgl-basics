@@ -6,6 +6,7 @@
 
     <import resource="models.xml"/>
     <import resource="shaders.xml"/>
+    <import resource="states.xml"/>
 
     <bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
         <property name="locations">
@@ -47,71 +48,12 @@
       <property name="shadersDirectory" value="${dir.resources.shaders}" />
     </bean>
 
-
     <bean id="globalTimer" class="net.wohlfart.basic.time.TimerImpl" >
        <constructor-arg >
           <bean class="net.wohlfart.basic.time.LwjglClockImpl" />
        </constructor-arg>
     </bean>
-
-
-
-
-    <!-- the states are picked up from the enums themself, not injected  -->
-
-
-    <bean id="GameState.NULL" class="net.wohlfart.basic.states.NullState" />
-
-    <bean id="GameState.SIMPLE" class="net.wohlfart.basic.states.SimpleState">
-        <property name="skybox" ref="nullSkybox" />
-        <property name="hud" ref="nullHud" />
-        <property name="defaultGraphicContext" ref="defaultShader" />
-        <property name="wireframeGraphicContext" ref="wireframeShader" />
-        <property name="hudGraphicContext" ref="hudShader" />
-    </bean>
-
-    <bean id="GameState.LIGHTING" class="net.wohlfart.basic.states.LightingState" >
-        <property name="skybox" ref="nullSkybox" />
-        <property name="hud" ref="defaultHud" />
-        <property name="lightingGraphicContext" ref="lightingShader" />
-        <property name="defaultGraphicContext" ref="defaultShader" />
-        <property name="wireframeGraphicContext" ref="wireframeShader" />
-        <property name="hudGraphicContext" ref="hudShader" />
-    </bean>
-
-
-    <!-- huds -->
-
-    <bean id="nullHud" class="net.wohlfart.gl.elements.hud.NullHud" />
-
-    <bean id="defaultHud" class="net.wohlfart.gl.elements.hud.HudImpl" />
-
-
-
-    <!-- skyboxes -->
-
-    <bean id="nullSkybox" class="net.wohlfart.gl.elements.skybox.NullSkybox" />
-
-    <bean id="defaultSkybox" class="net.wohlfart.gl.elements.skybox.SkyboxImpl" />
-
-
-
-    <!-- renderer
-
-     doesn't work without existing OpenGL context
-     which we don'T have during startup, only after
-
-    <bean id="defaultGraphicContext" class="net.wohlfart.gl.shader.DefaultGraphicContext"
-          >
-        <constructor-arg>
-            <bean class="net.wohlfart.gl.shader.DefaultShaderProgram">
-               <constructor-arg index="0" value="/shaders/default/vertex.glsl" />
-               <constructor-arg index="1" value="/shaders/default/fragment.glsl" />
-            </bean>
-        </constructor-arg>
-    </bean>
--->
-
-
+    
+    <bean id="camera" class="net.wohlfart.gl.view.Camera" />
 
 </beans>

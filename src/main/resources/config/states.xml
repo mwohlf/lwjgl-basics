@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans
+                           http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
+
+
+    <!-- the states are picked up from the enums themselves, not injected  -->
+
+
+    <bean id="GameState.NULL" class="net.wohlfart.basic.states.NullState" />
+
+    <bean id="GameState.SIMPLE" class="net.wohlfart.basic.states.SimpleState">
+        <property name="camera" ref="camera" />
+        <property name="skybox" ref="defaultSkybox" />
+        <property name="elemBucket" ref="elemBucket" />
+        <property name="hud" ref="defaultHud" />
+    </bean>
+
+    <bean id="GameState.LIGHTING" class="net.wohlfart.basic.states.LightingState" >
+        <property name="skybox" ref="nullSkybox" />
+        <property name="hud" ref="defaultHud" />
+        <property name="lightingGraphicContext" ref="lightingShader" />
+        <property name="defaultGraphicContext" ref="defaultShader" />
+        <property name="wireframeGraphicContext" ref="wireframeShader" />
+        <property name="hudGraphicContext" ref="hudShader" />
+    </bean>
+
+
+    <!-- huds -->
+
+    <bean id="nullHud" class="net.wohlfart.gl.elements.hud.NullHud" />
+
+    <bean id="defaultHud" class="net.wohlfart.gl.elements.hud.HudImpl">
+        <property name="graphicContext" ref="hudShader" />
+    </bean>
+
+
+
+    <!-- skyboxes -->
+
+    <bean id="nullSkybox" class="net.wohlfart.gl.elements.skybox.NullSkybox" />
+
+    <bean id="defaultSkybox" class="net.wohlfart.gl.elements.skybox.SkyboxImpl">
+        <property name="camera" ref="camera" />
+        <property name="graphicContext" ref="defaultShader" />
+    </bean>
+
+
+
+    <!-- render bucket  -->
+    <bean id="elemBucket" class="net.wohlfart.gl.renderer.RenderableBucket">
+        <property name="camera" ref="camera" />
+        <property name="graphicContext" ref="wireframeShader" />
+    </bean>
+
+
+
+</beans>

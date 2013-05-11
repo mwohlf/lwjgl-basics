@@ -87,17 +87,17 @@ final class LightingState extends AbstractGraphicState implements InitializingBe
         mousePositionLabel = new MousePositionLabel(0, -20);
         mousePicker = new MousePicker(elemBucket, getScreenWidth(), getScreenHeight());
 
+        skybox.setup();
+        hud.setup();
+
         lightingGraphicContext.setup();
         defaultGraphicContext.setup();
         wireframeGraphicContext.setup();
         hudGraphicContext.setup();
 
-        skybox.setCamera(getCamera());
-        skybox.setGraphicContext(defaultGraphicContext);
         modelBucket.init(lightingGraphicContext, getCamera());
-        elemBucket.init(wireframeGraphicContext, getCamera());
+        //elemBucket.init(wireframeGraphicContext, getCamera());
 
-        hud.setGraphicContext(hudGraphicContext);
         hud.add(statistics);
         hud.add(mousePositionLabel);
         hud.add(new Label(0, 0, "hello world at (0,0)"));

@@ -34,15 +34,9 @@ public class ControllerFrame extends JFrame {
     private AbstractRenderable cube;
 
     /**
-     * <p>Constructor for ControllerFrame.</p>
-     */
-    public ControllerFrame() {
-    }
-
-    /**
      * <p>init.</p>
      */
-    public void init() {
+    public ControllerFrame init() {
         try {
             EventQueue.invokeAndWait(new Runnable() {
                 @Override
@@ -58,6 +52,7 @@ public class ControllerFrame extends JFrame {
         } catch (InvocationTargetException | InterruptedException ex) {
             ex.printStackTrace();
         }
+        return this;
     }
 
 
