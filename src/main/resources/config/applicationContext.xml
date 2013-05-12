@@ -18,7 +18,7 @@
     </bean>
 
     <bean class="net.wohlfart.basic.Game" scope="singleton">
-       <property name="initialState" value="SIMPLE" />
+       <property name="initialState" value="LIGHTING" />  <!-- SIMPLE  -->
        <property name="gameSettings" ref="gameSettings" />
        <property name="resourceManager" ref="resourceManager" />
        <property name="globalTimer" ref="globalTimer" />
@@ -53,7 +53,7 @@
           <bean class="net.wohlfart.basic.time.LwjglClockImpl" />
        </constructor-arg>
     </bean>
-    
+
     <bean id="camera" class="net.wohlfart.gl.view.Camera" />
 
 </beans>

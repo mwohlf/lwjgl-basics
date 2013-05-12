@@ -10,11 +10,9 @@ public final class ResourceManager {
     protected String shadersDirectory = "resources/shaders/";
 
 
-
     public void setFontDirectory(String fontDirectory) {
         this.fontDirectory = fontDirectory;
     }
-
 
     public void setGfxDirectory(String gfxDirectory) {
         this.gfxDirectory = gfxDirectory;
@@ -35,12 +33,6 @@ public final class ResourceManager {
 
     public void setShadersDirectory(String shadersDirectory) {
         this.shadersDirectory = shadersDirectory;
-    }
-
-
-    public void setupShaders() {
-        // TODO Auto-generated method stub
-
     }
 
 }

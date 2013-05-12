@@ -18,12 +18,12 @@
     </bean>
 
     <bean id="GameState.LIGHTING" class="net.wohlfart.basic.states.LightingState" >
+        <property name="camera" ref="camera" />
         <property name="skybox" ref="nullSkybox" />
+        <property name="modelBucket" ref="modelBucket" />
+        <property name="elemBucket" ref="elemBucket" />
         <property name="hud" ref="defaultHud" />
-        <property name="lightingGraphicContext" ref="lightingShader" />
-        <property name="defaultGraphicContext" ref="defaultShader" />
-        <property name="wireframeGraphicContext" ref="wireframeShader" />
-        <property name="hudGraphicContext" ref="hudShader" />
+
     </bean>
 
 
@@ -48,12 +48,31 @@
 
 
 
-    <!-- render bucket  -->
-    <bean id="elemBucket" class="net.wohlfart.gl.renderer.RenderableBucket">
+
+    <!-- content -->
+
+
+    <bean id="modelBucket" class="net.wohlfart.gl.renderer.ModelBucket">
         <property name="camera" ref="camera" />
-        <property name="graphicContext" ref="wireframeShader" />
+        <property name="graphicContext" ref="lightingShader" />
     </bean>
 
 
+    <bean id="elemBucket" class="net.wohlfart.gl.renderer.RenderableBucket">
+        <property name="camera" ref="camera" />
+        <property name="graphicContext" ref="wireframeShader" />
+        <property name="content" ref="content" />
+    </bean>
+
+    <bean id="content" class="net.wohlfart.tools.CollectionMergerFactory">
+        <constructor-arg>
+            <list>
+                <bean class="net.wohlfart.basic.states.SceneCreator" factory-method="createCircledTarget" />
+                <bean class="net.wohlfart.basic.states.SceneCreator" factory-method="createRandomElements" />
+                <bean class="net.wohlfart.basic.states.SceneCreator" factory-method="createOriginAxis" />
+                <bean class="net.wohlfart.basic.states.SceneCreator" factory-method="createDebugElements" />
+            </list>
+        </constructor-arg>
+    </bean>
 
 </beans>

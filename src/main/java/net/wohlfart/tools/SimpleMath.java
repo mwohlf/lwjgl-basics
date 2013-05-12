@@ -194,7 +194,8 @@ public final class SimpleMath {
     }
 
     /**
-     * create a rotation quaternion defined by a start and an end vector, the rotation will be the rotation needed to transform the first vector into the second
+     * create a rotation quaternion defined by a start and an end vector, 
+     * the rotation will be the rotation needed to transform the first vector into the second
      *
      * taken from: https://bitbucket.org/sinbad/ogre/src/9db75e3ba05c/OgreMain/include/OgreVector3.h#cl-651
      *
