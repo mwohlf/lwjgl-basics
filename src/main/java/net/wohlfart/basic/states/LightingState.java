@@ -1,6 +1,5 @@
 package net.wohlfart.basic.states;
 
-import net.wohlfart.gl.antlr4.Model;
 import net.wohlfart.gl.elements.hud.Hud;
 import net.wohlfart.gl.elements.hud.widgets.Label;
 import net.wohlfart.gl.elements.hud.widgets.MousePositionLabel;
@@ -10,7 +9,6 @@ import net.wohlfart.gl.renderer.ModelBucket;
 import net.wohlfart.gl.renderer.RenderableBucket;
 import net.wohlfart.gl.view.MousePicker;
 
-import org.lwjgl.util.vector.Vector3f;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.InitializingBean;
@@ -129,15 +127,6 @@ final class LightingState extends AbstractGraphicState implements InitializingBe
 
          */
 
-
-        Model ship1 = SceneCreator.loadModelFromFile("/models/ships/01.obj");
-        ship1.setPosition(new Vector3f(-5,0,-10));
-        modelBucket.addContent(ship1);
-
-        Model ship2 = SceneCreator.loadModelFromFile("/models/ships/02.obj");
-        ship2.setPosition(new Vector3f(+5,0,-10));
-        modelBucket.addContent(ship2);
-        //  icosphere.setAction(SceneCreator.getRandomAction());
 
 
     }

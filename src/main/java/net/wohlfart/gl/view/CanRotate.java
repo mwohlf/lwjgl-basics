@@ -22,6 +22,7 @@ public interface CanRotate {
      */
     public abstract void rotate(float deltaAngle, Vector3f axis);
 
+
     /**
      * <p>
      * getRotation.

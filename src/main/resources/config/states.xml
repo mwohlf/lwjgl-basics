@@ -55,16 +55,23 @@
     <bean id="modelBucket" class="net.wohlfart.gl.renderer.ModelBucket">
         <property name="camera" ref="camera" />
         <property name="graphicContext" ref="lightingShader" />
+        <property name="content">
+           <list>
+              <ref bean="ship01" />
+              <ref bean="ship02" />
+           </list>
+        </property>
     </bean>
+
 
 
     <bean id="elemBucket" class="net.wohlfart.gl.renderer.RenderableBucket">
         <property name="camera" ref="camera" />
         <property name="graphicContext" ref="wireframeShader" />
-        <property name="content" ref="content" />
+        <property name="content" ref="elemContent" />
     </bean>
 
-    <bean id="content" class="net.wohlfart.tools.CollectionMergerFactory">
+    <bean id="elemContent" class="net.wohlfart.tools.CollectionMergerFactory">
         <constructor-arg>
             <list>
                 <bean class="net.wohlfart.basic.states.SceneCreator" factory-method="createCircledTarget" />

@@ -4,7 +4,48 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans
                            http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
 
+
+
+
+
+     <bean id="ship01" class="net.wohlfart.basic.states.SceneCreator"
+                      factory-method="loadModelFromFile">
+        <constructor-arg value="/models/ships/01.obj" />
+        <property name="position" >
+           <bean class="org.lwjgl.util.vector.Vector3f">
+              <property name="x" value="-7" />
+              <property name="y" value="0" />
+              <property name="z" value="-10" />
+           </bean>
+        </property>
+        <property name="action" ref="orbit" />
+     </bean>
+
+
+
+     <bean id="ship02" 
+           class="net.wohlfart.basic.states.SceneCreator"
+           factory-method="loadModelFromFile">
+        <constructor-arg value="/models/ships/02.obj" />
+        <property name="position" >
+           <bean class="org.lwjgl.util.vector.Vector3f">
+              <property name="x" value="7" />
+              <property name="y" value="0" />
+              <property name="z" value="-10" />
+           </bean>
+        </property>
+     </bean>
      
      
-                           
+     <bean id="rotate" 
+           class="net.wohlfart.gl.action.RotateAction"
+           factory-method="create">
+     </bean>
+
+     <bean id="orbit" 
+           class="net.wohlfart.gl.action.OrbitAction"
+           factory-method="create">
+     </bean>
+
+
 </beans>

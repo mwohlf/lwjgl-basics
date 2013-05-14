@@ -194,7 +194,7 @@ public final class SimpleMath {
     }
 
     /**
-     * create a rotation quaternion defined by a start and an end vector, 
+     * create a rotation quaternion defined by a start and an end vector,
      * the rotation will be the rotation needed to transform the first vector into the second
      *
      * taken from: https://bitbucket.org/sinbad/ogre/src/9db75e3ba05c/OgreMain/include/OgreVector3.h#cl-651
@@ -296,7 +296,7 @@ public final class SimpleMath {
      * <p>convert.</p>
      *
      * @param move a {@link org.lwjgl.util.vector.Vector3f} object.
-     * @param rot a {@link org.lwjgl.util.vector.Quaternion} object.
+     * @param ROTATION a {@link org.lwjgl.util.vector.Quaternion} object.
      * @param mat a {@link org.lwjgl.util.vector.Matrix4f} object.
      * @return a {@link org.lwjgl.util.vector.Matrix4f} object.
      */
@@ -376,7 +376,7 @@ public final class SimpleMath {
     /**
      * <p>convert.</p>
      *
-     * @param rot
+     * @param ROTATION
      *            quaternion describing a rotation
      * @return a matrix
      * @param mat a {@link org.lwjgl.util.vector.Matrix4f} object.
@@ -511,19 +511,19 @@ public final class SimpleMath {
 
     // TODO: fix this: without allocating new memory...
     // it would also be nice to be thread-safe...
-    final static Quaternion rot = new Quaternion();
+    final static Quaternion ROTATION = new Quaternion();
     public static void rotate(Quaternion q, float angle, Vector3f axis) {
         axis.normalise();
         final double n = Math.sqrt(axis.x * axis.x + axis.y * axis.y + axis.z * axis.z);
         final float sin = (float) (Math.sin(0.5 * angle) / n);
-        rot.x = axis.x * sin;
-        rot.y = axis.y * sin;
-        rot.z = axis.z * sin;
-        rot.w = (float) Math.cos(0.5 * angle);
+        ROTATION.x = axis.x * sin;
+        ROTATION.y = axis.y * sin;
+        ROTATION.z = axis.z * sin;
+        ROTATION.w = (float) Math.cos(0.5 * angle);
 
-        Quaternion.mul(rot, q, rot);
-        normalizeLocal(rot);
-        q.set(rot);
+        Quaternion.mul(ROTATION, q, ROTATION);
+        normalizeLocal(ROTATION);
+        q.set(ROTATION);
     }
 
     /**
@@ -598,6 +598,24 @@ public final class SimpleMath {
                 + (a.y - b.y) * (a.y - b.y)
                 + (a.z - b.z) * (a.z - b.z)
                 );
+    }
+
+    Vector3f getForwardVector(Quaternion q) {
+        return new Vector3f( 2 * (q.x * q.z + q.w * q.y),
+                             2 * (q.y * q.x - q.w * q.x),
+                             1 - 2 * (q.x * q.x + q.y * q.y));
+    }
+
+    Vector3f getUpVector(Quaternion q) {
+        return new Vector3f( 2 * (q.x * q.y - q.w * q.z),
+                             1 - 2 * (q.x * q.x + q.z * q.z),
+                             2 * (q.y * q.z + q.w * q.x));
+    }
+
+    Vector3f getRightVector(Quaternion q) {
+        return new Vector3f( 1 - 2 * (q.y * q.y + q.z * q.z),
+                             2 * (q.x * q.y + q.w * q.z),
+                             2 * (q.x * q.z - q.w * q.y));
     }
 
 }

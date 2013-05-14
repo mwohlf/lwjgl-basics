@@ -226,7 +226,6 @@ public class Camera implements CanRotate, CanMove {
         rotation.setRotation(quaternion);
     }
 
-
     @Override
     public void move(Vector3f vector) {
         movement.move(vector);

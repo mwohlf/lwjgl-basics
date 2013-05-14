@@ -117,13 +117,13 @@ final class SceneCreator {
     }
 
     static Model loadModelFromFile(String path) {
-        try (InputStream inputStream = ClassLoader.class.getResourceAsStream(path);) {
+        try (InputStream inputStream = ClassLoader.class.getResourceAsStream(path)) {
             if (inputStream == null) {
                 throw new GenericGameException("input stream is null for path '" + path + "'");
             }
             return new ModelLoader().getModel(inputStream);
         } catch (IOException ex) {
-            throw new GenericGameException("i/O Error while loading model from file with path '" + path + "'", ex);
+            throw new GenericGameException("I/O Error while loading model from file with path '" + path + "'", ex);
         }
     }
 
@@ -131,21 +131,27 @@ final class SceneCreator {
         return getRandomPosition(100f);
     }
 
+    // @formatter:off
     static Vector3f getRandomPosition(float range) {
         return new Vector3f(
                 SimpleMath.random(-range, +range),
                 SimpleMath.random(-range, +range),
                 SimpleMath.random(-range, +range));
     }
+    // @formatter:on
 
 
+    // @formatter:off
     static Action getRandomAction() {
         // return RotateAction.create(SimpleMath.random(5f,  50f), getRandomPosition());
         // return OrbitAction.create();
         return ParallelAction.create(
-                        OrbitAction.create(SimpleMath.random(25f,  50f), new Vector3f(0,0,0), getRandomPosition(1)),
-                        RotateAction.create(SimpleMath.random(5f,  50f), getRandomPosition()));
+                        OrbitAction.create(SimpleMath.random(25f,  50f),
+                                new Vector3f(0,0,0), getRandomPosition(1)),
+                        RotateAction.create(SimpleMath.random(5f,  50f),
+                                getRandomPosition()));
     }
+    // @formatter:on
 
 
 

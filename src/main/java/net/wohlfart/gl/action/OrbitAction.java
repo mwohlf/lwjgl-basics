@@ -2,6 +2,7 @@ package net.wohlfart.gl.action;
 
 import net.wohlfart.tools.SimpleMath;
 
+import org.lwjgl.util.vector.Quaternion;
 import org.lwjgl.util.vector.Vector3f;
 
 public final class OrbitAction implements Action {
@@ -41,14 +42,24 @@ public final class OrbitAction implements Action {
         return result;
     }
 
+    // FIXME: too many news in this method...
     @Override
     public void perform(Actor actor, float timeInSec) {
         Vector3f v = actor.getPosition();
         SimpleMath.sub(v, center, tmp1);
         float radius = tmp1.length();                // tmp1: from the center to the position
 
+        Quaternion currentRotation = actor.getRotation();
+
+        Vector3f up = SimpleMath.getUp(currentRotation, new Vector3f());  // we want to keep up
+        Vector3f right = new Vector3f(-tmp1.x, -tmp1.y, -tmp1.z).normalise(new Vector3f());
+        Vector3f forward =  Vector3f.cross(up, right, new Vector3f());
+
         Vector3f.cross(axis, tmp1, tmp2);            // tmp2: move direction
         tmp2.scale(timeInSec / orbitTime);
+
+        Quaternion rotation = SimpleMath.createQuaternion(new Vector3f(0,0,1), forward, new Quaternion());
+        actor.setRotation(rotation);
 
         SimpleMath.add(tmp2, v, tmp1);               // tmp1: new position off the radius
 
