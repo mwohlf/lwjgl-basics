@@ -75,7 +75,7 @@
         <constructor-arg>
             <list>
                 <bean class="net.wohlfart.basic.states.SceneCreator" factory-method="createCircledTarget" />
-                <bean class="net.wohlfart.basic.states.SceneCreator" factory-method="createRandomElements" />
+                <bean class="net.wohlfart.basic.states.SceneCreator" factory-method="createRandomElements" /> 
                 <bean class="net.wohlfart.basic.states.SceneCreator" factory-method="createOriginAxis" />
                 <bean class="net.wohlfart.basic.states.SceneCreator" factory-method="createDebugElements" />
             </list>

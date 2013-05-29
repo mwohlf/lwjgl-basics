@@ -1,4 +1,4 @@
-package net.wohlfart.gl.antlr4;
+package net.wohlfart.gl.model;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,7 +13,10 @@ import org.lwjgl.util.vector.Vector2f;
 import org.lwjgl.util.vector.Vector3f;
 
 public class Model extends AbstractRenderable implements Actor {
+    // unique
     private final String name;
+
+    private float radius;
 
     private final List<Vector3f> positions = new ArrayList<Vector3f>();
     private final List<Vector3f> normals = new ArrayList<Vector3f>();
@@ -33,6 +36,17 @@ public class Model extends AbstractRenderable implements Actor {
 
     public String getName() {
         return name;
+    }
+
+    protected float calculateRadius() {
+        float result = 0;
+        Vector3f tmp = new Vector3f();
+        for (Vector3f vec : positions) {
+            tmp.set(translation);
+            tmp = Vector3f.sub(vec, tmp, tmp);
+            result = Math.max(result, tmp.length());
+        }
+        return result;
     }
 
     @Override
@@ -97,19 +111,19 @@ public class Model extends AbstractRenderable implements Actor {
         return result;
     }
 
-    void addPosition(float x, float y, float z) {
+    public void addPosition(float x, float y, float z) {
         positions.add(new Vector3f(x,y,z));
     }
 
-    void addNormal(float x, float y, float z) {
+    public void addNormal(float x, float y, float z) {
         normals.add(new Vector3f(x,y,z));
     }
 
-    void addTextureCoord(float u, float v) {
+    public void addTextureCoord(float u, float v) {
         textureCoords.add(new Vector2f(u,v));
     }
 
-    void addVertexForStream(final int position, final int textureCoords, final int normal) {
+    public void addVertexForStream(final int position, final int textureCoords, final int normal) {
         attrIdices.add(new VertexAttr() {{
             this.positionIdx = position;
             this.textureCoordIdx = textureCoords;

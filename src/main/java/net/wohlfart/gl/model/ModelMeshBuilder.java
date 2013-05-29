@@ -1,4 +1,4 @@
-package net.wohlfart.gl.antlr4;
+package net.wohlfart.gl.model;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;

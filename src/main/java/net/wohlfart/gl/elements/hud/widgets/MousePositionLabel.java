@@ -27,8 +27,9 @@ public class MousePositionLabel extends FormattedLabel {
      * @param positionEvent a {@link net.wohlfart.gl.input.CommandEvent.PositionPointer} object.
      */
     @Subscribe
-    public synchronized void onMouseMove(CommandEvent.PositionPointer positionEvent) {
-        setValue(new Object[] {positionEvent.getX(), positionEvent.getY()});
+    public synchronized void onMouseMove(CommandEvent positionEvent) {
+        // TODO: fix this
+        // setValue(new Object[] {positionEvent.getX(), positionEvent.getY()});
     }
 
 }

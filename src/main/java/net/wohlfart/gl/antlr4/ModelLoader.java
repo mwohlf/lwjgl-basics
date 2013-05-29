@@ -5,12 +5,16 @@ import java.io.InputStream;
 import java.util.List;
 
 import net.wohlfart.basic.GenericGameException;
+import net.wohlfart.gl.antlr4.WavefrontBaseListener;
+import net.wohlfart.gl.antlr4.WavefrontLexer;
+import net.wohlfart.gl.antlr4.WavefrontParser;
 import net.wohlfart.gl.antlr4.WavefrontParser.FaceContext;
 import net.wohlfart.gl.antlr4.WavefrontParser.NormalContext;
 import net.wohlfart.gl.antlr4.WavefrontParser.ObjectNameContext;
 import net.wohlfart.gl.antlr4.WavefrontParser.PositionContext;
 import net.wohlfart.gl.antlr4.WavefrontParser.TextureCoordContext;
 import net.wohlfart.gl.antlr4.WavefrontParser.VertIndicesContext;
+import net.wohlfart.gl.model.Model;
 
 import org.antlr.v4.runtime.ANTLRInputStream;
 import org.antlr.v4.runtime.CommonTokenStream;

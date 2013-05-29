@@ -1,6 +1,7 @@
 package net.wohlfart.gl.input;
 
-import net.wohlfart.tools.SimpleMath;
+import net.wohlfart.tools.ObjectPool;
+import net.wohlfart.tools.ObjectPool.PoolableObject;
 
 /*
  * the high level commands, base class for all kind of high level events/commands
@@ -11,10 +12,47 @@ import net.wohlfart.tools.SimpleMath;
  *
  *
  */
-public class CommandEvent {
-    private static final float ROTATION_SPEED = SimpleMath.TWO_PI;  // one rotation per sec
-    private static final float MOVE_SPEED = 100f;                   // 100 units per sec
-    private static final float WHEEL_SENSITIVITY = 0.5f;            //
+public class CommandEvent implements PoolableObject  {
+
+    private CommandKey key;
+
+    private static ObjectPool<CommandEvent> pool = new ObjectPool<CommandEvent>(10) {
+        @Override
+        protected CommandEvent newObject() {
+            return new CommandEvent();
+        }
+    };
+
+    public CommandKey getKey() {
+        return key;
+    }
+
+
+    public static CommandEvent exit() {
+        CommandEvent result = pool.borrowObject();
+        result.key = CommandKey.EXIT;
+        return result;
+    }
+
+    @Override
+    public void reset() {
+        pool.returnObject(this);
+    }
+
+
+
+
+
+    public enum CommandKey {
+        EXIT
+    }
+
+
+
+
+    // ----------
+
+
 
     protected float delta;
 
@@ -57,6 +95,7 @@ public class CommandEvent {
         }
     }
 
+    /*
     protected static class KeybasedEvent extends CommandEvent {
 
         private int key;
@@ -69,11 +108,13 @@ public class CommandEvent {
             this.key = key;
         }
 
+        @Override
         int getKey() {
             return key;
         }
 
     }
+
 
     private static class RotationEvent extends KeybasedEvent {
         @Override
@@ -91,7 +132,9 @@ public class CommandEvent {
             super.setDelta(WHEEL_SENSITIVITY * amount);
         }
     }
+    */
 
+    /*
     // @formatter:off
     public static class PositionPointer extends PositionEvent {};
 
@@ -105,6 +148,8 @@ public class CommandEvent {
 
     public static class Exit extends KeybasedEvent {}
 
+
+
     public static class RotateLeft extends RotationEvent {}
 
     public static class RotateRight extends RotationEvent {}
@@ -116,6 +161,8 @@ public class CommandEvent {
     public static class RotateClockwise extends RotationEvent {}
 
     public static class RotateCounterClockwise extends RotationEvent {}
+
+
 
     public static class MoveLeft extends MoveEvent {}
 
@@ -129,4 +176,5 @@ public class CommandEvent {
 
     public static class MoveBackward extends MoveEvent {}
     // @formatter:on
+    */
 }

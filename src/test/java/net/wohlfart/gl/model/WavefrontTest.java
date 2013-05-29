@@ -1,4 +1,4 @@
-package net.wohlfart.gl.antlr4;
+package net.wohlfart.gl.model;
 
 import static org.junit.Assert.assertEquals;
 
@@ -6,6 +6,7 @@ import java.io.ByteArrayInputStream;
 import java.io.UnsupportedEncodingException;
 
 import net.wohlfart.basic.GenericGameException;
+import net.wohlfart.gl.antlr4.ModelLoader;
 
 import org.junit.Test;
 
@@ -22,7 +23,7 @@ public class WavefrontTest {
      */
     @Test
     public void simpleParse() throws GenericGameException, UnsupportedEncodingException {
-        Model model = (Model) new ModelLoader().getModel(new ByteArrayInputStream(getCube().getBytes("UTF-8")));
+        Model model = new ModelLoader().getModel(new ByteArrayInputStream(getCube().getBytes("UTF-8")));
         // 6 faces 2 triangles each face, 3 vertices each triangle
         assertEquals(6 * 2 * 3, model.getAttrIndices().size());
         // 8 edges of a cube

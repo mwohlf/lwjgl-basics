@@ -65,6 +65,6 @@ public interface CanRotate {
      *            a {@link org.lwjgl.util.vector.Vector3f} object.
      * @return a {@link org.lwjgl.util.vector.Vector3f} object.
      */
-    public abstract Vector3f getDir(Vector3f result);
+    public abstract Vector3f getForward(Vector3f result);
 
 }

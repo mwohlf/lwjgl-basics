@@ -163,7 +163,7 @@ public final class SimpleMath {
      * @param vec a {@link org.lwjgl.util.vector.Vector3f} object.
      * @param result a {@link org.lwjgl.util.vector.Vector3f} object.
      */
-    public static void mul(final Quaternion q, final Vector3f vec, final Vector3f result) {
+    public static Vector3f mul(final Quaternion q, final Vector3f vec, final Vector3f result) {
         float xx, yy, zz;
         // @formatter:off
         xx = q.w * q.w * vec.x + 2 * q.y * q.w * vec.z - 2 * q.z * q.w * vec.y
@@ -182,6 +182,7 @@ public final class SimpleMath {
         result.x = xx;
         result.y = yy;
         result.z = zz;
+        return result;
     }
 
 

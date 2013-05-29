@@ -1,4 +1,4 @@
-package net.wohlfart.gl.antlr4;
+package net.wohlfart.gl.model;
 
 import net.wohlfart.gl.renderer.IsRenderable;
 import net.wohlfart.gl.shader.ShaderAttributeHandle;

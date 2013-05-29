@@ -50,7 +50,7 @@ public class CanRotateImpl extends Quaternion implements CanRotate {
 
     /** the (0,0,1) vector / Z axis */
     @Override
-    public Vector3f getDir(final Vector3f result) {
+    public Vector3f getForward(final Vector3f result) {
         result.x = 2f * (x * z - w * y);
         result.y = 2f * (y * z + w * x);
         result.z = 1f - 2f * (x * x + y * y);

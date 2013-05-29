@@ -52,7 +52,7 @@ abstract class AbstractGraphicState implements GameState {
      * @param exitEvent a {@link net.wohlfart.gl.input.CommandEvent.Exit} object.
      */
     @Subscribe
-    public synchronized void onExitTriggered(CommandEvent.Exit exitEvent) {
+    public synchronized void onExitTriggered(CommandEvent exitEvent) {
         quit = true;
     }
 

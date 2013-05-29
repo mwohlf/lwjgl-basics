@@ -23,15 +23,6 @@ import org.lwjgl.util.vector.Vector3f;
  */
 public abstract class AbstractRenderable implements IsRenderable, IsUpdateable, CanRotate, CanMove, Actor {
 
-    // initial properties of the mesh
-    protected final Vector3f translation = new Vector3f();
-    protected final Quaternion rotation = new Quaternion();
-    protected ReadableColor color = Color.BLUE;
-    // a static mesh that is created lazy
-    private IsRenderable delegate;
-
-    // dynamic translation and rotation
-    private boolean matrixIsOutdated = true;
     private final CanMoveImpl currentTranslation = new CanMoveImpl();
     private final CanRotateImpl currentRotation = new CanRotateImpl();
     private final Matrix4f modelToWorldMatrix = Matrix4f.setZero(new Matrix4f());
@@ -39,18 +30,33 @@ public abstract class AbstractRenderable implements IsRenderable, IsUpdateable, 
 
     private Action action = Action.NULL;
 
+    // a static mesh that is created lazy
+    private IsRenderable delegate;
+
+    private boolean reCreateMatrice = true;
+    private boolean reCreateRenderable = true;
+
+    // initial properties of this mesh
+    protected final Vector3f translation = new Vector3f();
+    protected final Quaternion rotation = new Quaternion();
+    protected ReadableColor color = Color.BLUE;
+
 
     /**
-     * <p>This is the core method that needs to be implemented by subclasses,
-     * use the  </p>
+     * <p>
+     * This is the core method that needs to be implemented by subclasses.
+     * </p>
      *
      * @return a {@link net.wohlfart.gl.shader.mesh.IRenderable} object.
      */
     protected abstract IsRenderable setupMesh();
 
     /**
-     * <p>This method has to be called to whenever something in the object data was changed
-     *   in order to recreate the mesh data.</p>
+     * <p>
+     * This method has to be called to whenever
+     * something in the object data was changed
+     * in order to recreate the mesh data.
+     * </p>
      */
     protected void destroyMeshData() {
         delegate = null;
@@ -64,9 +70,9 @@ public abstract class AbstractRenderable implements IsRenderable, IsUpdateable, 
      * @param translation a {@link org.lwjgl.util.vector.Vector3f} object.
      * @return a {@link net.wohlfart.gl.elements.AbstractRenderable} object.
      */
-    public AbstractRenderable withTranslation(Vector3f translation) {
-        this.translation.set(translation);
-        destroyMeshData();
+    public AbstractRenderable withTranslation(Vector3f newTranslation) {
+        translation.set(newTranslation);
+        reCreateRenderable = true;
         return this;
     }
 
@@ -76,9 +82,9 @@ public abstract class AbstractRenderable implements IsRenderable, IsUpdateable, 
      * @param rotation a {@link org.lwjgl.util.vector.Quaternion} object.
      * @return a {@link net.wohlfart.gl.elements.AbstractRenderable} object.
      */
-    public AbstractRenderable withRotation(Quaternion rotation) {
-        this.rotation.set(rotation);
-        destroyMeshData();
+    public AbstractRenderable withRotation(Quaternion newRotation) {
+        rotation.set(newRotation);
+        reCreateRenderable = true;
         return this;
     }
 
@@ -90,7 +96,7 @@ public abstract class AbstractRenderable implements IsRenderable, IsUpdateable, 
      */
     public AbstractRenderable withColor(ReadableColor color) {
         this.color = color;
-        destroyMeshData();
+        reCreateRenderable = true;
         return this;
     }
 
@@ -102,7 +108,7 @@ public abstract class AbstractRenderable implements IsRenderable, IsUpdateable, 
     @Override
     public void setPosition(Vector3f vector) {
         this.currentTranslation.setPosition(vector);
-        matrixIsOutdated = true;
+        reCreateMatrice = true;
     }
 
     /**
@@ -113,23 +119,24 @@ public abstract class AbstractRenderable implements IsRenderable, IsUpdateable, 
     @Override
     public void setRotation(Quaternion quaternion) {
         this.currentRotation.setRotation(quaternion);
-        matrixIsOutdated = true;
+        reCreateMatrice = true;
     }
 
     /** {@inheritDoc} */
     @Override
     public void render() {
-        if (delegate == null) {
-            delegate = setupMesh();
-        }
-        if (matrixIsOutdated) {
+        if (reCreateMatrice) {
             SimpleMath.convert(currentTranslation, currentRotation, modelToWorldMatrix);
             SimpleMath.calculateNormalMatrix(modelToWorldMatrix, normalMatrix);
-            matrixIsOutdated = false;
+            reCreateMatrice = false;
         }
         ShaderUniformHandle.MODEL_TO_WORLD.set(modelToWorldMatrix);
         ShaderUniformHandle.NORMAL.set(normalMatrix);
 
+        if (reCreateRenderable) {
+            delegate = setupMesh();
+            reCreateRenderable = false;
+        }
         delegate.render();
     }
 
@@ -143,6 +150,7 @@ public abstract class AbstractRenderable implements IsRenderable, IsUpdateable, 
     @Override
     public void move(Vector3f vector) {
         currentTranslation.move(vector);
+        reCreateMatrice = true;
     }
 
     @Override
@@ -153,6 +161,7 @@ public abstract class AbstractRenderable implements IsRenderable, IsUpdateable, 
     @Override
     public void rotate(float deltaAngle, Vector3f axis) {
         currentRotation.rotate(deltaAngle, axis);
+        reCreateMatrice = true;
     }
 
     @Override
@@ -171,8 +180,8 @@ public abstract class AbstractRenderable implements IsRenderable, IsUpdateable, 
     }
 
     @Override
-    public Vector3f getDir(Vector3f result) {
-        return currentRotation.getDir(result);
+    public Vector3f getForward(Vector3f result) {
+        return currentRotation.getForward(result);
     }
 
     @Override

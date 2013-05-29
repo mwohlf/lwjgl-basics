@@ -1,6 +1,8 @@
 package net.wohlfart.gl.view;
 
-import net.wohlfart.gl.input.CommandEvent;
+import net.wohlfart.gl.input.MoveEvent;
+import net.wohlfart.gl.input.RotateEvent;
+import net.wohlfart.tools.SimpleMath;
 
 import org.lwjgl.util.vector.Quaternion;
 import org.lwjgl.util.vector.Vector3f;
@@ -54,8 +56,8 @@ public class Camera implements CanRotate, CanMove {
      * @return a {@link org.lwjgl.util.vector.Vector3f} object.
      */
     @Override
-    public Vector3f getDir(Vector3f vec) {
-        return rotation.getDir(vec);
+    public Vector3f getForward(Vector3f vec) {
+        return rotation.getForward(vec);
     }
 
     /**
@@ -90,131 +92,73 @@ public class Camera implements CanRotate, CanMove {
         return movement.getPosition();
     }
 
-    /**
-     * <p>moveForward.</p>
-     *
-     * @param evt a {@link net.wohlfart.gl.input.CommandEvent.MoveForward} object.
-     */
+
     @Subscribe
-    public void moveForward(CommandEvent.MoveForward evt) {
-        final Vector3f pos = movement.getPosition();
-        Vector3f.sub(pos, (Vector3f) rotation.getDir(new Vector3f()).scale(evt.getDelta() * MOVE_SPEED), pos);
+    public void move(MoveEvent evt) {
+        final Quaternion rot = new Quaternion();
+        rotation.getRotation().negate(rot);
+        final Vector3f move = SimpleMath.mul(rot, evt, evt);
+        Vector3f.add(movement.getPosition(), move, movement.getPosition());
     }
 
-    /**
-     * <p>moveBackward.</p>
-     *
-     * @param evt a {@link net.wohlfart.gl.input.CommandEvent.MoveBackward} object.
-     */
+
+
+
     @Subscribe
-    public void moveBackward(CommandEvent.MoveBackward evt) {
-        final Vector3f pos = movement.getPosition();
-        Vector3f.add(pos, (Vector3f) rotation.getDir(new Vector3f()).scale(evt.getDelta() * MOVE_SPEED), pos);
+    public void rotate(RotateEvent evt) {
+        Quaternion.mul(evt, rotation.getRotation(), rotation.getRotation());
     }
 
-    /**
-     * <p>moveLeft.</p>
-     *
-     * @param evt a {@link net.wohlfart.gl.input.CommandEvent.MoveLeft} object.
-     */
-    @Subscribe
-    public void moveLeft(CommandEvent.MoveLeft evt) {
-        final Vector3f pos = movement.getPosition();
-        Vector3f.sub(pos, (Vector3f) rotation.getRght(new Vector3f()).scale(evt.getDelta() * MOVE_SPEED), pos);
-    }
-
-    /**
-     * <p>moveRight.</p>
-     *
-     * @param evt a {@link net.wohlfart.gl.input.CommandEvent.MoveRight} object.
-     */
-    @Subscribe
-    public void moveRight(CommandEvent.MoveRight evt) {
-        final Vector3f pos = movement.getPosition();
-        Vector3f.add(pos, (Vector3f) rotation.getRght(new Vector3f()).scale(evt.getDelta() * MOVE_SPEED), pos);
-    }
-
-    /**
-     * <p>moveUp.</p>
-     *
-     * @param evt a {@link net.wohlfart.gl.input.CommandEvent.MoveUp} object.
-     */
-    @Subscribe
-    public void moveUp(CommandEvent.MoveUp evt) {
-        final Vector3f pos = movement.getPosition();
-        Vector3f.sub(pos, (Vector3f) rotation.getUp(new Vector3f()).scale(evt.getDelta() * MOVE_SPEED), pos);
-    }
-
-    /**
-     * <p>moveDown.</p>
-     *
-     * @param evt a {@link net.wohlfart.gl.input.CommandEvent.MoveDown} object.
-     */
-    @Subscribe
-    public void moveDown(CommandEvent.MoveDown evt) {
-        final Vector3f pos = movement.getPosition();
-        Vector3f.add(pos, (Vector3f) rotation.getUp(new Vector3f()).scale(evt.getDelta() * MOVE_SPEED), pos);
-    }
-
-    /**
-     * <p>rotateDown.</p>
-     *
-     * @param evt a {@link net.wohlfart.gl.input.CommandEvent.RotateDown} object.
-     */
-    @Subscribe
-    public void rotateDown(CommandEvent.RotateDown evt) {
-        rotation.rotate(evt.getDelta() * ROT_SPEED, new Vector3f(+1, 0, 0));
-    }
 
     /**
      * <p>rotateUp.</p>
      *
      * @param evt a {@link net.wohlfart.gl.input.CommandEvent.RotateUp} object.
-     */
-    @Subscribe
+     @Subscribe
     public void rotateUp(CommandEvent.RotateUp evt) {
         rotation.rotate(evt.getDelta() * ROT_SPEED, new Vector3f(-1, 0, 0));
     }
+    */
 
     /**
      * <p>rotateRight.</p>
      *
      * @param evt a {@link net.wohlfart.gl.input.CommandEvent.RotateRight} object.
-     */
     @Subscribe
     public void rotateRight(CommandEvent.RotateRight evt) {
         rotation.rotate(evt.getDelta() * ROT_SPEED, new Vector3f(0, +1, 0));
     }
+    */
 
     /**
      * <p>rotateLeft.</p>
      *
      * @param evt a {@link net.wohlfart.gl.input.CommandEvent.RotateLeft} object.
-     */
     @Subscribe
     public void rotateLeft(CommandEvent.RotateLeft evt) {
         rotation.rotate(evt.getDelta() * ROT_SPEED, new Vector3f(0, -1, 0));
     }
+    */
 
     /**
      * <p>rotateClockwise.</p>
      *
      * @param evt a {@link net.wohlfart.gl.input.CommandEvent.RotateClockwise} object.
-     */
     @Subscribe
     public void rotateClockwise(CommandEvent.RotateClockwise evt) {
         rotation.rotate(evt.getDelta() * ROT_SPEED, new Vector3f(0, 0, +1));
     }
+    */
 
     /**
      * <p>rotateCounterClockwise.</p>
      *
      * @param evt a {@link net.wohlfart.gl.input.CommandEvent.RotateCounterClockwise} object.
-     */
     @Subscribe
     public void rotateCounterClockwise(CommandEvent.RotateCounterClockwise evt) {
         rotation.rotate(evt.getDelta() * ROT_SPEED, new Vector3f(0, 0, -1));
     }
+    */
 
     @Override
     public void rotate(float deltaAngle, Vector3f axis) {
@@ -240,11 +184,17 @@ public class Camera implements CanRotate, CanMove {
     @Override
     public String toString() {
         Vector3f pos = movement.getPosition();
-        Vector3f dir = rotation.getDir(new Vector3f());
+        Vector3f dir = rotation.getForward(new Vector3f());
         Vector3f up = rotation.getUp(new Vector3f());
+        Vector3f rght = rotation.getRght(new Vector3f());
         return ""
            + "Position: (" + pos.x + "," + pos.y + "," + pos.z + ") "
-           + "Direction: (" + dir.x + "," + dir.y + "," + dir.z + ") Up: (" + up.x + "," + up.y + "," + up.z + ")";
+           + " Direction: (" + dir.x + "," + dir.y + "," + dir.z + ")"
+           + " Up: (" + up.x + "," + up.y + "," + up.z + ")"
+           + " Rght: (" + rght.x + "," + rght.y + "," + rght.z + ")"
+           + " Direction.Up: " + Vector3f.dot(dir, up)
+           + " Direction.Right: " + Vector3f.dot(dir, rght)
+           + " Up.Right: " + Vector3f.dot(up, rght);
     }
 
 

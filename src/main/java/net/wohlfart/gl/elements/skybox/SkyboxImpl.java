@@ -73,7 +73,7 @@ public class SkyboxImpl implements Skybox, SkyboxParameters {
         GL11.glDisable(GL11.GL_BLEND);
 
         // draw only the visible sides
-        camera.getDir(viewDirection);
+        camera.getForward(viewDirection);
         viewDirection.normalise(viewDirection);
         for (final BoxSideMesh side : sides) {
             if (Vector3f.dot(viewDirection, side.getNormal()) > BoxSide.DOT_PROD_LIMIT) {

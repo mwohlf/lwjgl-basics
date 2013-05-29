@@ -22,4 +22,19 @@ public class DefaultInputDispatcher extends EventBus implements InputDispatcher 
         //
     }
 
+    @Override
+    public void register(Object listener) {
+        super.register(listener);
+    }
+
+    @Override
+    public void unregister(Object listener) {
+        super.unregister(listener);
+    }
+
+    @Override
+    public void post(Object event) {
+        super.post(event);
+    }
+
 }
