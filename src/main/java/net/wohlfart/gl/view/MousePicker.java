@@ -1,10 +1,14 @@
 package net.wohlfart.gl.view;
 
+import net.wohlfart.gl.elements.debug.Arrow;
+import net.wohlfart.gl.input.PointEvent;
 import net.wohlfart.gl.renderer.RenderableBucket;
 
 import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector3f;
 import org.lwjgl.util.vector.Vector4f;
+
+import com.google.common.eventbus.Subscribe;
 
 /**
  * <p>MousePicker class.</p>
@@ -37,16 +41,15 @@ public class MousePicker {
      * <p>onMouseClick.</p>
      *
      * @param clickEvent a {@link net.wohlfart.gl.input.CommandEvent.LeftClick} object.
+     */
     @Subscribe
-    public void onMouseClick(CommandEvent.LeftClick clickEvent) {
+    public void onMouseClick(PointEvent clickEvent) {
         float x = clickEvent.getX();
         float y = clickEvent.getY();
-
 
         PickingRay ray = createPickingRay(x, y, elemBucket);
         elemBucket.addContent(Arrow.createLink(ray.getStart(), ray.getEnd()));
     }
-     */
 
 
 

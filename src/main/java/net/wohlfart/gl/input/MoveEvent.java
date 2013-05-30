@@ -8,7 +8,7 @@ import org.lwjgl.util.vector.Vector3f;
 @SuppressWarnings("serial")
 public class MoveEvent extends Vector3f implements PoolableObject  {
     private static final float MOVE_SPEED = 100f;                   // 100 units per sec
-    private static final float WHEEL_SENSITIVITY = 0.5f;            //
+    private static final float WHEEL_SENSITIVITY = 0.05f;            //
 
     private static ObjectPool<MoveEvent> pool = new ObjectPool<MoveEvent>(10) {
         @Override
@@ -26,12 +26,8 @@ public class MoveEvent extends Vector3f implements PoolableObject  {
 
     // ---- package private static factory methods
 
-    static Object wheelForward(float time, int delta) {
-        return move(0,0,-time * MOVE_SPEED * WHEEL_SENSITIVITY * delta);
-    }
-
-    static MoveEvent wheelBack(float time, int delta) {
-        return move(0,0,+time * MOVE_SPEED * WHEEL_SENSITIVITY * delta);
+    static Object wheel(float time, int delta) {
+        return move(0,0, time * MOVE_SPEED * WHEEL_SENSITIVITY * delta);
     }
 
     public static Object moveRight(float time) {

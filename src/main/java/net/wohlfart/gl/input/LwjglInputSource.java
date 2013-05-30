@@ -4,7 +4,6 @@ import java.util.HashSet;
 import java.util.Iterator;
 
 import net.wohlfart.basic.GenericGameException;
-import net.wohlfart.gl.input.InputAdaptor.PositionEventDispatcher;
 
 import org.lwjgl.LWJGLException;
 import org.lwjgl.input.Keyboard;
@@ -22,8 +21,8 @@ public class LwjglInputSource implements InputSource {
     // the current keyboard state
 
     private final KeyboardDevice keyboardDevice = new KeyboardDevice();
-    private PositionEventDispatcher mouseDevice;
-    private Integer lastButton = 0;
+    private final MouseDevice mouseDevice = new MouseDevice();
+    private final Integer lastButton = 0;
 
     private InputDispatcher inputDispatcher;
 
@@ -46,10 +45,11 @@ public class LwjglInputSource implements InputSource {
     public void createInputEvents(float delta) {
         processKeyboardChanges(delta);
         processKeyboardState(delta);
-        /*
-        processMouseButtonChanges(delta);
-        processMousePosition(delta);
         processMouseWheel(delta);
+        processMouseButtonChanges(delta);
+
+        /*
+        processMousePosition(delta);
         processMouseMove(delta);
          */
     }
@@ -81,7 +81,7 @@ public class LwjglInputSource implements InputSource {
 
     private void processMouseWheel(float delta) {
         final int deltaWheel = Mouse.getDWheel();
-        mouseDevice.wheel(deltaWheel);
+        mouseDevice.wheel(delta, deltaWheel);
     }
 
 
@@ -92,13 +92,9 @@ public class LwjglInputSource implements InputSource {
             final int x = Mouse.getEventX();
             final int y = Mouse.getEventY();
             if (pressed) {
-                lastButton = buttonCode;
                 mouseDevice.down(buttonCode, x, y, delta);
-                //           pressedButtons.add(buttonCode);
             } else {
-                lastButton = 0;
                 mouseDevice.up(buttonCode, x, y, delta);
-                //           pressedButtons.remove(buttonCode);
             }
         }
     }
@@ -115,6 +111,53 @@ public class LwjglInputSource implements InputSource {
         //final Iterator<Integer> it = pressedButtons.iterator();
         mouseDevice.move(lastButton, deltaX, deltaY);
     }
+
+
+    private class MouseDevice {
+        private static final int MOUSE_KEY0 = 0;
+        private static final int MOUSE_KEY1 = 1;
+        private static final int MOUSE_KEY2 = 2;
+
+        public void wheel(float delta, int amount) {
+            inputDispatcher.post(MoveEvent.wheel(delta, amount));
+        }
+
+        public void up(int key, int x, int y, float time) {
+        }
+
+        public void down(int key, int x, int y, float time) {
+            switch (key) {
+            case MOUSE_KEY0:
+                inputDispatcher.post(PointEvent.create(x, y, PointEvent.Key.PICK));
+                break;
+            case MOUSE_KEY1:
+                break;
+            case MOUSE_KEY2:
+                inputDispatcher.post(PointEvent.create(x, y, PointEvent.Key.CONTEXT));
+                break;
+            }
+        }
+
+        public void position(int posX, int posY) {
+            /*
+            positionPointer.setPosition(posX, posY);
+            inputDispatcher.post(positionPointer);
+            */
+        }
+
+        public void move(int key, int deltaX, int deltaY) {
+            switch (key) {
+            case MOUSE_KEY0:
+                break;
+            case MOUSE_KEY1:
+                break;
+            case MOUSE_KEY2:
+                break;
+            }
+        }
+
+    };
+
 
 
 

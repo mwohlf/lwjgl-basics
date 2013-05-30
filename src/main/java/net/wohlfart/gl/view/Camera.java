@@ -10,164 +10,64 @@ import org.lwjgl.util.vector.Vector3f;
 import com.google.common.eventbus.Subscribe;
 
 /**
- * <p>Camera class.</p>
+ * <p>
+ * Camera class.
+ * </p>
  */
 public class Camera implements CanRotate, CanMove {
-    // used for key triggered rotations, default rotation speed is one rotation per second
-    private static final float ROT_SPEED = 0.1f;
-    // used for key triggered moves, default move is 100 units per second
-    private static final float MOVE_SPEED = 0.1f;
+    private final Quaternion TMP_QUATERNION = new Quaternion();
+    private final Vector3f TMP_VECTOR = new Vector3f();
 
     private final CanRotate rotation;
     private final CanMove movement;
 
-    /**
-     * <p>Constructor for Camera.</p>
-     */
+
     public Camera() {
         this(new CanRotateImpl(), new CanMoveImpl());
     }
 
-    /**
-     * <p>Constructor for Camera.</p>
-     *
-     * @param rotation a {@link net.wohlfart.gl.view.CanRotate} object.
-     * @param movement a {@link net.wohlfart.gl.view.CanMove} object.
-     */
+
     private Camera(final CanRotate rotation, final CanMove movement) {
         this.rotation = rotation;
         this.movement = movement;
     }
 
-    /**
-     * <p>Getter for the field <code>rotation</code>.</p>
-     *
-     * @return a {@link org.lwjgl.util.vector.Quaternion} object.
-     */
+
     @Override
     public Quaternion getRotation() {
         return rotation.getRotation();
     }
 
-    /**
-     * <p>getDir.</p>
-     *
-     * @param vec a {@link org.lwjgl.util.vector.Vector3f} object.
-     * @return a {@link org.lwjgl.util.vector.Vector3f} object.
-     */
+
     @Override
     public Vector3f getForward(Vector3f vec) {
         return rotation.getForward(vec);
     }
 
-    /**
-     * <p>getUp.</p>
-     *
-     * @param vec a {@link org.lwjgl.util.vector.Vector3f} object.
-     * @return a {@link org.lwjgl.util.vector.Vector3f} object.
-     */
+
     @Override
     public Vector3f getUp(Vector3f vec) {
         return rotation.getUp(vec);
     }
 
-    /**
-     * <p>getRght.</p>
-     *
-     * @param vec a {@link org.lwjgl.util.vector.Vector3f} object.
-     * @return a {@link org.lwjgl.util.vector.Vector3f} object.
-     */
+
     @Override
     public Vector3f getRght(Vector3f vec) {
         return rotation.getRght(vec);
     }
 
-    /**
-     * <p>getPosition.</p>
-     *
-     * @return a {@link org.lwjgl.util.vector.Vector3f} object.
-     */
     @Override
     public Vector3f getPosition() {
         return movement.getPosition();
     }
 
+    // --- moving
 
     @Subscribe
     public void move(MoveEvent evt) {
-        final Quaternion rot = new Quaternion();
-        rotation.getRotation().negate(rot);
-        final Vector3f move = SimpleMath.mul(rot, evt, evt);
-        Vector3f.add(movement.getPosition(), move, movement.getPosition());
-    }
-
-
-
-
-    @Subscribe
-    public void rotate(RotateEvent evt) {
-        Quaternion.mul(evt, rotation.getRotation(), rotation.getRotation());
-    }
-
-
-    /**
-     * <p>rotateUp.</p>
-     *
-     * @param evt a {@link net.wohlfart.gl.input.CommandEvent.RotateUp} object.
-     @Subscribe
-    public void rotateUp(CommandEvent.RotateUp evt) {
-        rotation.rotate(evt.getDelta() * ROT_SPEED, new Vector3f(-1, 0, 0));
-    }
-    */
-
-    /**
-     * <p>rotateRight.</p>
-     *
-     * @param evt a {@link net.wohlfart.gl.input.CommandEvent.RotateRight} object.
-    @Subscribe
-    public void rotateRight(CommandEvent.RotateRight evt) {
-        rotation.rotate(evt.getDelta() * ROT_SPEED, new Vector3f(0, +1, 0));
-    }
-    */
-
-    /**
-     * <p>rotateLeft.</p>
-     *
-     * @param evt a {@link net.wohlfart.gl.input.CommandEvent.RotateLeft} object.
-    @Subscribe
-    public void rotateLeft(CommandEvent.RotateLeft evt) {
-        rotation.rotate(evt.getDelta() * ROT_SPEED, new Vector3f(0, -1, 0));
-    }
-    */
-
-    /**
-     * <p>rotateClockwise.</p>
-     *
-     * @param evt a {@link net.wohlfart.gl.input.CommandEvent.RotateClockwise} object.
-    @Subscribe
-    public void rotateClockwise(CommandEvent.RotateClockwise evt) {
-        rotation.rotate(evt.getDelta() * ROT_SPEED, new Vector3f(0, 0, +1));
-    }
-    */
-
-    /**
-     * <p>rotateCounterClockwise.</p>
-     *
-     * @param evt a {@link net.wohlfart.gl.input.CommandEvent.RotateCounterClockwise} object.
-    @Subscribe
-    public void rotateCounterClockwise(CommandEvent.RotateCounterClockwise evt) {
-        rotation.rotate(evt.getDelta() * ROT_SPEED, new Vector3f(0, 0, -1));
-    }
-    */
-
-    @Override
-    public void rotate(float deltaAngle, Vector3f axis) {
-        rotation.rotate(deltaAngle, axis);
-    }
-
-    @Override
-    public void setRotation(Quaternion quaternion) {
-        rotation.setRotation(quaternion);
+        Quaternion.negate(rotation.getRotation(), TMP_QUATERNION);
+        SimpleMath.mul(TMP_QUATERNION, evt, TMP_VECTOR);
+        Vector3f.add(movement.getPosition(), TMP_VECTOR, movement.getPosition());
     }
 
     @Override
@@ -180,22 +80,37 @@ public class Camera implements CanRotate, CanMove {
         movement.setPosition(vector);
     }
 
+    // --- rotating
+
+    @Subscribe
+    public void rotate(RotateEvent evt) {
+        Quaternion.mul(evt, rotation.getRotation(), rotation.getRotation());
+    }
+
+    @Override
+    public void rotate(float deltaAngle, Vector3f axis) {
+        rotation.rotate(deltaAngle, axis);
+    }
+
+    @Override
+    public void setRotation(Quaternion quaternion) {
+        rotation.setRotation(quaternion);
+    }
 
     @Override
     public String toString() {
         Vector3f pos = movement.getPosition();
         Vector3f dir = rotation.getForward(new Vector3f());
         Vector3f up = rotation.getUp(new Vector3f());
-        Vector3f rght = rotation.getRght(new Vector3f());
+        Vector3f rght = rotation.getRght(new Vector3f());// @formatter:off
         return ""
-           + "Position: (" + pos.x + "," + pos.y + "," + pos.z + ") "
-           + " Direction: (" + dir.x + "," + dir.y + "," + dir.z + ")"
-           + " Up: (" + up.x + "," + up.y + "," + up.z + ")"
-           + " Rght: (" + rght.x + "," + rght.y + "," + rght.z + ")"
-           + " Direction.Up: " + Vector3f.dot(dir, up)
-           + " Direction.Right: " + Vector3f.dot(dir, rght)
-           + " Up.Right: " + Vector3f.dot(up, rght);
-    }
-
+        + "Position: (" + pos.x + "," + pos.y + "," + pos.z + ") "
+        + " Direction: (" + dir.x + "," + dir.y + "," + dir.z + ")"
+        + " Up: (" + up.x + "," + up.y + "," + up.z + ")"
+        + " Rght: (" + rght.x + "," + rght.y + "," + rght.z + ")"
+        + " Direction.Up: " + Vector3f.dot(dir, up)
+        + " Direction.Right: " + Vector3f.dot(dir, rght)
+        + " Up.Right: " + Vector3f.dot(up, rght);
+    }  // @formatter:on
 
 }

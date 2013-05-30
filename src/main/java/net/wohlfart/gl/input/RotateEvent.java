@@ -21,11 +21,10 @@ public class RotateEvent extends Quaternion implements PoolableObject  {
 
     @Override
     public void reset() {
-        // ignored the since data are overridden when borrowed
         pool.returnObject(this);
     }
 
-    public static Object rotateLeft(float time) {
+    static Object rotateLeft(float time) {
         RotateEvent result = pool.borrowObject();
         Quaternion q = new Quaternion();
         SimpleMath.rotate(q , ROTATION_SPEED/360f, new Vector3f(0,1,0));
@@ -33,7 +32,7 @@ public class RotateEvent extends Quaternion implements PoolableObject  {
         return result;
     }
 
-    public static Object rotateRight(float time) {
+    static Object rotateRight(float time) {
         RotateEvent result = pool.borrowObject();
         Quaternion q = new Quaternion();
         SimpleMath.rotate(q , ROTATION_SPEED/360f, new Vector3f(0,-1,0));
@@ -41,7 +40,7 @@ public class RotateEvent extends Quaternion implements PoolableObject  {
         return result;
     }
 
-    public static Object rotateUp(float time) {
+    static Object rotateUp(float time) {
         RotateEvent result = pool.borrowObject();
         Quaternion q = new Quaternion();
         SimpleMath.rotate(q , ROTATION_SPEED/360f, new Vector3f(1,0,0));
@@ -49,7 +48,7 @@ public class RotateEvent extends Quaternion implements PoolableObject  {
         return result;
     }
 
-    public static Object rotateDown(float time) {
+    static Object rotateDown(float time) {
         RotateEvent result = pool.borrowObject();
         Quaternion q = new Quaternion();
         SimpleMath.rotate(q , ROTATION_SPEED/360f, new Vector3f(-1,0,0));
@@ -57,7 +56,7 @@ public class RotateEvent extends Quaternion implements PoolableObject  {
         return result;
     }
 
-    public static Object rotateClockwise(float time) {
+    static Object rotateClockwise(float time) {
         RotateEvent result = pool.borrowObject();
         Quaternion q = new Quaternion();
         SimpleMath.rotate(q , ROTATION_SPEED/360f, new Vector3f(0,0,1));
@@ -65,7 +64,7 @@ public class RotateEvent extends Quaternion implements PoolableObject  {
         return result;
     }
 
-    public static Object rotateCounterClockwise(float time) {
+    static Object rotateCounterClockwise(float time) {
         RotateEvent result = pool.borrowObject();
         Quaternion q = new Quaternion();
         SimpleMath.rotate(q , ROTATION_SPEED/360f, new Vector3f(0,0,-1));
