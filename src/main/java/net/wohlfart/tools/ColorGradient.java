@@ -132,6 +132,11 @@ public class ColorGradient implements Serializable {
             return false;
         }
 
+        @Override
+        public int hashCode() {
+            return Double.valueOf(point).hashCode();
+        }
+
     }
 
     /**

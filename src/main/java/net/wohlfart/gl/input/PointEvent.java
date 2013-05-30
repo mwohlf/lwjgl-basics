@@ -50,4 +50,10 @@ public class PointEvent implements PoolableObject  {
         return y;
     }
 
+
+    public Key getKey() {
+        return key;
+    }
+
+
 }
