@@ -1,18 +1,23 @@
 package net.wohlfart.basic.time;
 
 /**
- * <p>A Timer implementation that works with any clock.</p>
+ * <p>
+ * A Timer implementation that works with any clock.
+ * </p>
  */
-public class TimerImpl implements Timer { // REVIEWED
+public class TimerImpl implements Timer {
 
     private final Clock clock;
     private final long maxValidCount;
     private long lastTickCount;
 
     /**
-     * <p>Constructor for TimerImpl.</p>
-     *
-     * @param clock a {@link net.wohlfart.basic.time.Clock} object.
+     * <p>
+     * Constructor for TimerImpl.
+     * </p>
+     * 
+     * @param clock
+     *            a {@link net.wohlfart.basic.time.Clock} object.
      */
     public TimerImpl(Clock clock) {
         this.clock = clock;

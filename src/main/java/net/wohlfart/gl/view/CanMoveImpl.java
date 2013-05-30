@@ -3,7 +3,9 @@ package net.wohlfart.gl.view;
 import org.lwjgl.util.vector.Vector3f;
 
 /**
- * <p>CanMoveImpl class.</p>
+ * <p>
+ * CanMoveImpl class.
+ * </p>
  */
 @SuppressWarnings("serial")
 public class CanMoveImpl extends Vector3f implements CanMove {
@@ -14,7 +16,6 @@ public class CanMoveImpl extends Vector3f implements CanMove {
         this.y += delta.y;
         this.z += delta.z;
     }
-
 
     /** {@inheritDoc} */
     @Override

@@ -14,10 +14,12 @@ import org.lwjgl.opengl.GL30;
  * also serves as texture for building labels with text content
  */
 /**
- * <p>CharAtlas class.</p>
- *
- *
- *
+ * <p>
+ * CharAtlas class.
+ * </p>
+ * 
+ * 
+ * 
  */
 public class CharAtlas {
 
@@ -40,9 +42,12 @@ public class CharAtlas {
     }
 
     /**
-     * <p>setupTexture.</p>
-     *
-     * @param textureUnit a int.
+     * <p>
+     * setupTexture.
+     * </p>
+     * 
+     * @param textureUnit
+     *            a int.
      */
     protected void setupTexture(int textureUnit) {
 
@@ -83,8 +88,10 @@ public class CharAtlas {
     }
 
     /**
-     * <p>getImage.</p>
-     *
+     * <p>
+     * getImage.
+     * </p>
+     * 
      * @return a {@link java.awt.image.BufferedImage} object.
      */
     public BufferedImage getImage() {
@@ -92,9 +99,12 @@ public class CharAtlas {
     }
 
     /**
-     * <p>getCharInfo.</p>
-     *
-     * @param c a char.
+     * <p>
+     * getCharInfo.
+     * </p>
+     * 
+     * @param c
+     *            a char.
      * @return a {@link net.wohlfart.gl.elements.hud.widgets.CharInfo} object.
      */
     public CharInfo getCharInfo(char c) {
@@ -102,8 +112,10 @@ public class CharAtlas {
     }
 
     /**
-     * <p>getTextureId.</p>
-     *
+     * <p>
+     * getTextureId.
+     * </p>
+     * 
      * @return a int.
      */
     public int getTextureId() {

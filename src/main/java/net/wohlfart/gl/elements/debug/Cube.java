@@ -10,38 +10,35 @@ import net.wohlfart.gl.renderer.IsRenderable;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.util.vector.Vector3f;
 
-
 /**
  * @formatter:off
- *
- *         5---------4
- *        /|        /|
- *       / |       / |
- *      1 ------- 0  |
- *      |  |      |  |
- *      |  6 - - -|- 7
- *      | /       | /
- *      |/        |/
- *      2-------- 3
- *
- * @formatter:on
- * <p>A simple Cube class.</p>
+ * 
+ *                5---------4 /| /| / | / | 1 ------- 0 | | | | | | 6 - - -|- 7 | / | / |/ |/ 2-------- 3
+ * 
+ * @formatter:on <p>
+ *               A simple Cube class.
+ *               </p>
  */
-public class Cube extends AbstractRenderable {  // REVIEWED
+public class Cube extends AbstractRenderable {
 
     private float length = 1;
 
     /**
-     * <p>Constructor for Cube.</p>
+     * <p>
+     * Constructor for Cube.
+     * </p>
      */
     public Cube() {
         // nothing to do
     }
 
     /**
-     * <p>Constructor for Cube.</p>
-     *
-     * @param length a float.
+     * <p>
+     * Constructor for Cube.
+     * </p>
+     * 
+     * @param length
+     *            a float.
      */
     public Cube(float length) {
         this.length = length;
@@ -61,8 +58,10 @@ public class Cube extends AbstractRenderable {  // REVIEWED
     }
 
     /**
-     * <p>createVertices.</p>
-     *
+     * <p>
+     * createVertices.
+     * </p>
+     * 
      * @return a {@link java.util.List} object.
      */
     protected List<Vector3f> createVertices() {
@@ -80,8 +79,10 @@ public class Cube extends AbstractRenderable {  // REVIEWED
     }
 
     /**
-     * <p>createIndices.</p>
-     *
+     * <p>
+     * createIndices.
+     * </p>
+     * 
      * @return an array of {@link java.lang.Integer} objects.
      */
     protected List<Integer> createIndices() {
@@ -96,12 +97,18 @@ public class Cube extends AbstractRenderable {  // REVIEWED
     }
 
     /**
-     * <p>createIndices.</p>
-     *
-     * @param i1 a int.
-     * @param i2 a int.
-     * @param i3 a int.
-     * @param i4 a int.
+     * <p>
+     * createIndices.
+     * </p>
+     * 
+     * @param i1
+     *            a int.
+     * @param i2
+     *            a int.
+     * @param i3
+     *            a int.
+     * @param i4
+     *            a int.
      * @return a {@link java.util.Collection} object.
      */
     protected Collection<Integer> createIndices(int i1, int i2, int i3, int i4) {

@@ -12,9 +12,11 @@ import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector3f;
 
 /**
- * <p>All handlers for uniforms used in any shader.</p>
+ * <p>
+ * All handlers for uniforms used in any shader.
+ * </p>
  */
-public enum ShaderUniformHandle { // @formatter:off
+public enum ShaderUniformHandle {// @formatter:off
     MODEL_TO_WORLD("modelToWorldMatrix"),
     WORLD_TO_CAM("worldToCameraMatrix"),  // model view matrix
     CAM_TO_CLIP("cameraToClipMatrix"),    // projection matrix
@@ -36,8 +38,10 @@ public enum ShaderUniformHandle { // @formatter:off
     }
 
     /**
-     * <p>getLocation.</p>
-     *
+     * <p>
+     * getLocation.
+     * </p>
+     * 
      * @return a int.
      */
     public int getLocation() {
@@ -45,9 +49,12 @@ public enum ShaderUniformHandle { // @formatter:off
     }
 
     /**
-     * <p>set.</p>
-     *
-     * @param matrix a {@link org.lwjgl.util.vector.Matrix4f} object.
+     * <p>
+     * set.
+     * </p>
+     * 
+     * @param matrix
+     *            a {@link org.lwjgl.util.vector.Matrix4f} object.
      */
     public void set(Matrix4f matrix) {
         matrix.store(matrix4Buffer);
@@ -56,9 +63,12 @@ public enum ShaderUniformHandle { // @formatter:off
     }
 
     /**
-     * <p>set.</p>
-     *
-     * @param matrix a {@link org.lwjgl.util.vector.Matrix3f} object.
+     * <p>
+     * set.
+     * </p>
+     * 
+     * @param matrix
+     *            a {@link org.lwjgl.util.vector.Matrix3f} object.
      */
     public void set(Matrix3f matrix) {
         matrix.store(matrix3Buffer);
@@ -67,21 +77,27 @@ public enum ShaderUniformHandle { // @formatter:off
     }
 
     /**
-     * <p>set.</p>
-     *
-     * @param matrix a {@link org.lwjgl.util.vector.Vector3f} object.
+     * <p>
+     * set.
+     * </p>
+     * 
+     * @param matrix
+     *            a {@link org.lwjgl.util.vector.Vector3f} object.
      */
     public void set(Vector3f vector) {
         GL20.glUniform3f(getLocation(), vector.x, vector.y, vector.z);
     }
 
     /**
-     * <p>set.</p>
-     *
-     * @param readableColor a {@link org.lwjgl.util.ReadableColor} object.
+     * <p>
+     * set.
+     * </p>
+     * 
+     * @param readableColor
+     *            a {@link org.lwjgl.util.ReadableColor} object.
      */
     public void set(ReadableColor readableColor) {
-        colorBuffer.put(new float[] { // @formatter:off
+        colorBuffer.put(new float[] {// @formatter:off
                 readableColor.getRed() / 255f,
                 readableColor.getGreen() / 255f,
                 readableColor.getBlue() / 255f,
@@ -91,9 +107,12 @@ public enum ShaderUniformHandle { // @formatter:off
     }
 
     /**
-     * <p>set.</p>
-     *
-     * @param colorBuffer a {@link java.nio.FloatBuffer} object.
+     * <p>
+     * set.
+     * </p>
+     * 
+     * @param colorBuffer
+     *            a {@link java.nio.FloatBuffer} object.
      */
     public void set(FloatBuffer colorBuffer) {
         GL20.glUniform4(getLocation(), colorBuffer);

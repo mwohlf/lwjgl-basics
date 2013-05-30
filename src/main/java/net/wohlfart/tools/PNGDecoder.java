@@ -11,9 +11,9 @@ import java.util.zip.Inflater;
 
 /**
  * A PNGDecoder. The slick PNG decoder is based on this class :)
- *
+ * 
  * @author Matthias Mann
- *
+ * 
  */
 public class PNGDecoder {
 
@@ -69,10 +69,14 @@ public class PNGDecoder {
     private byte[] transPixel;
 
     /**
-     * <p>Constructor for PNGDecoder.</p>
-     *
-     * @param input a {@link java.io.InputStream} object.
-     * @throws java.io.IOException if any.
+     * <p>
+     * Constructor for PNGDecoder.
+     * </p>
+     * 
+     * @param input
+     *            a {@link java.io.InputStream} object.
+     * @throws java.io.IOException
+     *             if any.
      */
     public PNGDecoder(InputStream input) throws IOException {
         this.input = input;
@@ -109,8 +113,10 @@ public class PNGDecoder {
     }
 
     /**
-     * <p>Getter for the field <code>height</code>.</p>
-     *
+     * <p>
+     * Getter for the field <code>height</code>.
+     * </p>
+     * 
      * @return a int.
      */
     public int getHeight() {
@@ -118,8 +124,10 @@ public class PNGDecoder {
     }
 
     /**
-     * <p>Getter for the field <code>width</code>.</p>
-     *
+     * <p>
+     * Getter for the field <code>width</code>.
+     * </p>
+     * 
      * @return a int.
      */
     public int getWidth() {
@@ -128,7 +136,7 @@ public class PNGDecoder {
 
     /**
      * Checks if the image has a real alpha channel. This method does not check for the presence of a tRNS chunk.
-     *
+     * 
      * @return true if the image has an alpha channel
      * @see #hasAlpha()
      */
@@ -138,7 +146,7 @@ public class PNGDecoder {
 
     /**
      * Checks if the image has transparency information either from an alpha channel or from a tRNS chunk.
-     *
+     * 
      * @return true if the image has transparency
      * @see #hasAlphaChannel()
      * @see #overwriteTRNS(byte, byte, byte)
@@ -150,8 +158,10 @@ public class PNGDecoder {
     }
 
     /**
-     * <p>isRGB.</p>
-     *
+     * <p>
+     * isRGB.
+     * </p>
+     * 
      * @return a boolean.
      */
     public boolean isRGB() {
@@ -166,7 +176,7 @@ public class PNGDecoder {
      * <p>
      * Calling this method causes {@link #hasAlpha()} to return true.
      * </p>
-     *
+     * 
      * @param r
      *            the red component of the color to make transparent
      * @param g
@@ -196,7 +206,7 @@ public class PNGDecoder {
 
     /**
      * Computes the implemented format conversion for the desired format.
-     *
+     * 
      * @param fmt
      *            the desired format
      * @return format which best matches the desired format
@@ -252,7 +262,7 @@ public class PNGDecoder {
     /**
      * Decodes the image into the specified buffer. The first line is placed at the current position. After decode the buffer position is at the end of the last
      * line.
-     *
+     * 
      * @param buffer
      *            the buffer
      * @param stride
@@ -384,7 +394,7 @@ public class PNGDecoder {
     /**
      * Decodes the image into the specified buffer. The last line is placed at the current position. After decode the buffer position is at the end of the first
      * line.
-     *
+     * 
      * @param buffer
      *            the buffer
      * @param stride

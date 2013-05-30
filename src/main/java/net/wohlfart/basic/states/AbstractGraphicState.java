@@ -44,12 +44,13 @@ abstract class AbstractGraphicState implements GameState {
         this.camera = camera;
     }
 
-
     /**
-     * <p>This method is called by the event bus on exit.
-     * You have to register this class in order to get notified.</p>
-     *
-     * @param exitEvent a {@link net.wohlfart.gl.input.CommandEvent.Exit} object.
+     * <p>
+     * This method is called by the event bus on exit. You have to register this class in order to get notified.
+     * </p>
+     * 
+     * @param exitEvent
+     *            a {@link net.wohlfart.gl.input.CommandEvent.Exit} object.
      */
     @Subscribe
     public synchronized void onExitTriggered(CommandEvent exitEvent) {

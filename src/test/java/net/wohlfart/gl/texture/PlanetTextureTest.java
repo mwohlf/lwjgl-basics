@@ -9,7 +9,9 @@ import org.junit.Test;
 import org.lwjgl.util.vector.Vector3f;
 
 /**
- * <p>PlanetTextureTest class.</p>
+ * <p>
+ * PlanetTextureTest class.
+ * </p>
  */
 public class PlanetTextureTest {
 
@@ -18,7 +20,9 @@ public class PlanetTextureTest {
     int width;
 
     /**
-     * <p>runBeforeEveryTest.</p>
+     * <p>
+     * runBeforeEveryTest.
+     * </p>
      */
     @Before
     public void runBeforeEveryTest() {
@@ -30,7 +34,9 @@ public class PlanetTextureTest {
     }
 
     /**
-     * <p>runAfterEveryTest.</p>
+     * <p>
+     * runAfterEveryTest.
+     * </p>
      */
     @After
     public void runAfterEveryTest() {
@@ -38,7 +44,9 @@ public class PlanetTextureTest {
     }
 
     /**
-     * <p>size.</p>
+     * <p>
+     * size.
+     * </p>
      */
     @Test
     public void size() {
@@ -48,7 +56,9 @@ public class PlanetTextureTest {
     }
 
     /**
-     * <p>poleVectors.</p>
+     * <p>
+     * poleVectors.
+     * </p>
      */
     @Test
     public void poleVectors() {
@@ -74,7 +84,9 @@ public class PlanetTextureTest {
     }
 
     /**
-     * <p>equatorVectors.</p>
+     * <p>
+     * equatorVectors.
+     * </p>
      */
     @Test
     public void equatorVectors() {

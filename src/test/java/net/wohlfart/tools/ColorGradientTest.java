@@ -6,18 +6,21 @@ import static org.junit.Assert.assertTrue;
 import java.awt.Color;
 import java.util.Set;
 
-import net.wohlfart.tools.ColorGradient;
 import net.wohlfart.tools.ColorGradient.GradientPoint;
 
 import org.junit.Test;
 
 /**
- * <p>ColorGradientTest class.</p>
+ * <p>
+ * ColorGradientTest class.
+ * </p>
  */
 public class ColorGradientTest {
 
     /**
-     * <p>checkSimpleOrdering.</p>
+     * <p>
+     * checkSimpleOrdering.
+     * </p>
      */
     @Test
     public void checkSimpleOrdering() {
@@ -34,7 +37,9 @@ public class ColorGradientTest {
     }
 
     /**
-     * <p>checkOrdering.</p>
+     * <p>
+     * checkOrdering.
+     * </p>
      */
     @Test
     public void checkOrdering() {
@@ -61,7 +66,9 @@ public class ColorGradientTest {
     }
 
     /**
-     * <p>checkPoints.</p>
+     * <p>
+     * checkPoints.
+     * </p>
      */
     @Test
     public void checkPoints() {
@@ -78,7 +85,9 @@ public class ColorGradientTest {
     }
 
     /**
-     * <p>middleSimpleGrey.</p>
+     * <p>
+     * middleSimpleGrey.
+     * </p>
      */
     @Test
     public void middleSimpleGrey() {
@@ -111,7 +120,9 @@ public class ColorGradientTest {
     }
 
     /**
-     * <p>threeColor.</p>
+     * <p>
+     * threeColor.
+     * </p>
      */
     @Test
     public void threeColor() {
@@ -147,7 +158,9 @@ public class ColorGradientTest {
     }
 
     /**
-     * <p>threeColorSimple.</p>
+     * <p>
+     * threeColorSimple.
+     * </p>
      */
     @Test
     public void threeColorSimple() {

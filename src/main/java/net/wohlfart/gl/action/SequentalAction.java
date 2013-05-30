@@ -12,7 +12,7 @@ public final class SequentalAction implements Action {
     }
 
     public static SequentalAction create(Action... actions) {
-        SequentalAction result = new SequentalAction();
+        final SequentalAction result = new SequentalAction();
         result.actions.addAll(Arrays.asList(actions));
         return result;
     }

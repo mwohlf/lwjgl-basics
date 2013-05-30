@@ -9,7 +9,9 @@ import org.lwjgl.util.vector.Vector3f;
 import org.lwjgl.util.vector.Vector4f;
 
 /**
- * <p>toolkit class to work with vectors, matrices and quaternions.</p>
+ * <p>
+ * toolkit class to work with vectors, matrices and quaternions.
+ * </p>
  */
 public final class SimpleMath {
     private static final float EPSILON = 0.0000001f;
@@ -37,17 +39,19 @@ public final class SimpleMath {
     /** Constant <code>NULL_MATRIX</code> this is used to indicate a marix that is not yet initialized */
     public static final Matrix4f NULL_MATRIX = Matrix4f.setZero(new Matrix4f());
 
-
     private SimpleMath() {
-         // tools class with only static methods
+        // tools class with only static methods
     }
 
     // --------- trigeometric stuff
 
     /**
-     * <p>sin.</p>
-     *
-     * @param f a float.
+     * <p>
+     * sin.
+     * </p>
+     * 
+     * @param f
+     *            a float.
      * @return a float.
      */
     public static float sin(float f) {
@@ -55,9 +59,12 @@ public final class SimpleMath {
     }
 
     /**
-     * <p>cos.</p>
-     *
-     * @param f a float.
+     * <p>
+     * cos.
+     * </p>
+     * 
+     * @param f
+     *            a float.
      * @return a float.
      */
     public static float cos(float f) {
@@ -65,9 +72,12 @@ public final class SimpleMath {
     }
 
     /**
-     * <p>tan.</p>
-     *
-     * @param angle a float.
+     * <p>
+     * tan.
+     * </p>
+     * 
+     * @param angle
+     *            a float.
      * @return a float.
      */
     public static float tan(float angle) {
@@ -75,9 +85,12 @@ public final class SimpleMath {
     }
 
     /**
-     * <p>rad2deg.</p>
-     *
-     * @param rad a float.
+     * <p>
+     * rad2deg.
+     * </p>
+     * 
+     * @param rad
+     *            a float.
      * @return a float.
      */
     public static float rad2deg(final float rad) {
@@ -85,9 +98,12 @@ public final class SimpleMath {
     }
 
     /**
-     * <p>deg2rad.</p>
-     *
-     * @param deg a float.
+     * <p>
+     * deg2rad.
+     * </p>
+     * 
+     * @param deg
+     *            a float.
      * @return a float.
      */
     public static float deg2rad(final float deg) {
@@ -95,9 +111,12 @@ public final class SimpleMath {
     }
 
     /**
-     * <p>coTan.</p>
-     *
-     * @param angle a float.
+     * <p>
+     * coTan.
+     * </p>
+     * 
+     * @param angle
+     *            a float.
      * @return a float.
      */
     public static float coTan(float angle) {
@@ -105,9 +124,12 @@ public final class SimpleMath {
     }
 
     /**
-     * <p>sqrt.</p>
-     *
-     * @param f a float.
+     * <p>
+     * sqrt.
+     * </p>
+     * 
+     * @param f
+     *            a float.
      * @return a float.
      */
     public static float sqrt(float f) {
@@ -118,13 +140,15 @@ public final class SimpleMath {
         return nearPlane * nearPlane;
     }
 
-
     // --------- random function
 
     /**
-     * <p>random.</p>
-     *
-     * @param i a int.
+     * <p>
+     * random.
+     * </p>
+     * 
+     * @param i
+     *            a int.
      * @return a int.
      */
     public static int random(final int i) {
@@ -132,10 +156,14 @@ public final class SimpleMath {
     }
 
     /**
-     * <p>random.</p>
-     *
-     * @param min a int.
-     * @param max a int.
+     * <p>
+     * random.
+     * </p>
+     * 
+     * @param min
+     *            a int.
+     * @param max
+     *            a int.
      * @return a int.
      */
     public static int random(final int min, final int max) {
@@ -143,10 +171,14 @@ public final class SimpleMath {
     }
 
     /**
-     * <p>random.</p>
-     *
-     * @param min a float.
-     * @param max a float.
+     * <p>
+     * random.
+     * </p>
+     * 
+     * @param min
+     *            a float.
+     * @param max
+     *            a float.
      * @return a float.
      */
     public static float random(final float min, final float max) {
@@ -158,10 +190,13 @@ public final class SimpleMath {
 
     /**
      * rotate the vector by a rotation defined by the quaternion
-     *
-     * @param q a {@link org.lwjgl.util.vector.Quaternion} object.
-     * @param vec a {@link org.lwjgl.util.vector.Vector3f} object.
-     * @param result a {@link org.lwjgl.util.vector.Vector3f} object.
+     * 
+     * @param q
+     *            a {@link org.lwjgl.util.vector.Quaternion} object.
+     * @param vec
+     *            a {@link org.lwjgl.util.vector.Vector3f} object.
+     * @param result
+     *            a {@link org.lwjgl.util.vector.Vector3f} object.
      */
     public static Vector3f mul(final Quaternion q, final Vector3f vec, final Vector3f result) {
         float xx, yy, zz;
@@ -185,8 +220,6 @@ public final class SimpleMath {
         return result;
     }
 
-
-
     public static Vector3f scale(Vector3f in, float scale, Vector3f out) {
         out.x = in.x * scale;
         out.y = in.y * scale;
@@ -195,14 +228,16 @@ public final class SimpleMath {
     }
 
     /**
-     * create a rotation quaternion defined by a start and an end vector,
-     * the rotation will be the rotation needed to transform the first vector into the second
-     *
+     * create a rotation quaternion defined by a start and an end vector, the rotation will be the rotation needed to transform the first vector into the second
+     * 
      * taken from: https://bitbucket.org/sinbad/ogre/src/9db75e3ba05c/OgreMain/include/OgreVector3.h#cl-651
-     *
-     * @param start a {@link org.lwjgl.util.vector.Vector3f} object.
-     * @param end a {@link org.lwjgl.util.vector.Vector3f} object.
-     * @param result a {@link org.lwjgl.util.vector.Quaternion} object.
+     * 
+     * @param start
+     *            a {@link org.lwjgl.util.vector.Vector3f} object.
+     * @param end
+     *            a {@link org.lwjgl.util.vector.Vector3f} object.
+     * @param result
+     *            a {@link org.lwjgl.util.vector.Quaternion} object.
      * @return a {@link org.lwjgl.util.vector.Quaternion} object.
      */
     public static Quaternion createQuaternion(Vector3f start, Vector3f end, Quaternion result) {
@@ -242,9 +277,12 @@ public final class SimpleMath {
     }
 
     /**
-     * <p>getPowerOfTwoBiggerThan.</p>
-     *
-     * @param n a int.
+     * <p>
+     * getPowerOfTwoBiggerThan.
+     * </p>
+     * 
+     * @param n
+     *            a int.
      * @return a int.
      */
     public static int getPowerOfTwoBiggerThan(int n) {
@@ -261,10 +299,14 @@ public final class SimpleMath {
     }
 
     /**
-     * <p>createMatrix.</p>
-     *
-     * @param currentTranslation a {@link org.lwjgl.util.vector.Vector3f} object.
-     * @param matrix a {@link org.lwjgl.util.vector.Matrix4f} object.
+     * <p>
+     * createMatrix.
+     * </p>
+     * 
+     * @param currentTranslation
+     *            a {@link org.lwjgl.util.vector.Vector3f} object.
+     * @param matrix
+     *            a {@link org.lwjgl.util.vector.Matrix4f} object.
      * @return a {@link org.lwjgl.util.vector.Matrix4f} object.
      */
     public static Matrix4f createMatrix(Vector3f currentTranslation, Matrix4f matrix) {
@@ -292,17 +334,21 @@ public final class SimpleMath {
         return matrix;
     }
 
-
     /**
-     * <p>convert.</p>
-     *
-     * @param move a {@link org.lwjgl.util.vector.Vector3f} object.
-     * @param ROTATION a {@link org.lwjgl.util.vector.Quaternion} object.
-     * @param mat a {@link org.lwjgl.util.vector.Matrix4f} object.
+     * <p>
+     * convert.
+     * </p>
+     * 
+     * @param move
+     *            a {@link org.lwjgl.util.vector.Vector3f} object.
+     * @param ROTATION
+     *            a {@link org.lwjgl.util.vector.Quaternion} object.
+     * @param mat
+     *            a {@link org.lwjgl.util.vector.Matrix4f} object.
      * @return a {@link org.lwjgl.util.vector.Matrix4f} object.
      */
     public static Matrix4f convert(final Vector3f move, final Quaternion rot, final Matrix4f mat) {
-        //final SimpleMatrix4f mat = new SimpleMatrix4f();
+        // final SimpleMatrix4f mat = new SimpleMatrix4f();
 
         final float xx = rot.x * rot.x;
         final float xy = rot.x * rot.y;
@@ -341,12 +387,15 @@ public final class SimpleMath {
     }
 
     /**
-     * <p>convert.</p>
-     *
+     * <p>
+     * convert.
+     * </p>
+     * 
      * @param move
      *            vector describing a move
      * @return a matrix
-     * @param mat a {@link org.lwjgl.util.vector.Matrix4f} object.
+     * @param mat
+     *            a {@link org.lwjgl.util.vector.Matrix4f} object.
      */
     public static Matrix4f convert(final Vector3f move, final Matrix4f mat) {
 
@@ -375,15 +424,18 @@ public final class SimpleMath {
     }
 
     /**
-     * <p>convert.</p>
-     *
+     * <p>
+     * convert.
+     * </p>
+     * 
      * @param ROTATION
      *            quaternion describing a rotation
      * @return a matrix
-     * @param mat a {@link org.lwjgl.util.vector.Matrix4f} object.
+     * @param mat
+     *            a {@link org.lwjgl.util.vector.Matrix4f} object.
      */
     public static Matrix4f convert(Quaternion rot, Matrix4f mat) {
-        //final SimpleMatrix4f mat = new SimpleMatrix4f();
+        // final SimpleMatrix4f mat = new SimpleMatrix4f();
 
         final float xx = rot.x * rot.x;
         final float xy = rot.x * rot.y;
@@ -422,10 +474,14 @@ public final class SimpleMath {
     }
 
     /**
-     * <p>mul.</p>
-     *
-     * @param dir a {@link org.lwjgl.util.vector.Vector3f} object.
-     * @param a a float.
+     * <p>
+     * mul.
+     * </p>
+     * 
+     * @param dir
+     *            a {@link org.lwjgl.util.vector.Vector3f} object.
+     * @param a
+     *            a float.
      */
     public static void mul(Vector3f dir, float a) {
         dir.x *= a;
@@ -434,12 +490,18 @@ public final class SimpleMath {
     }
 
     /**
-     * <p>sum.</p>
-     *
-     * @param result a {@link org.lwjgl.util.vector.Vector3f} object.
-     * @param a a {@link org.lwjgl.util.vector.Vector3f} object.
-     * @param b a {@link org.lwjgl.util.vector.Vector3f} object.
-     * @param c a {@link org.lwjgl.util.vector.Vector3f} object.
+     * <p>
+     * sum.
+     * </p>
+     * 
+     * @param result
+     *            a {@link org.lwjgl.util.vector.Vector3f} object.
+     * @param a
+     *            a {@link org.lwjgl.util.vector.Vector3f} object.
+     * @param b
+     *            a {@link org.lwjgl.util.vector.Vector3f} object.
+     * @param c
+     *            a {@link org.lwjgl.util.vector.Vector3f} object.
      */
     public static void add(Vector3f a, Vector3f b, Vector3f c, Vector3f result) {
         result.x = a.x + b.x + c.x;
@@ -449,10 +511,13 @@ public final class SimpleMath {
 
     /**
      * add one vector to another vector
-     *
-     * @param a a {@link org.lwjgl.util.vector.Vector3f} object.
-     * @param b a {@link org.lwjgl.util.vector.Vector3f} object.
-     * @param result a {@link org.lwjgl.util.vector.Vector3f} object.
+     * 
+     * @param a
+     *            a {@link org.lwjgl.util.vector.Vector3f} object.
+     * @param b
+     *            a {@link org.lwjgl.util.vector.Vector3f} object.
+     * @param result
+     *            a {@link org.lwjgl.util.vector.Vector3f} object.
      */
     public static void add(Vector3f a, Vector3f b, Vector3f result) {
         result.x = a.x + b.x;
@@ -462,10 +527,13 @@ public final class SimpleMath {
 
     /**
      * substract one vector from another vector
-     *
-     * @param a a {@link org.lwjgl.util.vector.Vector3f} object.
-     * @param b a {@link org.lwjgl.util.vector.Vector3f} object.
-     * @param result a {@link org.lwjgl.util.vector.Vector3f} object.
+     * 
+     * @param a
+     *            a {@link org.lwjgl.util.vector.Vector3f} object.
+     * @param b
+     *            a {@link org.lwjgl.util.vector.Vector3f} object.
+     * @param result
+     *            a {@link org.lwjgl.util.vector.Vector3f} object.
      */
     public static void sub(Vector3f a, Vector3f b, Vector3f result) {
         result.x = a.x - b.x;
@@ -474,11 +542,16 @@ public final class SimpleMath {
     }
 
     /**
-     * <p>multiply a vector with a matrix</p>
-     *
-     * @param n a {@link org.lwjgl.util.vector.Matrix4f} object.
-     * @param in a {@link org.lwjgl.util.vector.Vector3f} object.
-     * @param out a {@link org.lwjgl.util.vector.Vector3f} object.
+     * <p>
+     * multiply a vector with a matrix
+     * </p>
+     * 
+     * @param n
+     *            a {@link org.lwjgl.util.vector.Matrix4f} object.
+     * @param in
+     *            a {@link org.lwjgl.util.vector.Vector3f} object.
+     * @param out
+     *            a {@link org.lwjgl.util.vector.Vector3f} object.
      */
     public static void mul(Matrix4f n, Vector3f in, Vector3f out) {
         out.x = n.m00 * in.x + n.m01 * in.y + n.m02 * in.z;
@@ -513,6 +586,7 @@ public final class SimpleMath {
     // TODO: fix this: without allocating new memory...
     // it would also be nice to be thread-safe...
     final static Quaternion ROTATION = new Quaternion();
+
     public static void rotate(Quaternion q, float angle, Vector3f axis) {
         axis.normalise();
         final double n = Math.sqrt(axis.x * axis.x + axis.y * axis.y + axis.z * axis.z);
@@ -528,7 +602,9 @@ public final class SimpleMath {
     }
 
     /**
-     * <p>normalizeLocal.</p>
+     * <p>
+     * normalizeLocal.
+     * </p>
      */
     public static void normalizeLocal(Quaternion q) {
         final float l = (float) Math.sqrt(q.x * q.x + q.y * q.y + q.z * q.z + q.w * q.w);
@@ -539,9 +615,12 @@ public final class SimpleMath {
     }
 
     /**
-     * <p>multLocal.</p>
-     *
-     * @param vec a {@link org.lwjgl.util.vector.Vector3f} object.
+     * <p>
+     * multLocal.
+     * </p>
+     * 
+     * @param vec
+     *            a {@link org.lwjgl.util.vector.Vector3f} object.
      * @return a {@link org.lwjgl.util.vector.Vector3f} object.
      */
     public static Vector3f multLocal(Vector3f vec, Quaternion q) {
@@ -568,14 +647,13 @@ public final class SimpleMath {
         return vec;
     }
 
-
     /**
-     * calculate a 3x3 matrix,
-     * its either inverse and transpose of model matrix or just upper corner of that matrix if no uniform scaling is used
-     *
+     * calculate a 3x3 matrix, its either inverse and transpose of model matrix or just upper corner of that matrix if no uniform scaling is used
+     * 
      * TODO: check for uniform scaling
-     *
-     * @param m4 the model to world matrix
+     * 
+     * @param m4
+     *            the model to world matrix
      * @return
      */
     public static Matrix3f calculateNormalMatrix(Matrix4f m4, Matrix3f m3) {
@@ -594,29 +672,19 @@ public final class SimpleMath {
     }
 
     public static float distance(Vector3f a, Vector3f b) {
-        return (float)Math.sqrt(
-                  (a.x - b.x) * (a.x - b.x)
-                + (a.y - b.y) * (a.y - b.y)
-                + (a.z - b.z) * (a.z - b.z)
-                );
+        return (float) Math.sqrt((a.x - b.x) * (a.x - b.x) + (a.y - b.y) * (a.y - b.y) + (a.z - b.z) * (a.z - b.z));
     }
 
     Vector3f getForwardVector(Quaternion q) {
-        return new Vector3f( 2 * (q.x * q.z + q.w * q.y),
-                             2 * (q.y * q.x - q.w * q.x),
-                             1 - 2 * (q.x * q.x + q.y * q.y));
+        return new Vector3f(2 * (q.x * q.z + q.w * q.y), 2 * (q.y * q.x - q.w * q.x), 1 - 2 * (q.x * q.x + q.y * q.y));
     }
 
     Vector3f getUpVector(Quaternion q) {
-        return new Vector3f( 2 * (q.x * q.y - q.w * q.z),
-                             1 - 2 * (q.x * q.x + q.z * q.z),
-                             2 * (q.y * q.z + q.w * q.x));
+        return new Vector3f(2 * (q.x * q.y - q.w * q.z), 1 - 2 * (q.x * q.x + q.z * q.z), 2 * (q.y * q.z + q.w * q.x));
     }
 
     Vector3f getRightVector(Quaternion q) {
-        return new Vector3f( 1 - 2 * (q.y * q.y + q.z * q.z),
-                             2 * (q.x * q.y + q.w * q.z),
-                             2 * (q.x * q.z - q.w * q.y));
+        return new Vector3f(1 - 2 * (q.y * q.y + q.z * q.z), 2 * (q.x * q.y + q.w * q.z), 2 * (q.x * q.z - q.w * q.y));
     }
 
 }

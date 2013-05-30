@@ -21,35 +21,29 @@ public class Camera implements CanRotate, CanMove {
     private final CanRotate rotation;
     private final CanMove movement;
 
-
     public Camera() {
         this(new CanRotateImpl(), new CanMoveImpl());
     }
-
 
     private Camera(final CanRotate rotation, final CanMove movement) {
         this.rotation = rotation;
         this.movement = movement;
     }
 
-
     @Override
     public Quaternion getRotation() {
         return rotation.getRotation();
     }
-
 
     @Override
     public Vector3f getForward(Vector3f vec) {
         return rotation.getForward(vec);
     }
 
-
     @Override
     public Vector3f getUp(Vector3f vec) {
         return rotation.getUp(vec);
     }
-
 
     @Override
     public Vector3f getRght(Vector3f vec) {
@@ -99,10 +93,10 @@ public class Camera implements CanRotate, CanMove {
 
     @Override
     public String toString() {
-        Vector3f pos = movement.getPosition();
-        Vector3f dir = rotation.getForward(new Vector3f());
-        Vector3f up = rotation.getUp(new Vector3f());
-        Vector3f rght = rotation.getRght(new Vector3f());// @formatter:off
+        final Vector3f pos = movement.getPosition();
+        final Vector3f dir = rotation.getForward(new Vector3f());
+        final Vector3f up = rotation.getUp(new Vector3f());
+        final Vector3f rght = rotation.getRght(new Vector3f());// @formatter:off
         return ""
         + "Position: (" + pos.x + "," + pos.y + "," + pos.z + ") "
         + " Direction: (" + dir.x + "," + dir.y + "," + dir.z + ")"

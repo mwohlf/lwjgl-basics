@@ -11,12 +11,14 @@ import org.lwjgl.opengl.GL11;
 import org.lwjgl.util.vector.Vector3f;
 
 /**
- * <p>A simple Arrow that points in a direction.</p>
+ * <p>
+ * A simple Arrow that points in a direction.
+ * </p>
  */
-public class Arrow extends AbstractRenderable { // REVIEWED
+public class Arrow extends AbstractRenderable {
 
     // vertices[0] is the direction of the arrow
-    private final Vector3f[] vertices = new Vector3f[] {  // @formatter:off
+    private final Vector3f[] vertices = new Vector3f[] {// @formatter:off
             new Vector3f(+0.00f, +0.00f, +1.00f), // tip is in z direction <-- end
             new Vector3f(+0.00f, +0.00f, +0.00f), // base <-- start
             new Vector3f(+0.02f, +0.02f, +0.90f), // tip right
@@ -25,8 +27,7 @@ public class Arrow extends AbstractRenderable { // REVIEWED
             new Vector3f(+0.02f, -0.02f, +0.90f), // tip bottom  @formatter:on
     };
 
-    private final List<Integer> indices = Arrays.asList(new Integer[] {
-            1, 0, // shaft
+    private final List<Integer> indices = Arrays.asList(new Integer[] { 1, 0, // shaft
             2, 0, // tip1
             3, 0, // tip2
             4, 0, // tip3
@@ -34,10 +35,14 @@ public class Arrow extends AbstractRenderable { // REVIEWED
     });
 
     /**
-     * <p>This creates an arrow that points from start to end.</p>
-     *
-     * @param start a {@link org.lwjgl.util.vector.Vector3f} object.
-     * @param end a {@link org.lwjgl.util.vector.Vector3f} object.
+     * <p>
+     * This creates an arrow that points from start to end.
+     * </p>
+     * 
+     * @param start
+     *            a {@link org.lwjgl.util.vector.Vector3f} object.
+     * @param end
+     *            a {@link org.lwjgl.util.vector.Vector3f} object.
      * @return a {@link net.wohlfart.gl.elements.debug.Arrow} object.
      */
     public static Arrow createLink(Vector3f start, Vector3f end) {
@@ -47,16 +52,21 @@ public class Arrow extends AbstractRenderable { // REVIEWED
     }
 
     /**
-     * <p>Default Constructor for Arrow, points from origin to (0,0,1).</p>
+     * <p>
+     * Default Constructor for Arrow, points from origin to (0,0,1).
+     * </p>
      */
     public Arrow() {
         // nothing to do
     }
 
     /**
-     * <p>Constructor for Arrow, points from origin to tip.</p>
-     *
-     * @param tip a {@link org.lwjgl.util.vector.Vector3f} object which defines the tip of the arrow.
+     * <p>
+     * Constructor for Arrow, points from origin to tip.
+     * </p>
+     * 
+     * @param tip
+     *            a {@link org.lwjgl.util.vector.Vector3f} object which defines the tip of the arrow.
      */
     public Arrow(Vector3f tip) {
         final float length = tip.length();

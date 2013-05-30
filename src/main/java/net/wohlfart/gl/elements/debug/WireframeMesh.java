@@ -10,9 +10,11 @@ import org.lwjgl.opengl.GL30;
 import org.lwjgl.util.ReadableColor;
 
 /**
- * <p>A Generic WireframeMesh class.</p>
+ * <p>
+ * A Generic WireframeMesh class.
+ * </p>
  */
-public class WireframeMesh implements IsRenderable { // REVIEWED
+public class WireframeMesh implements IsRenderable {
 
     private final int vaoHandle;
     private final int vboHandle;
@@ -24,8 +26,7 @@ public class WireframeMesh implements IsRenderable { // REVIEWED
 
     private final ReadableColor color;
 
-    WireframeMesh(int vaoHandle, int vboHandle, int idxBufferHandle,
-            int linePrimitive, int indexElemSize, int indicesCount, int indexOffset,
+    WireframeMesh(int vaoHandle, int vboHandle, int idxBufferHandle, int linePrimitive, int indexElemSize, int indicesCount, int indexOffset,
             ReadableColor color) {
 
         this.vaoHandle = vaoHandle;
@@ -42,7 +43,7 @@ public class WireframeMesh implements IsRenderable { // REVIEWED
     @Override
     public void render() {
         GL30.glBindVertexArray(vaoHandle);
-        GL20.glVertexAttrib4f(ShaderAttributeHandle.COLOR.getLocation(),  // color is not part of the VAO
+        GL20.glVertexAttrib4f(ShaderAttributeHandle.COLOR.getLocation(), // color is not part of the VAO
                 color.getRed() / 255f, color.getGreen() / 255f, color.getBlue() / 255f, color.getAlpha() / 255f);
         GL11.glDrawElements(linePrimitive, indicesCount, indexElemSize, indexOffset);
         GL30.glBindVertexArray(0);

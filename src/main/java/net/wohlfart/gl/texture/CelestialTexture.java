@@ -10,7 +10,9 @@ import org.lwjgl.opengl.GL12;
 import org.lwjgl.util.vector.Vector3f;
 
 /**
- * <p>CelestialTexture class.</p>
+ * <p>
+ * CelestialTexture class.
+ * </p>
  */
 public class CelestialTexture implements ITexture {
     final long seed;
@@ -22,11 +24,16 @@ public class CelestialTexture implements ITexture {
     protected int id;
 
     /**
-     * <p>Constructor for CelestialTexture.</p>
-     *
-     * @param radius a float.
-     * @param celestialType a {@link net.wohlfart.gl.texture.CelestialType} object.
-     * @param seed a long.
+     * <p>
+     * Constructor for CelestialTexture.
+     * </p>
+     * 
+     * @param radius
+     *            a float.
+     * @param celestialType
+     *            a {@link net.wohlfart.gl.texture.CelestialType} object.
+     * @param seed
+     *            a long.
      */
     public CelestialTexture(final float radius, final CelestialType celestialType, final long seed) {
         this.width = (int) (radius * 2f * (float) Math.PI + 0.5f);
@@ -37,12 +44,18 @@ public class CelestialTexture implements ITexture {
     }
 
     /**
-     * <p>Constructor for CelestialTexture.</p>
-     *
-     * @param width a int.
-     * @param height a int.
-     * @param celestialType a {@link net.wohlfart.gl.texture.CelestialType} object.
-     * @param seed a long.
+     * <p>
+     * Constructor for CelestialTexture.
+     * </p>
+     * 
+     * @param width
+     *            a int.
+     * @param height
+     *            a int.
+     * @param celestialType
+     *            a {@link net.wohlfart.gl.texture.CelestialType} object.
+     * @param seed
+     *            a long.
      */
     public CelestialTexture(final int width, final int height, CelestialType celestialType, final long seed) {
         this.width = width;
@@ -93,7 +106,7 @@ public class CelestialTexture implements ITexture {
 
     /**
      * 0/0 is top left, the whole texture is wrapped around the celestial object
-     *
+     * 
      * @return a vector with each element [0..1]
      */
     final Vector3f getNormalVector(final int x, final int y) {
@@ -162,8 +175,10 @@ public class CelestialTexture implements ITexture {
     }
 
     /**
-     * <p>Getter for the field <code>width</code>.</p>
-     *
+     * <p>
+     * Getter for the field <code>width</code>.
+     * </p>
+     * 
      * @return a int.
      */
     public int getWidth() {
@@ -171,8 +186,10 @@ public class CelestialTexture implements ITexture {
     }
 
     /**
-     * <p>Getter for the field <code>height</code>.</p>
-     *
+     * <p>
+     * Getter for the field <code>height</code>.
+     * </p>
+     * 
      * @return a int.
      */
     public int getHeight() {

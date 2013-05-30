@@ -9,7 +9,9 @@ import org.lwjgl.opengl.GL20;
 import org.lwjgl.opengl.GL30;
 
 /**
- * <p>CharacterMesh class.</p>
+ * <p>
+ * CharacterMesh class.
+ * </p>
  */
 public class CharacterMesh implements IsRenderable {
 
@@ -28,22 +30,33 @@ public class CharacterMesh implements IsRenderable {
 
     // package private, created by the builder
     /**
-     * <p>Constructor for CharacterMesh.</p>
-     *
-     * @param vaoHandle a int.
-     * @param vboVerticesHandle a int.
-     * @param vboIndicesHandle a int.
-     * @param indicesType a int.
-     * @param indexElemSize a int.
-     * @param indicesCount a int.
-     * @param indexOffset a int.
-     * @param positionAttrib a int.
-     * @param textureAttrib a int.
-     * @param textureId a int.
+     * <p>
+     * Constructor for CharacterMesh.
+     * </p>
+     * 
+     * @param vaoHandle
+     *            a int.
+     * @param vboVerticesHandle
+     *            a int.
+     * @param vboIndicesHandle
+     *            a int.
+     * @param indicesType
+     *            a int.
+     * @param indexElemSize
+     *            a int.
+     * @param indicesCount
+     *            a int.
+     * @param indexOffset
+     *            a int.
+     * @param positionAttrib
+     *            a int.
+     * @param textureAttrib
+     *            a int.
+     * @param textureId
+     *            a int.
      */
-    public CharacterMesh(
-            int vaoHandle, int vboVerticesHandle,
-            // index
+    public CharacterMesh(int vaoHandle, int vboVerticesHandle,
+    // index
             int vboIndicesHandle, int indicesType, int indexElemSize, int indicesCount, int indexOffset,
             // attrib pos
             int positionAttrib, int textureAttrib, int textureId) {
@@ -83,7 +96,6 @@ public class CharacterMesh implements IsRenderable {
         GL20.glDisableVertexAttribArray(textureAttrib);
         GL30.glBindVertexArray(0);
     }
-
 
     /** {@inheritDoc} */
     @Override

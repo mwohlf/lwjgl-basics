@@ -5,7 +5,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * <p>DefaultShaderProgram class.</p>
+ * <p>
+ * DefaultShaderProgram class.
+ * </p>
  */
 public class DefaultShaderProgram extends AbstractShaderProgram {
     /** Constant <code>LOGGER</code> */
@@ -18,10 +20,14 @@ public class DefaultShaderProgram extends AbstractShaderProgram {
     private final String fragmentShader;
 
     /**
-     * <p>Constructor for DefaultShaderProgram.</p>
-     *
-     * @param vertexShader a {@link java.lang.String} object.
-     * @param fragmentShader a {@link java.lang.String} object.
+     * <p>
+     * Constructor for DefaultShaderProgram.
+     * </p>
+     * 
+     * @param vertexShader
+     *            a {@link java.lang.String} object.
+     * @param fragmentShader
+     *            a {@link java.lang.String} object.
      */
     public DefaultShaderProgram(String vertexShader, String fragmentShader) {
         this.vertexShader = vertexShader;

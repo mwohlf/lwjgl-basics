@@ -1,25 +1,33 @@
 package net.wohlfart.gl.texture;
 
 /**
- * <p>ITexture interface.</p>
- *
- *
- *
+ * <p>
+ * ITexture interface.
+ * </p>
+ * 
+ * 
+ * 
  */
 public interface ITexture {
 
     /**
-     * <p>init.</p>
+     * <p>
+     * init.
+     * </p>
      */
     public abstract void init();
 
     /**
-     * <p>bind.</p>
+     * <p>
+     * bind.
+     * </p>
      */
     public abstract void bind();
 
     /**
-     * <p>unbind.</p>
+     * <p>
+     * unbind.
+     * </p>
      */
     public abstract void unbind();
 

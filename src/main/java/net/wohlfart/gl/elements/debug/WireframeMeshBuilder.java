@@ -19,9 +19,11 @@ import org.lwjgl.util.vector.Quaternion;
 import org.lwjgl.util.vector.Vector3f;
 
 /**
- * <p>A Builder class for creating debug elements. for a scene.</p>
+ * <p>
+ * A Builder class for creating debug elements. for a scene.
+ * </p>
  */
-public class WireframeMeshBuilder { // REVIEWED
+public class WireframeMeshBuilder {
 
     private final List<Vector3f> vertices = new ArrayList<Vector3f>();
     private final List<Integer> indices = new ArrayList<Integer>();
@@ -32,8 +34,10 @@ public class WireframeMeshBuilder { // REVIEWED
     private Quaternion rotation;
 
     /**
-     * <p>build.</p>
-     *
+     * <p>
+     * build.
+     * </p>
+     * 
      * @return a {@link net.wohlfart.gl.shader.mesh.IRenderable} object.
      */
     public IsRenderable build() {
@@ -55,9 +59,7 @@ public class WireframeMeshBuilder { // REVIEWED
         final int indicesCount = getIndices().length;
         final int offset = 0;
 
-        return new WireframeMesh(vaoHandle, vboHandle, idxBufferHandle,
-                linePrimitive, indexElemSize, indicesCount, offset,
-                color);
+        return new WireframeMesh(vaoHandle, vboHandle, idxBufferHandle, linePrimitive, indexElemSize, indicesCount, offset, color);
     }
 
     private void applyRotationAndTranslation() {
@@ -125,57 +127,72 @@ public class WireframeMeshBuilder { // REVIEWED
     }
 
     /**
-     * <p>Setter for the field <code>vertices</code>.</p>
-     *
-     * @param vertices a {@link java.util.List} object.
+     * <p>
+     * Setter for the field <code>vertices</code>.
+     * </p>
+     * 
+     * @param vertices
+     *            a {@link java.util.List} object.
      */
     public void setVertices(final List<Vector3f> vertices) {
         this.vertices.addAll(vertices);
     }
 
     /**
-     * <p>Setter for the field <code>indices</code>.</p>
-     *
-     * @param indices an array of {@link java.lang.Integer} objects.
+     * <p>
+     * Setter for the field <code>indices</code>.
+     * </p>
+     * 
+     * @param indices
+     *            an array of {@link java.lang.Integer} objects.
      */
     public void setIndices(final List<Integer> indices) {
         this.indices.addAll(indices);
     }
 
     /**
-     * <p>Setter for the field <code>rotation</code>.</p>
-     *
-     * @param quaternion a {@link org.lwjgl.util.vector.Quaternion} object.
+     * <p>
+     * Setter for the field <code>rotation</code>.
+     * </p>
+     * 
+     * @param quaternion
+     *            a {@link org.lwjgl.util.vector.Quaternion} object.
      */
     public void setRotation(final Quaternion quaternion) {
         this.rotation = quaternion;
     }
 
     /**
-     * <p>Setter for the field <code>translation</code>.</p>
-     *
-     * @param translation a {@link org.lwjgl.util.vector.Vector3f} object.
+     * <p>
+     * Setter for the field <code>translation</code>.
+     * </p>
+     * 
+     * @param translation
+     *            a {@link org.lwjgl.util.vector.Vector3f} object.
      */
     public void setTranslation(final Vector3f translation) {
         this.translation = translation;
     }
 
     /**
-     * <p>Setter for the field <code>color</code>.</p>
-     *
-     * @param color a {@link org.lwjgl.util.ReadableColor} object.
+     * <p>
+     * Setter for the field <code>color</code>.
+     * </p>
+     * 
+     * @param color
+     *            a {@link org.lwjgl.util.ReadableColor} object.
      */
     public void setColor(final ReadableColor color) {
         this.color = color;
     }
 
     /**
-     * <p>Setter for the field <code>linePrimitive</code> defines how the indices are
-     * turned into lines, valid values are
-     * GL_LINES, GL_LINE_STRIP, GL_LINE_LOOP.
+     * <p>
+     * Setter for the field <code>linePrimitive</code> defines how the indices are turned into lines, valid values are GL_LINES, GL_LINE_STRIP, GL_LINE_LOOP.
      * </p>
-     *
-     * @param linePrimitive a int.
+     * 
+     * @param linePrimitive
+     *            a int.
      */
     public void setLinePrimitive(int linePrimitive) {
         this.linePrimitive = linePrimitive;

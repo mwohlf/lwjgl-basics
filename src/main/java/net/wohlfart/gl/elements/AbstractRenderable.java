@@ -19,7 +19,9 @@ import org.lwjgl.util.vector.Quaternion;
 import org.lwjgl.util.vector.Vector3f;
 
 /**
- * <p>Abstract AbstractRenderable class.</p>
+ * <p>
+ * Abstract AbstractRenderable class.
+ * </p>
  */
 public abstract class AbstractRenderable implements IsRenderable, IsUpdateable, CanRotate, CanMove, Actor {
 
@@ -41,21 +43,18 @@ public abstract class AbstractRenderable implements IsRenderable, IsUpdateable, 
     protected final Quaternion rotation = new Quaternion();
     protected ReadableColor color = Color.BLUE;
 
-
     /**
      * <p>
      * This is the core method that needs to be implemented by subclasses.
      * </p>
-     *
+     * 
      * @return a {@link net.wohlfart.gl.shader.mesh.IRenderable} object.
      */
     protected abstract IsRenderable setupMesh();
 
     /**
      * <p>
-     * This method has to be called to whenever
-     * something in the object data was changed
-     * in order to recreate the mesh data.
+     * This method has to be called to whenever something in the object data was changed in order to recreate the mesh data.
      * </p>
      */
     protected void destroyMeshData() {
@@ -63,11 +62,13 @@ public abstract class AbstractRenderable implements IsRenderable, IsUpdateable, 
     }
 
     /**
-     * <p>For setting up an initial translation, note this method is not
-     * meant for moving this object around, it is rather used for setting
-     * up an initial displacement of the object away from the origin.</p>
-     *
-     * @param translation a {@link org.lwjgl.util.vector.Vector3f} object.
+     * <p>
+     * For setting up an initial translation, note this method is not meant for moving this object around, it is rather used for setting up an initial
+     * displacement of the object away from the origin.
+     * </p>
+     * 
+     * @param translation
+     *            a {@link org.lwjgl.util.vector.Vector3f} object.
      * @return a {@link net.wohlfart.gl.elements.AbstractRenderable} object.
      */
     public AbstractRenderable withTranslation(Vector3f newTranslation) {
@@ -77,9 +78,12 @@ public abstract class AbstractRenderable implements IsRenderable, IsUpdateable, 
     }
 
     /**
-     * <p>rotate.</p>
-     *
-     * @param rotation a {@link org.lwjgl.util.vector.Quaternion} object.
+     * <p>
+     * rotate.
+     * </p>
+     * 
+     * @param rotation
+     *            a {@link org.lwjgl.util.vector.Quaternion} object.
      * @return a {@link net.wohlfart.gl.elements.AbstractRenderable} object.
      */
     public AbstractRenderable withRotation(Quaternion newRotation) {
@@ -89,9 +93,12 @@ public abstract class AbstractRenderable implements IsRenderable, IsUpdateable, 
     }
 
     /**
-     * <p>color.</p>
-     *
-     * @param color a {@link org.lwjgl.util.ReadableColor} object.
+     * <p>
+     * color.
+     * </p>
+     * 
+     * @param color
+     *            a {@link org.lwjgl.util.ReadableColor} object.
      * @return a {@link net.wohlfart.gl.elements.debug.AbstractRenderableWireframe} object.
      */
     public AbstractRenderable withColor(ReadableColor color) {
@@ -101,9 +108,12 @@ public abstract class AbstractRenderable implements IsRenderable, IsUpdateable, 
     }
 
     /**
-     * <p>Setter for the field <code>translation</code>.</p>
-     *
-     * @param currentTranslation a {@link org.lwjgl.util.vector.Vector3f} object.
+     * <p>
+     * Setter for the field <code>translation</code>.
+     * </p>
+     * 
+     * @param currentTranslation
+     *            a {@link org.lwjgl.util.vector.Vector3f} object.
      */
     @Override
     public void setPosition(Vector3f vector) {
@@ -112,9 +122,12 @@ public abstract class AbstractRenderable implements IsRenderable, IsUpdateable, 
     }
 
     /**
-     * <p>Setter for the field <code>rotation</code>.</p>
-     *
-     * @param currentRotation a {@link org.lwjgl.util.vector.Quaternion} object.
+     * <p>
+     * Setter for the field <code>rotation</code>.
+     * </p>
+     * 
+     * @param currentRotation
+     *            a {@link org.lwjgl.util.vector.Quaternion} object.
      */
     @Override
     public void setRotation(Quaternion quaternion) {

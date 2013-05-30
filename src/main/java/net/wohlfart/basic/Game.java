@@ -25,11 +25,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.util.Assert;
 
-
 /**
  * <p>
- * This class is bootstrapping the application
- * and handles state changes within the application.
+ * This class is bootstrapping the application and handles state changes within the application.
  * </p>
  */
 class Game implements InitializingBean {
@@ -46,10 +44,8 @@ class Game implements InitializingBean {
     protected InputSource inputSource;
     protected InputDispatcher inputDispatcher;
 
-    /** we need to remember the initial display mode so we can reset it on exit*/
+    /** we need to remember the initial display mode so we can reset it on exit */
     private DisplayMode origDisplayMode;
-
-
 
     public void setGameSettings(Settings settings) {
         this.settings = settings;
@@ -75,8 +71,6 @@ class Game implements InitializingBean {
         this.initialState = initialState;
     }
 
-
-
     @Override
     public void afterPropertiesSet() throws Exception {
         LOGGER.debug("<afterPropertiesSet>");
@@ -87,10 +81,10 @@ class Game implements InitializingBean {
         Assert.notNull(inputDispatcher, "inputDispatcher missing, you probably forgot to inject inputDispatcher in the Game");
     }
 
-
     /**
-     * <p>Entry point for the application
-     * sets the initial state and fire up the main loop.</p>
+     * <p>
+     * Entry point for the application sets the initial state and fire up the main loop.
+     * </p>
      */
     void start() {
         try {
@@ -105,10 +99,10 @@ class Game implements InitializingBean {
         }
     }
 
-
     /**
-     * <p>This is the main loop that does all the work,
-     *    this method returns when the application is exited by the user.</p>
+     * <p>
+     * This is the main loop that does all the work, this method returns when the application is exited by the user.
+     * </p>
      */
     private void runApplicationLoop() {
         float delta;
@@ -130,16 +124,13 @@ class Game implements InitializingBean {
     }
 
     /**
-     * setup a OpenGL 3.3 environment,
-     * side effect is fixing height/width in the settings
+     * setup a OpenGL 3.3 environment, side effect is fixing height/width in the settings
+     * 
      * @throws IOException
      */
     private void startPlatform() throws LWJGLException, IOException {
-        Display.setIcon(new ByteBuffer[] {
-                loadIcon(resourceManager.getGfxUrl("icons/main128.png")),
-                loadIcon(resourceManager.getGfxUrl("icons/main32.png")),
-                loadIcon(resourceManager.getGfxUrl("icons/main16.png")),
-        });
+        Display.setIcon(new ByteBuffer[] { loadIcon(resourceManager.getGfxUrl("icons/main128.png")), loadIcon(resourceManager.getGfxUrl("icons/main32.png")),
+                loadIcon(resourceManager.getGfxUrl("icons/main16.png")), });
         if (settings.getFullscreen()) {
             setupFullscreen();
         } else {
@@ -148,16 +139,15 @@ class Game implements InitializingBean {
 
         // after this point we have a valid OpenGL context
 
-
         // map the internal OpenGL coordinate system to the entire viewport
         GL11.glViewport(0, 0, settings.width, settings.height);
         // used for GL11.glClear(GL11.GL_COLOR_BUFFER_BIT); not really needed if we have a skybox anyways
         GL11.glHint(GL11.GL_LINE_SMOOTH_HINT, GL11.GL_NICEST);
         GL11.glClearColor(0.5f, 0.5f, 0.5f, 0f);
         GL11.glClearDepth(1f);
-        //GL11.glClearColor(0.0f, 0.0f, 0.0f, 0f);
+        // GL11.glClearColor(0.0f, 0.0f, 0.0f, 0f);
         // turn culling off so it will be drawn regardless of which way a surface is facing
-        GL11.glDisable(GL11.GL_CULL_FACE);  // enable for production
+        GL11.glDisable(GL11.GL_CULL_FACE); // enable for production
         GL11.glDisable(GL11.GL_DEPTH_TEST); // enable for production and check how this works with the skybox
 
         // wire the stuff after the display has been created and the settings have been fixed
@@ -166,7 +156,6 @@ class Game implements InitializingBean {
 
         inputSource.setInputDispatcher(graphContext.getInputDispatcher());
         setCurrentState(initialState);
-
 
         LOGGER.info("Vendor: " + GL11.glGetString(GL11.GL_VENDOR));
         LOGGER.info("Version: " + GL11.glGetString(GL11.GL_VERSION));
@@ -178,9 +167,7 @@ class Game implements InitializingBean {
     // for more about setting up a display...
     private void setupWindow() throws LWJGLException {
         final PixelFormat pixelFormat = new PixelFormat();
-        final ContextAttribs contextAtributes = new ContextAttribs(3, 3)
-             .withForwardCompatible(true)
-             .withProfileCore(true);
+        final ContextAttribs contextAtributes = new ContextAttribs(3, 3).withForwardCompatible(true).withProfileCore(true);
         Display.setDisplayMode(new DisplayMode(settings.getWidth(), settings.getHeight()));
         Display.setResizable(false);
         Display.setTitle(settings.getTitle());
@@ -191,14 +178,11 @@ class Game implements InitializingBean {
         final DisplayMode[] modes = Display.getAvailableDisplayModes();
         DisplayMode requestedResolution = null;
         DisplayMode bestResolution = null;
-        for (DisplayMode mode : modes) {
-            if ((bestResolution == null)
-                    || (mode.getWidth() > bestResolution.getWidth())
-                    || (mode.getHeight() > bestResolution.getHeight())) {
+        for (final DisplayMode mode : modes) {
+            if (bestResolution == null || mode.getWidth() > bestResolution.getWidth() || mode.getHeight() > bestResolution.getHeight()) {
                 bestResolution = mode;
             }
-            if ((mode.getWidth() == settings.width)
-                && (mode.getHeight() == settings.height)) {
+            if (mode.getWidth() == settings.width && mode.getHeight() == settings.height) {
                 requestedResolution = mode;
             }
         }
@@ -209,11 +193,10 @@ class Game implements InitializingBean {
         Display.setFullscreen(true);
         if (requestedResolution != null) {
             Display.setDisplayMode(requestedResolution);
-        }
-        else {
+        } else {
             Display.setDisplayMode(bestResolution);
-            int width = bestResolution.getWidth();
-            int height = bestResolution.getHeight();
+            final int width = bestResolution.getWidth();
+            final int height = bestResolution.getHeight();
             LOGGER.info("fixing width/height to: {}/{}", width, height);
             settings.setWidth(width);
             settings.setHeight(height);
@@ -221,11 +204,13 @@ class Game implements InitializingBean {
         Display.create(pixelFormat, contextAtributes); // creates the GL context
     }
 
-
     /**
-     * <p>Setter for the field <code>currentState</code>.</p>
-     *
-     * @param newState a {@link net.wohlfart.basic.states.GameStateEnum} object.
+     * <p>
+     * Setter for the field <code>currentState</code>.
+     * </p>
+     * 
+     * @param newState
+     *            a {@link net.wohlfart.basic.states.GameStateEnum} object.
      */
     public void setCurrentState(final GameState newState) {
         currentState.destroy();
@@ -237,7 +222,7 @@ class Game implements InitializingBean {
         if (origDisplayMode != null) {
             try {
                 Display.setDisplayMode(origDisplayMode);
-            } catch (LWJGLException ex) {
+            } catch (final LWJGLException ex) {
                 LOGGER.warn("error while shutting down", ex);
             }
         }
@@ -253,8 +238,8 @@ class Game implements InitializingBean {
 
     private ByteBuffer loadIcon(URL url) throws IOException {
         try (InputStream is = url.openStream()) {
-            PNGDecoder decoder = new PNGDecoder(is);
-            ByteBuffer byteBuffer = ByteBuffer.allocateDirect(4 * decoder.getWidth() * decoder.getHeight());
+            final PNGDecoder decoder = new PNGDecoder(is);
+            final ByteBuffer byteBuffer = ByteBuffer.allocateDirect(4 * decoder.getWidth() * decoder.getHeight());
             decoder.decode(byteBuffer, decoder.getWidth() * 4, PNGDecoder.Format.RGBA);
             byteBuffer.flip();
             return byteBuffer;

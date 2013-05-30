@@ -19,8 +19,10 @@ class CharInfo {
     }
 
     /**
-     * <p>Getter for the field <code>x</code>.</p>
-     *
+     * <p>
+     * Getter for the field <code>x</code>.
+     * </p>
+     * 
      * @return a float.
      */
     public float getX() {
@@ -28,8 +30,10 @@ class CharInfo {
     }
 
     /**
-     * <p>Getter for the field <code>y</code>.</p>
-     *
+     * <p>
+     * Getter for the field <code>y</code>.
+     * </p>
+     * 
      * @return a float.
      */
     public float getY() {
@@ -37,8 +41,10 @@ class CharInfo {
     }
 
     /**
-     * <p>getWidth.</p>
-     *
+     * <p>
+     * getWidth.
+     * </p>
+     * 
      * @return a float.
      */
     public float getWidth() {
@@ -46,8 +52,10 @@ class CharInfo {
     }
 
     /**
-     * <p>getHeight.</p>
-     *
+     * <p>
+     * getHeight.
+     * </p>
+     * 
      * @return a float.
      */
     public float getHeight() {

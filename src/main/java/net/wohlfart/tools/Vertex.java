@@ -3,7 +3,8 @@ package net.wohlfart.tools;
 import org.lwjgl.util.vector.Vector3f;
 
 /**
- * <p>Vertex class.<br/>
+ * <p>
+ * Vertex class.<br/>
  * see: http://www.lwjgl.org/wiki/index.php?title=The_Quad_interleaved
  * </p>
  */
@@ -49,74 +50,104 @@ public class Vertex {
 
     // Setters
     /**
-     * <p>setXYZ.</p>
-     *
-     * @param x a float.
-     * @param y a float.
-     * @param z a float.
+     * <p>
+     * setXYZ.
+     * </p>
+     * 
+     * @param x
+     *            a float.
+     * @param y
+     *            a float.
+     * @param z
+     *            a float.
      */
     public void setXYZ(float x, float y, float z) {
         this.setXYZW(x, y, z, 1f);
     }
 
     /**
-     * <p>setXYZ.</p>
-     *
-     * @param vec a {@link org.lwjgl.util.vector.Vector3f} object.
+     * <p>
+     * setXYZ.
+     * </p>
+     * 
+     * @param vec
+     *            a {@link org.lwjgl.util.vector.Vector3f} object.
      */
     public void setXYZ(Vector3f vec) {
         this.setXYZW(vec.x, vec.y, vec.z, 1f);
     }
 
     /**
-     * <p>setRGB.</p>
-     *
-     * @param r a float.
-     * @param g a float.
-     * @param b a float.
+     * <p>
+     * setRGB.
+     * </p>
+     * 
+     * @param r
+     *            a float.
+     * @param g
+     *            a float.
+     * @param b
+     *            a float.
      */
     public void setRGB(float r, float g, float b) {
         this.setRGBA(r, g, b, 1f);
     }
 
     /**
-     * <p>setXYZW.</p>
-     *
-     * @param x a float.
-     * @param y a float.
-     * @param z a float.
-     * @param w a float.
+     * <p>
+     * setXYZW.
+     * </p>
+     * 
+     * @param x
+     *            a float.
+     * @param y
+     *            a float.
+     * @param z
+     *            a float.
+     * @param w
+     *            a float.
      */
     public void setXYZW(float x, float y, float z, float w) {
         this.xyzw = new float[] { x, y, z, w };
     }
 
     /**
-     * <p>setST.</p>
-     *
-     * @param s a float.
-     * @param t a float.
+     * <p>
+     * setST.
+     * </p>
+     * 
+     * @param s
+     *            a float.
+     * @param t
+     *            a float.
      */
     public void setST(float s, float t) {
         this.st = new float[] { s, t };
     }
 
     /**
-     * <p>setRGBA.</p>
-     *
-     * @param r a float.
-     * @param g a float.
-     * @param b a float.
-     * @param a a float.
+     * <p>
+     * setRGBA.
+     * </p>
+     * 
+     * @param r
+     *            a float.
+     * @param g
+     *            a float.
+     * @param b
+     *            a float.
+     * @param a
+     *            a float.
      */
     public void setRGBA(float r, float g, float b, float a) {
         this.rgba = new float[] { r, g, b, 1f };
     }
 
-
     /**
-     * <p>getElements.</p>
-     *
+     * <p>
+     * getElements.
+     * </p>
+     * 
      * @return an array of float.
      */
     public float[] getElements() {
@@ -141,8 +172,10 @@ public class Vertex {
     }
 
     /**
-     * <p>getXYZW.</p>
-     *
+     * <p>
+     * getXYZW.
+     * </p>
+     * 
      * @return an array of float.
      */
     public float[] getXYZW() {
@@ -150,8 +183,10 @@ public class Vertex {
     }
 
     /**
-     * <p>getRGBA.</p>
-     *
+     * <p>
+     * getRGBA.
+     * </p>
+     * 
      * @return an array of float.
      */
     public float[] getRGBA() {
@@ -159,8 +194,10 @@ public class Vertex {
     }
 
     /**
-     * <p>getST.</p>
-     *
+     * <p>
+     * getST.
+     * </p>
+     * 
      * @return an array of float.
      */
     public float[] getST() {

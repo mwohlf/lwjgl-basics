@@ -13,14 +13,18 @@ import org.lwjgl.util.vector.Quaternion;
 import org.lwjgl.util.vector.Vector3f;
 
 /**
- * <p>CameraTest class.</p>
+ * <p>
+ * CameraTest class.
+ * </p>
  */
 public class AnotherSimpleMathTest extends VectorTestBase {
 
     Quaternion q;
 
     /**
-     * <p>runBeforeEveryTest.</p>
+     * <p>
+     * runBeforeEveryTest.
+     * </p>
      */
     @Before
     public void runBeforeEveryTest() {
@@ -28,7 +32,9 @@ public class AnotherSimpleMathTest extends VectorTestBase {
     }
 
     /**
-     * <p>runAfterEveryTest.</p>
+     * <p>
+     * runAfterEveryTest.
+     * </p>
      */
     @After
     public void runAfterEveryTest() {
@@ -36,7 +42,9 @@ public class AnotherSimpleMathTest extends VectorTestBase {
     }
 
     /**
-     * <p>simpleCheck.</p>
+     * <p>
+     * simpleCheck.
+     * </p>
      */
     @Test
     public void simpleCheck() {
@@ -47,7 +55,9 @@ public class AnotherSimpleMathTest extends VectorTestBase {
     }
 
     /**
-     * <p>simpleRotateXCheck.</p>
+     * <p>
+     * simpleRotateXCheck.
+     * </p>
      */
     @Test
     public void simpleRotateXCheck() {
@@ -92,7 +102,9 @@ public class AnotherSimpleMathTest extends VectorTestBase {
     }
 
     /**
-     * <p>simpleDotProductCheck.</p>
+     * <p>
+     * simpleDotProductCheck.
+     * </p>
      */
     @Test
     public void simpleDotProductCheck() {
@@ -115,7 +127,9 @@ public class AnotherSimpleMathTest extends VectorTestBase {
     }
 
     /**
-     * <p>randomizedRotationTest.</p>
+     * <p>
+     * randomizedRotationTest.
+     * </p>
      */
     @Test
     public void randomizedRotationTest() {

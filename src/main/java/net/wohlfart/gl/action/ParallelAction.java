@@ -12,14 +12,14 @@ public final class ParallelAction implements Action {
     }
 
     public static ParallelAction create(Action... actions) {
-        ParallelAction result = new ParallelAction();
+        final ParallelAction result = new ParallelAction();
         result.actions.addAll(Arrays.asList(actions));
         return result;
     }
 
     @Override
     public void perform(Actor actor, float timeInSec) {
-        for (Action action : actions) {
+        for (final Action action : actions) {
             action.perform(actor, timeInSec);
         }
     }

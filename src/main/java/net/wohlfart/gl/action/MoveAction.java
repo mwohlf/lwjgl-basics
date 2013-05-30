@@ -6,7 +6,7 @@ import org.lwjgl.util.vector.Vector3f;
 
 public final class MoveAction implements Action {
 
-    private float speed;  // the time for moving one unit
+    private float speed; // the time for moving one unit
     private Vector3f direction;
 
     private final Vector3f tmp = new Vector3f();
@@ -16,14 +16,14 @@ public final class MoveAction implements Action {
     }
 
     public static MoveAction create() {
-        MoveAction result = new MoveAction();
+        final MoveAction result = new MoveAction();
         result.speed = 10f;
-        result.direction = new Vector3f(0,0,-1).normalise(null);
+        result.direction = new Vector3f(0, 0, -1).normalise(null);
         return result;
     }
 
     public static MoveAction create(float speed, Vector3f direction) {
-        MoveAction result = new MoveAction();
+        final MoveAction result = new MoveAction();
         result.speed = speed;
         result.direction = direction.normalise(result.direction);
         return result;
@@ -31,8 +31,8 @@ public final class MoveAction implements Action {
 
     @Override
     public void perform(Actor actor, float time) {
-        Vector3f v = actor.getPosition();
-        SimpleMath.scale(direction, (time / speed), tmp);
+        final Vector3f v = actor.getPosition();
+        SimpleMath.scale(direction, time / speed, tmp);
         SimpleMath.add(v, tmp, v);
         actor.setPosition(v);
     }

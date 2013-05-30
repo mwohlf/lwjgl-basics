@@ -4,13 +4,14 @@ import java.util.Collection;
 
 import net.wohlfart.gl.renderer.IsRenderable;
 
-
 // a label is a quad for each character
 /**
- * <p>Label class.</p>
- *
- *
- *
+ * <p>
+ * Label class.
+ * </p>
+ * 
+ * 
+ * 
  */
 public class Label extends AbstractTextComponent {
 
@@ -20,11 +21,16 @@ public class Label extends AbstractTextComponent {
     private Collection<IsRenderable> characters;
 
     /**
-     * <p>Constructor for Label.</p>
-     *
-     * @param x a int.
-     * @param y a int.
-     * @param string a {@link java.lang.String} object.
+     * <p>
+     * Constructor for Label.
+     * </p>
+     * 
+     * @param x
+     *            a int.
+     * @param y
+     *            a int.
+     * @param string
+     *            a {@link java.lang.String} object.
      */
     public Label(int x, int y, String string) {
         this.x = x;

@@ -9,10 +9,12 @@ import org.lwjgl.opengl.GL20;
 import org.lwjgl.opengl.GL30;
 
 /**
- * <p>TexturedFragmentMesh class.</p>
- *
- *
- *
+ * <p>
+ * TexturedFragmentMesh class.
+ * </p>
+ * 
+ * 
+ * 
  */
 public class TexturedFragmentMesh implements IsRenderable {
 
@@ -32,23 +34,35 @@ public class TexturedFragmentMesh implements IsRenderable {
 
     // package private, created by the builder
     /**
-     * <p>Constructor for TexturedFragmentMesh.</p>
-     *
-     * @param vaoHandle a int.
-     * @param vboVerticesHandle a int.
-     * @param vboIndicesHandle a int.
-     * @param indicesType a int.
-     * @param indexElemSize a int.
-     * @param indicesCount a int.
-     * @param indexOffset a int.
-     * @param colorAttrib a int.
-     * @param positionAttrib a int.
-     * @param textureAttrib a int.
-     * @param textureId a int.
+     * <p>
+     * Constructor for TexturedFragmentMesh.
+     * </p>
+     * 
+     * @param vaoHandle
+     *            a int.
+     * @param vboVerticesHandle
+     *            a int.
+     * @param vboIndicesHandle
+     *            a int.
+     * @param indicesType
+     *            a int.
+     * @param indexElemSize
+     *            a int.
+     * @param indicesCount
+     *            a int.
+     * @param indexOffset
+     *            a int.
+     * @param colorAttrib
+     *            a int.
+     * @param positionAttrib
+     *            a int.
+     * @param textureAttrib
+     *            a int.
+     * @param textureId
+     *            a int.
      */
-    public TexturedFragmentMesh(
-            int vaoHandle, int vboVerticesHandle,
-            // index
+    public TexturedFragmentMesh(int vaoHandle, int vboVerticesHandle,
+    // index
             int vboIndicesHandle, int indicesType, int indexElemSize, int indicesCount, int indexOffset,
             // attrib pos
             int colorAttrib, int positionAttrib, int textureAttrib, int textureId) {

@@ -11,10 +11,9 @@ import org.lwjgl.input.Mouse;
 
 /**
  * <p>
- * LwjglInputSource class is the central input processor
- * for handling Mouse, Keyboard and Controllers for lwjgl
+ * LwjglInputSource class is the central input processor for handling Mouse, Keyboard and Controllers for lwjgl
  * </p>
- *
+ * 
  */
 public class LwjglInputSource implements InputSource {
 
@@ -26,8 +25,6 @@ public class LwjglInputSource implements InputSource {
 
     private InputDispatcher inputDispatcher;
 
-
-
     // the lwjgl Display must be created before calling this method
     @Override
     public void setInputDispatcher(InputDispatcher inputDispatcher) {
@@ -35,8 +32,8 @@ public class LwjglInputSource implements InputSource {
             this.inputDispatcher = inputDispatcher;
             Keyboard.enableRepeatEvents(false);
             Mouse.create();
-        } catch (LWJGLException ex) {
-            throw new GenericGameException("can't create input source for lwjgl" , ex);
+        } catch (final LWJGLException ex) {
+            throw new GenericGameException("can't create input source for lwjgl", ex);
         }
     }
 
@@ -49,8 +46,7 @@ public class LwjglInputSource implements InputSource {
         processMouseButtonChanges(delta);
 
         /*
-        processMousePosition(delta);
-        processMouseMove(delta);
+         * processMousePosition(delta); processMouseMove(delta);
          */
     }
 
@@ -78,12 +74,10 @@ public class LwjglInputSource implements InputSource {
         keyboardDevice.processPressedKeys(delta);
     }
 
-
     private void processMouseWheel(float delta) {
         final int deltaWheel = Mouse.getDWheel();
         mouseDevice.wheel(delta, deltaWheel);
     }
-
 
     private void processMouseButtonChanges(final float delta) {
         while (Mouse.next()) {
@@ -100,18 +94,17 @@ public class LwjglInputSource implements InputSource {
     }
 
     private void processMousePosition(float delta) {
-        int screenX = Mouse.getX();
-        int screenY = Mouse.getY();
+        final int screenX = Mouse.getX();
+        final int screenY = Mouse.getY();
         mouseDevice.position(screenX, screenY);
     }
 
     private void processMouseMove(float delta) {
-        int deltaX = Mouse.getDX();
-        int deltaY = Mouse.getDY();
-        //final Iterator<Integer> it = pressedButtons.iterator();
+        final int deltaX = Mouse.getDX();
+        final int deltaY = Mouse.getDY();
+        // final Iterator<Integer> it = pressedButtons.iterator();
         mouseDevice.move(lastButton, deltaX, deltaY);
     }
-
 
     private class MouseDevice {
         private static final int MOUSE_KEY0 = 0;
@@ -140,9 +133,8 @@ public class LwjglInputSource implements InputSource {
 
         public void position(int posX, int posY) {
             /*
-            positionPointer.setPosition(posX, posY);
-            inputDispatcher.post(positionPointer);
-            */
+             * positionPointer.setPosition(posX, posY); inputDispatcher.post(positionPointer);
+             */
         }
 
         public void move(int key, int deltaX, int deltaY) {
@@ -157,10 +149,6 @@ public class LwjglInputSource implements InputSource {
         }
 
     };
-
-
-
-
 
     private class KeyboardDevice {
         private final HashSet<Integer> pressedKeys = new HashSet<Integer>(8);
@@ -182,7 +170,7 @@ public class LwjglInputSource implements InputSource {
         }
 
         public void processPressedKeys(float time) {
-            //Keyboard.poll();
+            // Keyboard.poll();
             final Iterator<Integer> it = pressedKeys.iterator();
             while (it.hasNext()) {
                 final int keyCode = it.next();
@@ -193,7 +181,6 @@ public class LwjglInputSource implements InputSource {
                 }
             }
         }
-
 
         private void processPressedKey(float time, int key) {
 
@@ -238,7 +225,6 @@ public class LwjglInputSource implements InputSource {
                 // do nothing
             }
         }
-
 
     };
 

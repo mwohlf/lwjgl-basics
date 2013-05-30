@@ -20,10 +20,12 @@ import org.lwjgl.util.vector.Vector3f;
 
 // see: http://www.arcsynthesis.org/gltut/Positioning/Tutorial%2005.html
 /**
- * <p>VertexArrayObject class.</p>
- *
- *
- *
+ * <p>
+ * VertexArrayObject class.
+ * </p>
+ * 
+ * 
+ * 
  */
 public class VertexArrayObject implements IsRenderable {
 
@@ -168,8 +170,6 @@ public class VertexArrayObject implements IsRenderable {
         GL11.glDrawElements(GL11.GL_LINE_STRIP, indicesCount, GL11.GL_UNSIGNED_BYTE, 0);
         GL30.glBindVertexArray(0);
     }
-
-
 
     /** {@inheritDoc} */
     @Override

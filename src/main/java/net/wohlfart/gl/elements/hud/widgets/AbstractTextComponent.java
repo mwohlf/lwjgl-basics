@@ -6,27 +6,34 @@ import net.wohlfart.gl.elements.hud.Layer;
 import net.wohlfart.gl.renderer.IsRenderable;
 
 /**
- * <p>Abstract AbstractTextComponent class.</p>
- *
- *
- *
+ * <p>
+ * Abstract AbstractTextComponent class.
+ * </p>
+ * 
+ * 
+ * 
  */
 public abstract class AbstractTextComponent implements IsRenderable {
 
     private Layer layer;
 
     /**
-     * <p>Setter for the field <code>layer</code>.</p>
-     *
-     * @param layer a {@link net.wohlfart.gl.elements.hud.Layer} object.
+     * <p>
+     * Setter for the field <code>layer</code>.
+     * </p>
+     * 
+     * @param layer
+     *            a {@link net.wohlfart.gl.elements.hud.Layer} object.
      */
     public void setLayer(Layer layer) {
         this.layer = layer;
     }
 
     /**
-     * <p>Getter for the field <code>layer</code>.</p>
-     *
+     * <p>
+     * Getter for the field <code>layer</code>.
+     * </p>
+     * 
      * @return a {@link net.wohlfart.gl.elements.hud.Layer} object.
      */
     public Layer getLayer() {
@@ -34,18 +41,23 @@ public abstract class AbstractTextComponent implements IsRenderable {
     }
 
     /**
-     * <p>createMeshSet.</p>
-     *
-     * @param x a int.
-     * @param y a int.
-     * @param string a {@link java.lang.String} object.
+     * <p>
+     * createMeshSet.
+     * </p>
+     * 
+     * @param x
+     *            a int.
+     * @param y
+     *            a int.
+     * @param string
+     *            a {@link java.lang.String} object.
      * @return a {@link java.util.HashSet} object.
      */
     protected HashSet<IsRenderable> createMeshSet(int x, int y, String string) {
-        assert string != null: "string to create MeshSet is null";
+        assert string != null : "string to create MeshSet is null";
         final CharAtlas atlas = layer.getCharacterAtlas();
         int d = 0;
-        HashSet<IsRenderable> characters = new HashSet<IsRenderable>();
+        final HashSet<IsRenderable> characters = new HashSet<IsRenderable>();
         final char[] charArray = string.toCharArray();
         for (final char c : charArray) {
             CharInfo info = atlas.getCharInfo(c);
@@ -69,6 +81,5 @@ public abstract class AbstractTextComponent implements IsRenderable {
         builder.setScreenY(y);
         return builder.build();
     }
-
 
 }

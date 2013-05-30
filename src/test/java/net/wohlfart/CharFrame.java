@@ -21,19 +21,24 @@ import org.lwjgl.opengl.DisplayMode;
 import org.lwjgl.opengl.PixelFormat;
 
 /**
- * <p>CharFrame class.</p>
- *
- *
- *
- *
+ * <p>
+ * CharFrame class.
+ * </p>
+ * 
+ * 
+ * 
+ * 
  */
 @SuppressWarnings("serial")
 public class CharFrame extends JFrame {
 
     /**
-     * <p>main.</p>
-     *
-     * @param args an array of {@link java.lang.String} objects.
+     * <p>
+     * main.
+     * </p>
+     * 
+     * @param args
+     *            an array of {@link java.lang.String} objects.
      */
     public static void main(String[] args) {
         try {
@@ -42,7 +47,7 @@ public class CharFrame extends JFrame {
                 public void run() {
                     try {
                         new CharFrame().setVisible(true);
-                    } catch (LWJGLException ex) {
+                    } catch (final LWJGLException ex) {
                         ex.printStackTrace();
                     }
                 }
@@ -67,7 +72,6 @@ public class CharFrame extends JFrame {
         Display.setVSyncEnabled(true);
         Display.create(pixelFormat, contextAtributes); // creates the GL context
     }
-
 
     private void addContent() {
         final CharAtlasBuilder fontRenderer = new CharAtlasBuilder();

@@ -14,14 +14,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.util.Assert;
 
-
 /**
- * @formatter:off
- * state implementation that consists of (in the order of rendering):
- * - skyboxImpl
- * - elementBucket
- * - hudImpl
- *
+ * @formatter:off state implementation that consists of (in the order of rendering): - skyboxImpl - elementBucket - hudImpl
+ * 
  * @formatter:on
  */
 final class SimpleState extends AbstractGraphicState implements InitializingBean {
@@ -34,7 +29,6 @@ final class SimpleState extends AbstractGraphicState implements InitializingBean
     private Skybox skybox;
     private RenderableBucket elemBucket;
     private Hud hud;
-
 
     public void setSkybox(Skybox skybox) {
         this.skybox = skybox;
@@ -72,10 +66,9 @@ final class SimpleState extends AbstractGraphicState implements InitializingBean
         // elemBucket.addContent(SceneCreator.createRandomLocatedSpheres());
 
         // event bus registration
-        InputDispatcher inputDispatcher = getInputDispatcher();
+        final InputDispatcher inputDispatcher = getInputDispatcher();
         inputDispatcher.register(mousePositionLabel);
         inputDispatcher.register(mousePicker);
-
 
         hud.add(statistics);
         hud.add(mousePositionLabel);

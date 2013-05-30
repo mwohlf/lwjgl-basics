@@ -18,7 +18,6 @@ import org.lwjgl.opengl.GL30;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-
 /*
  * this creates a mesh for a single character
  */
@@ -35,23 +34,25 @@ class CharMeshBuilder {
     private float screenY;
 
     /**
-     * <p>build.</p>
-     *
+     * <p>
+     * build.
+     * </p>
+     * 
      * @return a {@link net.wohlfart.gl.shader.mesh.IRenderable} object.
      */
     public IsRenderable build() {
-        float atlasWidth = atlas.getImage().getWidth();
-        float atlasHeight = atlas.getImage().getHeight();
-        float width = cxtManager.getScreenWidth();
-        float height = cxtManager.getScreenHeight();
+        final float atlasWidth = atlas.getImage().getWidth();
+        final float atlasHeight = atlas.getImage().getHeight();
+        final float width = cxtManager.getScreenWidth();
+        final float height = cxtManager.getScreenHeight();
 
         // this is the z range we need to have a 1:1 dot match from the mesh to the screen
-        float z = -0.5f * SimpleMath.coTan(SimpleMath.deg2rad(cxtManager.getFieldOfView() / 2f));
+        final float z = -0.5f * SimpleMath.coTan(SimpleMath.deg2rad(cxtManager.getFieldOfView() / 2f));
 
-        float x1 = screenX / atlasWidth - (0.5f * (width / height));
-        float y1 = screenY / atlasHeight + 0.5f;
-        float x2 = x1 + info.getWidth()  / atlasWidth;
-        float y2 = y1 - info.getHeight()  / atlasHeight;
+        final float x1 = screenX / atlasWidth - 0.5f * (width / height);
+        final float y1 = screenY / atlasHeight + 0.5f;
+        final float x2 = x1 + info.getWidth() / atlasWidth;
+        final float y2 = y1 - info.getHeight() / atlasHeight;
 
         final float s1 = info.getX() / atlasWidth;
         final float t1 = info.getY() / atlasHeight;
@@ -122,41 +123,53 @@ class CharMeshBuilder {
         GL15.glBindBuffer(GL15.GL_ELEMENT_ARRAY_BUFFER, 0);
 
         final int texId = atlas.getTextureId();
-        return new CharacterMesh(vaoHandle, vboVerticesHandle, vboIndicesHandle, GL11.GL_TRIANGLES, GL11.GL_UNSIGNED_BYTE,
-                indicesCount, 0, positionAttrib, textureAttrib, texId);
+        return new CharacterMesh(vaoHandle, vboVerticesHandle, vboIndicesHandle, GL11.GL_TRIANGLES, GL11.GL_UNSIGNED_BYTE, indicesCount, 0, positionAttrib,
+                textureAttrib, texId);
     }
 
     /**
-     * <p>setCharInfo.</p>
-     *
-     * @param info a {@link net.wohlfart.gl.elements.hud.widgets.CharInfo} object.
+     * <p>
+     * setCharInfo.
+     * </p>
+     * 
+     * @param info
+     *            a {@link net.wohlfart.gl.elements.hud.widgets.CharInfo} object.
      */
     public void setCharInfo(CharInfo info) {
         this.info = info;
     }
 
     /**
-     * <p>setCharAtlas.</p>
-     *
-     * @param atlas a {@link net.wohlfart.gl.elements.hud.widgets.CharAtlas} object.
+     * <p>
+     * setCharAtlas.
+     * </p>
+     * 
+     * @param atlas
+     *            a {@link net.wohlfart.gl.elements.hud.widgets.CharAtlas} object.
      */
     public void setCharAtlas(CharAtlas atlas) {
         this.atlas = atlas;
     }
 
     /**
-     * <p>Setter for the field <code>screenX</code>.</p>
-     *
-     * @param x a float.
+     * <p>
+     * Setter for the field <code>screenX</code>.
+     * </p>
+     * 
+     * @param x
+     *            a float.
      */
     public void setScreenX(float x) {
         this.screenX = x;
     }
 
     /**
-     * <p>Setter for the field <code>screenY</code>.</p>
-     *
-     * @param y a float.
+     * <p>
+     * Setter for the field <code>screenY</code>.
+     * </p>
+     * 
+     * @param y
+     *            a float.
      */
     public void setScreenY(float y) {
         this.screenY = y;

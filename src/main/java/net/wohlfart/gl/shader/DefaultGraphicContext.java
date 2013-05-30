@@ -7,15 +7,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * @formatter:off
- * modeling an OpenGL Context:
- *   - shader
- *   - attribute location
- *   - uniform locations
+ * @formatter:off modeling an OpenGL Context: - shader - attribute location - uniform locations
  * @formatter:on
- *
- * see: http://www.opengl.org/wiki/OpenGL_Context
- *
+ * 
+ *               see: http://www.opengl.org/wiki/OpenGL_Context
+ * 
  */
 public class DefaultGraphicContext implements GraphicContextManager.IGraphicContext {
     private static final Logger LOGGER = LoggerFactory.getLogger(DefaultGraphicContext.class);
@@ -28,18 +24,19 @@ public class DefaultGraphicContext implements GraphicContextManager.IGraphicCont
     private boolean isInitialized = false;
 
     /**
-     * <p>Constructor for DefaultGraphicContext.</p>
-     *
-     * @param shaderProgram a {@link net.wohlfart.gl.shader.IShaderProgram} object.
+     * <p>
+     * Constructor for DefaultGraphicContext.
+     * </p>
+     * 
+     * @param shaderProgram
+     *            a {@link net.wohlfart.gl.shader.IShaderProgram} object.
      */
     public DefaultGraphicContext(IShaderProgram shaderProgram) {
         this.shaderProgram = shaderProgram;
     }
 
     /**
-     *  this needs to be called after the OpenGL setup is done
-     *  this method might be called multiple times if the same shader is
-     *  used in multiple states
+     * this needs to be called after the OpenGL setup is done this method might be called multiple times if the same shader is used in multiple states
      */
     @Override
     public void setup() {
@@ -65,8 +62,7 @@ public class DefaultGraphicContext implements GraphicContextManager.IGraphicCont
                 LOGGER.debug("location for AttributeHandle '{}' is '{}' wich is <0, the programId is '{}'",
                         new Object[] { attributeHandle, location, programId });
             } else {
-                LOGGER.debug("attributeMap lookup: '{}({})' to '{}'",
-                        new Object[] { attributeHandle.name(), attributeHandle.ordinal(), location });
+                LOGGER.debug("attributeMap lookup: '{}({})' to '{}'", new Object[] { attributeHandle.name(), attributeHandle.ordinal(), location });
             }
         }
         LOGGER.debug("attributeMap setup: '{}'", Arrays.toString(attributeMap));
@@ -75,11 +71,9 @@ public class DefaultGraphicContext implements GraphicContextManager.IGraphicCont
             final int location = GL20.glGetUniformLocation(programId, matrixHandle.getLookupString());
             uniformMap[matrixHandle.ordinal()] = location;
             if (location < 0) {
-                LOGGER.debug("location for UniformHandle '{}' is '{}' wich is <0, the programId is '{}'",
-                        new Object[] { matrixHandle, location, programId });
+                LOGGER.debug("location for UniformHandle '{}' is '{}' wich is <0, the programId is '{}'", new Object[] { matrixHandle, location, programId });
             } else {
-                LOGGER.debug("matrixMap lookup: '{}({})' to '{}'",
-                        new Object[] { matrixHandle.name(), matrixHandle.ordinal(), location });
+                LOGGER.debug("matrixMap lookup: '{}({})' to '{}'", new Object[] { matrixHandle.name(), matrixHandle.ordinal(), location });
             }
         }
         LOGGER.debug("matrixMap setup: '{}'", Arrays.toString(uniformMap));

@@ -51,24 +51,23 @@ public class ModelMeshBuilder {
         final int vboHandle = createVboHandle(stream);
 
         int offset;
-        int stride = ShaderAttributeHandle.POSITION.getByteCount()
-                + ShaderAttributeHandle.NORMAL.getByteCount()
+        final int stride = ShaderAttributeHandle.POSITION.getByteCount() + ShaderAttributeHandle.NORMAL.getByteCount()
                 + ShaderAttributeHandle.TEXTURE_COORD.getByteCount();
 
         offset = 0;
         GL20.glEnableVertexAttribArray(ShaderAttributeHandle.POSITION.getLocation());
-        GL20.glVertexAttribPointer(ShaderAttributeHandle.POSITION.getLocation(),
-                ShaderAttributeHandle.POSITION.getFloatCount(), GL11.GL_FLOAT, false, stride, offset);
+        GL20.glVertexAttribPointer(ShaderAttributeHandle.POSITION.getLocation(), ShaderAttributeHandle.POSITION.getFloatCount(), GL11.GL_FLOAT, false, stride,
+                offset);
 
-         offset += ShaderAttributeHandle.POSITION.getByteCount();
-         GL20.glEnableVertexAttribArray(ShaderAttributeHandle.NORMAL.getLocation());
-         GL20.glVertexAttribPointer(ShaderAttributeHandle.NORMAL.getLocation(),
-                ShaderAttributeHandle.NORMAL.getFloatCount(), GL11.GL_FLOAT, false, stride, offset);
+        offset += ShaderAttributeHandle.POSITION.getByteCount();
+        GL20.glEnableVertexAttribArray(ShaderAttributeHandle.NORMAL.getLocation());
+        GL20.glVertexAttribPointer(ShaderAttributeHandle.NORMAL.getLocation(), ShaderAttributeHandle.NORMAL.getFloatCount(), GL11.GL_FLOAT, false, stride,
+                offset);
 
-         offset += ShaderAttributeHandle.NORMAL.getByteCount();
-         GL20.glEnableVertexAttribArray(ShaderAttributeHandle.TEXTURE_COORD.getLocation());
-         GL20.glVertexAttribPointer(ShaderAttributeHandle.TEXTURE_COORD.getLocation(),
-                 ShaderAttributeHandle.TEXTURE_COORD.getFloatCount(), GL11.GL_FLOAT, false, stride, offset);
+        offset += ShaderAttributeHandle.NORMAL.getByteCount();
+        GL20.glEnableVertexAttribArray(ShaderAttributeHandle.TEXTURE_COORD.getLocation());
+        GL20.glVertexAttribPointer(ShaderAttributeHandle.TEXTURE_COORD.getLocation(), ShaderAttributeHandle.TEXTURE_COORD.getFloatCount(), GL11.GL_FLOAT,
+                false, stride, offset);
 
         GL20.glDisableVertexAttribArray(ShaderAttributeHandle.COLOR.getLocation());
 
@@ -82,8 +81,7 @@ public class ModelMeshBuilder {
         final int indexElemSize = GL11.GL_UNSIGNED_INT;
         final int indicesCount = indices.length;
 
-        return new ModelMesh(vaoHandle, vboHandle, idxBufferHandle, textureHandle,
-                triangelPrimitive, indexElemSize, indicesCount);
+        return new ModelMesh(vaoHandle, vboHandle, idxBufferHandle, textureHandle, triangelPrimitive, indexElemSize, indicesCount);
     }
 
     private int createIdxBufferHandle(int[] indices) {
@@ -105,7 +103,6 @@ public class ModelMeshBuilder {
         GL15.glBufferData(GL15.GL_ARRAY_BUFFER, verticesBuffer, GL15.GL_STATIC_DRAW);
         return vboVerticesHandle;
     }
-
 
     // FIXME: ugly hack to keep the same textureID
     private static int staticTextId = 0;
@@ -154,6 +151,5 @@ public class ModelMeshBuilder {
         staticTextId = texId;
         return texId;
     }
-
 
 }

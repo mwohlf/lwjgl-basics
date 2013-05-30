@@ -13,19 +13,20 @@ import org.lwjgl.util.vector.Vector3f;
 
 //
 /**
- * <p>Icosphere class.</p>
+ * <p>
+ * Icosphere class.
+ * </p>
  * <p>
  * see: http://blog.andreaskahler.com/2009/06/creating-icosphere-mesh-in-code.html
  * </p>
  */
-public class Icosphere extends AbstractRenderable { // REVIEWED
+public class Icosphere extends AbstractRenderable {
 
     private int lod = 0;
     private float radius = 1;
 
     float t = (1.0f + SimpleMath.sqrt(5.0f)) / 2.0f;
-    private final List<Vector3f> vertices = new ArrayList<Vector3f>(
-            Arrays.<Vector3f> asList( new Vector3f[] { // @formatter:off
+    private final List<Vector3f> vertices = new ArrayList<Vector3f>(Arrays.<Vector3f> asList(new Vector3f[] {// @formatter:off
                     new Vector3f(-1f, t, 0),
                     new Vector3f(+1f, t, 0),
                     new Vector3f(-1f, -t, 0),
@@ -63,26 +64,35 @@ public class Icosphere extends AbstractRenderable { // REVIEWED
     }); // @formatter:on
 
     /**
-     * <p>Constructor for Icosphere.</p>
+     * <p>
+     * Constructor for Icosphere.
+     * </p>
      */
     public Icosphere() {
         this(0);
     }
 
     /**
-     * <p>Constructor for Icosphere.</p>
-     *
-     * @param lod a int.
+     * <p>
+     * Constructor for Icosphere.
+     * </p>
+     * 
+     * @param lod
+     *            a int.
      */
     public Icosphere(int lod) {
         this(lod, 1f);
     }
 
     /**
-     * <p>Constructor for Icosphere.</p>
-     *
-     * @param lod a int.
-     * @param radius a float.
+     * <p>
+     * Constructor for Icosphere.
+     * </p>
+     * 
+     * @param lod
+     *            a int.
+     * @param radius
+     *            a float.
      */
     public Icosphere(int lod, float radius) {
         this.lod = lod;

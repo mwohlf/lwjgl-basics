@@ -5,13 +5,14 @@ import java.util.Collection;
 
 import net.wohlfart.gl.renderer.IsRenderable;
 
-
 // a label is a quad for each character
 /**
- * <p>FormattedLabel class.</p>
- *
- *
- *
+ * <p>
+ * FormattedLabel class.
+ * </p>
+ * 
+ * 
+ * 
  */
 public class FormattedLabel extends AbstractTextComponent {
 
@@ -21,13 +22,17 @@ public class FormattedLabel extends AbstractTextComponent {
     private final MessageFormat format;
     private Object[] arguments;
 
-
     /**
-     * <p>Constructor for FormattedLabel.</p>
-     *
-     * @param x a int.
-     * @param y a int.
-     * @param pattern a {@link java.lang.String} object.
+     * <p>
+     * Constructor for FormattedLabel.
+     * </p>
+     * 
+     * @param x
+     *            a int.
+     * @param y
+     *            a int.
+     * @param pattern
+     *            a {@link java.lang.String} object.
      */
     public FormattedLabel(int x, int y, String pattern) {
         this.x = x;
@@ -36,9 +41,12 @@ public class FormattedLabel extends AbstractTextComponent {
     }
 
     /**
-     * <p>setValue.</p>
-     *
-     * @param arguments an array of {@link java.lang.Object} objects.
+     * <p>
+     * setValue.
+     * </p>
+     * 
+     * @param arguments
+     *            an array of {@link java.lang.Object} objects.
      */
     public void setValue(Object[] arguments) {
         this.arguments = arguments;
@@ -46,12 +54,15 @@ public class FormattedLabel extends AbstractTextComponent {
     }
 
     /**
-     * <p>setValue.</p>
-     *
-     * @param argument a float.
+     * <p>
+     * setValue.
+     * </p>
+     * 
+     * @param argument
+     *            a float.
      */
     public void setValue(float argument) {
-        this.arguments = new Object[] {argument};
+        this.arguments = new Object[] { argument };
         disposeCharacters();
     }
 
@@ -59,7 +70,7 @@ public class FormattedLabel extends AbstractTextComponent {
     @Override
     public void render() {
         if (characters == null) {
-            String string = format.format(arguments, new StringBuffer(), null).toString();
+            final String string = format.format(arguments, new StringBuffer(), null).toString();
             characters = createMeshSet(x, y, string);
         }
         for (final IsRenderable renderable : characters) {

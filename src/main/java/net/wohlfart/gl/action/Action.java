@@ -3,7 +3,6 @@ package net.wohlfart.gl.action;
 import net.wohlfart.gl.view.CanMove;
 import net.wohlfart.gl.view.CanRotate;
 
-
 // action and actor ideas ... shameless stolen from libgdx
 public interface Action {
 
@@ -12,7 +11,6 @@ public interface Action {
         void setAction(Action action);
 
     }
-
 
     public static final Action NULL = new Action() {
 
@@ -24,10 +22,10 @@ public interface Action {
     };
 
     /**
-     * call to update the internal state of the actor object, usually stuff like
-     * position, rotation etc.
-     *
-     * @param timeInSec the time since the last call to this method in sec
+     * call to update the internal state of the actor object, usually stuff like position, rotation etc.
+     * 
+     * @param timeInSec
+     *            the time since the last call to this method in sec
      */
     void perform(Actor actor, float timeInSec);
 

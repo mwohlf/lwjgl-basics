@@ -1,10 +1,12 @@
 package net.wohlfart.gl.elements.hud.widgets;
 
 /**
- * <p>WidgetError class.</p>
- *
- *
- *
+ * <p>
+ * WidgetError class.
+ * </p>
+ * 
+ * 
+ * 
  */
 @SuppressWarnings("serial")
 public class WidgetError extends RuntimeException {

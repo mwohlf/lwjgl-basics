@@ -11,7 +11,9 @@ import org.junit.Test;
 import org.lwjgl.util.vector.Matrix4f;
 
 /**
- * <p>GraphicContextManagerMovedTest class.</p>
+ * <p>
+ * GraphicContextManagerMovedTest class.
+ * </p>
  */
 public class GraphicContextManagerMovedTest {
 
@@ -28,16 +30,17 @@ public class GraphicContextManagerMovedTest {
 
         @Override
         public Matrix4f getModelViewMatrix() {
-            Matrix4f m = new Matrix4f();
+            final Matrix4f m = new Matrix4f();
             m.m30 = -10;
             return m;
         }
 
     };
 
-
     /**
-     * <p>setup.</p>
+     * <p>
+     * setup.
+     * </p>
      */
     @Before
     public void setup() {
@@ -59,12 +62,14 @@ public class GraphicContextManagerMovedTest {
     }
 
     /**
-     * <p>testCenter.</p>
+     * <p>
+     * testCenter.
+     * </p>
      */
     @Test
     public void testCenter() {
         // createPickingRay for: 500.0,350.0
-        //final vectors: Vector3f[0.0, 0.0, -0.0998002],Vector3f[0.0, 0.0, -99.8002]
+        // final vectors: Vector3f[0.0, 0.0, -0.0998002],Vector3f[0.0, 0.0, -99.8002]
 
         // ------------createPickingRay for: 1000.0,700.0------------
         // ------------final vectors: Vector3f[10.059174, 0.041421358, -0.0998002],Vector3f[69.17337, 41.42136, -99.8002]------------
@@ -73,14 +78,14 @@ public class GraphicContextManagerMovedTest {
 
         // mouse origin is bottom left
         // picking the center of the screen should give us a solid line along the z axis:
-        ray = mousePicker.createPickingRay(settings.getWidth()/2f, settings.getHeight()/2f, matrices);
+        ray = mousePicker.createPickingRay(settings.getWidth() / 2f, settings.getHeight() / 2f, matrices);
 
         assertEquals(10.0, ray.getStart().x, 0.01);
-        assertEquals( 0.0, ray.getStart().y, 0.01);
+        assertEquals(0.0, ray.getStart().y, 0.01);
         assertEquals(-0.1, ray.getStart().z, 0.01);
 
         assertEquals(10.0, ray.getEnd().x, 0.01);
-        assertEquals( 0.0, ray.getEnd().y, 0.01);
+        assertEquals(0.0, ray.getEnd().y, 0.01);
         assertEquals(-100, ray.getEnd().z, 0.01);
     }
 

@@ -22,7 +22,9 @@ import org.lwjgl.util.ReadableColor;
 import org.lwjgl.util.vector.Vector3f;
 
 /**
- * <p>ControllerFrame class.</p>
+ * <p>
+ * ControllerFrame class.
+ * </p>
  */
 @SuppressWarnings("serial")
 public class ControllerFrame extends JFrame {
@@ -34,7 +36,9 @@ public class ControllerFrame extends JFrame {
     private AbstractRenderable cube;
 
     /**
-     * <p>init.</p>
+     * <p>
+     * init.
+     * </p>
      */
     public ControllerFrame init() {
         try {
@@ -55,21 +59,23 @@ public class ControllerFrame extends JFrame {
         return this;
     }
 
-
     private void registerButton() {
-        apply.addActionListener(new ActionListener(){
+        apply.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                float x = Float.parseFloat(xcoord.getText());
-                float y = Float.parseFloat(ycoord.getText());
-                float z = Float.parseFloat(zcoord.getText());
-                cube.setPosition(new Vector3f(x,y,z));
-            }});
+                final float x = Float.parseFloat(xcoord.getText());
+                final float y = Float.parseFloat(ycoord.getText());
+                final float z = Float.parseFloat(zcoord.getText());
+                cube.setPosition(new Vector3f(x, y, z));
+            }
+        });
     }
 
     /**
-     * <p>Getter for the field <code>cube</code>.</p>
-     *
+     * <p>
+     * Getter for the field <code>cube</code>.
+     * </p>
+     * 
      * @return a {@link net.wohlfart.gl.elements.debug.AbstractRenderableWireframe} object.
      */
     public AbstractRenderable getCube() {
@@ -77,14 +83,13 @@ public class ControllerFrame extends JFrame {
     }
 
     private void setupCube() {
-        cube = new Cube(1f)
-            .withColor(ReadableColor.RED);
+        cube = new Cube(1f).withColor(ReadableColor.RED);
     }
 
     private void setupContent() {
         final Container content = getContentPane();
-        Box verticalBox = Box.createVerticalBox();
-        JPanel panel = new JPanel();
+        final Box verticalBox = Box.createVerticalBox();
+        final JPanel panel = new JPanel();
         panel.add(new JLabel("Cube Position:"));
         panel.add(xcoord);
         panel.add(ycoord);

@@ -23,9 +23,8 @@ import org.lwjgl.opengl.GL30;
 import org.lwjgl.util.vector.Quaternion;
 import org.lwjgl.util.vector.Vector3f;
 
-
 // FIXME: no color needed
-enum BoxSide {  // @formatter:off
+enum BoxSide {// @formatter:off
     PLUS_Y {{
             translation = new Vector3f(0, +dist, 0);
             rotation = SimpleMath.createQuaternion(new Vector3f(0, 0, -dist), translation, new Quaternion());
@@ -51,14 +50,12 @@ enum BoxSide {  // @formatter:off
             rotation = SimpleMath.createQuaternion(new Vector3f(0, 0, -dist), translation, new Quaternion());
         }};  // @formatter:on
 
-
     // FIXME: screensize, texture size and dist parameter need to match so we don't cut off parts of the background
     public static final float DOT_PROD_LIMIT = 0.0f; // FIXME: this also depends on the view angle
     private static final int SIZE = 1024;
 
     // distance from the origin to the wall of the skybox and also the length of the edge
-    protected float dist = SimpleMath.sqrt(
-            SimpleMath.sqare(GraphicContextManager.INSTANCE.getNearPlane())
+    protected float dist = SimpleMath.sqrt(SimpleMath.sqare(GraphicContextManager.INSTANCE.getNearPlane())
             + SimpleMath.sqare(GraphicContextManager.INSTANCE.getNearPlane()));
     protected Vector3f translation;
     protected Quaternion rotation;
@@ -67,7 +64,7 @@ enum BoxSide {  // @formatter:off
     BoxSideMesh build(SkyboxParameters parameters) {
 
         final Vertex[] vertices = new Vertex[] {
-                // @formatter:off
+// @formatter:off
                 new Vertex() {{
                         setXYZ(translate(rotate(new Vector3f(-dist, +dist, 0f))));
                         setRGB(1, 1, 1);
@@ -144,10 +141,14 @@ enum BoxSide {  // @formatter:off
     }
 
     /**
-     * <p>createAndLoadTexture.</p>
-     *
-     * @param textureUnit a int.
-     * @param parameters a {@link net.wohlfart.gl.elements.skybox.SkyboxParameters} object.
+     * <p>
+     * createAndLoadTexture.
+     * </p>
+     * 
+     * @param textureUnit
+     *            a int.
+     * @param parameters
+     *            a {@link net.wohlfart.gl.elements.skybox.SkyboxParameters} object.
      * @return a int.
      */
     protected int createAndLoadTexture(int textureUnit, SkyboxParameters parameters) {
@@ -180,12 +181,18 @@ enum BoxSide {  // @formatter:off
     }
 
     /**
-     * <p>createClouds.</p>
-     *
-     * @param data an array of int.
-     * @param width a int.
-     * @param height a int.
-     * @param param a {@link net.wohlfart.gl.elements.skybox.SkyboxParameters.PerlinNoiseParameters} object.
+     * <p>
+     * createClouds.
+     * </p>
+     * 
+     * @param data
+     *            an array of int.
+     * @param width
+     *            a int.
+     * @param height
+     *            a int.
+     * @param param
+     *            a {@link net.wohlfart.gl.elements.skybox.SkyboxParameters.PerlinNoiseParameters} object.
      * @return an array of int.
      */
     protected int[] createClouds(int[] data, int width, int height, PerlinNoiseParameters param) {
@@ -207,12 +214,18 @@ enum BoxSide {  // @formatter:off
     }
 
     /**
-     * <p>createStars.</p>
-     *
-     * @param data an array of int.
-     * @param width a int.
-     * @param height a int.
-     * @param param a {@link net.wohlfart.gl.elements.skybox.SkyboxParameters.PerlinNoiseParameters} object.
+     * <p>
+     * createStars.
+     * </p>
+     * 
+     * @param data
+     *            an array of int.
+     * @param width
+     *            a int.
+     * @param height
+     *            a int.
+     * @param param
+     *            a {@link net.wohlfart.gl.elements.skybox.SkyboxParameters.PerlinNoiseParameters} object.
      * @return an array of int.
      */
     protected int[] createStars(int[] data, int width, int height, PerlinNoiseParameters param) {
@@ -237,12 +250,18 @@ enum BoxSide {  // @formatter:off
 
     //
     /**
-     * <p>translate from the 2D plane coords to 3D</p>
-     *
-     * @param x a int.
-     * @param y a int.
-     * @param width a int.
-     * @param height a int.
+     * <p>
+     * translate from the 2D plane coords to 3D
+     * </p>
+     * 
+     * @param x
+     *            a int.
+     * @param y
+     *            a int.
+     * @param width
+     *            a int.
+     * @param height
+     *            a int.
      * @return a {@link org.lwjgl.util.vector.Vector3f} object.
      */
     protected Vector3f getVector(int x, int y, int width, int height) {
@@ -253,9 +272,12 @@ enum BoxSide {  // @formatter:off
     }
 
     /**
-     * <p>rotate.</p>
-     *
-     * @param in a {@link org.lwjgl.util.vector.Vector3f} object.
+     * <p>
+     * rotate.
+     * </p>
+     * 
+     * @param in
+     *            a {@link org.lwjgl.util.vector.Vector3f} object.
      * @return a {@link org.lwjgl.util.vector.Vector3f} object.
      */
     protected Vector3f rotate(Vector3f in) {
@@ -265,9 +287,12 @@ enum BoxSide {  // @formatter:off
     }
 
     /**
-     * <p>translate.</p>
-     *
-     * @param in a {@link org.lwjgl.util.vector.Vector3f} object.
+     * <p>
+     * translate.
+     * </p>
+     * 
+     * @param in
+     *            a {@link org.lwjgl.util.vector.Vector3f} object.
      * @return a {@link org.lwjgl.util.vector.Vector3f} object.
      */
     protected Vector3f translate(Vector3f in) {
@@ -277,14 +302,22 @@ enum BoxSide {  // @formatter:off
     }
 
     /**
-     * <p>createNoise.</p>
-     *
-     * @param x a float.
-     * @param y a float.
-     * @param z a float.
-     * @param w a float.
-     * @param persistence a float.
-     * @param octaves a int.
+     * <p>
+     * createNoise.
+     * </p>
+     * 
+     * @param x
+     *            a float.
+     * @param y
+     *            a float.
+     * @param z
+     *            a float.
+     * @param w
+     *            a float.
+     * @param persistence
+     *            a float.
+     * @param octaves
+     *            a int.
      * @return a double.
      */
     protected double createNoise(float x, float y, float z, float w, float persistence, int octaves) {
@@ -300,14 +333,22 @@ enum BoxSide {  // @formatter:off
     }
 
     /**
-     * <p>createNoise.</p>
-     *
-     * @param x a float.
-     * @param y a float.
-     * @param z a float.
-     * @param w a float.
-     * @param amplitude a float.
-     * @param frequency a float.
+     * <p>
+     * createNoise.
+     * </p>
+     * 
+     * @param x
+     *            a float.
+     * @param y
+     *            a float.
+     * @param z
+     *            a float.
+     * @param w
+     *            a float.
+     * @param amplitude
+     *            a float.
+     * @param frequency
+     *            a float.
      * @return a double.
      */
     protected double createNoise(float x, float y, float z, float w, float amplitude, float frequency) {

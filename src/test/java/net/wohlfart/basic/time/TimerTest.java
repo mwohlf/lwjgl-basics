@@ -8,7 +8,9 @@ import java.util.List;
 import org.junit.Test;
 
 /**
- * <p>TimerTest class.</p>
+ * <p>
+ * TimerTest class.
+ * </p>
  */
 public class TimerTest {
 
@@ -43,7 +45,9 @@ public class TimerTest {
     }
 
     /**
-     * <p>simpleWrapAround.</p>
+     * <p>
+     * simpleWrapAround.
+     * </p>
      */
     @Test
     public void simpleWrapAround() {
@@ -74,7 +78,9 @@ public class TimerTest {
     }
 
     /**
-     * <p>defaultWrapAround.</p>
+     * <p>
+     * defaultWrapAround.
+     * </p>
      */
     @Test
     public void defaultWrapAround() {
@@ -105,7 +111,9 @@ public class TimerTest {
     }
 
     /**
-     * <p>longWrapAround.</p>
+     * <p>
+     * longWrapAround.
+     * </p>
      */
     @Test
     public void longWrapAround() {

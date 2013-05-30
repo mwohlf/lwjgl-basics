@@ -9,7 +9,6 @@ public class BenchmarkRunner {
     }
 
     private static void runBenchmark() {
-        com.google.caliper.Runner.main( new String[] {
-                "-Dsize=100", SimpleMathBenchmarks.Benchmark01.class.getName() });
+        com.google.caliper.Runner.main(new String[] { "-Dsize=100", SimpleMathBenchmarks.Benchmark01.class.getName() });
     }
 }

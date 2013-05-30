@@ -7,7 +7,7 @@ import org.lwjgl.util.vector.Vector3f;
 
 public final class RotateAction implements Action {
 
-    private float rotTime;  // the time for one single rotation
+    private float rotTime; // the time for one single rotation
     private Vector3f axis;
 
     private RotateAction() {
@@ -15,14 +15,14 @@ public final class RotateAction implements Action {
     }
 
     public static RotateAction create() {
-        RotateAction result = new RotateAction();
+        final RotateAction result = new RotateAction();
         result.rotTime = 10f;
-        result.axis = new Vector3f(0,1,0);
+        result.axis = new Vector3f(0, 1, 0);
         return result;
     }
 
     public static RotateAction create(float rotTime, Vector3f axis) {
-        RotateAction result = new RotateAction();
+        final RotateAction result = new RotateAction();
         result.rotTime = rotTime;
         result.axis = axis;
         return result;
@@ -30,7 +30,7 @@ public final class RotateAction implements Action {
 
     @Override
     public void perform(Actor actor, float time) {
-        Quaternion q = actor.getRotation();
+        final Quaternion q = actor.getRotation();
         SimpleMath.rotate(q, time * SimpleMath.TWO_PI / rotTime, axis);
         actor.setRotation(q);
     }

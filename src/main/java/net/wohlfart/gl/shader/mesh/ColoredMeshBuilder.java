@@ -16,15 +16,19 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * <p>ColoredMeshBuilder class.</p>
+ * <p>
+ * ColoredMeshBuilder class.
+ * </p>
  */
 public class ColoredMeshBuilder {
     /** Constant <code>LOGGER</code> */
     protected static final Logger LOGGER = LoggerFactory.getLogger(ColoredMeshBuilder.class);
 
     /**
-     * <p>build.</p>
-     *
+     * <p>
+     * build.
+     * </p>
+     * 
      * @return a {@link net.wohlfart.gl.shader.mesh.IRenderable} object.
      */
     public IsRenderable build() {

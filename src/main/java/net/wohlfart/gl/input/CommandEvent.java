@@ -7,12 +7,14 @@ import net.wohlfart.tools.ObjectPool.PoolableObject;
  * the high level commands, base class for all kind of high level events/commands
  */
 /**
- * <p>CommandEvent class.</p>
- *
- *
- *
+ * <p>
+ * CommandEvent class.
+ * </p>
+ * 
+ * 
+ * 
  */
-public class CommandEvent implements PoolableObject  {
+public class CommandEvent implements PoolableObject {
 
     private CommandKey key;
 
@@ -27,9 +29,8 @@ public class CommandEvent implements PoolableObject  {
         return key;
     }
 
-
     public static CommandEvent exit() {
-        CommandEvent result = pool.borrowObject();
+        final CommandEvent result = pool.borrowObject();
         result.key = CommandKey.EXIT;
         return result;
     }
@@ -38,7 +39,6 @@ public class CommandEvent implements PoolableObject  {
     public void reset() {
         pool.returnObject(this);
     }
-
 
     public enum CommandKey {
         EXIT

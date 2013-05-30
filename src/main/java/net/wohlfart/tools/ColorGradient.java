@@ -7,9 +7,9 @@ import java.util.TreeSet;
 
 /**
  * converting noise to color
- *
- *
- *
+ * 
+ * 
+ * 
  */
 @SuppressWarnings("serial")
 public class ColorGradient implements Serializable {
@@ -19,9 +19,12 @@ public class ColorGradient implements Serializable {
     private final Set<GradientPoint> gradientPoints = new TreeSet<GradientPoint>();
 
     /**
-     * <p>Constructor for ColorGradient.</p>
-     *
-     * @param colors a {@link java.awt.Color} object.
+     * <p>
+     * Constructor for ColorGradient.
+     * </p>
+     * 
+     * @param colors
+     *            a {@link java.awt.Color} object.
      */
     public ColorGradient(Color... colors) {
         if (colors.length == 1) {
@@ -36,9 +39,12 @@ public class ColorGradient implements Serializable {
     }
 
     /**
-     * <p>Constructor for ColorGradient.</p>
-     *
-     * @param points a {@link net.wohlfart.tools.ColorGradient.GradientPoint} object.
+     * <p>
+     * Constructor for ColorGradient.
+     * </p>
+     * 
+     * @param points
+     *            a {@link net.wohlfart.tools.ColorGradient.GradientPoint} object.
      */
     public ColorGradient(GradientPoint... points) {
         for (final GradientPoint gradientPoint : points) {
@@ -52,8 +58,10 @@ public class ColorGradient implements Serializable {
     }
 
     /**
-     * <p>getColor.</p>
-     *
+     * <p>
+     * getColor.
+     * </p>
+     * 
      * @param value
      *            [-1 .. +1]
      * @return a {@link java.awt.Color} object.
@@ -110,7 +118,7 @@ public class ColorGradient implements Serializable {
         return new Color(red, green, blue);
     }
 
-    public static class GradientPoint implements Comparable<GradientPoint>, Serializable  {
+    public static class GradientPoint implements Comparable<GradientPoint>, Serializable {
         final double point;
         final Color color;
 
@@ -127,7 +135,7 @@ public class ColorGradient implements Serializable {
         @Override
         public boolean equals(Object that) {
             if (that instanceof GradientPoint) {
-                return Double.compare(this.point, ((GradientPoint)that).point) == 0;
+                return Double.compare(this.point, ((GradientPoint) that).point) == 0;
             }
             return false;
         }
@@ -140,11 +148,16 @@ public class ColorGradient implements Serializable {
     }
 
     /**
-     * <p>cosGradient.</p>
-     *
-     * @param top a {@link java.awt.Color} object.
-     * @param low a {@link java.awt.Color} object.
-     * @param v a float.
+     * <p>
+     * cosGradient.
+     * </p>
+     * 
+     * @param top
+     *            a {@link java.awt.Color} object.
+     * @param low
+     *            a {@link java.awt.Color} object.
+     * @param v
+     *            a float.
      * @return a {@link java.awt.Color} object.
      */
     public static Color cosGradient(final Color top, final Color low, final float v) {
@@ -162,11 +175,16 @@ public class ColorGradient implements Serializable {
     }
 
     /**
-     * <p>linearGradient.</p>
-     *
-     * @param top a {@link java.awt.Color} object.
-     * @param low a {@link java.awt.Color} object.
-     * @param skyNoise a double.
+     * <p>
+     * linearGradient.
+     * </p>
+     * 
+     * @param top
+     *            a {@link java.awt.Color} object.
+     * @param low
+     *            a {@link java.awt.Color} object.
+     * @param skyNoise
+     *            a double.
      * @return a {@link java.awt.Color} object.
      */
     public static Color linearGradient(final Color top, final Color low, final double skyNoise) {

@@ -96,7 +96,7 @@ public enum CelestialType {
 
     /**
      * fallback
-     *
+     * 
      * @param x
      *            [0..1]
      * @param y

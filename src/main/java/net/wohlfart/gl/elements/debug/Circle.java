@@ -11,33 +11,44 @@ import org.lwjgl.opengl.GL11;
 import org.lwjgl.util.vector.Vector3f;
 
 /**
- * <p>A simple Circle class.</p>
+ * <p>
+ * A simple Circle class.
+ * </p>
  */
-public class Circle extends AbstractRenderable {  // REVIEWED
+public class Circle extends AbstractRenderable {
 
     private int pieces = 15; // LOD
     private float radius = 1;
 
     /**
-     * <p>Constructor for Circle.</p>
+     * <p>
+     * Constructor for Circle.
+     * </p>
      */
     public Circle() {
     }
 
     /**
-     * <p>Constructor for Circle.</p>
-     *
-     * @param radius a float.
+     * <p>
+     * Constructor for Circle.
+     * </p>
+     * 
+     * @param radius
+     *            a float.
      */
     public Circle(float radius) {
         this.radius = radius;
     }
 
     /**
-     * <p>Constructor for Circle.</p>
-     *
-     * @param radius a float.
-     * @param pieces the level of detail.
+     * <p>
+     * Constructor for Circle.
+     * </p>
+     * 
+     * @param radius
+     *            a float.
+     * @param pieces
+     *            the level of detail.
      */
     public Circle(float radius, int pieces) {
         this.radius = radius;
@@ -58,8 +69,10 @@ public class Circle extends AbstractRenderable {  // REVIEWED
     }
 
     /**
-     * <p>createVertices.</p>
-     *
+     * <p>
+     * createVertices.
+     * </p>
+     * 
      * @return a {@link java.util.List} object.
      */
     protected List<Vector3f> createVertices() {
@@ -74,8 +87,10 @@ public class Circle extends AbstractRenderable {  // REVIEWED
     }
 
     /**
-     * <p>createIndices.</p>
-     *
+     * <p>
+     * createIndices.
+     * </p>
+     * 
      * @return an array of {@link java.lang.Integer} objects.
      */
     protected List<Integer> createIndices() {

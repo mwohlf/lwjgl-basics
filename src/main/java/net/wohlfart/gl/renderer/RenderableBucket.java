@@ -16,7 +16,8 @@ import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector3f;
 
 /**
- * <p>A set of Renderables that use the same GraphicContext.
+ * <p>
+ * A set of Renderables that use the same GraphicContext.
  */
 public class RenderableBucket implements IsRenderable, IsUpdateable, HasCamProjectionModelViewMatrices {
 
@@ -29,7 +30,6 @@ public class RenderableBucket implements IsRenderable, IsUpdateable, HasCamProje
     private final Matrix4f posMatrix = new Matrix4f();
     private final Matrix4f rotMatrix = new Matrix4f();
     private final Matrix4f rotPosMatrix = new Matrix4f();
-
 
     public void setGraphicContext(IGraphicContext graphicContext) {
         this.graphicContext = graphicContext;

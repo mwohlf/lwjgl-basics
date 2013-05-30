@@ -22,19 +22,24 @@ import javax.swing.event.ChangeListener;
 import net.wohlfart.gl.texture.SimplexProcTexture;
 
 /**
- * <p>BufferFrame class.</p>
- *
- *
- *
- *
+ * <p>
+ * BufferFrame class.
+ * </p>
+ * 
+ * 
+ * 
+ * 
  */
 @SuppressWarnings("serial")
 public class BufferFrame extends JFrame {
 
     /**
-     * <p>main.</p>
-     *
-     * @param args an array of {@link java.lang.String} objects.
+     * <p>
+     * main.
+     * </p>
+     * 
+     * @param args
+     *            an array of {@link java.lang.String} objects.
      */
     public static void main(String[] args) {
         try {

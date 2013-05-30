@@ -31,7 +31,6 @@ public class SimpleMathBenchmarks {
             return dummy;
         }
 
-
     }
 
 }

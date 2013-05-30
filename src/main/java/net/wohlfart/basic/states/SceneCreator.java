@@ -29,12 +29,14 @@ import org.lwjgl.util.vector.Quaternion;
 import org.lwjgl.util.vector.Vector3f;
 
 /**
- * <p>SceneCreator for providing dummy data to test rendering for different states.</p>
+ * <p>
+ * SceneCreator for providing dummy data to test rendering for different states.
+ * </p>
  */
 final class SceneCreator {
 
     static Collection<IsRenderable> createCircledTarget() {
-        HashSet<IsRenderable> elemBucket = new HashSet<IsRenderable>();
+        final HashSet<IsRenderable> elemBucket = new HashSet<IsRenderable>();
         elemBucket.add(new Circle(1));
         elemBucket.add(new Circle(10));
         elemBucket.add(new Circle(20));
@@ -50,24 +52,23 @@ final class SceneCreator {
     }
 
     static Collection<IsRenderable> createRandomLocatedSpheres() {
-        HashSet<IsRenderable> elemBucket = new HashSet<IsRenderable>();
-        GraphicContextManager graphContext = GraphicContextManager.INSTANCE;
-        float farPlane= graphContext.getFarPlane();
+        final HashSet<IsRenderable> elemBucket = new HashSet<IsRenderable>();
+        final GraphicContextManager graphContext = GraphicContextManager.INSTANCE;
+        final float farPlane = graphContext.getFarPlane();
         for (int i = 0; i < 10000; i++) {
             final float x = SimpleMath.random(-farPlane, farPlane);
             final float y = SimpleMath.random(-farPlane, farPlane);
             final float z = SimpleMath.random(-farPlane, farPlane);
 
-            AbstractRenderable mesh = new Icosphere(1, 1).withColor(ReadableColor.CYAN);
+            final AbstractRenderable mesh = new Icosphere(1, 1).withColor(ReadableColor.CYAN);
             mesh.setPosition(new Vector3f(x, y, z));
             elemBucket.add(mesh);
         }
         return elemBucket;
     }
 
-
     static Collection<IsRenderable> createOriginAxis() {
-        HashSet<IsRenderable> elemBucket = new HashSet<IsRenderable>();
+        final HashSet<IsRenderable> elemBucket = new HashSet<IsRenderable>();
         elemBucket.add(new Arrow(new Vector3f(1, 0, 0)).withColor(ReadableColor.RED));
         elemBucket.add(new Arrow(new Vector3f(0, 1, 0)).withColor(ReadableColor.GREEN));
         elemBucket.add(new Arrow(new Vector3f(0, 0, 1)).withColor(ReadableColor.BLUE));
@@ -75,20 +76,17 @@ final class SceneCreator {
     }
 
     static Collection<IsRenderable> createDebugElements() {
-        HashSet<IsRenderable> elemBucket = new HashSet<IsRenderable>();
-        elemBucket.add(new Arrow(new Vector3f(1, 0, 0)).withColor(ReadableColor.GREEN).withTranslation(new Vector3f(-10,0,0)));
-        elemBucket.add(new Circle(1).withColor(ReadableColor.RED).withTranslation(new Vector3f(-8,0,0)));
-        elemBucket.add(new Cube(1).withColor(ReadableColor.BLUE).withTranslation(new Vector3f(-4,0,0)));
-        elemBucket.add(new Icosphere().withColor(ReadableColor.CYAN).withTranslation(new Vector3f(-0,0,0)));
-        elemBucket.add(new Tetrahedron().withColor(ReadableColor.DKGREY).withTranslation(new Vector3f(3,0,0)));
+        final HashSet<IsRenderable> elemBucket = new HashSet<IsRenderable>();
+        elemBucket.add(new Arrow(new Vector3f(1, 0, 0)).withColor(ReadableColor.GREEN).withTranslation(new Vector3f(-10, 0, 0)));
+        elemBucket.add(new Circle(1).withColor(ReadableColor.RED).withTranslation(new Vector3f(-8, 0, 0)));
+        elemBucket.add(new Cube(1).withColor(ReadableColor.BLUE).withTranslation(new Vector3f(-4, 0, 0)));
+        elemBucket.add(new Icosphere().withColor(ReadableColor.CYAN).withTranslation(new Vector3f(-0, 0, 0)));
+        elemBucket.add(new Tetrahedron().withColor(ReadableColor.DKGREY).withTranslation(new Vector3f(3, 0, 0)));
         return elemBucket;
     }
 
-
-
-
     static Collection<IsRenderable> createRandomElements() {
-        HashSet<IsRenderable> elemBucket = new HashSet<IsRenderable>();
+        final HashSet<IsRenderable> elemBucket = new HashSet<IsRenderable>();
 
         elemBucket.add(new Arrow(new Vector3f(1, 0, 0)).withColor(ReadableColor.RED));
         elemBucket.add(new Arrow(new Vector3f(0, 1, 0)).withColor(ReadableColor.GREEN));
@@ -109,7 +107,6 @@ final class SceneCreator {
         elemBucket.add(new Icosphere(1, 2).withColor(ReadableColor.GREEN).withTranslation(new Vector3f(0, -7, 0)));
         elemBucket.add(new Icosphere(1, 1).withColor(ReadableColor.BLUE).withTranslation(new Vector3f(-5, -7, 0)));
 
-
         elemBucket.add(new TexturedQuad().withTranslation(new Vector3f(-1, 5, 0)));
         elemBucket.add(new ColoredQuad().withTranslation(new Vector3f(-1, 5, 0)));
 
@@ -122,7 +119,7 @@ final class SceneCreator {
                 throw new GenericGameException("input stream is null for path '" + path + "'");
             }
             return new ModelLoader().getModel(inputStream);
-        } catch (IOException ex) {
+        } catch (final IOException ex) {
             throw new GenericGameException("I/O Error while loading model from file with path '" + path + "'", ex);
         }
     }
@@ -140,7 +137,6 @@ final class SceneCreator {
     }
     // @formatter:on
 
-
     // @formatter:off
     static Action getRandomAction() {
         // return RotateAction.create(SimpleMath.random(5f,  50f), getRandomPosition());
@@ -152,7 +148,5 @@ final class SceneCreator {
                                 getRandomPosition()));
     }
     // @formatter:on
-
-
 
 }

@@ -11,7 +11,7 @@ public class CollectionMergerFactory implements FactoryBean<Collection<IsRendera
     private final Collection<IsRenderable> set = new HashSet<IsRenderable>();
 
     public CollectionMergerFactory(Collection<Collection<IsRenderable>> items) {
-        for (Collection<IsRenderable> item : items) {
+        for (final Collection<IsRenderable> item : items) {
             if (item != null) {
                 set.addAll(item);
             }

@@ -41,7 +41,7 @@ public class Model extends AbstractRenderable implements Actor {
     protected float calculateRadius() {
         float result = 0;
         Vector3f tmp = new Vector3f();
-        for (Vector3f vec : positions) {
+        for (final Vector3f vec : positions) {
             tmp.set(translation);
             tmp = Vector3f.sub(vec, tmp, tmp);
             result = Math.max(result, tmp.length());
@@ -60,8 +60,8 @@ public class Model extends AbstractRenderable implements Actor {
 
     int[] getIndices() {
         // TODO: reuse vertices
-        int[] result = new int[attrIdices.size()];
-        for (int index = 0 ; index < result.length; index++) {
+        final int[] result = new int[attrIdices.size()];
+        for (int index = 0; index < result.length; index++) {
             result[index] = index;
         }
         return result;
@@ -69,22 +69,19 @@ public class Model extends AbstractRenderable implements Actor {
 
     /**
      * the vertex stream has the following format:
-     *
-     * 4 position coords
-     * 4 normal coords
-     * 2 texture coords
-     *
-     *
+     * 
+     * 4 position coords 4 normal coords 2 texture coords
+     * 
+     * 
      * @return
      */
     float[] createVertexStream() {
         // TODO: check if the size of the attributes fits in the array
         int index = 0;
-        float[] result = new float[attrIdices.size() * (
-                ShaderAttributeHandle.POSITION.getFloatCount()
-                + ShaderAttributeHandle.NORMAL.getFloatCount()
-                + ShaderAttributeHandle.TEXTURE_COORD.getFloatCount())];
-        for (VertexAttr vertexAttr : attrIdices) {
+        final float[] result = new float[attrIdices.size()
+                * (ShaderAttributeHandle.POSITION.getFloatCount() + ShaderAttributeHandle.NORMAL.getFloatCount() + ShaderAttributeHandle.TEXTURE_COORD
+                        .getFloatCount())];
+        for (final VertexAttr vertexAttr : attrIdices) {
             result[index++] = positions.get(vertexAttr.positionIdx).x;
             result[index++] = positions.get(vertexAttr.positionIdx).y;
             result[index++] = positions.get(vertexAttr.positionIdx).z;
@@ -101,8 +98,8 @@ public class Model extends AbstractRenderable implements Actor {
 
     float[] createVertexPositionStream() {
         int index = 0;
-        float[] result = new float[attrIdices.size() * ShaderAttributeHandle.POSITION.getFloatCount()];
-        for (VertexAttr vertexAttr : attrIdices) {
+        final float[] result = new float[attrIdices.size() * ShaderAttributeHandle.POSITION.getFloatCount()];
+        for (final VertexAttr vertexAttr : attrIdices) {
             result[index++] = positions.get(vertexAttr.positionIdx).x;
             result[index++] = positions.get(vertexAttr.positionIdx).y;
             result[index++] = positions.get(vertexAttr.positionIdx).z;
@@ -112,23 +109,25 @@ public class Model extends AbstractRenderable implements Actor {
     }
 
     public void addPosition(float x, float y, float z) {
-        positions.add(new Vector3f(x,y,z));
+        positions.add(new Vector3f(x, y, z));
     }
 
     public void addNormal(float x, float y, float z) {
-        normals.add(new Vector3f(x,y,z));
+        normals.add(new Vector3f(x, y, z));
     }
 
     public void addTextureCoord(float u, float v) {
-        textureCoords.add(new Vector2f(u,v));
+        textureCoords.add(new Vector2f(u, v));
     }
 
     public void addVertexForStream(final int position, final int textureCoords, final int normal) {
-        attrIdices.add(new VertexAttr() {{
-            this.positionIdx = position;
-            this.textureCoordIdx = textureCoords;
-            this.normalIdx = normal;
-        }});
+        attrIdices.add(new VertexAttr() {
+            {
+                this.positionIdx = position;
+                this.textureCoordIdx = textureCoords;
+                this.normalIdx = normal;
+            }
+        });
     }
 
     List<Vector3f> getPositions() {

@@ -20,10 +20,14 @@ class ImageTexture implements ITexture {
     protected int id;
 
     /**
-     * <p>Constructor for ImageTexture.</p>
-     *
-     * @param inputStream a {@link java.io.InputStream} object.
-     * @throws java.io.IOException if any.
+     * <p>
+     * Constructor for ImageTexture.
+     * </p>
+     * 
+     * @param inputStream
+     *            a {@link java.io.InputStream} object.
+     * @throws java.io.IOException
+     *             if any.
      */
     public ImageTexture(final InputStream inputStream) throws IOException {
         final BufferedImage image = ImageIO.read(inputStream);
@@ -38,11 +42,16 @@ class ImageTexture implements ITexture {
 
     // for subclassing
     /**
-     * <p>Constructor for ImageTexture.</p>
-     *
-     * @param texture a {@link java.nio.IntBuffer} object.
-     * @param width a int.
-     * @param height a int.
+     * <p>
+     * Constructor for ImageTexture.
+     * </p>
+     * 
+     * @param texture
+     *            a {@link java.nio.IntBuffer} object.
+     * @param width
+     *            a int.
+     * @param height
+     *            a int.
      */
     protected ImageTexture(final IntBuffer texture, final int width, final int height) {
         this.width = width;
@@ -51,8 +60,10 @@ class ImageTexture implements ITexture {
     }
 
     /**
-     * <p>Getter for the field <code>width</code>.</p>
-     *
+     * <p>
+     * Getter for the field <code>width</code>.
+     * </p>
+     * 
      * @return a int.
      */
     protected int getWidth() {
@@ -60,8 +71,10 @@ class ImageTexture implements ITexture {
     }
 
     /**
-     * <p>Getter for the field <code>height</code>.</p>
-     *
+     * <p>
+     * Getter for the field <code>height</code>.
+     * </p>
+     * 
      * @return a int.
      */
     protected int getHeight() {
@@ -69,8 +82,10 @@ class ImageTexture implements ITexture {
     }
 
     /**
-     * <p>Getter for the field <code>texture</code>.</p>
-     *
+     * <p>
+     * Getter for the field <code>texture</code>.
+     * </p>
+     * 
      * @return a {@link java.nio.IntBuffer} object.
      */
     protected IntBuffer getTexture() {
@@ -79,7 +94,7 @@ class ImageTexture implements ITexture {
 
     /*
      * (non-Javadoc)
-     *
+     * 
      * @see net.wohlfart.gl.tools.ITextur#init()
      */
     /** {@inheritDoc} */
@@ -100,7 +115,7 @@ class ImageTexture implements ITexture {
 
     /*
      * (non-Javadoc)
-     *
+     * 
      * @see net.wohlfart.gl.tools.ITextur#bind()
      */
     /** {@inheritDoc} */
@@ -111,7 +126,7 @@ class ImageTexture implements ITexture {
 
     /*
      * (non-Javadoc)
-     *
+     * 
      * @see net.wohlfart.gl.tools.ITextur#unbind()
      */
     /** {@inheritDoc} */

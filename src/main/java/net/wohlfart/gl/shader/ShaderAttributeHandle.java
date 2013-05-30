@@ -4,9 +4,11 @@ import static net.wohlfart.gl.shader.GraphicContextManager.INSTANCE;
 
 //
 /**
- * <p>All handlers for vertex attributes used in any shader.</p>
+ * <p>
+ * All handlers for vertex attributes used in any shader.
+ * </p>
  */
-public enum ShaderAttributeHandle { // @formatter:off
+public enum ShaderAttributeHandle {// @formatter:off
     COLOR("in_Color", 4),
     POSITION("in_Position", 4),
     TEXTURE_COORD("in_TexCoord", 2),
@@ -26,8 +28,10 @@ public enum ShaderAttributeHandle { // @formatter:off
     }
 
     /**
-     * <p>Returns the number of floats this attribute uses.</p>
-     *
+     * <p>
+     * Returns the number of floats this attribute uses.
+     * </p>
+     * 
      * @return a int.
      */
     public int getFloatCount() {
@@ -35,8 +39,10 @@ public enum ShaderAttributeHandle { // @formatter:off
     }
 
     /**
-     * <p>Returns the number of bytes this attribute uses.</p>
-     *
+     * <p>
+     * Returns the number of bytes this attribute uses.
+     * </p>
+     * 
      * @return a int.
      */
     public int getByteCount() {
@@ -44,8 +50,10 @@ public enum ShaderAttributeHandle { // @formatter:off
     }
 
     /**
-     * <p>getLocation.</p>
-     *
+     * <p>
+     * getLocation.
+     * </p>
+     * 
      * @return a int.
      */
     public int getLocation() {

@@ -1,7 +1,9 @@
 package net.wohlfart.gl.shader;
 
 /**
- * <p>MockGraphicContext class.</p>
+ * <p>
+ * MockGraphicContext class.
+ * </p>
  */
 public class MockGraphicContext implements GraphicContextManager.IGraphicContext {
 

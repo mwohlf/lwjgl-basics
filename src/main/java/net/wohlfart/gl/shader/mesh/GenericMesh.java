@@ -14,7 +14,9 @@ import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector3f;
 
 /**
- * <p>GenericMesh class.</p>
+ * <p>
+ * GenericMesh class.
+ * </p>
  */
 public class GenericMesh implements IsRenderable {
 
@@ -29,8 +31,7 @@ public class GenericMesh implements IsRenderable {
     private final ReadableColor color;
 
     // this is usually mapped with translation(vector) and rotation(quaternion)
-    private final Matrix4f model2world = SimpleMath.convert(new Vector3f(0, 0,0), new Matrix4f());
-
+    private final Matrix4f model2world = SimpleMath.convert(new Vector3f(0, 0, 0), new Matrix4f());
 
     // only called by the builder
     GenericMesh(GenericMeshData builder) {
@@ -44,8 +45,6 @@ public class GenericMesh implements IsRenderable {
         indexOffset = builder.getIndexOffset();
         color = builder.getColor();
     }
-
-
 
     /** {@inheritDoc} */
     @Override

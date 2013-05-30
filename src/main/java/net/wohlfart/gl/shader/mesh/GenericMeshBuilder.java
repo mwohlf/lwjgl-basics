@@ -13,14 +13,15 @@ import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL15;
 import org.lwjgl.opengl.GL20;
 import org.lwjgl.opengl.GL30;
-import org.lwjgl.util.Color;
 import org.lwjgl.util.ReadableColor;
 import org.lwjgl.util.vector.Vector3f;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * <p>GenericMeshBuilder class.</p>
+ * <p>
+ * GenericMeshBuilder class.
+ * </p>
  */
 public class GenericMeshBuilder implements GenericMeshData {
     private static final Logger LOGGER = LoggerFactory.getLogger(GenericMeshBuilder.class);
@@ -34,20 +35,23 @@ public class GenericMeshBuilder implements GenericMeshData {
     private int vboVerticesHandle;
     private int vboIndicesHandle;
 
-
     /**
-     * <p>Constructor for GenericMeshBuilder.</p>
-     *
-     * @param name a {@link java.lang.String} object.
+     * <p>
+     * Constructor for GenericMeshBuilder.
+     * </p>
+     * 
+     * @param name
+     *            a {@link java.lang.String} object.
      */
     public GenericMeshBuilder(String name) {
         this.name = name;
     }
 
-
     /**
-     * <p>build.</p>
-     *
+     * <p>
+     * build.
+     * </p>
+     * 
      * @return a {@link net.wohlfart.gl.renderer.IsRenderable} object.
      */
     public IsRenderable build() {
@@ -61,39 +65,49 @@ public class GenericMeshBuilder implements GenericMeshData {
         return new GenericMesh(this);
     }
 
-
-
     /**
-     * <p>addNormal.</p>
-     *
-     * @param x a float.
-     * @param y a float.
-     * @param z a float.
+     * <p>
+     * addNormal.
+     * </p>
+     * 
+     * @param x
+     *            a float.
+     * @param y
+     *            a float.
+     * @param z
+     *            a float.
      */
     public void addNormal(float x, float y, float z) {
-        normals.add(new Vector3f(x,y,z));
+        normals.add(new Vector3f(x, y, z));
     }
 
     /**
-     * <p>addVertex.</p>
-     *
-     * @param x a float.
-     * @param y a float.
-     * @param z a float.
+     * <p>
+     * addVertex.
+     * </p>
+     * 
+     * @param x
+     *            a float.
+     * @param y
+     *            a float.
+     * @param z
+     *            a float.
      */
     public void addVertex(float x, float y, float z) {
-        vertices.add(new Vector3f(x,y,z));
+        vertices.add(new Vector3f(x, y, z));
     }
 
     /**
-     * <p>addVertexIndex.</p>
-     *
-     * @param integer a int.
+     * <p>
+     * addVertexIndex.
+     * </p>
+     * 
+     * @param integer
+     *            a int.
      */
     public void addVertexIndex(int integer) {
         indices.add(integer);
     }
-
 
     private int createVboIndicesHandle() {
         final int vboIndicesHandle = GL15.glGenBuffers();
@@ -150,8 +164,10 @@ public class GenericMeshBuilder implements GenericMeshData {
     }
 
     /**
-     * <p>Getter for the field <code>vaoHandle</code>.</p>
-     *
+     * <p>
+     * Getter for the field <code>vaoHandle</code>.
+     * </p>
+     * 
      * @return a int.
      */
     @Override
@@ -160,8 +176,10 @@ public class GenericMeshBuilder implements GenericMeshData {
     }
 
     /**
-     * <p>Getter for the field <code>vboVerticesHandle</code>.</p>
-     *
+     * <p>
+     * Getter for the field <code>vboVerticesHandle</code>.
+     * </p>
+     * 
      * @return a int.
      */
     @Override
@@ -170,8 +188,10 @@ public class GenericMeshBuilder implements GenericMeshData {
     }
 
     /**
-     * <p>Getter for the field <code>vboIndicesHandle</code>.</p>
-     *
+     * <p>
+     * Getter for the field <code>vboIndicesHandle</code>.
+     * </p>
+     * 
      * @return a int.
      */
     @Override
@@ -180,8 +200,10 @@ public class GenericMeshBuilder implements GenericMeshData {
     }
 
     /**
-     * <p>getLineWidth.</p>
-     *
+     * <p>
+     * getLineWidth.
+     * </p>
+     * 
      * @return a int.
      */
     @Override
@@ -190,19 +212,23 @@ public class GenericMeshBuilder implements GenericMeshData {
     }
 
     /**
-     * <p>getIndicesType.</p>
-     *
+     * <p>
+     * getIndicesType.
+     * </p>
+     * 
      * @return a int.
      */
     @Override
     public int getIndicesType() {
-        //return GL11.GL_LINE_LOOP;
+        // return GL11.GL_LINE_LOOP;
         return GL11.GL_TRIANGLES;
     }
 
     /**
-     * <p>getIndexElemSize.</p>
-     *
+     * <p>
+     * getIndexElemSize.
+     * </p>
+     * 
      * @return a int.
      */
     @Override
@@ -211,8 +237,10 @@ public class GenericMeshBuilder implements GenericMeshData {
     }
 
     /**
-     * <p>getIndicesCount.</p>
-     *
+     * <p>
+     * getIndicesCount.
+     * </p>
+     * 
      * @return a int.
      */
     @Override
@@ -221,8 +249,10 @@ public class GenericMeshBuilder implements GenericMeshData {
     }
 
     /**
-     * <p>getVerticesCount.</p>
-     *
+     * <p>
+     * getVerticesCount.
+     * </p>
+     * 
      * @return a int.
      */
     public int getVerticesCount() {
@@ -230,8 +260,10 @@ public class GenericMeshBuilder implements GenericMeshData {
     }
 
     /**
-     * <p>getIndexOffset.</p>
-     *
+     * <p>
+     * getIndexOffset.
+     * </p>
+     * 
      * @return a int.
      */
     @Override
@@ -240,14 +272,15 @@ public class GenericMeshBuilder implements GenericMeshData {
     }
 
     /**
-     * <p>getColor.</p>
-     *
+     * <p>
+     * getColor.
+     * </p>
+     * 
      * @return a {@link org.lwjgl.util.ReadableColor} object.
      */
     @Override
     public ReadableColor getColor() {
-        return Color.RED;
+        return ReadableColor.RED;
     }
-
 
 }

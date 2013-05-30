@@ -14,7 +14,9 @@ import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector3f;
 
 /**
- * <p>SkyboxImpl class.</p>
+ * <p>
+ * SkyboxImpl class.
+ * </p>
  */
 public class SkyboxImpl implements Skybox, SkyboxParameters {
 

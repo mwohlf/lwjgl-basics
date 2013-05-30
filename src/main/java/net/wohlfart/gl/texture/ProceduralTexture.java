@@ -7,7 +7,9 @@ import org.lwjgl.BufferUtils;
 import org.lwjgl.util.vector.Vector3f;
 
 /**
- * <p>Abstract ProceduralTexture class.</p>
+ * <p>
+ * Abstract ProceduralTexture class.
+ * </p>
  */
 public abstract class ProceduralTexture implements TextureBuffer {
 
@@ -16,10 +18,14 @@ public abstract class ProceduralTexture implements TextureBuffer {
     protected IntBuffer buffer;
 
     /**
-     * <p>Constructor for ProceduralTexture.</p>
-     *
-     * @param width a int.
-     * @param height a int.
+     * <p>
+     * Constructor for ProceduralTexture.
+     * </p>
+     * 
+     * @param width
+     *            a int.
+     * @param height
+     *            a int.
      */
     public ProceduralTexture(int width, int height) {
         this.width = width;
@@ -39,22 +45,33 @@ public abstract class ProceduralTexture implements TextureBuffer {
     }
 
     /**
-     * <p>initialize.</p>
-     *
-     * @param width a int.
-     * @param height a int.
-     * @param data an array of int.
+     * <p>
+     * initialize.
+     * </p>
+     * 
+     * @param width
+     *            a int.
+     * @param height
+     *            a int.
+     * @param data
+     *            an array of int.
      * @return an array of int.
      */
     protected abstract int[] initialize(int width, int height, int[] data);
 
     /**
-     * <p>setPixel.</p>
-     *
-     * @param x a int.
-     * @param y a int.
-     * @param color a {@link java.awt.Color} object.
-     * @param data an array of int.
+     * <p>
+     * setPixel.
+     * </p>
+     * 
+     * @param x
+     *            a int.
+     * @param y
+     *            a int.
+     * @param color
+     *            a {@link java.awt.Color} object.
+     * @param data
+     *            an array of int.
      */
     protected void setPixel(int x, int y, Color color, int[] data) {
         y = height - y - 1;
@@ -86,10 +103,12 @@ public abstract class ProceduralTexture implements TextureBuffer {
 
     /**
      * 0/0 is top left, the whole texture is wrapped around a sphere
-     *
+     * 
      * @return a vector with each element [0..1]
-     * @param x a int.
-     * @param y a int.
+     * @param x
+     *            a int.
+     * @param y
+     *            a int.
      */
     protected Vector3f getNormalVector(final int x, final int y) {
         final int yRange = height - 1;

@@ -1,6 +1,5 @@
 package net.wohlfart.gl.elements.skybox;
 
-
 public class NullSkybox implements Skybox {
 
     @Override

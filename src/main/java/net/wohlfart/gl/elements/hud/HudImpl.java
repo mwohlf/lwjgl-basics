@@ -8,12 +8,11 @@ import net.wohlfart.tools.SimpleMath;
 
 import org.lwjgl.opengl.GL11;
 
-
 /**
  * this class is responsible for switching context and rendering the hud components
- *
- *
- *
+ * 
+ * 
+ * 
  */
 public class HudImpl implements Hud {
 
@@ -21,22 +20,22 @@ public class HudImpl implements Hud {
 
     private final LayerImpl layer = new LayerImpl();
 
-
     public void setGraphicContext(IGraphicContext graphicContext) {
         this.graphicContext = graphicContext;
     }
-
 
     @Override
     public void setup() {
         graphicContext.setup();
     }
 
-
     /**
-     * <p>add.</p>
-     *
-     * @param label a {@link net.wohlfart.gl.elements.hud.widgets.AbstractTextComponent} object.
+     * <p>
+     * add.
+     * </p>
+     * 
+     * @param label
+     *            a {@link net.wohlfart.gl.elements.hud.widgets.AbstractTextComponent} object.
      */
     @Override
     public void add(AbstractTextComponent label) {
@@ -60,7 +59,6 @@ public class HudImpl implements Hud {
 
         layer.render();
     }
-
 
     /** {@inheritDoc} */
     @Override

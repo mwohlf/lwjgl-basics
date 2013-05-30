@@ -19,7 +19,7 @@ public final class OrbitAction implements Action {
     }
 
     public static OrbitAction create() {
-        OrbitAction result = new OrbitAction();
+        final OrbitAction result = new OrbitAction();
         result.orbitTime = 5f;
         result.center = new Vector3f(0, 0, 0);
         result.axis = new Vector3f(0, 1, 0);
@@ -27,7 +27,7 @@ public final class OrbitAction implements Action {
     }
 
     public static OrbitAction create(float orbitTime, Vector3f center) {
-        OrbitAction result = new OrbitAction();
+        final OrbitAction result = new OrbitAction();
         result.orbitTime = orbitTime;
         result.center = center;
         result.axis = new Vector3f(0, 1, 0);
@@ -35,7 +35,7 @@ public final class OrbitAction implements Action {
     }
 
     public static OrbitAction create(float orbitTime, Vector3f center, Vector3f axis) {
-        OrbitAction result = new OrbitAction();
+        final OrbitAction result = new OrbitAction();
         result.orbitTime = orbitTime;
         result.center = center;
         result.axis = axis;
@@ -47,23 +47,23 @@ public final class OrbitAction implements Action {
     public void perform(Actor actor, float timeInSec) {
         Vector3f v = actor.getPosition();
         SimpleMath.sub(v, center, tmp1);
-        float radius = tmp1.length();                // tmp1: from the center to the position
+        final float radius = tmp1.length(); // tmp1: from the center to the position
 
-        Quaternion currentRotation = actor.getRotation();
+        final Quaternion currentRotation = actor.getRotation();
 
-        Vector3f up = SimpleMath.getUp(currentRotation, new Vector3f());  // we want to keep up
-        Vector3f right = new Vector3f(-tmp1.x, -tmp1.y, -tmp1.z).normalise(new Vector3f());
-        Vector3f forward =  Vector3f.cross(up, right, new Vector3f());
+        final Vector3f up = SimpleMath.getUp(currentRotation, new Vector3f()); // we want to keep up
+        final Vector3f right = new Vector3f(-tmp1.x, -tmp1.y, -tmp1.z).normalise(new Vector3f());
+        final Vector3f forward = Vector3f.cross(up, right, new Vector3f());
 
-        Vector3f.cross(axis, tmp1, tmp2);            // tmp2: move direction
+        Vector3f.cross(axis, tmp1, tmp2); // tmp2: move direction
         tmp2.scale(timeInSec / orbitTime);
 
-        Quaternion rotation = SimpleMath.createQuaternion(new Vector3f(0,0,1), forward, new Quaternion());
+        final Quaternion rotation = SimpleMath.createQuaternion(new Vector3f(0, 0, 1), forward, new Quaternion());
         actor.setRotation(rotation);
 
-        SimpleMath.add(tmp2, v, tmp1);               // tmp1: new position off the radius
+        SimpleMath.add(tmp2, v, tmp1); // tmp1: new position off the radius
 
-        SimpleMath.sub(tmp1, center, tmp1);          // tmp1: direction from radius to new position
+        SimpleMath.sub(tmp1, center, tmp1); // tmp1: direction from radius to new position
         tmp1.normalise(tmp1);
 
         v = SimpleMath.scale(tmp1, radius, v);

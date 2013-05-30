@@ -7,10 +7,9 @@ import net.wohlfart.tools.SimpleMath;
 import org.lwjgl.util.vector.Quaternion;
 import org.lwjgl.util.vector.Vector3f;
 
-public class RotateEvent extends Quaternion implements PoolableObject  {
+public class RotateEvent extends Quaternion implements PoolableObject {
 
-    private static final float ROTATION_SPEED = SimpleMath.TWO_PI;  // one rotation per sec
-
+    private static final float ROTATION_SPEED = SimpleMath.TWO_PI; // one rotation per sec
 
     private static ObjectPool<RotateEvent> pool = new ObjectPool<RotateEvent>(10) {
         @Override
@@ -25,49 +24,49 @@ public class RotateEvent extends Quaternion implements PoolableObject  {
     }
 
     static Object rotateLeft(float time) {
-        RotateEvent result = pool.borrowObject();
-        Quaternion q = new Quaternion();
-        SimpleMath.rotate(q , ROTATION_SPEED/360f, new Vector3f(0,1,0));
+        final RotateEvent result = pool.borrowObject();
+        final Quaternion q = new Quaternion();
+        SimpleMath.rotate(q, ROTATION_SPEED / 360f, new Vector3f(0, 1, 0));
         result.set(q);
         return result;
     }
 
     static Object rotateRight(float time) {
-        RotateEvent result = pool.borrowObject();
-        Quaternion q = new Quaternion();
-        SimpleMath.rotate(q , ROTATION_SPEED/360f, new Vector3f(0,-1,0));
+        final RotateEvent result = pool.borrowObject();
+        final Quaternion q = new Quaternion();
+        SimpleMath.rotate(q, ROTATION_SPEED / 360f, new Vector3f(0, -1, 0));
         result.set(q);
         return result;
     }
 
     static Object rotateUp(float time) {
-        RotateEvent result = pool.borrowObject();
-        Quaternion q = new Quaternion();
-        SimpleMath.rotate(q , ROTATION_SPEED/360f, new Vector3f(1,0,0));
+        final RotateEvent result = pool.borrowObject();
+        final Quaternion q = new Quaternion();
+        SimpleMath.rotate(q, ROTATION_SPEED / 360f, new Vector3f(1, 0, 0));
         result.set(q);
         return result;
     }
 
     static Object rotateDown(float time) {
-        RotateEvent result = pool.borrowObject();
-        Quaternion q = new Quaternion();
-        SimpleMath.rotate(q , ROTATION_SPEED/360f, new Vector3f(-1,0,0));
+        final RotateEvent result = pool.borrowObject();
+        final Quaternion q = new Quaternion();
+        SimpleMath.rotate(q, ROTATION_SPEED / 360f, new Vector3f(-1, 0, 0));
         result.set(q);
         return result;
     }
 
     static Object rotateClockwise(float time) {
-        RotateEvent result = pool.borrowObject();
-        Quaternion q = new Quaternion();
-        SimpleMath.rotate(q , ROTATION_SPEED/360f, new Vector3f(0,0,1));
+        final RotateEvent result = pool.borrowObject();
+        final Quaternion q = new Quaternion();
+        SimpleMath.rotate(q, ROTATION_SPEED / 360f, new Vector3f(0, 0, 1));
         result.set(q);
         return result;
     }
 
     static Object rotateCounterClockwise(float time) {
-        RotateEvent result = pool.borrowObject();
-        Quaternion q = new Quaternion();
-        SimpleMath.rotate(q , ROTATION_SPEED/360f, new Vector3f(0,0,-1));
+        final RotateEvent result = pool.borrowObject();
+        final Quaternion q = new Quaternion();
+        SimpleMath.rotate(q, ROTATION_SPEED / 360f, new Vector3f(0, 0, -1));
         result.set(q);
         return result;
     }

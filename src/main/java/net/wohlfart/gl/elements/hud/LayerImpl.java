@@ -30,16 +30,18 @@ class LayerImpl implements Layer {
     protected CharAtlas characterAtlas;
 
     /**
-     * <p>setup.</p>
-     *
+     * <p>
+     * setup.
+     * </p>
+     * 
      * @return a {@link net.wohlfart.gl.shader.mesh.IRenderable} object.
      */
     protected IsRenderable setup() {
         characterAtlas = new CharAtlasBuilder().build();
         final TextureMeshBuilder builder = new TextureMeshBuilder();
         builder.setTextureId(characterAtlas.getTextureId());
-        float z = cxtManager.getNearPlane() - 1;
-        builder.setTranslation(new Vector3f(0,-0.5f,z));
+        final float z = cxtManager.getNearPlane() - 1;
+        builder.setTranslation(new Vector3f(0, -0.5f, z));
         return builder.build();
     }
 
@@ -49,7 +51,7 @@ class LayerImpl implements Layer {
         if (meshData == null) {
             meshData = setup();
         }
-        //meshData.draw();
+        // meshData.draw();
         for (final IsRenderable component : components) {
             component.render();
         }
@@ -63,9 +65,12 @@ class LayerImpl implements Layer {
     }
 
     /**
-     * <p>add.</p>
-     *
-     * @param label a {@link net.wohlfart.gl.elements.hud.widgets.AbstractTextComponent} object.
+     * <p>
+     * add.
+     * </p>
+     * 
+     * @param label
+     *            a {@link net.wohlfart.gl.elements.hud.widgets.AbstractTextComponent} object.
      */
     public void add(AbstractTextComponent label) {
         label.setLayer(this); // double dispatch

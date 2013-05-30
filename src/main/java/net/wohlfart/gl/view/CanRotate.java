@@ -14,7 +14,7 @@ public interface CanRotate {
      * <p>
      * rotate.
      * </p>
-     *
+     * 
      * @param deltaAngle
      *            a float.
      * @param axis
@@ -22,12 +22,11 @@ public interface CanRotate {
      */
     public abstract void rotate(float deltaAngle, Vector3f axis);
 
-
     /**
      * <p>
      * getRotation.
      * </p>
-     *
+     * 
      * @return a {@link org.lwjgl.util.vector.Quaternion} object.
      */
     public abstract Quaternion getRotation();
@@ -38,7 +37,7 @@ public interface CanRotate {
      * <p>
      * getRght.
      * </p>
-     *
+     * 
      * @param vector3f
      *            a {@link org.lwjgl.util.vector.Vector3f} object.
      * @return a {@link org.lwjgl.util.vector.Vector3f} object.
@@ -49,7 +48,7 @@ public interface CanRotate {
      * <p>
      * getUp.
      * </p>
-     *
+     * 
      * @param result
      *            a {@link org.lwjgl.util.vector.Vector3f} object.
      * @return a {@link org.lwjgl.util.vector.Vector3f} object.
@@ -60,7 +59,7 @@ public interface CanRotate {
      * <p>
      * getDir.
      * </p>
-     *
+     * 
      * @param result
      *            a {@link org.lwjgl.util.vector.Vector3f} object.
      * @return a {@link org.lwjgl.util.vector.Vector3f} object.

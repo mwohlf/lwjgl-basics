@@ -19,7 +19,7 @@
 
     <bean id="GameState.LIGHTING" class="net.wohlfart.basic.states.LightingState" >
         <property name="camera" ref="camera" />
-        <property name="skybox" ref="nullSkybox" />
+        <property name="skybox" ref="defaultSkybox" />
         <property name="modelBucket" ref="modelBucket" />
         <property name="elemBucket" ref="elemBucket" />
         <property name="hud" ref="defaultHud" />
@@ -75,7 +75,7 @@
         <constructor-arg>
             <list>
                 <bean class="net.wohlfart.basic.states.SceneCreator" factory-method="createCircledTarget" />
-                <bean class="net.wohlfart.basic.states.SceneCreator" factory-method="createRandomElements" /> 
+                <bean class="net.wohlfart.basic.states.SceneCreator" factory-method="createRandomElements" />
                 <bean class="net.wohlfart.basic.states.SceneCreator" factory-method="createOriginAxis" />
                 <bean class="net.wohlfart.basic.states.SceneCreator" factory-method="createDebugElements" />
             </list>

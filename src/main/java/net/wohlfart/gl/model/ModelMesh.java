@@ -20,8 +20,7 @@ public class ModelMesh implements IsRenderable {
     private final int indexElemSize;
     private final int trianglePrimitive;
 
-    ModelMesh(int vaoHandle, int vboHandle, int idxBufferHandle, int textureHandle,
-            int trianglePrimitive, int indexElemSize, int indicesCount) {
+    ModelMesh(int vaoHandle, int vboHandle, int idxBufferHandle, int textureHandle, int trianglePrimitive, int indexElemSize, int indicesCount) {
 
         this.vaoHandle = vaoHandle;
         this.vboHandle = vboHandle;

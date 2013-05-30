@@ -4,16 +4,20 @@ import net.wohlfart.gl.elements.hud.widgets.CharAtlas;
 import net.wohlfart.gl.renderer.IsRenderable;
 
 /**
- * <p>Layer interface.</p>
- *
- *
- *
+ * <p>
+ * Layer interface.
+ * </p>
+ * 
+ * 
+ * 
  */
 public interface Layer extends IsRenderable {
 
     /**
-     * <p>getCharacterAtlas.</p>
-     *
+     * <p>
+     * getCharacterAtlas.
+     * </p>
+     * 
      * @return a {@link net.wohlfart.gl.elements.hud.widgets.CharAtlas} object.
      */
     CharAtlas getCharacterAtlas();

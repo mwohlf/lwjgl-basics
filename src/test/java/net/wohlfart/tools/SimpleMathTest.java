@@ -7,12 +7,16 @@ import org.lwjgl.util.vector.Quaternion;
 import org.lwjgl.util.vector.Vector3f;
 
 /**
- * <p>SimpleMathTest class.</p>
+ * <p>
+ * SimpleMathTest class.
+ * </p>
  */
 public class SimpleMathTest {
 
     /**
-     * <p>testCreateQuaternionA.</p>
+     * <p>
+     * testCreateQuaternionA.
+     * </p>
      */
     @Test
     public void testCreateQuaternionA() {
@@ -25,7 +29,9 @@ public class SimpleMathTest {
     }
 
     /**
-     * <p>testCreateQuaternionB.</p>
+     * <p>
+     * testCreateQuaternionB.
+     * </p>
      */
     @Test
     public void testCreateQuaternionB() {
@@ -38,7 +44,9 @@ public class SimpleMathTest {
     }
 
     /**
-     * <p>testCreateQuaternionIdentity.</p>
+     * <p>
+     * testCreateQuaternionIdentity.
+     * </p>
      */
     @Test
     public void testCreateQuaternionIdentity() {
@@ -51,7 +59,9 @@ public class SimpleMathTest {
     }
 
     /**
-     * <p>testCreateQuaternion1180degreeA.</p>
+     * <p>
+     * testCreateQuaternion1180degreeA.
+     * </p>
      */
     @Test
     public void testCreateQuaternion1180degreeA() {
@@ -64,7 +74,9 @@ public class SimpleMathTest {
     }
 
     /**
-     * <p>testCreateQuaternion1180degreeB.</p>
+     * <p>
+     * testCreateQuaternion1180degreeB.
+     * </p>
      */
     @Test
     public void testCreateQuaternion1180degreeB() {
@@ -77,7 +89,9 @@ public class SimpleMathTest {
     }
 
     /**
-     * <p>testAddVector.</p>
+     * <p>
+     * testAddVector.
+     * </p>
      */
     @Test
     public void testAddVector() {

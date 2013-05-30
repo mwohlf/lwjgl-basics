@@ -19,12 +19,11 @@ import org.lwjgl.util.vector.Vector3f;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-
 /**
  * layer for testing the txt features
- *
- *
- *
+ * 
+ * 
+ * 
  */
 public class TextureMeshBuilder {
     /** Constant <code>LOGGER</code> */
@@ -34,20 +33,17 @@ public class TextureMeshBuilder {
     private Quaternion rotation = new Quaternion();
     private Vector3f translation = new Vector3f();
 
-
     /**
-     * <p>build.</p>
-     *
+     * <p>
+     * build.
+     * </p>
+     * 
      * @return a {@link net.wohlfart.gl.shader.mesh.IRenderable} object.
      */
     public IsRenderable build() {
 
-        final Vector3f[] vectors = new Vector3f[] {
-                new Vector3f(-0.5f,+0.5f, 0),
-                new Vector3f(-0.5f,-0.5f, 0),
-                new Vector3f(+0.5f,-0.5f, 0),
-                new Vector3f(+0.5f,+0.5f, 0)
-        };
+        final Vector3f[] vectors = new Vector3f[] { new Vector3f(-0.5f, +0.5f, 0), new Vector3f(-0.5f, -0.5f, 0), new Vector3f(+0.5f, -0.5f, 0),
+                new Vector3f(+0.5f, +0.5f, 0) };
 
         if (rotation != null) {
             for (final Vector3f vec : vectors) {
@@ -60,30 +56,31 @@ public class TextureMeshBuilder {
             }
         }
 
-
-        final Vertex[] vertices = new Vertex[] {
-                new Vertex() {{
-                    setXYZ(vectors[0].x, vectors[0].y, vectors[0].z);
-                    setRGB(1, 0, 0);
-                    setST(0, 0);
-                }},
-                new Vertex() {{
-                    setXYZ(vectors[1].x, vectors[1].y, vectors[1].z);
-                    setRGB(0, 1, 0);
-                    setST(0, 1);
-                }},
-                new Vertex() {{
-                    setXYZ(vectors[2].x, vectors[2].y, vectors[2].z);
-                    setRGB(0, 0, 1);
-                    setST(1, 1);
-                }},
-                new Vertex() {{
-                    setXYZ(vectors[3].x, vectors[3].y, vectors[3].z);
-                    setRGB(1, 1, 1);
-                    setST(1, 0);
-                }}
-        };
-
+        final Vertex[] vertices = new Vertex[] { new Vertex() {
+            {
+                setXYZ(vectors[0].x, vectors[0].y, vectors[0].z);
+                setRGB(1, 0, 0);
+                setST(0, 0);
+            }
+        }, new Vertex() {
+            {
+                setXYZ(vectors[1].x, vectors[1].y, vectors[1].z);
+                setRGB(0, 1, 0);
+                setST(0, 1);
+            }
+        }, new Vertex() {
+            {
+                setXYZ(vectors[2].x, vectors[2].y, vectors[2].z);
+                setRGB(0, 0, 1);
+                setST(1, 1);
+            }
+        }, new Vertex() {
+            {
+                setXYZ(vectors[3].x, vectors[3].y, vectors[3].z);
+                setRGB(1, 1, 1);
+                setST(1, 0);
+            }
+        } };
 
         final FloatBuffer verticesBuffer = BufferUtils.createFloatBuffer(vertices.length * Vertex.elementCount);
         for (int i = 0; i < vertices.length; i++) {
@@ -138,27 +135,36 @@ public class TextureMeshBuilder {
     }
 
     /**
-     * <p>setTextureId.</p>
-     *
-     * @param texId a int.
+     * <p>
+     * setTextureId.
+     * </p>
+     * 
+     * @param texId
+     *            a int.
      */
     public void setTextureId(int texId) {
         this.texId = texId;
     }
 
     /**
-     * <p>Setter for the field <code>rotation</code>.</p>
-     *
-     * @param rotation a {@link org.lwjgl.util.vector.Quaternion} object.
+     * <p>
+     * Setter for the field <code>rotation</code>.
+     * </p>
+     * 
+     * @param rotation
+     *            a {@link org.lwjgl.util.vector.Quaternion} object.
      */
     public void setRotation(Quaternion rotation) {
         this.rotation = rotation;
     }
 
     /**
-     * <p>Setter for the field <code>translation</code>.</p>
-     *
-     * @param translation a {@link org.lwjgl.util.vector.Vector3f} object.
+     * <p>
+     * Setter for the field <code>translation</code>.
+     * </p>
+     * 
+     * @param translation
+     *            a {@link org.lwjgl.util.vector.Vector3f} object.
      */
     public void setTranslation(Vector3f translation) {
         this.translation = translation;

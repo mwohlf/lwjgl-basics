@@ -90,12 +90,18 @@ class TimSort<T> {
     }
 
     /**
-     * <p>doSort.</p>
-     *
-     * @param a an array of T objects.
-     * @param c a {@link java.util.Comparator} object.
-     * @param lo a int.
-     * @param hi a int.
+     * <p>
+     * doSort.
+     * </p>
+     * 
+     * @param a
+     *            an array of T objects.
+     * @param c
+     *            a {@link java.util.Comparator} object.
+     * @param lo
+     *            a int.
+     * @param hi
+     *            a int.
      */
     public void doSort(T[] a, Comparator<T> c, int lo, int hi) {
         stackSize = 0;

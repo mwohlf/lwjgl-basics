@@ -12,42 +12,39 @@ import org.lwjgl.opengl.GL11;
 import org.lwjgl.util.vector.Vector3f;
 
 /**
- * @formatter:off
- *         0
- *        /|\
- *       / | \
- *      /  |  \
- *     /   3   \
- *    / -     - \
- *   1 --------- 2
+ * @formatter:off 0 /|\ / | \ / | \ / 3 \ / - - \ 1 --------- 2
  * @formatter:on
- *
+ * 
  */
-public class Tetrahedron extends AbstractRenderable { // REVIEWED
+public class Tetrahedron extends AbstractRenderable {
 
     private float length = 1;
 
-    private final List<Integer> indices = Arrays.asList(new Integer[] { // @formatter:off
+    private final List<Integer> indices = Arrays.asList(new Integer[] {// @formatter:off
             0, 1,  1, 2,  2, 0,
             0, 2,  2, 3,  3, 0,
             0, 3,  3, 1,  1, 0, });  // @formatter:on
 
     /**
-     * <p>Constructor for Tetrahedron.</p>
+     * <p>
+     * Constructor for Tetrahedron.
+     * </p>
      */
     public Tetrahedron() {
         // nothing to do
     }
 
     /**
-     * <p>Constructor for Tetrahedron.</p>
-     *
-     * @param length a float.
+     * <p>
+     * Constructor for Tetrahedron.
+     * </p>
+     * 
+     * @param length
+     *            a float.
      */
     public Tetrahedron(float length) {
         this.length = length;
     }
-
 
     /** {@inheritDoc} */
     @Override
@@ -63,8 +60,10 @@ public class Tetrahedron extends AbstractRenderable { // REVIEWED
     }
 
     /**
-     * <p>createVertices.</p>
-     *
+     * <p>
+     * createVertices.
+     * </p>
+     * 
      * @return a {@link java.util.List} object.
      */
     protected List<Vector3f> createVertices() {

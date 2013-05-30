@@ -7,12 +7,14 @@ import net.wohlfart.tools.ObjectPool.PoolableObject;
  * the high level commands, base class for all kind of high level events/commands
  */
 /**
- * <p>CommandEvent class.</p>
- *
- *
- *
+ * <p>
+ * CommandEvent class.
+ * </p>
+ * 
+ * 
+ * 
  */
-public class PointEvent implements PoolableObject  {
+public class PointEvent implements PoolableObject {
 
     private int x;
     private int y;
@@ -30,7 +32,7 @@ public class PointEvent implements PoolableObject  {
     };
 
     public static PointEvent create(int screenX, int screenY, Key key) {
-        PointEvent result = pool.borrowObject();
+        final PointEvent result = pool.borrowObject();
         result.x = screenX;
         result.y = screenY;
         result.key = key;
@@ -50,10 +52,8 @@ public class PointEvent implements PoolableObject  {
         return y;
     }
 
-
     public Key getKey() {
         return key;
     }
-
 
 }

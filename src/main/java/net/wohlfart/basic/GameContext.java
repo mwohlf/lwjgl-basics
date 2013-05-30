@@ -6,7 +6,9 @@ import java.util.Set;
 import org.springframework.context.ApplicationContext;
 
 /**
- * <p>Wrapper class for the application context.</p>
+ * <p>
+ * Wrapper class for the application context.
+ * </p>
  */
 class GameContext implements IGameContext {
     private final ApplicationContext delegate;
@@ -31,10 +33,9 @@ class GameContext implements IGameContext {
     // this is used by the enums to pick up their config from the spring context
     @Override
     public <T> T getBeanOfName(Class<T> clazz, String name) {
-        T bean = delegate.getBean(name, clazz);
+        final T bean = delegate.getBean(name, clazz);
         if (bean == null) {
-            throw new IllegalStateException("No bean with type '" + clazz + "' and name '" + name
-                    + "'found in application context, can't start application");
+            throw new IllegalStateException("No bean with type '" + clazz + "' and name '" + name + "'found in application context, can't start application");
         }
         return bean;
     }

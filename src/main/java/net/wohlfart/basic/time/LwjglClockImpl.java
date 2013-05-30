@@ -3,9 +3,11 @@ package net.wohlfart.basic.time;
 import org.lwjgl.Sys;
 
 /**
- * <p>A lwjgl specific clock implementation.</p>
+ * <p>
+ * A lwjgl specific clock implementation.
+ * </p>
  */
-public class LwjglClockImpl implements Clock { // REVIEWED
+public class LwjglClockImpl implements Clock {
 
     /** {@inheritDoc} */
     @Override

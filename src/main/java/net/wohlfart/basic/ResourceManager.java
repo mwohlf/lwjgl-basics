@@ -9,7 +9,6 @@ public final class ResourceManager {
     protected String modelsDirectory = "resources/models/";
     protected String shadersDirectory = "resources/shaders/";
 
-
     public void setFontDirectory(String fontDirectory) {
         this.fontDirectory = fontDirectory;
     }
@@ -19,10 +18,9 @@ public final class ResourceManager {
     }
 
     public URL getGfxUrl(String string) {
-        URL result = getClass().getResource(gfxDirectory + string);
+        final URL result = getClass().getResource(gfxDirectory + string);
         if (result == null) {
-            throw new IllegalArgumentException("can't find resource '" + string + "'"
-                    + " in directory '" + gfxDirectory + "'");
+            throw new IllegalArgumentException("can't find resource '" + string + "'" + " in directory '" + gfxDirectory + "'");
         }
         return result;
     }

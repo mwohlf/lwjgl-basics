@@ -71,11 +71,16 @@ class ComparableTimSort {
     }
 
     /**
-     * <p>doSort.</p>
-     *
-     * @param a an array of {@link java.lang.Object} objects.
-     * @param lo a int.
-     * @param hi a int.
+     * <p>
+     * doSort.
+     * </p>
+     * 
+     * @param a
+     *            an array of {@link java.lang.Object} objects.
+     * @param lo
+     *            a int.
+     * @param hi
+     *            a int.
      */
     public void doSort(Object[] a, int lo, int hi) {
         stackSize = 0;

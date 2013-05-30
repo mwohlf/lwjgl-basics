@@ -17,7 +17,8 @@ import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector3f;
 
 /**
- * <p>A set of Renderables that use the same GraphicContext.
+ * <p>
+ * A set of Renderables that use the same GraphicContext.
  */
 public class ModelBucket implements IsRenderable, IsUpdateable, HasCamProjectionModelViewMatrices {
 
@@ -30,7 +31,6 @@ public class ModelBucket implements IsRenderable, IsUpdateable, HasCamProjection
     private final Matrix4f posMatrix = new Matrix4f();
     private final Matrix4f rotMatrix = new Matrix4f();
     private final Matrix4f rotPosMatrix = new Matrix4f();
-
 
     public void setGraphicContext(IGraphicContext graphicContext) {
         this.graphicContext = graphicContext;
@@ -74,7 +74,7 @@ public class ModelBucket implements IsRenderable, IsUpdateable, HasCamProjection
         ShaderUniformHandle.MODEL_TO_WORLD.set(SimpleMath.UNION_MATRIX);
         ShaderUniformHandle.WORLD_TO_CAM.set(rotPosMatrix);
         ShaderUniformHandle.CAM_TO_CLIP.set(GraphicContextManager.INSTANCE.getPerspectiveProjMatrix());
-        ShaderUniformHandle.LIGHT.set(new Vector3f(0,0,1));
+        ShaderUniformHandle.LIGHT.set(new Vector3f(0, 0, 1));
 
         GL11.glEnable(GL11.GL_DEPTH_TEST);
         GL11.glClear(GL11.GL_DEPTH_BUFFER_BIT);

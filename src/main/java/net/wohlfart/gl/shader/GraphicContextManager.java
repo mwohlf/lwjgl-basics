@@ -8,17 +8,18 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * <p>GraphicContextManager class.</p>
- *
- *
- *
+ * <p>
+ * GraphicContextManager class.
+ * </p>
+ * 
+ * 
+ * 
  */
 public enum GraphicContextManager {
     INSTANCE;
 
     /** Constant <code>LOGGER</code> */
     protected static final Logger LOGGER = LoggerFactory.getLogger(GraphicContextManager.class);
-
 
     public interface IGraphicContext {
 
@@ -41,19 +42,20 @@ public enum GraphicContextManager {
     // pre-calculated projection matrices to select from
     private Matrix4f perspectiveProjMatrix;
     private Matrix4f orthographicProjMatrix;
-    //private Matrix3f normalMatrix;
+    // private Matrix3f normalMatrix;
 
     // game settings from the config file
     private Settings settings;
     // user input
     private InputDispatcher inputDispatcher;
 
-
-
     /**
-     * <p>Setter for the field <code>currentGraphicContext</code>.</p>
-     *
-     * @param graphicContext a {@link net.wohlfart.gl.shader.GraphicContextManager.IGraphicContext} object.
+     * <p>
+     * Setter for the field <code>currentGraphicContext</code>.
+     * </p>
+     * 
+     * @param graphicContext
+     *            a {@link net.wohlfart.gl.shader.GraphicContextManager.IGraphicContext} object.
      */
     public void setCurrentGraphicContext(IGraphicContext graphicContext) {
         LOGGER.debug("setting gfx context to '{}'", graphicContext);
@@ -67,14 +69,17 @@ public enum GraphicContextManager {
     }
 
     /**
-     * <p>Setter for the field <code>settings</code>.</p>
-     *
-     * @param settings a {@link net.wohlfart.basic.Settings} object.
+     * <p>
+     * Setter for the field <code>settings</code>.
+     * </p>
+     * 
+     * @param settings
+     *            a {@link net.wohlfart.basic.Settings} object.
      */
     public void setSettings(Settings settings) {
         this.settings = settings;
-        perspectiveProjMatrix = new PerspectiveProjection() .create(settings);
-        orthographicProjMatrix = new OrthographicProjection() .create(settings);
+        perspectiveProjMatrix = new PerspectiveProjection().create(settings);
+        orthographicProjMatrix = new OrthographicProjection().create(settings);
     }
 
     // the following methods are package private,
@@ -85,8 +90,10 @@ public enum GraphicContextManager {
     }
 
     /**
-     * <p>Getter for the field <code>perspectiveProjMatrix</code>.</p>
-     *
+     * <p>
+     * Getter for the field <code>perspectiveProjMatrix</code>.
+     * </p>
+     * 
      * @return a {@link org.lwjgl.util.vector.Matrix4f} object.
      */
     public Matrix4f getPerspectiveProjMatrix() {
@@ -94,8 +101,10 @@ public enum GraphicContextManager {
     }
 
     /**
-     * <p>Getter for the field <code>orthographicProjMatrix</code>.</p>
-     *
+     * <p>
+     * Getter for the field <code>orthographicProjMatrix</code>.
+     * </p>
+     * 
      * @return a {@link org.lwjgl.util.vector.Matrix4f} object.
      */
     public Matrix4f getOrthographicProjMatrix() {
@@ -103,8 +112,10 @@ public enum GraphicContextManager {
     }
 
     /**
-     * <p>getScreenWidth.</p>
-     *
+     * <p>
+     * getScreenWidth.
+     * </p>
+     * 
      * @return a int.
      */
     public int getScreenWidth() {
@@ -112,8 +123,10 @@ public enum GraphicContextManager {
     }
 
     /**
-     * <p>getScreenHeight.</p>
-     *
+     * <p>
+     * getScreenHeight.
+     * </p>
+     * 
      * @return a int.
      */
     public int getScreenHeight() {
@@ -121,26 +134,32 @@ public enum GraphicContextManager {
     }
 
     /**
-     * <p>getNearPlane.</p>
-     *
+     * <p>
+     * getNearPlane.
+     * </p>
+     * 
      * @return a float.
      */
     public float getNearPlane() {
-        return settings.getNearPlane();    //   0.1
+        return settings.getNearPlane(); // 0.1
     }
 
     /**
-     * <p>getFarPlane.</p>
-     *
+     * <p>
+     * getFarPlane.
+     * </p>
+     * 
      * @return a float.
      */
     public float getFarPlane() {
-        return settings.getFarPlane();      // 100
+        return settings.getFarPlane(); // 100
     }
 
     /**
-     * <p>getFieldOfView.</p>
-     *
+     * <p>
+     * getFieldOfView.
+     * </p>
+     * 
      * @return a float.
      */
     public float getFieldOfView() {
@@ -148,17 +167,22 @@ public enum GraphicContextManager {
     }
 
     /**
-     * <p>Setter for the field <code>inputDispatcher</code>.</p>
-     *
-     * @param inputSource a {@link net.wohlfart.gl.input.DefaultInputDispatcher} object.
+     * <p>
+     * Setter for the field <code>inputDispatcher</code>.
+     * </p>
+     * 
+     * @param inputSource
+     *            a {@link net.wohlfart.gl.input.DefaultInputDispatcher} object.
      */
     public void setInputDispatcher(InputDispatcher inputSource) {
         this.inputDispatcher = inputSource;
     }
 
     /**
-     * <p>Getter for the field <code>inputDispatcher</code>.</p>
-     *
+     * <p>
+     * Getter for the field <code>inputDispatcher</code>.
+     * </p>
+     * 
      * @return a {@link net.wohlfart.gl.input.InputDispatcher} object.
      */
     public InputDispatcher getInputDispatcher() {
@@ -166,7 +190,9 @@ public enum GraphicContextManager {
     }
 
     /**
-     * <p>destroy.</p>
+     * <p>
+     * destroy.
+     * </p>
      */
     public void destroy() {
 

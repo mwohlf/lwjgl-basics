@@ -56,7 +56,6 @@ class ColoredFragmentMesh implements IsRenderable {
         GL30.glBindVertexArray(0);
     }
 
-
     /** {@inheritDoc} */
     @Override
     public void destroy() {

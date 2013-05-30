@@ -19,10 +19,14 @@ class AbstractShaderProgram implements IShaderProgram {
     private int programId = -1;
 
     /**
-     * <p>loadShader.</p>
-     *
-     * @param filename a {@link java.lang.String} object.
-     * @param shaderType a int.
+     * <p>
+     * loadShader.
+     * </p>
+     * 
+     * @param filename
+     *            a {@link java.lang.String} object.
+     * @param shaderType
+     *            a int.
      * @return a int.
      */
     protected int loadShader(final String filename, int shaderType) {
@@ -61,7 +65,7 @@ class AbstractShaderProgram implements IShaderProgram {
 
     /**
      * attach, link and validate the shaders into a shader program
-     *
+     * 
      * @param handles
      *            the shaders
      */
@@ -74,7 +78,7 @@ class AbstractShaderProgram implements IShaderProgram {
 
         GL20.glValidateProgram(programId);
         final int error = GL11.glGetError();
-        if (error != GL11.GL_NO_ERROR) { // @formatter:off
+        if (error != GL11.GL_NO_ERROR) {// @formatter:off
             throw new ShaderException(""
                     + "error validating shader, error string is '" + GLU.gluErrorString(error)
                     + "' \n" + "programmId is '" + programId
@@ -83,9 +87,12 @@ class AbstractShaderProgram implements IShaderProgram {
     }
 
     /**
-     * <p>unlink.</p>
-     *
-     * @param handles a int.
+     * <p>
+     * unlink.
+     * </p>
+     * 
+     * @param handles
+     *            a int.
      */
     protected void unlink(int... handles) {
         GL20.glUseProgram(0);
@@ -98,9 +105,12 @@ class AbstractShaderProgram implements IShaderProgram {
     }
 
     /**
-     * <p>getLogInfo.</p>
-     *
-     * @param obj a int.
+     * <p>
+     * getLogInfo.
+     * </p>
+     * 
+     * @param obj
+     *            a int.
      * @return a {@link java.lang.String} object.
      */
     protected String getLogInfo(int obj) {
