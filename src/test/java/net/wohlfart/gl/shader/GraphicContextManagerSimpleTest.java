@@ -2,7 +2,7 @@ package net.wohlfart.gl.shader;
 
 import static org.junit.Assert.assertEquals;
 import net.wohlfart.basic.Settings;
-import net.wohlfart.gl.view.HasCamProjectionModelViewMatrices;
+import net.wohlfart.gl.view.HasMatrices;
 import net.wohlfart.gl.view.MousePicker;
 import net.wohlfart.gl.view.PickingRay;
 
@@ -21,7 +21,7 @@ public class GraphicContextManagerSimpleTest {
     Settings settings;
     MousePicker mousePicker;
 
-    HasCamProjectionModelViewMatrices matrices = new HasCamProjectionModelViewMatrices() {
+    HasMatrices matrices = new HasMatrices() {
 
         @Override
         public Matrix4f getProjectionMatrix() {

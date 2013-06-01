@@ -8,7 +8,6 @@ import net.wohlfart.gl.shader.GraphicContextManager;
 import net.wohlfart.gl.shader.GraphicContextManager.IGraphicContext;
 import net.wohlfart.gl.shader.ShaderUniformHandle;
 import net.wohlfart.gl.view.Camera;
-import net.wohlfart.gl.view.HasCamProjectionModelViewMatrices;
 import net.wohlfart.tools.SimpleMath;
 
 import org.lwjgl.opengl.GL11;
@@ -19,7 +18,7 @@ import org.lwjgl.util.vector.Vector3f;
  * <p>
  * A set of Renderables that use the same GraphicContext.
  */
-public class RenderableBucket implements IsRenderable, IsUpdateable, HasCamProjectionModelViewMatrices {
+public class RenderableBucket implements RenderBucket {
 
     protected final Set<IsRenderable> content = new HashSet<>(10100);
     private IGraphicContext graphicContext;

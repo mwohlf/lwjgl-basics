@@ -5,7 +5,7 @@
                            http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
 
 
-    <!-- the states are picked up from the enums themselves, not injected  -->
+    <!-- the states are picked up from the state enums themselves, not injected  -->
 
 
     <bean id="GameState.NULL" class="net.wohlfart.basic.states.NullState" />
@@ -19,17 +19,15 @@
 
     <bean id="GameState.LIGHTING" class="net.wohlfart.basic.states.LightingState" >
         <property name="camera" ref="camera" />
-        <property name="skybox" ref="defaultSkybox" />
+<!--         <property name="skybox" ref="nullSkybox" /> -->
         <property name="modelBucket" ref="modelBucket" />
-        <property name="elemBucket" ref="elemBucket" />
+        <property name="elemBucket" ref="emptyBucket" />
         <property name="hud" ref="defaultHud" />
 
     </bean>
 
 
     <!-- huds -->
-
-    <bean id="nullHud" class="net.wohlfart.gl.elements.hud.NullHud" />
 
     <bean id="defaultHud" class="net.wohlfart.gl.elements.hud.HudImpl">
         <property name="graphicContext" ref="hudShader" />
@@ -38,8 +36,6 @@
 
 
     <!-- skyboxes -->
-
-    <bean id="nullSkybox" class="net.wohlfart.gl.elements.skybox.NullSkybox" />
 
     <bean id="defaultSkybox" class="net.wohlfart.gl.elements.skybox.SkyboxImpl">
         <property name="camera" ref="camera" />
@@ -64,6 +60,10 @@
     </bean>
 
 
+    <bean id="emptyBucket" class="net.wohlfart.gl.renderer.RenderableBucket">
+        <property name="camera" ref="camera" />
+        <property name="graphicContext" ref="wireframeShader" />
+    </bean>
 
     <bean id="elemBucket" class="net.wohlfart.gl.renderer.RenderableBucket">
         <property name="camera" ref="camera" />

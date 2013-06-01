@@ -4,10 +4,10 @@ import org.lwjgl.util.vector.Matrix4f;
 
 /**
  * <p>
- * HasCamProjectionModelViewMatrices interface implemented by objects that know where the current camera is at and in which direction the cam is looking
+ * HasMatrices interface implemented by objects that know where the current camera is at and in which direction the cam is looking
  * </p>
  */
-public interface HasCamProjectionModelViewMatrices {
+public interface HasMatrices {
 
     /**
      * <p>

@@ -1,6 +1,7 @@
 package net.wohlfart.gl.elements.skybox;
 
-public class NullSkybox implements Skybox {
+public enum NullSkybox implements Skybox {
+    INSTANCE;
 
     @Override
     public void render() {

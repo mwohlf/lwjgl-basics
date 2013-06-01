@@ -12,7 +12,7 @@ import org.lwjgl.opengl.GL11;
 import org.lwjgl.util.vector.Vector2f;
 import org.lwjgl.util.vector.Vector3f;
 
-public class Model extends AbstractRenderable implements Actor {
+public class Model extends AbstractRenderable implements Actor, IsRenderable {
     // unique
     private final String name;
 
@@ -69,10 +69,10 @@ public class Model extends AbstractRenderable implements Actor {
 
     /**
      * the vertex stream has the following format:
-     * 
+     *
      * 4 position coords 4 normal coords 2 texture coords
-     * 
-     * 
+     *
+     *
      * @return
      */
     float[] createVertexStream() {

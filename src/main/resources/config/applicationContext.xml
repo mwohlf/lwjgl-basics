@@ -30,7 +30,7 @@
        </property>
     </bean>
 
-    <bean id="gameSettings" class="net.wohlfart.basic.Settings" scope="singleton">
+    <bean id="gameSettings" class="net.wohlfart.basic.Settings">
       <property name="title" value="${title}" />
       <property name="width" value="${display.width}" />
       <property name="height" value="${display.height}" />
@@ -41,7 +41,7 @@
       <property name="farPlane" value="${projection.farPlane}" />
     </bean>
 
-    <bean id="resourceManager" class="net.wohlfart.basic.ResourceManager" scope="singleton">
+    <bean id="resourceManager" class="net.wohlfart.basic.ResourceManager">
       <property name="fontDirectory" value="${dir.resources.fonts}" />
       <property name="gfxDirectory" value="${dir.resources.gfx}" />
       <property name="modelsDirectory" value="${dir.resources.models}" />

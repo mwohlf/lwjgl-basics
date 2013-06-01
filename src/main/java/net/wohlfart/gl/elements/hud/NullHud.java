@@ -2,7 +2,8 @@ package net.wohlfart.gl.elements.hud;
 
 import net.wohlfart.gl.elements.hud.widgets.AbstractTextComponent;
 
-public class NullHud implements Hud {
+public enum NullHud implements Hud {
+    INSTANCE;
 
     @Override
     public void render() {

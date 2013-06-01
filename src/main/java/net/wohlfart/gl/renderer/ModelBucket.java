@@ -9,7 +9,6 @@ import net.wohlfart.gl.shader.GraphicContextManager;
 import net.wohlfart.gl.shader.GraphicContextManager.IGraphicContext;
 import net.wohlfart.gl.shader.ShaderUniformHandle;
 import net.wohlfart.gl.view.Camera;
-import net.wohlfart.gl.view.HasCamProjectionModelViewMatrices;
 import net.wohlfart.tools.SimpleMath;
 
 import org.lwjgl.opengl.GL11;
@@ -20,9 +19,10 @@ import org.lwjgl.util.vector.Vector3f;
  * <p>
  * A set of Renderables that use the same GraphicContext.
  */
-public class ModelBucket implements IsRenderable, IsUpdateable, HasCamProjectionModelViewMatrices {
+public class ModelBucket implements RenderBucket {
 
-    protected Set<Model> content = new HashSet<>(10100);
+    protected Set<Model> models = new HashSet<>(10100);
+    protected Set<IsRenderable> renderables = new HashSet<>(10100);
     private IGraphicContext graphicContext;
     private Camera camera;
 
@@ -45,19 +45,24 @@ public class ModelBucket implements IsRenderable, IsUpdateable, HasCamProjection
     }
 
     public void setContent(Collection<Model> newContent) {
-        for (final IsRenderable isRenderable : content) {
+        for (final IsRenderable isRenderable : models) {
             isRenderable.destroy();
         }
-        content.clear();
-        content.addAll(newContent);
+        models.clear();
+        models.addAll(newContent);
     }
 
     public void addContent(Collection<Model> newContent) {
-        content.addAll(newContent);
+        models.addAll(newContent);
     }
 
     public void addContent(Model renderable) {
-        content.add(renderable);
+        models.add(renderable);
+    }
+
+    @Override
+    public void addContent(IsRenderable renderable) {
+        renderables.add(renderable);
     }
 
     /** {@inheritDoc} */
@@ -80,24 +85,27 @@ public class ModelBucket implements IsRenderable, IsUpdateable, HasCamProjection
         GL11.glClear(GL11.GL_DEPTH_BUFFER_BIT);
         GL11.glDisable(GL11.GL_BLEND);
 
-        for (final Model model : content) {
+        for (final Model model : models) {
             model.render();
+        }
+        for (final IsRenderable renderable : renderables) {
+            renderable.render();
         }
     }
 
     @Override
     public void update(float timeInSec) {
-        for (final Model model : content) {
+        for (final Model model : models) {
             model.update(timeInSec);
         }
     }
 
     @Override
     public void destroy() {
-        for (final Model model : content) {
+        for (final Model model : models) {
             model.destroy();
         }
-        content.clear();
+        models.clear();
     }
 
     @Override

@@ -1,11 +1,15 @@
 package net.wohlfart.basic.states;
 
 import net.wohlfart.gl.elements.hud.Hud;
+import net.wohlfart.gl.elements.hud.NullHud;
 import net.wohlfart.gl.elements.hud.widgets.Label;
 import net.wohlfart.gl.elements.hud.widgets.MousePositionLabel;
 import net.wohlfart.gl.elements.hud.widgets.Statistics;
+import net.wohlfart.gl.elements.skybox.NullSkybox;
 import net.wohlfart.gl.elements.skybox.Skybox;
 import net.wohlfart.gl.renderer.ModelBucket;
+import net.wohlfart.gl.renderer.NullRenderBucket;
+import net.wohlfart.gl.renderer.RenderBucket;
 import net.wohlfart.gl.renderer.RenderableBucket;
 import net.wohlfart.gl.view.MousePicker;
 
@@ -16,17 +20,17 @@ import org.springframework.util.Assert;
 
 /**
  * REVIEW:
- * 
+ *
  * @author michael
- * 
+ *
  */
 final class LightingState extends AbstractGraphicState implements InitializingBean {
     private static final Logger LOGGER = LoggerFactory.getLogger(LightingState.class);
 
-    private Skybox skybox;
-    private ModelBucket modelBucket;
-    private RenderableBucket elemBucket;
-    private Hud hud;
+    private Skybox skybox = NullSkybox.INSTANCE;
+    private RenderBucket modelBucket = NullRenderBucket.INSTANCE;
+    private RenderBucket elemBucket = NullRenderBucket.INSTANCE;
+    private Hud hud = NullHud.INSTANCE;
 
     private Statistics statistics;
     private MousePositionLabel mousePositionLabel;
@@ -51,7 +55,10 @@ final class LightingState extends AbstractGraphicState implements InitializingBe
     @Override
     public void afterPropertiesSet() throws Exception {
         LOGGER.debug("<afterPropertiesSet>");
-        Assert.notNull(skybox, "skyboxImpl missing, you probably forgot to inject skyboxImpl in the LightingState");
+        Assert.notNull(skybox);
+        Assert.notNull(modelBucket);
+        Assert.notNull(elemBucket);
+        Assert.notNull(hud);
     }
 
     @Override
@@ -77,24 +84,24 @@ final class LightingState extends AbstractGraphicState implements InitializingBe
          * Model icosphere = SceneCreator.loadModelFromFile("/models/icosphere/icosphere.obj"); icosphere.setPosition(new Vector3f(0,0,-5));
          * icosphere.setAction(OrbitAction.create()); //icosphere.setAction(new MoveAction()); //icosphere.setAction(new MoveAction());
          * modelBucket.add(icosphere);
-         * 
+         *
          * Model icosphere2 = SceneCreator.loadModelFromFile("/models/icosphere/icosphere.obj"); icosphere2.setPosition(new Vector3f(0,0,0));
          * //icosphere2.setAction(new OrbitAction()); //icosphere.setAction(new MoveAction()); //icosphere.setAction(new MoveAction());
          * modelBucket.add(icosphere2);
          */
 
         /*
-         * 
+         *
          * int count = 500;
-         * 
+         *
          * for (int i = 0; i < count ; i++) { Model icosphere = SceneCreator.loadModelFromFile("/models/ship/ship.obj");
          * icosphere.setPosition(SceneCreator.getRandomPosition()); icosphere.setAction(SceneCreator.getRandomAction()); modelBucket.add(icosphere); }
-         * 
-         * 
-         * 
+         *
+         *
+         *
          * for (int i = 0; i < count ; i++) { Model icosphere = SceneCreator.loadModelFromFile("/models/icosphere/icosphere.obj");
          * icosphere.setPosition(SceneCreator.getRandomPosition()); icosphere.setAction(SceneCreator.getRandomAction()); modelBucket.add(icosphere); }
-         * 
+         *
          * for (int i = 0; i < count ; i++) { Model cube = SceneCreator.loadModelFromFile("/models/cube/cube.obj");
          * cube.setPosition(SceneCreator.getRandomPosition()); cube.setAction(SceneCreator.getRandomAction()); modelBucket.add(cube); }
          */

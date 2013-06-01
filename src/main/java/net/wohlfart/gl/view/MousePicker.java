@@ -2,7 +2,7 @@ package net.wohlfart.gl.view;
 
 import net.wohlfart.gl.elements.debug.Arrow;
 import net.wohlfart.gl.input.PointEvent;
-import net.wohlfart.gl.renderer.RenderableBucket;
+import net.wohlfart.gl.renderer.RenderBucket;
 
 import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector3f;
@@ -14,13 +14,13 @@ import com.google.common.eventbus.Subscribe;
  * <p>
  * MousePicker class.
  * </p>
- * 
+ *
  */
 public class MousePicker {
 
     private Matrix4f transformMatrix = new Matrix4f();
 
-    private final RenderableBucket elemBucket;
+    private final RenderBucket elemBucket;
 
     private final float width;
     private final float height;
@@ -29,7 +29,7 @@ public class MousePicker {
      * <p>
      * Constructor for MousePicker.
      * </p>
-     * 
+     *
      * @param elemBucket
      *            a {@link net.wohlfart.gl.renderer.RenderableBucket} object.
      * @param width
@@ -37,7 +37,7 @@ public class MousePicker {
      * @param height
      *            a float.
      */
-    public MousePicker(RenderableBucket elemBucket, float width, float height) {
+    public MousePicker(RenderBucket elemBucket, float width, float height) {
         this.elemBucket = elemBucket;
         this.width = width;
         this.height = height;
@@ -47,7 +47,7 @@ public class MousePicker {
      * <p>
      * onMouseClick.
      * </p>
-     * 
+     *
      * @param clickEvent
      *            a {@link net.wohlfart.gl.input.CommandEvent.LeftClick} object.
      */
@@ -66,16 +66,16 @@ public class MousePicker {
      * createPickingRay<br/>
      * see: http://gamedev.stackexchange.com/questions/8974/converting-a-mouse-click-to-a-ray
      * </p>
-     * 
+     *
      * @param x
      *            a float.
      * @param y
      *            a float.
      * @param hasMatrices
-     *            a {@link net.wohlfart.gl.view.HasCamProjectionModelViewMatrices} object.
+     *            a {@link net.wohlfart.gl.view.HasMatrices} object.
      * @return a {@link net.wohlfart.gl.view.PickingRay} object.
      */
-    public PickingRay createPickingRay(float x, float y, HasCamProjectionModelViewMatrices elemBucket) {
+    public PickingRay createPickingRay(float x, float y, HasMatrices elemBucket) {
 
         Matrix4f.mul(elemBucket.getProjectionMatrix(), elemBucket.getModelViewMatrix(), transformMatrix);
         transformMatrix = Matrix4f.invert(transformMatrix, transformMatrix);
