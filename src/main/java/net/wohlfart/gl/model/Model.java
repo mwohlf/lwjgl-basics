@@ -153,4 +153,10 @@ public class Model extends AbstractRenderable implements Actor, IsRenderable {
     }
 
 
+    @Override
+    public String toString() {
+        return "Model: '" + name + "'";
+    }
+
+
 }

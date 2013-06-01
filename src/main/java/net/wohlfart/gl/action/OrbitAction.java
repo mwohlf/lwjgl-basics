@@ -51,7 +51,8 @@ public final class OrbitAction implements Action {
 
         final Quaternion currentRotation = actor.getRotation();
 
-        final Vector3f up = SimpleMath.getUp(currentRotation, new Vector3f()); // we want to keep up
+        // final Vector3f up = SimpleMath.getUp(currentRotation, new Vector3f()); // we want to keep up
+        final Vector3f up = axis;
         final Vector3f right = new Vector3f(-tmp1.x, -tmp1.y, -tmp1.z).normalise(new Vector3f());
         final Vector3f forward = Vector3f.cross(up, right, new Vector3f());
 

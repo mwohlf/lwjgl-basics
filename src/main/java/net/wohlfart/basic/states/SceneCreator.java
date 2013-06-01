@@ -8,8 +8,6 @@ import java.util.HashSet;
 import net.wohlfart.basic.GenericGameException;
 import net.wohlfart.gl.action.Action;
 import net.wohlfart.gl.action.OrbitAction;
-import net.wohlfart.gl.action.ParallelAction;
-import net.wohlfart.gl.action.RotateAction;
 import net.wohlfart.gl.antlr4.ModelLoader;
 import net.wohlfart.gl.elements.AbstractRenderable;
 import net.wohlfart.gl.elements.ColoredQuad;
@@ -129,7 +127,7 @@ public final class SceneCreator {
     }
 
     // @formatter:off
-    static Vector3f getRandomPosition(float range) {
+    public static Vector3f getRandomPosition(float range) {
         return new Vector3f(
                 SimpleMath.random(-range, +range),
                 SimpleMath.random(-range, +range),
@@ -139,13 +137,16 @@ public final class SceneCreator {
 
     // @formatter:off
     public static Action getRandomAction() {
+        return OrbitAction.create(SimpleMath.random(25f,  50f),
+              new Vector3f(0,0,0), getRandomPosition(1));
+
         // return RotateAction.create(SimpleMath.random(5f,  50f), getRandomPosition());
         // return OrbitAction.create();
-        return ParallelAction.create(
-                        OrbitAction.create(SimpleMath.random(25f,  50f),
-                                new Vector3f(0,0,0), getRandomPosition(1)),
-                        RotateAction.create(SimpleMath.random(5f,  50f),
-                                getRandomPosition()));
+//        return ParallelAction.create(
+//                        OrbitAction.create(SimpleMath.random(25f,  50f),
+//                                new Vector3f(0,0,0), getRandomPosition(1)),
+//                        RotateAction.create(SimpleMath.random(5f,  50f),
+//                                getRandomPosition()));
     }
     // @formatter:on
 
