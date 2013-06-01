@@ -33,7 +33,7 @@ import org.lwjgl.util.vector.Vector3f;
  * SceneCreator for providing dummy data to test rendering for different states.
  * </p>
  */
-final class SceneCreator {
+public final class SceneCreator {
 
     static Collection<IsRenderable> createCircledTarget() {
         final HashSet<IsRenderable> elemBucket = new HashSet<IsRenderable>();
@@ -113,7 +113,7 @@ final class SceneCreator {
         return elemBucket;
     }
 
-    static Model loadModelFromFile(String path) {
+    public static Model loadModelFromFile(String path) {
         try (InputStream inputStream = ClassLoader.class.getResourceAsStream(path)) {
             if (inputStream == null) {
                 throw new GenericGameException("input stream is null for path '" + path + "'");
@@ -124,7 +124,7 @@ final class SceneCreator {
         }
     }
 
-    static Vector3f getRandomPosition() {
+    public static Vector3f getRandomPosition() {
         return getRandomPosition(100f);
     }
 
@@ -138,7 +138,7 @@ final class SceneCreator {
     // @formatter:on
 
     // @formatter:off
-    static Action getRandomAction() {
+    public static Action getRandomAction() {
         // return RotateAction.create(SimpleMath.random(5f,  50f), getRandomPosition());
         // return OrbitAction.create();
         return ParallelAction.create(

@@ -20,7 +20,7 @@
     <bean id="GameState.LIGHTING" class="net.wohlfart.basic.states.LightingState" >
         <property name="camera" ref="camera" />
 <!--         <property name="skybox" ref="nullSkybox" /> -->
-        <property name="modelBucket" ref="modelBucket" />
+        <property name="modelBucket" ref="invadorsBucket" />
         <property name="elemBucket" ref="emptyBucket" />
         <property name="hud" ref="defaultHud" />
 
@@ -46,6 +46,11 @@
 
 
     <!-- content -->
+
+    <bean id="invadorsBucket" class="net.wohlfart.gl.renderer.InvadorsBucket">
+        <property name="camera" ref="camera" />
+        <property name="graphicContext" ref="lightingShader" />
+    </bean>
 
 
     <bean id="modelBucket" class="net.wohlfart.gl.renderer.ModelBucket">

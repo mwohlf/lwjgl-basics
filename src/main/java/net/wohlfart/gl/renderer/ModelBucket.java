@@ -2,6 +2,8 @@ package net.wohlfart.gl.renderer;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -126,18 +128,27 @@ public class ModelBucket implements RenderBucket {
         // TODO maybe destroy ?
     }
 
-    public List<Model> pick(PickingRay ray) {
+    public List<Model> pick(final PickingRay ray) {
         List<Model> list = new ArrayList<Model>();
 
         for (final Model model : models) {
             Vector3f pos = model.getPosition();
             float d = SimpleMath.distance(ray.getStart(), ray.getEnd(), pos);
             float radius = model.getRadius();
-            System.out.println("d: " + d + " radius: " + radius);
 
             if (d < radius) {
                 list.add(model);
             }
+
+            Collections.sort(list, new Comparator<Model>() {
+                @Override
+                public int compare(Model o1, Model o2) {
+                    float f1 = SimpleMath.distance(ray.getStart(), o1.getPosition());
+                    float f2 = SimpleMath.distance(ray.getStart(), o2.getPosition());
+                    return Float.compare(f1, f2);
+                }
+            });
+
         }
         return list;
     }
