@@ -1,7 +1,11 @@
 package net.wohlfart.gl.view;
 
+import java.util.List;
+
 import net.wohlfart.gl.elements.debug.Arrow;
 import net.wohlfart.gl.input.PointEvent;
+import net.wohlfart.gl.model.Model;
+import net.wohlfart.gl.renderer.ModelBucket;
 import net.wohlfart.gl.renderer.RenderBucket;
 
 import org.lwjgl.util.vector.Matrix4f;
@@ -10,71 +14,51 @@ import org.lwjgl.util.vector.Vector4f;
 
 import com.google.common.eventbus.Subscribe;
 
-/**
- * <p>
- * MousePicker class.
- * </p>
- *
- */
-public class MousePicker {
+public class ElementPicker {
 
     private Matrix4f transformMatrix = new Matrix4f();
 
-    private final RenderBucket elemBucket;
+    private final HasMatrices hasMatrices;
 
     private final float width;
     private final float height;
 
-    /**
-     * <p>
-     * Constructor for MousePicker.
-     * </p>
-     *
-     * @param elemBucket
-     *            a {@link net.wohlfart.gl.renderer.RenderableBucket} object.
-     * @param width
-     *            a float.
-     * @param height
-     *            a float.
-     */
-    public MousePicker(RenderBucket elemBucket, float width, float height) {
-        this.elemBucket = elemBucket;
+    private RenderBucket renderBucket;
+
+    private ModelBucket modelBucket;
+
+
+    public ElementPicker(HasMatrices hasMatrices, float width, float height) {
+        this.hasMatrices = hasMatrices;
         this.width = width;
         this.height = height;
     }
 
-    /**
-     * <p>
-     * onMouseClick.
-     * </p>
-     *
-     * @param clickEvent
-     *            a {@link net.wohlfart.gl.input.CommandEvent.LeftClick} object.
-     */
+    // for rendering a debug arrow
+    public void setRenderBucket(RenderBucket renderBucket) {
+        this.renderBucket = renderBucket;
+    }
+
+    // for picking elements
+    public void setModelBucket(ModelBucket modelBucket) {
+        this.modelBucket = modelBucket;
+    }
+
+
     @Subscribe
     public void onMouseClick(PointEvent clickEvent) {
         final float x = clickEvent.getX();
         final float y = clickEvent.getY();
 
-        final PickingRay ray = createPickingRay(x, y, elemBucket);
-        elemBucket.addContent(Arrow.createLink(ray.getStart(), ray.getEnd()));
+        final PickingRay ray = createPickingRay(x, y, hasMatrices);
+        renderBucket.addContent(Arrow.createLink(ray.getStart(), ray.getEnd()));
+
+        List<Model> picklist = modelBucket.pick(ray);
+
+        System.out.println("picked: " + picklist);
     }
 
-    //
-    /**
-     * <p>
-     * createPickingRay<br/>
-     * see: http://gamedev.stackexchange.com/questions/8974/converting-a-mouse-click-to-a-ray
-     * </p>
-     *
-     * @param x
-     *            a float.
-     * @param y
-     *            a float.
-     * @param hasMatrices
-     *            a {@link net.wohlfart.gl.view.HasMatrices} object.
-     * @return a {@link net.wohlfart.gl.view.PickingRay} object.
-     */
+
     public PickingRay createPickingRay(float x, float y, HasMatrices elemBucket) {
 
         Matrix4f.mul(elemBucket.getProjectionMatrix(), elemBucket.getModelViewMatrix(), transformMatrix);

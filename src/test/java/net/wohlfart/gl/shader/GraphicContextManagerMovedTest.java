@@ -3,7 +3,7 @@ package net.wohlfart.gl.shader;
 import static org.junit.Assert.assertEquals;
 import net.wohlfart.basic.Settings;
 import net.wohlfart.gl.view.HasMatrices;
-import net.wohlfart.gl.view.MousePicker;
+import net.wohlfart.gl.view.ElementPicker;
 import net.wohlfart.gl.view.PickingRay;
 
 import org.junit.Before;
@@ -19,7 +19,7 @@ public class GraphicContextManagerMovedTest {
 
     GraphicContextManager contxt;
     Settings settings;
-    MousePicker mousePicker;
+    ElementPicker elementPicker;
 
     HasMatrices matrices = new HasMatrices() {
 
@@ -47,7 +47,7 @@ public class GraphicContextManagerMovedTest {
         settings = createSettings();
         contxt = GraphicContextManager.INSTANCE;
         contxt.setSettings(settings);
-        mousePicker = new MousePicker(null, settings.getWidth(), settings.getHeight());
+        elementPicker = new ElementPicker(null, settings.getWidth(), settings.getHeight());
     }
 
     Settings createSettings() {
@@ -78,7 +78,7 @@ public class GraphicContextManagerMovedTest {
 
         // mouse origin is bottom left
         // picking the center of the screen should give us a solid line along the z axis:
-        ray = mousePicker.createPickingRay(settings.getWidth() / 2f, settings.getHeight() / 2f, matrices);
+        ray = elementPicker.createPickingRay(settings.getWidth() / 2f, settings.getHeight() / 2f, matrices);
 
         assertEquals(10.0, ray.getStart().x, 0.01);
         assertEquals(0.0, ray.getStart().y, 0.01);

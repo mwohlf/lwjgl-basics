@@ -49,7 +49,7 @@ public final class SimpleMath {
      * <p>
      * sin.
      * </p>
-     * 
+     *
      * @param f
      *            a float.
      * @return a float.
@@ -62,7 +62,7 @@ public final class SimpleMath {
      * <p>
      * cos.
      * </p>
-     * 
+     *
      * @param f
      *            a float.
      * @return a float.
@@ -75,7 +75,7 @@ public final class SimpleMath {
      * <p>
      * tan.
      * </p>
-     * 
+     *
      * @param angle
      *            a float.
      * @return a float.
@@ -88,7 +88,7 @@ public final class SimpleMath {
      * <p>
      * rad2deg.
      * </p>
-     * 
+     *
      * @param rad
      *            a float.
      * @return a float.
@@ -101,7 +101,7 @@ public final class SimpleMath {
      * <p>
      * deg2rad.
      * </p>
-     * 
+     *
      * @param deg
      *            a float.
      * @return a float.
@@ -114,7 +114,7 @@ public final class SimpleMath {
      * <p>
      * coTan.
      * </p>
-     * 
+     *
      * @param angle
      *            a float.
      * @return a float.
@@ -127,7 +127,7 @@ public final class SimpleMath {
      * <p>
      * sqrt.
      * </p>
-     * 
+     *
      * @param f
      *            a float.
      * @return a float.
@@ -146,7 +146,7 @@ public final class SimpleMath {
      * <p>
      * random.
      * </p>
-     * 
+     *
      * @param i
      *            a int.
      * @return a int.
@@ -159,7 +159,7 @@ public final class SimpleMath {
      * <p>
      * random.
      * </p>
-     * 
+     *
      * @param min
      *            a int.
      * @param max
@@ -174,7 +174,7 @@ public final class SimpleMath {
      * <p>
      * random.
      * </p>
-     * 
+     *
      * @param min
      *            a float.
      * @param max
@@ -190,7 +190,7 @@ public final class SimpleMath {
 
     /**
      * rotate the vector by a rotation defined by the quaternion
-     * 
+     *
      * @param q
      *            a {@link org.lwjgl.util.vector.Quaternion} object.
      * @param vec
@@ -229,9 +229,9 @@ public final class SimpleMath {
 
     /**
      * create a rotation quaternion defined by a start and an end vector, the rotation will be the rotation needed to transform the first vector into the second
-     * 
+     *
      * taken from: https://bitbucket.org/sinbad/ogre/src/9db75e3ba05c/OgreMain/include/OgreVector3.h#cl-651
-     * 
+     *
      * @param start
      *            a {@link org.lwjgl.util.vector.Vector3f} object.
      * @param end
@@ -280,7 +280,7 @@ public final class SimpleMath {
      * <p>
      * getPowerOfTwoBiggerThan.
      * </p>
-     * 
+     *
      * @param n
      *            a int.
      * @return a int.
@@ -302,7 +302,7 @@ public final class SimpleMath {
      * <p>
      * createMatrix.
      * </p>
-     * 
+     *
      * @param currentTranslation
      *            a {@link org.lwjgl.util.vector.Vector3f} object.
      * @param matrix
@@ -338,7 +338,7 @@ public final class SimpleMath {
      * <p>
      * convert.
      * </p>
-     * 
+     *
      * @param move
      *            a {@link org.lwjgl.util.vector.Vector3f} object.
      * @param ROTATION
@@ -390,7 +390,7 @@ public final class SimpleMath {
      * <p>
      * convert.
      * </p>
-     * 
+     *
      * @param move
      *            vector describing a move
      * @return a matrix
@@ -427,7 +427,7 @@ public final class SimpleMath {
      * <p>
      * convert.
      * </p>
-     * 
+     *
      * @param ROTATION
      *            quaternion describing a rotation
      * @return a matrix
@@ -477,7 +477,7 @@ public final class SimpleMath {
      * <p>
      * mul.
      * </p>
-     * 
+     *
      * @param dir
      *            a {@link org.lwjgl.util.vector.Vector3f} object.
      * @param a
@@ -493,7 +493,7 @@ public final class SimpleMath {
      * <p>
      * sum.
      * </p>
-     * 
+     *
      * @param result
      *            a {@link org.lwjgl.util.vector.Vector3f} object.
      * @param a
@@ -511,7 +511,7 @@ public final class SimpleMath {
 
     /**
      * add one vector to another vector
-     * 
+     *
      * @param a
      *            a {@link org.lwjgl.util.vector.Vector3f} object.
      * @param b
@@ -527,7 +527,7 @@ public final class SimpleMath {
 
     /**
      * substract one vector from another vector
-     * 
+     *
      * @param a
      *            a {@link org.lwjgl.util.vector.Vector3f} object.
      * @param b
@@ -545,7 +545,7 @@ public final class SimpleMath {
      * <p>
      * multiply a vector with a matrix
      * </p>
-     * 
+     *
      * @param n
      *            a {@link org.lwjgl.util.vector.Matrix4f} object.
      * @param in
@@ -618,7 +618,7 @@ public final class SimpleMath {
      * <p>
      * multLocal.
      * </p>
-     * 
+     *
      * @param vec
      *            a {@link org.lwjgl.util.vector.Vector3f} object.
      * @return a {@link org.lwjgl.util.vector.Vector3f} object.
@@ -649,9 +649,9 @@ public final class SimpleMath {
 
     /**
      * calculate a 3x3 matrix, its either inverse and transpose of model matrix or just upper corner of that matrix if no uniform scaling is used
-     * 
+     *
      * TODO: check for uniform scaling
-     * 
+     *
      * @param m4
      *            the model to world matrix
      * @return
@@ -685,6 +685,23 @@ public final class SimpleMath {
 
     Vector3f getRightVector(Quaternion q) {
         return new Vector3f(1 - 2 * (q.y * q.y + q.z * q.z), 2 * (q.x * q.y + q.w * q.z), 2 * (q.x * q.z - q.w * q.y));
+    }
+
+    public static float distance(Vector3f start, Vector3f end, Vector3f pos) {
+        Vector3f n = Vector3f.sub(end, start, new Vector3f());   // direction of the picking ray
+        n.normalise();
+
+        Vector3f point2start = Vector3f.sub(start, pos, new Vector3f());  // vector from the point to the start of the ray
+
+        Vector3f m = new Vector3f(n);
+        float a = Vector3f.dot(point2start, n);
+        SimpleMath.mul(m, a);                             // projecting on the ray to get the base point
+
+        Vector3f base = new Vector3f();
+        SimpleMath.sub(start, m, base);
+
+        float distance = SimpleMath.distance(base, pos);
+        return distance;
     }
 
 }

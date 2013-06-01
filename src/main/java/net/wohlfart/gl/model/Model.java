@@ -38,6 +38,11 @@ public class Model extends AbstractRenderable implements Actor, IsRenderable {
         return name;
     }
 
+    public float getRadius() {
+        return radius;
+    }
+
+
     protected float calculateRadius() {
         float result = 0;
         Vector3f tmp = new Vector3f();
@@ -51,6 +56,7 @@ public class Model extends AbstractRenderable implements Actor, IsRenderable {
 
     @Override
     protected IsRenderable setupMesh() {
+        radius = calculateRadius();
         final ModelMeshBuilder builder = new ModelMeshBuilder();
         builder.setIndices(getIndices());
         builder.setVertexStream(createVertexStream());
@@ -145,5 +151,6 @@ public class Model extends AbstractRenderable implements Actor, IsRenderable {
     List<VertexAttr> getAttrIndices() {
         return attrIdices;
     }
+
 
 }

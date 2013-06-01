@@ -1,6 +1,6 @@
 package net.wohlfart.gl.texture;
 
-import static net.wohlfart.Assert.assertEqualVec;
+import static net.wohlfart.CustomAssert.assertEqualVec;
 import static org.junit.Assert.assertEquals;
 
 import org.junit.After;

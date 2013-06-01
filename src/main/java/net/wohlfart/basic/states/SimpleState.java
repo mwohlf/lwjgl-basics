@@ -6,8 +6,8 @@ import net.wohlfart.gl.elements.hud.widgets.MousePositionLabel;
 import net.wohlfart.gl.elements.hud.widgets.Statistics;
 import net.wohlfart.gl.elements.skybox.Skybox;
 import net.wohlfart.gl.input.InputDispatcher;
-import net.wohlfart.gl.renderer.RenderableBucket;
-import net.wohlfart.gl.view.MousePicker;
+import net.wohlfart.gl.renderer.RenderBucketImpl;
+import net.wohlfart.gl.view.ElementPicker;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,17 +24,17 @@ final class SimpleState extends AbstractGraphicState implements InitializingBean
 
     private Statistics statistics;
     private MousePositionLabel mousePositionLabel;
-    private MousePicker mousePicker;
+    private ElementPicker elementPicker;
 
     private Skybox skybox;
-    private RenderableBucket elemBucket;
+    private RenderBucketImpl elemBucket;
     private Hud hud;
 
     public void setSkybox(Skybox skybox) {
         this.skybox = skybox;
     }
 
-    public void setElemBucket(RenderableBucket elemBucket) {
+    public void setElemBucket(RenderBucketImpl elemBucket) {
         this.elemBucket = elemBucket;
     }
 
@@ -60,7 +60,7 @@ final class SimpleState extends AbstractGraphicState implements InitializingBean
 
         statistics = new Statistics(0, -40);
         mousePositionLabel = new MousePositionLabel(0, -20);
-        mousePicker = new MousePicker(elemBucket, getScreenWidth(), getScreenHeight());
+        elementPicker = new ElementPicker(elemBucket, getScreenWidth(), getScreenHeight());
 
         // elemBucket.addContent(new ControllerFrame().init().getCube());
         // elemBucket.addContent(SceneCreator.createRandomLocatedSpheres());
@@ -68,7 +68,7 @@ final class SimpleState extends AbstractGraphicState implements InitializingBean
         // event bus registration
         final InputDispatcher inputDispatcher = getInputDispatcher();
         inputDispatcher.register(mousePositionLabel);
-        inputDispatcher.register(mousePicker);
+        inputDispatcher.register(elementPicker);
 
         hud.add(statistics);
         hud.add(mousePositionLabel);

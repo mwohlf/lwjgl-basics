@@ -7,14 +7,14 @@ import org.lwjgl.util.vector.Vector3f;
 
 /**
  * <p>
- * Assert class.
+ * CustomAssert class.
  * </p>
  * 
  * 
  * 
  * 
  */
-public final class Assert {
+public final class CustomAssert {
     private static final float MAX_DIFF = 0.00001f;
 
     /**

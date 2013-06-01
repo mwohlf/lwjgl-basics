@@ -1,7 +1,9 @@
 package net.wohlfart.gl.renderer;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import net.wohlfart.gl.model.Model;
@@ -9,6 +11,7 @@ import net.wohlfart.gl.shader.GraphicContextManager;
 import net.wohlfart.gl.shader.GraphicContextManager.IGraphicContext;
 import net.wohlfart.gl.shader.ShaderUniformHandle;
 import net.wohlfart.gl.view.Camera;
+import net.wohlfart.gl.view.PickingRay;
 import net.wohlfart.tools.SimpleMath;
 
 import org.lwjgl.opengl.GL11;
@@ -40,6 +43,7 @@ public class ModelBucket implements RenderBucket {
         this.camera = camera;
     }
 
+    @Override
     public void setup() {
         graphicContext.setup();
     }
@@ -120,6 +124,22 @@ public class ModelBucket implements RenderBucket {
 
     public void dispose() {
         // TODO maybe destroy ?
+    }
+
+    public List<Model> pick(PickingRay ray) {
+        List<Model> list = new ArrayList<Model>();
+
+        for (final Model model : models) {
+            Vector3f pos = model.getPosition();
+            float d = SimpleMath.distance(ray.getStart(), ray.getEnd(), pos);
+            float radius = model.getRadius();
+            System.out.println("d: " + d + " radius: " + radius);
+
+            if (d < radius) {
+                list.add(model);
+            }
+        }
+        return list;
     }
 
 }

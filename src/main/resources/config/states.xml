@@ -60,12 +60,12 @@
     </bean>
 
 
-    <bean id="emptyBucket" class="net.wohlfart.gl.renderer.RenderableBucket">
+    <bean id="emptyBucket" class="net.wohlfart.gl.renderer.RenderBucketImpl">
         <property name="camera" ref="camera" />
         <property name="graphicContext" ref="wireframeShader" />
     </bean>
 
-    <bean id="elemBucket" class="net.wohlfart.gl.renderer.RenderableBucket">
+    <bean id="elemBucket" class="net.wohlfart.gl.renderer.RenderBucketImpl">
         <property name="camera" ref="camera" />
         <property name="graphicContext" ref="wireframeShader" />
         <property name="content" ref="elemContent" />

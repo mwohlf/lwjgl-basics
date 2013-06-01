@@ -18,7 +18,7 @@ import org.lwjgl.util.vector.Vector3f;
  * <p>
  * A set of Renderables that use the same GraphicContext.
  */
-public class RenderableBucket implements RenderBucket {
+public class RenderBucketImpl implements RenderBucket {
 
     protected final Set<IsRenderable> content = new HashSet<>(10100);
     private IGraphicContext graphicContext;

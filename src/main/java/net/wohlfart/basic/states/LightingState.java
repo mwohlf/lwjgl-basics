@@ -10,8 +10,8 @@ import net.wohlfart.gl.elements.skybox.Skybox;
 import net.wohlfart.gl.renderer.ModelBucket;
 import net.wohlfart.gl.renderer.NullRenderBucket;
 import net.wohlfart.gl.renderer.RenderBucket;
-import net.wohlfart.gl.renderer.RenderableBucket;
-import net.wohlfart.gl.view.MousePicker;
+import net.wohlfart.gl.renderer.RenderBucketImpl;
+import net.wohlfart.gl.view.ElementPicker;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -28,13 +28,13 @@ final class LightingState extends AbstractGraphicState implements InitializingBe
     private static final Logger LOGGER = LoggerFactory.getLogger(LightingState.class);
 
     private Skybox skybox = NullSkybox.INSTANCE;
-    private RenderBucket modelBucket = NullRenderBucket.INSTANCE;
+    private ModelBucket modelBucket;
     private RenderBucket elemBucket = NullRenderBucket.INSTANCE;
     private Hud hud = NullHud.INSTANCE;
 
     private Statistics statistics;
     private MousePositionLabel mousePositionLabel;
-    private MousePicker mousePicker;
+    private ElementPicker elementPicker;
 
     public void setSkybox(Skybox skybox) {
         this.skybox = skybox;
@@ -44,7 +44,7 @@ final class LightingState extends AbstractGraphicState implements InitializingBe
         this.modelBucket = modelBucket;
     }
 
-    public void setElemBucket(RenderableBucket elemBucket) {
+    public void setElemBucket(RenderBucketImpl elemBucket) {
         this.elemBucket = elemBucket;
     }
 
@@ -72,13 +72,15 @@ final class LightingState extends AbstractGraphicState implements InitializingBe
 
         statistics = new Statistics(0, -40);
         mousePositionLabel = new MousePositionLabel(0, -20);
-        mousePicker = new MousePicker(elemBucket, getScreenWidth(), getScreenHeight());
+        elementPicker = new ElementPicker(elemBucket, getScreenWidth(), getScreenHeight());
+        elementPicker.setRenderBucket(elemBucket);
+        elementPicker.setModelBucket(modelBucket);
 
         hud.add(statistics);
         hud.add(mousePositionLabel);
         hud.add(new Label(0, 0, "hello world at (0,0)"));
 
-        getInputDispatcher().register(mousePicker);
+        getInputDispatcher().register(elementPicker);
 
         /*
          * Model icosphere = SceneCreator.loadModelFromFile("/models/icosphere/icosphere.obj"); icosphere.setPosition(new Vector3f(0,0,-5));

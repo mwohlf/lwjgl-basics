@@ -1,7 +1,8 @@
 package net.wohlfart.tools;
 
-import net.wohlfart.Assert;
+import net.wohlfart.CustomAssert;
 
+import org.junit.Assert;
 import org.junit.Test;
 import org.lwjgl.util.vector.Quaternion;
 import org.lwjgl.util.vector.Vector3f;
@@ -25,7 +26,7 @@ public class SimpleMathTest {
 
         final Vector3f vec = new Vector3f(0, 0, 1);
         SimpleMath.mul(quat, vec, vec);
-        Assert.assertEqualVec(new Vector3f(0, 1, 0), vec);
+        CustomAssert.assertEqualVec(new Vector3f(0, 1, 0), vec);
     }
 
     /**
@@ -40,7 +41,7 @@ public class SimpleMathTest {
 
         final Vector3f vec = new Vector3f(1, 1, 0);
         SimpleMath.mul(quat, vec, vec);
-        Assert.assertEqualVec(new Vector3f(1.41421f, 0, 0), vec);
+        CustomAssert.assertEqualVec(new Vector3f(1.41421f, 0, 0), vec);
     }
 
     /**
@@ -55,7 +56,7 @@ public class SimpleMathTest {
 
         final Vector3f vec = new Vector3f(1, 1, 0);
         SimpleMath.mul(quat, vec, vec);
-        Assert.assertEqualVec(new Vector3f(1, 1, 0), vec);
+        CustomAssert.assertEqualVec(new Vector3f(1, 1, 0), vec);
     }
 
     /**
@@ -70,7 +71,7 @@ public class SimpleMathTest {
 
         final Vector3f vec = new Vector3f(3, 0, 0);
         SimpleMath.mul(quat, vec, vec);
-        Assert.assertEqualVec(new Vector3f(-3, 0, 0), vec);
+        CustomAssert.assertEqualVec(new Vector3f(-3, 0, 0), vec);
     }
 
     /**
@@ -85,7 +86,7 @@ public class SimpleMathTest {
 
         final Vector3f vec = new Vector3f(3, 0, 0);
         SimpleMath.mul(quat, vec, vec);
-        Assert.assertEqualVec(new Vector3f(-3, 0, 0), vec);
+        CustomAssert.assertEqualVec(new Vector3f(-3, 0, 0), vec);
     }
 
     /**
@@ -98,7 +99,56 @@ public class SimpleMathTest {
         // for the sake of coverage
         final Vector3f result = new Vector3f();
         SimpleMath.add(new Vector3f(0, 2, 1), new Vector3f(3, 0, 0), result);
-        Assert.assertEqualVec(new Vector3f(3, 2, 1), result);
+        CustomAssert.assertEqualVec(new Vector3f(3, 2, 1), result);
     }
+
+
+
+    /**
+     * <p>
+     * testAddVector.
+     * </p>
+     */
+    @Test
+    public void testDistance() {
+        Vector3f start, end, point;
+
+        start = new Vector3f(-4,1,0);
+        end = new Vector3f(+4,1,0);
+        point = new Vector3f(0,0,0);
+        Assert.assertEquals( SimpleMath.distance(start, end, point), 1, 0.00001d);
+
+        start = new Vector3f(-14,1,0);
+        end = new Vector3f(+4,1,0);
+        point = new Vector3f(0,0,0);
+        Assert.assertEquals( SimpleMath.distance(start, end, point), 1, 0.00001d);
+
+        start = new Vector3f(-4,1,0);
+        end = new Vector3f(+14,1,0);
+        point = new Vector3f(0,0,0);
+        Assert.assertEquals( SimpleMath.distance(start, end, point), 1, 0.00001d);
+
+        start = new Vector3f(-14,2,0);
+        end = new Vector3f(+14,2,0);
+        point = new Vector3f(0,0,0);
+        Assert.assertEquals( SimpleMath.distance(start, end, point), 2, 0.00001d);
+
+        start = new Vector3f(-14,2,0);
+        end = new Vector3f(+14,2,0);
+        point = new Vector3f(0,-2,0);
+        Assert.assertEquals( SimpleMath.distance(start, end, point), 4, 0.00001d);
+
+        start = new Vector3f(-14,2,3);
+        end = new Vector3f(+14,2,3);
+        point = new Vector3f(0,-2,3);
+        Assert.assertEquals( SimpleMath.distance(start, end, point), 4, 0.00001d);
+
+        start = new Vector3f(-14,-4,3);
+        end = new Vector3f(+14,-4,3);
+        point = new Vector3f(0,-2,3);
+        Assert.assertEquals( SimpleMath.distance(start, end, point), 2, 0.00001d);
+
+    }
+
 
 }
