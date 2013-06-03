@@ -1,4 +1,4 @@
-package net.wohlfart.gl.model;
+package net.wohlfart.gl.spatial;
 
 import net.wohlfart.gl.renderer.IsRenderable;
 import net.wohlfart.gl.shader.ShaderAttributeHandle;

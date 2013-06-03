@@ -11,7 +11,7 @@ import net.wohlfart.gl.antlr4.WavefrontParser.ObjectNameContext;
 import net.wohlfart.gl.antlr4.WavefrontParser.PositionContext;
 import net.wohlfart.gl.antlr4.WavefrontParser.TextureCoordContext;
 import net.wohlfart.gl.antlr4.WavefrontParser.VertIndicesContext;
-import net.wohlfart.gl.model.Model;
+import net.wohlfart.gl.spatial.Model;
 
 import org.antlr.v4.runtime.ANTLRInputStream;
 import org.antlr.v4.runtime.CommonTokenStream;

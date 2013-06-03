@@ -4,9 +4,9 @@ import java.util.List;
 
 import net.wohlfart.gl.elements.debug.Arrow;
 import net.wohlfart.gl.input.PointEvent;
-import net.wohlfart.gl.model.Model;
 import net.wohlfart.gl.renderer.ModelBucket;
 import net.wohlfart.gl.renderer.RenderBucket;
+import net.wohlfart.gl.spatial.Model;
 
 import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector3f;

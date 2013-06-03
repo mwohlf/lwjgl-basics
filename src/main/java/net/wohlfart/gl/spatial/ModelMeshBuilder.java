@@ -1,4 +1,4 @@
-package net.wohlfart.gl.model;
+package net.wohlfart.gl.spatial;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;

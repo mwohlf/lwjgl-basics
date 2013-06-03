@@ -17,9 +17,9 @@ import net.wohlfart.gl.elements.debug.Circle;
 import net.wohlfart.gl.elements.debug.Cube;
 import net.wohlfart.gl.elements.debug.Icosphere;
 import net.wohlfart.gl.elements.debug.Tetrahedron;
-import net.wohlfart.gl.model.Model;
 import net.wohlfart.gl.renderer.IsRenderable;
 import net.wohlfart.gl.shader.GraphicContextManager;
+import net.wohlfart.gl.spatial.Model;
 import net.wohlfart.tools.SimpleMath;
 
 import org.lwjgl.util.ReadableColor;

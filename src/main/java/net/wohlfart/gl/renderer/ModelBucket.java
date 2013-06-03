@@ -8,10 +8,10 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import net.wohlfart.gl.model.Model;
 import net.wohlfart.gl.shader.GraphicContextManager;
 import net.wohlfart.gl.shader.GraphicContextManager.IGraphicContext;
 import net.wohlfart.gl.shader.ShaderUniformHandle;
+import net.wohlfart.gl.spatial.Model;
 import net.wohlfart.gl.view.Camera;
 import net.wohlfart.gl.view.PickingRay;
 import net.wohlfart.tools.SimpleMath;

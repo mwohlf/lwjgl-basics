@@ -1,4 +1,4 @@
-package net.wohlfart.gl.model;
+package net.wohlfart.gl.spatial;
 
 import static org.junit.Assert.assertEquals;
 
@@ -7,6 +7,7 @@ import java.io.UnsupportedEncodingException;
 
 import net.wohlfart.basic.GenericGameException;
 import net.wohlfart.gl.antlr4.ModelLoader;
+import net.wohlfart.gl.spatial.Model;
 
 import org.junit.Test;
 
