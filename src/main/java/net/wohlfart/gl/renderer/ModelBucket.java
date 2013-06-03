@@ -12,6 +12,8 @@ import net.wohlfart.gl.shader.GraphicContextManager;
 import net.wohlfart.gl.shader.GraphicContextManager.IGraphicContext;
 import net.wohlfart.gl.shader.ShaderUniformHandle;
 import net.wohlfart.gl.spatial.Model;
+import net.wohlfart.gl.spatial.ParticleEmitter;
+import net.wohlfart.gl.spatial.Spatial;
 import net.wohlfart.gl.view.Camera;
 import net.wohlfart.gl.view.PickingRay;
 import net.wohlfart.tools.SimpleMath;
@@ -27,6 +29,7 @@ import org.lwjgl.util.vector.Vector3f;
 public class ModelBucket implements RenderBucket {
 
     protected Set<Model> models = new HashSet<>(10100);
+    protected Set<ParticleEmitter> emitter = new HashSet<>(10100);
     protected Set<IsRenderable> renderables = new HashSet<>(10100);
     private IGraphicContext graphicContext;
     private Camera camera;
@@ -66,6 +69,10 @@ public class ModelBucket implements RenderBucket {
         models.add(renderable);
     }
 
+    public void addContent(ParticleEmitter renderable) {
+        emitter.add(renderable);
+    }
+
     @Override
     public void addContent(IsRenderable renderable) {
         renderables.add(renderable);
@@ -91,11 +98,14 @@ public class ModelBucket implements RenderBucket {
         GL11.glClear(GL11.GL_DEPTH_BUFFER_BIT);
         GL11.glDisable(GL11.GL_BLEND);
 
-        for (final Model model : models) {
+        for (final Spatial model : models) {
             model.render();
         }
         for (final IsRenderable renderable : renderables) {
             renderable.render();
+        }
+        for (final ParticleEmitter e : emitter) {
+            e.render();
         }
     }
 
@@ -103,6 +113,9 @@ public class ModelBucket implements RenderBucket {
     public void update(float timeInSec) {
         for (final Model model : models) {
             model.update(timeInSec);
+        }
+        for (final ParticleEmitter e : emitter) {
+            e.update(timeInSec);
         }
     }
 
@@ -129,7 +142,7 @@ public class ModelBucket implements RenderBucket {
     }
 
     public List<Model> pick(final PickingRay ray) {
-        List<Model> list = new ArrayList<Model>();
+        List<Model> list = new ArrayList<>();
 
         for (final Model model : models) {
             Vector3f pos = model.getPosition();
@@ -140,9 +153,9 @@ public class ModelBucket implements RenderBucket {
                 list.add(model);
             }
 
-            Collections.sort(list, new Comparator<Model>() {
+            Collections.sort(list, new Comparator<Spatial>() {
                 @Override
-                public int compare(Model o1, Model o2) {
+                public int compare(Spatial o1, Spatial o2) {
                     float f1 = SimpleMath.distance(ray.getStart(), o1.getPosition());
                     float f2 = SimpleMath.distance(ray.getStart(), o2.getPosition());
                     return Float.compare(f1, f2);

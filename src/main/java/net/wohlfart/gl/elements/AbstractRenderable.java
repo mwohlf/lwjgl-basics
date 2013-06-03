@@ -1,13 +1,10 @@
 package net.wohlfart.gl.elements;
 
 import net.wohlfart.gl.action.Action;
-import net.wohlfart.gl.action.Action.Actor;
 import net.wohlfart.gl.renderer.IsRenderable;
-import net.wohlfart.gl.renderer.IsUpdateable;
 import net.wohlfart.gl.shader.ShaderUniformHandle;
-import net.wohlfart.gl.view.CanMove;
+import net.wohlfart.gl.spatial.Spatial;
 import net.wohlfart.gl.view.CanMoveImpl;
-import net.wohlfart.gl.view.CanRotate;
 import net.wohlfart.gl.view.CanRotateImpl;
 import net.wohlfart.tools.SimpleMath;
 
@@ -23,7 +20,7 @@ import org.lwjgl.util.vector.Vector3f;
  * Abstract AbstractRenderable class.
  * </p>
  */
-public abstract class AbstractRenderable implements IsRenderable, IsUpdateable, CanRotate, CanMove, Actor {
+public abstract class AbstractRenderable implements Spatial {
 
     private final CanMoveImpl currentTranslation = new CanMoveImpl();
     private final CanRotateImpl currentRotation = new CanRotateImpl();
@@ -47,7 +44,7 @@ public abstract class AbstractRenderable implements IsRenderable, IsUpdateable, 
      * <p>
      * This is the core method that needs to be implemented by subclasses.
      * </p>
-     * 
+     *
      * @return a {@link net.wohlfart.gl.shader.mesh.IRenderable} object.
      */
     protected abstract IsRenderable setupMesh();
@@ -66,7 +63,7 @@ public abstract class AbstractRenderable implements IsRenderable, IsUpdateable, 
      * For setting up an initial translation, note this method is not meant for moving this object around, it is rather used for setting up an initial
      * displacement of the object away from the origin.
      * </p>
-     * 
+     *
      * @param translation
      *            a {@link org.lwjgl.util.vector.Vector3f} object.
      * @return a {@link net.wohlfart.gl.elements.AbstractRenderable} object.
@@ -81,7 +78,7 @@ public abstract class AbstractRenderable implements IsRenderable, IsUpdateable, 
      * <p>
      * rotate.
      * </p>
-     * 
+     *
      * @param rotation
      *            a {@link org.lwjgl.util.vector.Quaternion} object.
      * @return a {@link net.wohlfart.gl.elements.AbstractRenderable} object.
@@ -96,7 +93,7 @@ public abstract class AbstractRenderable implements IsRenderable, IsUpdateable, 
      * <p>
      * color.
      * </p>
-     * 
+     *
      * @param color
      *            a {@link org.lwjgl.util.ReadableColor} object.
      * @return a {@link net.wohlfart.gl.elements.debug.AbstractRenderableWireframe} object.
@@ -111,7 +108,7 @@ public abstract class AbstractRenderable implements IsRenderable, IsUpdateable, 
      * <p>
      * Setter for the field <code>translation</code>.
      * </p>
-     * 
+     *
      * @param currentTranslation
      *            a {@link org.lwjgl.util.vector.Vector3f} object.
      */
@@ -125,7 +122,7 @@ public abstract class AbstractRenderable implements IsRenderable, IsUpdateable, 
      * <p>
      * Setter for the field <code>rotation</code>.
      * </p>
-     * 
+     *
      * @param currentRotation
      *            a {@link org.lwjgl.util.vector.Quaternion} object.
      */
@@ -151,6 +148,10 @@ public abstract class AbstractRenderable implements IsRenderable, IsUpdateable, 
             reCreateRenderable = false;
         }
         delegate.render();
+    }
+
+    protected void reCreateRenderable(boolean reCreateRenderable) {
+        this.reCreateRenderable = reCreateRenderable;
     }
 
     /** {@inheritDoc} */

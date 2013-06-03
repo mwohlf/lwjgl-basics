@@ -47,6 +47,8 @@ public class ModelMesh implements IsRenderable {
 
         GL15.glBindBuffer(GL15.GL_ELEMENT_ARRAY_BUFFER, 0);
         GL20.glDisableVertexAttribArray(ShaderAttributeHandle.POSITION.getLocation());
+        GL11.glBindTexture(GL11.GL_TEXTURE_2D, 0);
+
         GL30.glBindVertexArray(0);
     }
 

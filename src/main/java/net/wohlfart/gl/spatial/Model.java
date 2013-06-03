@@ -3,7 +3,6 @@ package net.wohlfart.gl.spatial;
 import java.util.ArrayList;
 import java.util.List;
 
-import net.wohlfart.gl.action.Action.Actor;
 import net.wohlfart.gl.elements.AbstractRenderable;
 import net.wohlfart.gl.renderer.IsRenderable;
 import net.wohlfart.gl.shader.ShaderAttributeHandle;
@@ -12,7 +11,7 @@ import org.lwjgl.opengl.GL11;
 import org.lwjgl.util.vector.Vector2f;
 import org.lwjgl.util.vector.Vector3f;
 
-public class Model extends AbstractRenderable implements Actor, IsRenderable {
+public class Model extends AbstractRenderable {
     // unique
     private final String name;
 
@@ -57,6 +56,7 @@ public class Model extends AbstractRenderable implements Actor, IsRenderable {
     @Override
     protected IsRenderable setupMesh() {
         radius = calculateRadius();
+
         final ModelMeshBuilder builder = new ModelMeshBuilder();
         builder.setIndices(getIndices());
         builder.setVertexStream(createVertexStream());

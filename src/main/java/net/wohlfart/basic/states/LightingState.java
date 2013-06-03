@@ -11,6 +11,7 @@ import net.wohlfart.gl.renderer.ModelBucket;
 import net.wohlfart.gl.renderer.NullRenderBucket;
 import net.wohlfart.gl.renderer.RenderBucket;
 import net.wohlfart.gl.renderer.RenderBucketImpl;
+import net.wohlfart.gl.spatial.ParticleEmitter;
 import net.wohlfart.gl.view.ElementPicker;
 
 import org.slf4j.Logger;
@@ -82,6 +83,10 @@ final class LightingState extends AbstractGraphicState implements InitializingBe
 
         getInputDispatcher().register(elementPicker);
 
+
+
+        modelBucket.addContent(new ParticleEmitter(500));
+
         /*
          * Model icosphere = SceneCreator.loadModelFromFile("/models/icosphere/icosphere.obj"); icosphere.setPosition(new Vector3f(0,0,-5));
          * icosphere.setAction(OrbitAction.create()); //icosphere.setAction(new MoveAction()); //icosphere.setAction(new MoveAction());
@@ -114,6 +119,7 @@ final class LightingState extends AbstractGraphicState implements InitializingBe
     public void update(float tpf) {
         LOGGER.debug("update called with tpf/fps {}/{}", tpf, 1f / tpf);
         modelBucket.update(tpf);
+        statistics.update(tpf);
     }
 
     @Override

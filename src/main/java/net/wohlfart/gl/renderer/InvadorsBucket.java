@@ -5,6 +5,7 @@ import java.util.List;
 import net.wohlfart.basic.states.SceneCreator;
 import net.wohlfart.gl.action.OrbitAction;
 import net.wohlfart.gl.spatial.Model;
+import net.wohlfart.gl.spatial.Spatial;
 import net.wohlfart.gl.view.PickingRay;
 
 import org.lwjgl.util.vector.Vector3f;
@@ -36,8 +37,8 @@ public class InvadorsBucket extends ModelBucket {
     }
 
 
-    public Model createModel() {
-        Model model = SceneCreator.loadModelFromFile("/models/ships/02.obj");
+    public Spatial createModel() {
+        Spatial model = SceneCreator.loadModelFromFile("/models/ships/02.obj");
         model.setPosition(SceneCreator.getRandomPosition(1000f));
         model.setAction(SceneCreator.getRandomAction());
         return model;
