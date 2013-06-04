@@ -8,17 +8,18 @@ import org.lwjgl.opengl.GL15;
 import org.lwjgl.opengl.GL20;
 import org.lwjgl.opengl.GL30;
 
-public class ParticleMesh implements IsRenderable {
+public class ColorPointsMesh implements IsRenderable {
 
     private final int vaoHandle;
     private final int vboHandle;
-
     private final int indicesCount;
+    private final int primitive;
 
-    ParticleMesh(int vaoHandle, int vboHandle, int indicesCount) {
+    ColorPointsMesh(int vaoHandle, int vboHandle, int indicesCount, int primitive) {
         this.vaoHandle = vaoHandle;
         this.vboHandle = vboHandle;
         this.indicesCount = indicesCount;
+        this.primitive = primitive;
     }
 
     /** {@inheritDoc} */
@@ -29,7 +30,7 @@ public class ParticleMesh implements IsRenderable {
         GL20.glEnableVertexAttribArray(ShaderAttributeHandle.POSITION.getLocation());
         GL20.glEnableVertexAttribArray(ShaderAttributeHandle.COLOR.getLocation());
 
-        GL11.glDrawArrays(GL11.GL_POINTS, 0, indicesCount);
+        GL11.glDrawArrays(primitive, 0, indicesCount);
 
         GL20.glDisableVertexAttribArray(ShaderAttributeHandle.POSITION.getLocation());
         GL20.glDisableVertexAttribArray(ShaderAttributeHandle.COLOR.getLocation());

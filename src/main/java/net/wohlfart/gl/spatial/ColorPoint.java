@@ -8,9 +8,8 @@ import org.lwjgl.util.Color;
 import org.lwjgl.util.ReadableColor;
 import org.lwjgl.util.vector.Vector3f;
 
-public class Particle implements PoolableObject {
+public class ColorPoint implements PoolableObject {
     private static final int MAX = 10000;
-
 
     private float lifetime;
     private final ReadableColor color = Color.BLUE;
@@ -18,16 +17,16 @@ public class Particle implements PoolableObject {
     private Vector3f speed;             // m/s
     private Vector3f acceleration;      // m/s^2
 
-    private static ObjectPool<Particle> pool = new ObjectPool<Particle>(10) {
+    private static ObjectPool<ColorPoint> pool = new ObjectPool<ColorPoint>(10) {
         @Override
-        protected Particle newObject() {
-            return new Particle();
+        protected ColorPoint newObject() {
+            return new ColorPoint();
         }
     };
 
-    public static Particle create(float lifetime,
+    public static ColorPoint create(float lifetime,
             Vector3f position, Vector3f speed, Vector3f acceleration) {
-        final Particle result = pool.borrowObject();
+        final ColorPoint result = pool.borrowObject();
         result.lifetime = lifetime;
         result.position = position;
         result.speed = speed;

@@ -13,8 +13,8 @@ import org.lwjgl.opengl.GL30;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class ParticleMeshBuilder {
-    private static final Logger LOGGER = LoggerFactory.getLogger(ParticleMeshBuilder.class);
+public class ColorPointsMeshBuilder {
+    private static final Logger LOGGER = LoggerFactory.getLogger(ColorPointsMeshBuilder.class);
 
     private float[] stream;
     private int count;
@@ -53,7 +53,8 @@ public class ParticleMeshBuilder {
 
         GL30.glBindVertexArray(0); // @formatter:on
 
-        return new ParticleMesh(vaoHandle, vboHandle, count);
+        LOGGER.debug("bulding a new mesh with {} elements", count);
+        return new ColorPointsMesh(vaoHandle, vboHandle, count, GL11.GL_POINTS);
     }
 
 
