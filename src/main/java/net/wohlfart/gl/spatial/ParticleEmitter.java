@@ -6,24 +6,24 @@ import java.util.Set;
 import net.wohlfart.gl.elements.AbstractRenderable;
 import net.wohlfart.gl.renderer.IsRenderable;
 import net.wohlfart.gl.shader.ShaderAttributeHandle;
-import net.wohlfart.gl.shader.mesh.SimpleMesh;
+import net.wohlfart.gl.shader.mesh.ParticleMesh;
 import net.wohlfart.tools.SimpleMath;
 
 import org.lwjgl.util.vector.Vector3f;
 
-public class ColorPointEmitter extends AbstractRenderable {
+public class ParticleEmitter extends AbstractRenderable {
 
-    Set<ColorPoint> colorPoints = new HashSet<ColorPoint>();
+    Set<Particle> particles = new HashSet<Particle>();
     int newPerSecond; // new particles per second;
     float leftover; // fract from last update
 
-    public ColorPointEmitter(int newPerSecond) {
+    public ParticleEmitter(int newPerSecond) {
         this.newPerSecond = newPerSecond;
     }
 
     protected void add(int count) {
         for (int i = 0; i < count; i++) {
-            colorPoints.add(ColorPoint.create(50, // lifetime
+            particles.add(Particle.create(50, // lifetime
                     new Vector3f(0, 0, -4), // position
                     new Vector3f(SimpleMath.random(-0.5f, 0.5f), 1, SimpleMath.random(-0.5f, 0.5f)), // speed
                     new Vector3f(0, 0, 0) // acceleration
@@ -33,9 +33,7 @@ public class ColorPointEmitter extends AbstractRenderable {
 
     @Override
     protected IsRenderable setupMesh() {
-        final SimpleMesh.Builder builder = new SimpleMesh.Builder();
-        builder.setVertexStream(createVertexStream());
-        builder.setParticleCount(colorPoints.size());
+        final ParticleMesh.Builder builder = new ParticleMesh.Builder();
         return builder.build();
     }
 
@@ -46,13 +44,13 @@ public class ColorPointEmitter extends AbstractRenderable {
         leftover = leftover - newCount;
         add(newCount);
 
-        for (ColorPoint colorPoint : colorPoints) {
-            colorPoint.update(timeInSec);
+        for (Particle particle : particles) {
+            particle.update(timeInSec);
         }
         reCreateRenderable(true);
         super.update(timeInSec);
 
-        System.out.println("particles: " + colorPoints.size());
+        System.out.println("particles: " + particles.size());
     }
 
     /**
@@ -66,18 +64,12 @@ public class ColorPointEmitter extends AbstractRenderable {
     float[] createVertexStream() {
         // TODO: check if the size of the attributes fits in the array
         int index = 0;// @formatter:off
-        final float[] result = new float[colorPoints.size() * (
+        final float[] result = new float[particles.size() * (
                   ShaderAttributeHandle.POSITION.getFloatCount()
                 + ShaderAttributeHandle.COLOR.getFloatCount()) ];
-        for (final ColorPoint colorPoint : colorPoints) {
-            result[index++] = colorPoint.getPosition().x;
-            result[index++] = colorPoint.getPosition().y;
-            result[index++] = colorPoint.getPosition().z;
-            result[index++] = 1;
-            result[index++] = colorPoint.getColor().getRed();
-            result[index++] = colorPoint.getColor().getGreen();
-            result[index++] = colorPoint.getColor().getBlue();
-            result[index++] = colorPoint.getColor().getAlpha();
+        for (final Particle particle : particles) {
+            // todo create positions and texture coords for a single particle
+
         }  // @formatter:on
         return result;
     }

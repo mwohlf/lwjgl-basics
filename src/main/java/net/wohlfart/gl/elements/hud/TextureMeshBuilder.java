@@ -5,7 +5,7 @@ import java.nio.FloatBuffer;
 
 import net.wohlfart.gl.renderer.IsRenderable;
 import net.wohlfart.gl.shader.ShaderAttributeHandle;
-import net.wohlfart.gl.shader.mesh.TexturedFragmentMesh;
+import net.wohlfart.gl.shader.mesh.TexturedMesh;
 import net.wohlfart.tools.SimpleMath;
 import net.wohlfart.tools.Vertex;
 
@@ -129,7 +129,7 @@ public class TextureMeshBuilder {
         GL15.glBindBuffer(GL15.GL_ELEMENT_ARRAY_BUFFER, 0);
 
         // @formatter:off
-        return new TexturedFragmentMesh(vaoHandle, vboVerticesHandle, vboIndicesHandle, GL11.GL_TRIANGLES, GL11.GL_UNSIGNED_BYTE,
+        return new TexturedMesh(vaoHandle, vboVerticesHandle, vboIndicesHandle, GL11.GL_TRIANGLES, GL11.GL_UNSIGNED_BYTE,
                 indicesCount, 0, colorAttrib, positionAttrib, textureAttrib, texId);
         // @formatter:on
     }

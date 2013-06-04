@@ -57,7 +57,7 @@ public class Model extends AbstractRenderable {
     protected IsRenderable setupMesh() {
         radius = calculateRadius();
 
-        final ModelMeshBuilder builder = new ModelMeshBuilder();
+        final ModelMesh.Builder builder = new ModelMesh.Builder();
         builder.setIndices(getIndices());
         builder.setVertexStream(createVertexStream());
         builder.setTrianglePrimitive(GL11.GL_TRIANGLES);

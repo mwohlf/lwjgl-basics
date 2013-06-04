@@ -1,11 +1,11 @@
 package net.wohlfart.gl.elements.skybox;
 
 import net.wohlfart.gl.elements.HasNormal;
-import net.wohlfart.gl.shader.mesh.TexturedFragmentMesh;
+import net.wohlfart.gl.shader.mesh.TexturedMesh;
 
 import org.lwjgl.util.vector.Vector3f;
 
-class BoxSideMesh extends TexturedFragmentMesh implements HasNormal {
+class BoxSideMesh extends TexturedMesh implements HasNormal {
 
     private Vector3f normal = new Vector3f();
 

@@ -31,13 +31,13 @@ public interface IsRenderable extends Renderable {
      * </p>
      */
     @Override
-    void render();
+    public void render();
 
     /**
      * <p>
      * Called after this IsRenderable is no longer in use, frees all resources needed by this renderable.
      * </p>
      */
-    void destroy();
+    public void destroy();
 
 }
