@@ -11,7 +11,6 @@ import net.wohlfart.gl.renderer.ModelBucket;
 import net.wohlfart.gl.renderer.NullRenderBucket;
 import net.wohlfart.gl.renderer.RenderBucket;
 import net.wohlfart.gl.renderer.RenderBucketImpl;
-import net.wohlfart.gl.spatial.ColorPointEmitter;
 import net.wohlfart.gl.view.ElementPicker;
 
 import org.slf4j.Logger;
@@ -85,7 +84,7 @@ final class LightingState extends AbstractGraphicState implements InitializingBe
 
 
 
-        modelBucket.addContent(new ColorPointEmitter(500));
+        //modelBucket.addContent(new ColorPointEmitter(500));
 
         /*
          * Model icosphere = SceneCreator.loadModelFromFile("/models/icosphere/icosphere.obj"); icosphere.setPosition(new Vector3f(0,0,-5));

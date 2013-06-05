@@ -8,6 +8,7 @@ import net.wohlfart.gl.elements.hud.widgets.CharAtlas;
 import net.wohlfart.gl.elements.hud.widgets.CharAtlasBuilder;
 import net.wohlfart.gl.renderer.IsRenderable;
 import net.wohlfart.gl.shader.GraphicContextManager;
+import net.wohlfart.gl.shader.mesh.TexturedMesh;
 
 import org.lwjgl.util.vector.Vector3f;
 import org.slf4j.Logger;
@@ -33,12 +34,12 @@ class LayerImpl implements Layer {
      * <p>
      * setup.
      * </p>
-     * 
+     *
      * @return a {@link net.wohlfart.gl.shader.mesh.IRenderable} object.
      */
     protected IsRenderable setup() {
         characterAtlas = new CharAtlasBuilder().build();
-        final TextureMeshBuilder builder = new TextureMeshBuilder();
+        final TexturedMesh.Builder builder = new TexturedMesh.Builder();
         builder.setTextureId(characterAtlas.getTextureId());
         final float z = cxtManager.getNearPlane() - 1;
         builder.setTranslation(new Vector3f(0, -0.5f, z));
@@ -68,7 +69,7 @@ class LayerImpl implements Layer {
      * <p>
      * add.
      * </p>
-     * 
+     *
      * @param label
      *            a {@link net.wohlfart.gl.elements.hud.widgets.AbstractTextComponent} object.
      */

@@ -10,6 +10,7 @@ import net.wohlfart.gl.renderer.IsRenderable;
 import net.wohlfart.gl.shader.ShaderAttributeHandle;
 import net.wohlfart.tools.PNGDecoder;
 import net.wohlfart.tools.PNGDecoder.Format;
+import net.wohlfart.tools.SimpleMath;
 import net.wohlfart.tools.Vertex;
 
 import org.lwjgl.BufferUtils;
@@ -34,7 +35,7 @@ import org.slf4j.LoggerFactory;
 public class TexturedMesh implements IsRenderable {
 
     private final int vaoHandle;
-    private final int vboVerticesHandle;
+    private final int vboVerticesHandle;  // TODO: we don't need this it seems!
     private final int vboIndicesHandle;
     private final int indicesCount;
     private final int indexOffset;
@@ -47,39 +48,9 @@ public class TexturedMesh implements IsRenderable {
 
     private final int textureId;
 
-    // package private, created by the builder
-    /**
-     * <p>
-     * Constructor for TexturedFragmentMesh.
-     * </p>
-     *
-     * @param vaoHandle
-     *            a int.
-     * @param vboVerticesHandle
-     *            a int.
-     * @param vboIndicesHandle
-     *            a int.
-     * @param indicesType
-     *            a int.
-     * @param indexElemSize
-     *            a int.
-     * @param indicesCount
-     *            a int.
-     * @param indexOffset
-     *            a int.
-     * @param colorAttrib
-     *            a int.
-     * @param positionAttrib
-     *            a int.
-     * @param textureAttrib
-     *            a int.
-     * @param textureId
-     *            a int.
-     */
-    public TexturedMesh(int vaoHandle, int vboVerticesHandle,
-    // index
+
+    protected TexturedMesh(int vaoHandle, int vboVerticesHandle,
             int vboIndicesHandle, int indicesType, int indexElemSize, int indicesCount, int indexOffset,
-            // attrib pos
             int colorAttrib, int positionAttrib, int textureAttrib, int textureId) {
 
         this.vaoHandle = vaoHandle;
@@ -125,13 +96,13 @@ public class TexturedMesh implements IsRenderable {
     @Override
     public void destroy() {
         // Disable the VBO index from the VAO attributes list
-        GL20.glDisableVertexAttribArray(0);
+        //GL20.glDisableVertexAttribArray(0);
         // Delete the index VBO
-        GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, 0);
-        GL15.glDeleteBuffers(vboVerticesHandle);
+        //GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, 0);
+        //GL15.glDeleteBuffers(vboVerticesHandle);
         // Delete the vertex VBO
-        GL15.glBindBuffer(GL15.GL_ELEMENT_ARRAY_BUFFER, 0);
-        GL15.glDeleteBuffers(vboIndicesHandle);
+        //GL15.glBindBuffer(GL15.GL_ELEMENT_ARRAY_BUFFER, 0);
+        //GL15.glDeleteBuffers(vboIndicesHandle);
         // Delete the VAO
         GL30.glBindVertexArray(0);
         GL30.glDeleteVertexArrays(vaoHandle);
@@ -143,10 +114,10 @@ public class TexturedMesh implements IsRenderable {
         protected static final Logger LOGGER = LoggerFactory.getLogger(Builder.class);
 
         private String textureFilename;
+        private Integer texId;
 
-        private Quaternion rotation;
-
-        private Vector3f translation;
+        private Quaternion rotation = new Quaternion();
+        private Vector3f translation = new Vector3f();
 
         /**
          * <p>
@@ -157,31 +128,56 @@ public class TexturedMesh implements IsRenderable {
          */
         public IsRenderable build() {
 
-            // load the texture
-            final int textureId = loadPNGTexture(textureFilename, GL13.GL_TEXTURE0);
+            // load the texture if needed
+            if (textureFilename != null) {
+                texId  = loadPNGTexture(textureFilename, GL13.GL_TEXTURE0);
+            }
 
-            // We'll define our quad using 4 vertices of the custom 'Vertex' class
-            final Vertex v0 = new Vertex();
-            v0.setXYZ(-0.5f, 0.5f, 0f);
-            v0.setRGB(1, 0, 0);
-            v0.setST(0, 0);
+            final Vector3f[] vectors = new Vector3f[] { // @formatter:off
+                    new Vector3f(-0.5f, +0.5f, 0),
+                    new Vector3f(-0.5f, -0.5f, 0),
+                    new Vector3f(+0.5f, -0.5f, 0),
+                    new Vector3f(+0.5f, +0.5f, 0) };  // @formatter:on
 
-            final Vertex v1 = new Vertex();
-            v1.setXYZ(-0.5f, -0.5f, 0f);
-            v1.setRGB(0, 1, 0);
-            v1.setST(0, 1);
+            if (rotation != null) {
+                for (final Vector3f vec : vectors) {
+                    SimpleMath.mul(rotation, vec, vec);
+                }
+            }
+            if (translation != null) {
+                for (final Vector3f vec : vectors) {
+                    SimpleMath.add(translation, vec, vec);
+                }
+            }
 
-            final Vertex v2 = new Vertex();
-            v2.setXYZ(0.5f, -0.5f, 0f);
-            v2.setRGB(0, 0, 1);
-            v2.setST(1, 1);
 
-            final Vertex v3 = new Vertex();
-            v3.setXYZ(0.5f, 0.5f, 0f);
-            v3.setRGB(1, 1, 1);
-            v3.setST(1, 0);
+            final Vertex[] vertices = new Vertex[] { new Vertex() {
+                {
+                    setXYZ(vectors[0].x, vectors[0].y, vectors[0].z);
+                    setRGB(1, 0, 0);
+                    setST(0, 0);
+                }
+            }, new Vertex() {
+                {
+                    setXYZ(vectors[1].x, vectors[1].y, vectors[1].z);
+                    setRGB(0, 1, 0);
+                    setST(0, 1);
+                }
+            }, new Vertex() {
+                {
+                    setXYZ(vectors[2].x, vectors[2].y, vectors[2].z);
+                    setRGB(0, 0, 1);
+                    setST(1, 1);
+                }
+            }, new Vertex() {
+                {
+                    setXYZ(vectors[3].x, vectors[3].y, vectors[3].z);
+                    setRGB(1, 1, 1);
+                    setST(1, 0);
+                }
+            } };
 
-            final Vertex[] vertices = new Vertex[] { v0, v1, v2, v3 };
+
             // Put each 'Vertex' in one FloatBuffer the order depends on the shaders positions!
             final FloatBuffer verticesBuffer = BufferUtils.createFloatBuffer(vertices.length * Vertex.elementCount);
             for (int i = 0; i < vertices.length; i++) {
@@ -211,16 +207,12 @@ public class TexturedMesh implements IsRenderable {
             GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, vboVerticesHandle);
             GL15.glBufferData(GL15.GL_ARRAY_BUFFER, verticesBuffer, GL15.GL_STATIC_DRAW);
 
-            final int size = Vertex.colorByteCount + Vertex.positionBytesCount + Vertex.textureByteCount;
-            // Put the positions in attribute list 0
             GL20.glVertexAttribPointer(positionAttrib, Vertex.positionElementCount, GL11.GL_FLOAT, false, Vertex.stride, Vertex.positionByteOffset);
-            // Put the colors in attribute list 1
             GL20.glVertexAttribPointer(colorAttrib, Vertex.colorElementCount, GL11.GL_FLOAT, false, Vertex.stride, Vertex.colorByteOffset);
-            // Put the texture in attribute list 2
             GL20.glVertexAttribPointer(textureAttrib, Vertex.textureElementCount, GL11.GL_FLOAT, false, Vertex.stride, Vertex.textureByteOffset);
+
             // unbind
             GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, 0);
-
             // Deselect (bind to 0) the VAO
             GL30.glBindVertexArray(0);
 
@@ -231,7 +223,7 @@ public class TexturedMesh implements IsRenderable {
             GL15.glBindBuffer(GL15.GL_ELEMENT_ARRAY_BUFFER, 0);
 
             return new TexturedMesh(vaoHandle, vboVerticesHandle, vboIndicesHandle, GL11.GL_TRIANGLES, GL11.GL_UNSIGNED_BYTE, indicesCount, 0, colorAttrib,
-                    positionAttrib, textureAttrib, textureId);
+                    positionAttrib, textureAttrib, texId);
         }
 
         private int loadPNGTexture(String filename, int textureUnit) {
@@ -274,12 +266,6 @@ public class TexturedMesh implements IsRenderable {
             return texId;
         }
 
-        private void applyRotationAndTranslation() {
-            /*
-             * if (rotation != null) { for (Vector3f vec : vertices) { SimpleMath.mul(rotation, vec, vec); } } if (translation != null) { for (Vector3f vec :
-             * vertices) { SimpleMath.add(translation, vec, vec); } }
-             */}
-
         /**
          * <p>
          * Setter for the field <code>textureFilename</code>.
@@ -291,6 +277,11 @@ public class TexturedMesh implements IsRenderable {
         public void setTextureFilename(final String textureFilename) {
             this.textureFilename = textureFilename;
         }
+
+        public void setTextureId(int texId) {
+            this.texId = texId;
+        }
+
 
         /**
          * <p>
