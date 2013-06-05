@@ -5,7 +5,7 @@ import net.wohlfart.gl.renderer.IsRenderable;
 public class ParticleMesh implements IsRenderable {
 
 
-    private ParticleMesh() {
+    protected ParticleMesh() {
 
     }
 

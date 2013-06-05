@@ -20,7 +20,7 @@ public class SimpleMesh implements IsRenderable {
     private final int indicesCount;
     private final int primitive;
 
-    private SimpleMesh(int vaoHandle, int vboHandle, int indicesCount, int primitive) {
+    protected SimpleMesh(int vaoHandle, int vboHandle, int indicesCount, int primitive) {
         this.vaoHandle = vaoHandle;
         this.vboHandle = vboHandle;
         this.indicesCount = indicesCount;

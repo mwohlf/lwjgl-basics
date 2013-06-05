@@ -49,6 +49,7 @@ public class TexturedMesh implements IsRenderable {
     private final int textureId;
 
 
+    // FIXME: check if we can use the builder as single parameter here
     protected TexturedMesh(int vaoHandle, int vboVerticesHandle,
             int vboIndicesHandle, int indicesType, int indexElemSize, int indicesCount, int indexOffset,
             int colorAttrib, int positionAttrib, int textureAttrib, int textureId) {

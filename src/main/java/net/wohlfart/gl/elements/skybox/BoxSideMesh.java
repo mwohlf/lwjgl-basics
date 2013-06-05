@@ -5,6 +5,8 @@ import net.wohlfart.gl.shader.mesh.TexturedMesh;
 
 import org.lwjgl.util.vector.Vector3f;
 
+
+// todo: unify this with the texture mesh
 class BoxSideMesh extends TexturedMesh implements HasNormal {
 
     private Vector3f normal = new Vector3f();

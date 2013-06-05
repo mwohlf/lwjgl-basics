@@ -23,9 +23,9 @@ import org.lwjgl.util.vector.Vector3f;
  * <p>
  * VertexArrayObject class.
  * </p>
- * 
- * 
- * 
+ *
+ *
+ *
  */
 public class VertexArrayObject implements IsRenderable {
 
@@ -36,7 +36,7 @@ public class VertexArrayObject implements IsRenderable {
     private final int vboIndicesHandle;
     private final int vboColorHandle;
 
-    private VertexArrayObject(final Builder builder) {
+    protected VertexArrayObject(final Builder builder) {
 
         if (builder.rotation != null) {
             for (final Vector3f vec : builder.vertices) {
