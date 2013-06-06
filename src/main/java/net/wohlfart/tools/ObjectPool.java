@@ -30,7 +30,6 @@ public abstract class ObjectPool<T extends PoolableObject> {
     }
 
     public void returnObject(T object) {
-        object.reset();
         freeObjects.add(object);
     }
 

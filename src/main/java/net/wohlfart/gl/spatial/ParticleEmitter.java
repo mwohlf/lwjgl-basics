@@ -6,6 +6,7 @@ import java.io.InputStream;
 import java.nio.ByteBuffer;
 import java.nio.FloatBuffer;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Set;
 
 import net.wohlfart.gl.elements.AbstractRenderable;
@@ -33,15 +34,15 @@ public class ParticleEmitter extends AbstractRenderable implements Emitter {
     Integer commonTextureId;
 
     public ParticleEmitter() {
-        this.newPerSecond = 2;
+        this.newPerSecond = 50;
     }
 
     protected void add(int count) {
         for (int i = 0; i < count; i++) {
-            particles.add(Particle.create(50, // lifetime
+            particles.add(Particle.create(100, // lifetime
                     new Vector3f(0, 0, -40), // position
-                    new Vector3f(SimpleMath.random(-0.5f, 0.5f), 1, SimpleMath.random(-0.5f, 0.5f)), // speed
-                    new Vector3f(0, 0, 0) // acceleration
+                    new Vector3f(SimpleMath.random(-0.5f, 0.5f), 3f, SimpleMath.random(-0.5f, 0.5f)), // speed
+                    new Vector3f(0, -0.3f, 0) // acceleration
                     ));
         }
     }
@@ -69,8 +70,13 @@ public class ParticleEmitter extends AbstractRenderable implements Emitter {
         leftover = leftover - newCount;
         add(newCount);
 
-
-        for (Particle particle : particles) {
+        Iterator<Particle> iterator = particles.iterator();
+        while (iterator.hasNext()) {
+            Particle particle = iterator.next();
+            if (!particle.isAlive()) {
+                iterator.remove();
+                particle.reset();
+            }
             particle.update(timeInSec);
         }
         reCreateRenderable(true);
