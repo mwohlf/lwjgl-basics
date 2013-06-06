@@ -199,23 +199,18 @@ public class TexturedMesh implements IsRenderable {
             final int vaoHandle = GL30.glGenVertexArrays();
             GL30.glBindVertexArray(vaoHandle);
 
-            final int positionAttrib = ShaderAttributeHandle.POSITION.getLocation();
-            final int colorAttrib = ShaderAttributeHandle.COLOR.getLocation();
-            final int textureAttrib = ShaderAttributeHandle.TEXTURE_COORD.getLocation();
-
             // Create a new Vertex Buffer Object in memory and select it (bind)
             final int vboVerticesHandle = GL15.glGenBuffers();
             GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, vboVerticesHandle);
             GL15.glBufferData(GL15.GL_ARRAY_BUFFER, verticesBuffer, GL15.GL_STATIC_DRAW);
 
-            GL20.glVertexAttribPointer(positionAttrib, Vertex.positionElementCount, GL11.GL_FLOAT, false, Vertex.stride, Vertex.positionByteOffset);
-            GL20.glVertexAttribPointer(colorAttrib, Vertex.colorElementCount, GL11.GL_FLOAT, false, Vertex.stride, Vertex.colorByteOffset);
-            GL20.glVertexAttribPointer(textureAttrib, Vertex.textureElementCount, GL11.GL_FLOAT, false, Vertex.stride, Vertex.textureByteOffset);
+            GL20.glVertexAttribPointer(ShaderAttributeHandle.POSITION.getLocation(),
+                    Vertex.positionElementCount, GL11.GL_FLOAT, false, Vertex.stride, Vertex.positionByteOffset);
+            GL20.glVertexAttribPointer(ShaderAttributeHandle.COLOR.getLocation(),
+                    Vertex.colorElementCount, GL11.GL_FLOAT, false, Vertex.stride, Vertex.colorByteOffset);
+            GL20.glVertexAttribPointer(ShaderAttributeHandle.TEXTURE_COORD.getLocation(),
+                    Vertex.textureElementCount, GL11.GL_FLOAT, false, Vertex.stride, Vertex.textureByteOffset);
 
-            // unbind
-            GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, 0);
-            // Deselect (bind to 0) the VAO
-            GL30.glBindVertexArray(0);
 
             // Create a new VBO for the indices and select it (bind) - INDICES
             final int vboIndicesHandle = GL15.glGenBuffers();
@@ -223,8 +218,15 @@ public class TexturedMesh implements IsRenderable {
             GL15.glBufferData(GL15.GL_ELEMENT_ARRAY_BUFFER, indicesBuffer, GL15.GL_STATIC_DRAW);
             GL15.glBindBuffer(GL15.GL_ELEMENT_ARRAY_BUFFER, 0);
 
-            return new TexturedMesh(vaoHandle, vboVerticesHandle, vboIndicesHandle, GL11.GL_TRIANGLES, GL11.GL_UNSIGNED_BYTE, indicesCount, 0, colorAttrib,
-                    positionAttrib, textureAttrib, texId);
+            // unbind
+            GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, 0);
+            // Deselect (bind to 0) the VAO
+            GL30.glBindVertexArray(0);
+
+            return new TexturedMesh(vaoHandle, vboVerticesHandle, vboIndicesHandle, GL11.GL_TRIANGLES, GL11.GL_UNSIGNED_BYTE, indicesCount, 0,
+                    ShaderAttributeHandle.POSITION.getLocation(),
+                    ShaderAttributeHandle.POSITION.getLocation(),
+                    ShaderAttributeHandle.TEXTURE_COORD.getLocation(), texId);
         }
 
         private int loadPNGTexture(String filename, int textureUnit) {

@@ -19,8 +19,10 @@
 
     <bean id="GameState.LIGHTING" class="net.wohlfart.basic.states.LightingState" >
         <property name="camera" ref="camera" />
-        <property name="skybox" ref="defaultSkybox" />
+<!--         <property name="skybox" ref="defaultSkybox" /> -->
         <property name="modelBucket" ref="modelBucket" />
+<!--         <property name="modelBucket" ref="emptyModelBucket" /> -->
+<!--         <property name="elemBucket" ref="emptyBucket" /> -->
         <property name="elemBucket" ref="elemBucket" />
         <property name="hud" ref="defaultHud" />
 

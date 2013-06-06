@@ -11,7 +11,7 @@ import net.wohlfart.tools.SimpleMath;
 
 import org.lwjgl.util.vector.Vector3f;
 
-public class ColorPointEmitter extends AbstractRenderable {
+public class ColorPointEmitter extends AbstractRenderable implements Emitter {
 
     Set<ColorPoint> colorPoints = new HashSet<ColorPoint>();
     int newPerSecond; // new particles per second;
@@ -51,8 +51,6 @@ public class ColorPointEmitter extends AbstractRenderable {
         }
         reCreateRenderable(true);
         super.update(timeInSec);
-
-        System.out.println("particles: " + colorPoints.size());
     }
 
     /**

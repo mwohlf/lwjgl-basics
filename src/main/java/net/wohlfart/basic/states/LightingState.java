@@ -11,6 +11,7 @@ import net.wohlfart.gl.renderer.ModelBucket;
 import net.wohlfart.gl.renderer.NullRenderBucket;
 import net.wohlfart.gl.renderer.RenderBucket;
 import net.wohlfart.gl.renderer.RenderBucketImpl;
+import net.wohlfart.gl.spatial.ParticleEmitter;
 import net.wohlfart.gl.view.ElementPicker;
 
 import org.slf4j.Logger;
@@ -19,9 +20,7 @@ import org.springframework.beans.factory.InitializingBean;
 import org.springframework.util.Assert;
 
 /**
- * REVIEW:
  *
- * @author michael
  *
  */
 final class LightingState extends AbstractGraphicState implements InitializingBean {
@@ -82,8 +81,7 @@ final class LightingState extends AbstractGraphicState implements InitializingBe
 
         getInputDispatcher().register(elementPicker);
 
-
-
+        modelBucket.addContent(new ParticleEmitter());
         //modelBucket.addContent(new ColorPointEmitter(500));
 
         /*

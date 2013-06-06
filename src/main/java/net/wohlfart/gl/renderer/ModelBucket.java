@@ -11,8 +11,8 @@ import java.util.Set;
 import net.wohlfart.gl.shader.GraphicContextManager;
 import net.wohlfart.gl.shader.GraphicContextManager.IGraphicContext;
 import net.wohlfart.gl.shader.ShaderUniformHandle;
+import net.wohlfart.gl.spatial.Emitter;
 import net.wohlfart.gl.spatial.Model;
-import net.wohlfart.gl.spatial.ColorPointEmitter;
 import net.wohlfart.gl.spatial.Spatial;
 import net.wohlfart.gl.view.Camera;
 import net.wohlfart.gl.view.PickingRay;
@@ -29,7 +29,7 @@ import org.lwjgl.util.vector.Vector3f;
 public class ModelBucket implements RenderBucket {
 
     protected Set<Model> models = new HashSet<>(10100);
-    protected Set<ColorPointEmitter> emitter = new HashSet<>(10100);
+    protected Set<Emitter> emitters = new HashSet<>(10100);
     protected Set<IsRenderable> renderables = new HashSet<>(10100);
     private IGraphicContext graphicContext;
     private Camera camera;
@@ -69,8 +69,8 @@ public class ModelBucket implements RenderBucket {
         models.add(renderable);
     }
 
-    public void addContent(ColorPointEmitter renderable) {
-        emitter.add(renderable);
+    public void addContent(Emitter renderable) {
+        emitters.add(renderable);
     }
 
     @Override
@@ -104,8 +104,10 @@ public class ModelBucket implements RenderBucket {
         for (final IsRenderable renderable : renderables) {
             renderable.render();
         }
-        for (final ColorPointEmitter e : emitter) {
-            e.render();
+        for (final Emitter emitter : emitters) {
+            //ShaderUniformHandle.MODEL_TO_WORLD.set(SimpleMath.UNION_MATRIX);
+
+            emitter.render();
         }
     }
 
@@ -114,7 +116,7 @@ public class ModelBucket implements RenderBucket {
         for (final Model model : models) {
             model.update(timeInSec);
         }
-        for (final ColorPointEmitter e : emitter) {
+        for (final Emitter e : emitters) {
             e.update(timeInSec);
         }
     }

@@ -13,6 +13,10 @@ import org.lwjgl.opengl.GL30;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+
+/**
+ * mesh for drawing multiple colored  dots
+ */
 public class SimpleMesh implements IsRenderable {
 
     private final int vaoHandle;
@@ -27,7 +31,6 @@ public class SimpleMesh implements IsRenderable {
         this.primitive = primitive;
     }
 
-    /** {@inheritDoc} */
     @Override
     public void render() {
         GL30.glBindVertexArray(vaoHandle);
@@ -43,7 +46,6 @@ public class SimpleMesh implements IsRenderable {
         GL30.glBindVertexArray(0);
     }
 
-    /** {@inheritDoc} */
     @Override
     public void destroy() {
 
@@ -97,7 +99,7 @@ public class SimpleMesh implements IsRenderable {
             GL30.glBindVertexArray(0); // @formatter:on
 
             LOGGER.debug("bulding a new mesh with {} elements", count);
-            return new SimpleMesh(vaoHandle, vboHandle, count, GL11.GL_POINTS);
+            return new SimpleMesh(vaoHandle, vboHandle, count, GL11.GL_TRIANGLES);
         }
 
 
