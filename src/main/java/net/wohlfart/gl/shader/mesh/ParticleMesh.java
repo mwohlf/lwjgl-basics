@@ -23,15 +23,13 @@ import org.slf4j.LoggerFactory;
 public class ParticleMesh implements IsRenderable {
 
     private final int vaoHandle;
-    private final int vboHandle;
     private final int verticesCount;
     private final int primitive;
     private final int textureId;
 
 
-    protected ParticleMesh(int vaoHandle, int vboHandle, int verticesCount, int primitive, int textureId) {
+    protected ParticleMesh(int vaoHandle, int verticesCount, int primitive, int textureId) {
         this.vaoHandle = vaoHandle;
-        this.vboHandle = vboHandle;
         this.verticesCount = verticesCount;
         this.primitive = primitive;
         this.textureId = textureId;
@@ -39,34 +37,15 @@ public class ParticleMesh implements IsRenderable {
 
     @Override
     public void render() {
-        // Bind the texture
+        GL30.glBindVertexArray(vaoHandle);
         GL13.glActiveTexture(GL13.GL_TEXTURE0);
         GL11.glBindTexture(GL11.GL_TEXTURE_2D, textureId);
-
-        GL30.glBindVertexArray(vaoHandle);
-        ShaderAttributeHandle.COLOR.enable();
-        ShaderAttributeHandle.POSITION.enable();
-        ShaderAttributeHandle.TEXTURE_COORD.enable();
-        ShaderAttributeHandle.NORMAL.disable();
-
-        // Draw the vertices
         GL11.glDrawArrays(primitive, 0, verticesCount);
-
-        // Put everything back to default (deselect)
-        GL15.glBindBuffer(GL15.GL_ELEMENT_ARRAY_BUFFER, 0);
-        ShaderAttributeHandle.COLOR.disable();
-        ShaderAttributeHandle.POSITION.disable();
-        ShaderAttributeHandle.TEXTURE_COORD.disable();
-        ShaderAttributeHandle.NORMAL.disable();
         GL30.glBindVertexArray(0);
     }
 
     @Override
     public void destroy() {
-
-        GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, 0);
-        GL15.glDeleteBuffers(vboHandle);
-
         GL30.glBindVertexArray(0);
         GL30.glDeleteVertexArrays(vaoHandle);
     }
@@ -107,7 +86,6 @@ public class ParticleMesh implements IsRenderable {
             final int vaoHandle = GL30.glGenVertexArrays();
             GL30.glBindVertexArray(vaoHandle);
 
-            // Create a new Vertex Buffer Object in memory and select it (bind)
             final int vboHandle = GL15.glGenBuffers();
             GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, vboHandle);
             GL15.glBufferData(GL15.GL_ARRAY_BUFFER, verticesBuffer, GL15.GL_STATIC_DRAW);
@@ -126,15 +104,11 @@ public class ParticleMesh implements IsRenderable {
 
             ShaderAttributeHandle.NORMAL.disable();
 
-
-            // unbind
-            GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, 0);
-            // Deselect (bind to 0) the VAO
+            // done setting up the VAO
             GL30.glBindVertexArray(0);
 
-
             LOGGER.debug("bulding a new mesh with {} elements", count);
-            return new ParticleMesh(vaoHandle, vboHandle, count * 6, GL11.GL_TRIANGLES, texId);
+            return new ParticleMesh(vaoHandle, count * 6, GL11.GL_TRIANGLES, texId);
         }
 
 

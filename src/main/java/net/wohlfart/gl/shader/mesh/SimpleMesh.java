@@ -20,13 +20,11 @@ import org.slf4j.LoggerFactory;
 public class SimpleMesh implements IsRenderable {
 
     private final int vaoHandle;
-    private final int vboHandle;
     private final int indicesCount;
     private final int primitive;
 
-    protected SimpleMesh(int vaoHandle, int vboHandle, int indicesCount, int primitive) {
+    protected SimpleMesh(int vaoHandle, int indicesCount, int primitive) {
         this.vaoHandle = vaoHandle;
-        this.vboHandle = vboHandle;
         this.indicesCount = indicesCount;
         this.primitive = primitive;
     }
@@ -34,24 +32,12 @@ public class SimpleMesh implements IsRenderable {
     @Override
     public void render() {
         GL30.glBindVertexArray(vaoHandle);
-
-        GL20.glEnableVertexAttribArray(ShaderAttributeHandle.POSITION.getLocation());
-        GL20.glEnableVertexAttribArray(ShaderAttributeHandle.COLOR.getLocation());
-
         GL11.glDrawArrays(primitive, 0, indicesCount);
-
-        GL20.glDisableVertexAttribArray(ShaderAttributeHandle.POSITION.getLocation());
-        GL20.glDisableVertexAttribArray(ShaderAttributeHandle.COLOR.getLocation());
-
         GL30.glBindVertexArray(0);
     }
 
     @Override
     public void destroy() {
-
-        GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, 0);
-        GL15.glDeleteBuffers(vboHandle);
-
         GL30.glBindVertexArray(0);
         GL30.glDeleteVertexArrays(vaoHandle);
     }
@@ -78,28 +64,30 @@ public class SimpleMesh implements IsRenderable {
             final int vaoHandle = GL30.glGenVertexArrays();
             GL30.glBindVertexArray(vaoHandle);
 
-            final int vboHandle = createVboHandle(stream);
+            createVboHandle(stream);
 
             int offset;  // @formatter:off
             final int stride = ShaderAttributeHandle.POSITION.getByteCount()
                              + ShaderAttributeHandle.COLOR.getByteCount();
 
             offset = 0;
-            GL20.glEnableVertexAttribArray(ShaderAttributeHandle.POSITION.getLocation());
+            ShaderAttributeHandle.POSITION.enable();
             GL20.glVertexAttribPointer(ShaderAttributeHandle.POSITION.getLocation(),
                                        ShaderAttributeHandle.POSITION.getFloatCount(), GL11.GL_FLOAT, false, stride, offset);
 
             offset += ShaderAttributeHandle.POSITION.getByteCount();
-            GL20.glEnableVertexAttribArray(ShaderAttributeHandle.COLOR.getLocation());
+            ShaderAttributeHandle.COLOR.enable();
             GL20.glVertexAttribPointer(ShaderAttributeHandle.COLOR.getLocation(),
                                        ShaderAttributeHandle.COLOR.getFloatCount(), GL11.GL_FLOAT, false, stride, offset);
 
-            GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, 0);
+            ShaderAttributeHandle.TEXTURE_COORD.enable();
+
+            ShaderAttributeHandle.NORMAL.enable();
 
             GL30.glBindVertexArray(0); // @formatter:on
 
             LOGGER.debug("bulding a new mesh with {} elements", count);
-            return new SimpleMesh(vaoHandle, vboHandle, count, GL11.GL_TRIANGLES);
+            return new SimpleMesh(vaoHandle, count, GL11.GL_TRIANGLES);
         }
 
 

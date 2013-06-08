@@ -46,12 +46,17 @@ public class WireframeMeshBuilder {
         final int vaoHandle = GL30.glGenVertexArrays();
         GL30.glBindVertexArray(vaoHandle);
 
-        ShaderAttributeHandle.COLOR.disable();
-        ShaderAttributeHandle.NORMAL.disable();
-        ShaderAttributeHandle.TEXTURE_COORD.disable();
-        final int vboHandle = createVboHandle(getVertices(), ShaderAttributeHandle.POSITION);
+        createVboHandle(getVertices(), ShaderAttributeHandle.POSITION);
 
-        final int idxBufferHandle = createIdxBufferHandle(getIndices());
+        createIdxBufferHandle(getIndices());
+
+        ShaderAttributeHandle.POSITION.enable();
+
+        ShaderAttributeHandle.COLOR.disable();
+
+        ShaderAttributeHandle.NORMAL.disable();
+
+        ShaderAttributeHandle.TEXTURE_COORD.disable();
 
         GL30.glBindVertexArray(0);
 
@@ -59,7 +64,7 @@ public class WireframeMeshBuilder {
         final int indicesCount = getIndices().length;
         final int offset = 0;
 
-        return new WireframeMesh(vaoHandle, vboHandle, idxBufferHandle, linePrimitive, indexElemSize, indicesCount, offset, color);
+        return new WireframeMesh(vaoHandle, linePrimitive, indexElemSize, indicesCount, offset, color);
     }
 
     private void applyRotationAndTranslation() {

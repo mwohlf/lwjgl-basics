@@ -106,45 +106,43 @@ enum BoxSide {// @formatter:off
         final int vaoHandle = GL30.glGenVertexArrays();
         GL30.glBindVertexArray(vaoHandle);
 
-        final int positionAttrib = ShaderAttributeHandle.POSITION.getLocation();
-        final int colorAttrib = ShaderAttributeHandle.COLOR.getLocation();
-        final int textureAttrib = ShaderAttributeHandle.TEXTURE_COORD.getLocation();
+        // Create a new VBO for the indices and select it (bind) - INDICES
+        final int vboIndicesHandle = GL15.glGenBuffers();
+        GL15.glBindBuffer(GL15.GL_ELEMENT_ARRAY_BUFFER, vboIndicesHandle);
+        GL15.glBufferData(GL15.GL_ELEMENT_ARRAY_BUFFER, indicesBuffer, GL15.GL_STATIC_DRAW);
 
         // Create a new Vertex Buffer Object in memory and select it (bind)
         final int vboVerticesHandle = GL15.glGenBuffers();
         GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, vboVerticesHandle);
         GL15.glBufferData(GL15.GL_ARRAY_BUFFER, verticesBuffer, GL15.GL_STATIC_DRAW);
 
-        // Put the positions in attribute list 0
-        GL20.glVertexAttribPointer(positionAttrib, Vertex.positionElementCount, GL11.GL_FLOAT, false, Vertex.stride, Vertex.positionByteOffset);
-        // Put the colors in attribute list 1
-        GL20.glVertexAttribPointer(colorAttrib, Vertex.colorElementCount, GL11.GL_FLOAT, false, Vertex.stride, Vertex.colorByteOffset);
-        // Put the texture in attribute list 2
-        GL20.glVertexAttribPointer(textureAttrib, Vertex.textureElementCount, GL11.GL_FLOAT, false, Vertex.stride, Vertex.textureByteOffset);
-        // unbind
-        GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, 0);
+        ShaderAttributeHandle.POSITION.enable();
+        GL20.glVertexAttribPointer(ShaderAttributeHandle.POSITION.getLocation(),
+                Vertex.positionElementCount, GL11.GL_FLOAT, false, Vertex.stride, Vertex.positionByteOffset);
 
-        // Deselect (bind to 0) the VAO
+        ShaderAttributeHandle.COLOR.enable();
+        GL20.glVertexAttribPointer(ShaderAttributeHandle.COLOR.getLocation(),
+                Vertex.colorElementCount, GL11.GL_FLOAT, false, Vertex.stride, Vertex.colorByteOffset);
+
+        ShaderAttributeHandle.TEXTURE_COORD.enable();
+        GL20.glVertexAttribPointer(ShaderAttributeHandle.TEXTURE_COORD.getLocation(),
+                Vertex.textureElementCount, GL11.GL_FLOAT, false, Vertex.stride, Vertex.textureByteOffset);
+
+        ShaderAttributeHandle.NORMAL.disable();
+
         GL30.glBindVertexArray(0);
-
-        // Create a new VBO for the indices and select it (bind) - INDICES
-        final int vboIndicesHandle = GL15.glGenBuffers();
-        GL15.glBindBuffer(GL15.GL_ELEMENT_ARRAY_BUFFER, vboIndicesHandle);
-        GL15.glBufferData(GL15.GL_ELEMENT_ARRAY_BUFFER, indicesBuffer, GL15.GL_STATIC_DRAW);
-        GL15.glBindBuffer(GL15.GL_ELEMENT_ARRAY_BUFFER, 0);
 
         // load the texture
         final int textureId = createAndLoadTexture(GL13.GL_TEXTURE0, parameters); // FIXME: check if we could use a different texture unit
 
-        return new BoxSideMesh(vaoHandle, vboVerticesHandle, vboIndicesHandle, GL11.GL_TRIANGLES, GL11.GL_UNSIGNED_BYTE, indicesCount, 0, colorAttrib,
-                positionAttrib, textureAttrib, textureId, translation.negate(new Vector3f()));
+        return new BoxSideMesh(vaoHandle, GL11.GL_TRIANGLES, GL11.GL_UNSIGNED_BYTE, indicesCount, 0, textureId, translation.negate(new Vector3f()));
     }
 
     /**
      * <p>
      * createAndLoadTexture.
      * </p>
-     * 
+     *
      * @param textureUnit
      *            a int.
      * @param parameters
@@ -184,7 +182,7 @@ enum BoxSide {// @formatter:off
      * <p>
      * createClouds.
      * </p>
-     * 
+     *
      * @param data
      *            an array of int.
      * @param width
@@ -217,7 +215,7 @@ enum BoxSide {// @formatter:off
      * <p>
      * createStars.
      * </p>
-     * 
+     *
      * @param data
      *            an array of int.
      * @param width
@@ -253,7 +251,7 @@ enum BoxSide {// @formatter:off
      * <p>
      * translate from the 2D plane coords to 3D
      * </p>
-     * 
+     *
      * @param x
      *            a int.
      * @param y
@@ -275,7 +273,7 @@ enum BoxSide {// @formatter:off
      * <p>
      * rotate.
      * </p>
-     * 
+     *
      * @param in
      *            a {@link org.lwjgl.util.vector.Vector3f} object.
      * @return a {@link org.lwjgl.util.vector.Vector3f} object.
@@ -290,7 +288,7 @@ enum BoxSide {// @formatter:off
      * <p>
      * translate.
      * </p>
-     * 
+     *
      * @param in
      *            a {@link org.lwjgl.util.vector.Vector3f} object.
      * @return a {@link org.lwjgl.util.vector.Vector3f} object.
@@ -305,7 +303,7 @@ enum BoxSide {// @formatter:off
      * <p>
      * createNoise.
      * </p>
-     * 
+     *
      * @param x
      *            a float.
      * @param y
@@ -336,7 +334,7 @@ enum BoxSide {// @formatter:off
      * <p>
      * createNoise.
      * </p>
-     * 
+     *
      * @param x
      *            a float.
      * @param y

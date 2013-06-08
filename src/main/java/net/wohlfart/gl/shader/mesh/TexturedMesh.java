@@ -35,76 +35,35 @@ import org.slf4j.LoggerFactory;
 public class TexturedMesh implements IsRenderable {
 
     private final int vaoHandle;
-    private final int vboVerticesHandle;  // TODO: we don't need this it seems!
-    private final int vboIndicesHandle;
     private final int indicesCount;
     private final int indexOffset;
     private final int indexElemSize;
     private final int indicesType;
-
-    private final int colorAttrib;
-    private final int positionAttrib;
-    private final int textureAttrib;
-
     private final int textureId;
 
 
-    // FIXME: check if we can use the builder as single parameter here
-    protected TexturedMesh(int vaoHandle, int vboVerticesHandle,
-            int vboIndicesHandle, int indicesType, int indexElemSize, int indicesCount, int indexOffset,
-            int colorAttrib, int positionAttrib, int textureAttrib, int textureId) {
-
+    protected TexturedMesh(int vaoHandle, int indicesType, int indexElemSize, int indicesCount, int indexOffset, int textureId) {
         this.vaoHandle = vaoHandle;
-        this.vboVerticesHandle = vboVerticesHandle;
-        // index
-        this.vboIndicesHandle = vboIndicesHandle;
         this.indicesType = indicesType;
         this.indexElemSize = indexElemSize;
         this.indicesCount = indicesCount;
         this.indexOffset = indexOffset;
-        // attr pos
-        this.colorAttrib = colorAttrib;
-        this.positionAttrib = positionAttrib;
-        this.textureAttrib = textureAttrib;
-
         this.textureId = textureId;
     }
 
     /** {@inheritDoc} */
     @Override
     public void render() {
-        // Bind the texture
+        GL30.glBindVertexArray(vaoHandle);
         GL13.glActiveTexture(GL13.GL_TEXTURE0);
         GL11.glBindTexture(GL11.GL_TEXTURE_2D, textureId);
-
-        GL30.glBindVertexArray(vaoHandle);
-        GL20.glEnableVertexAttribArray(colorAttrib);
-        GL20.glEnableVertexAttribArray(positionAttrib);
-        GL20.glEnableVertexAttribArray(textureAttrib);
-        // Bind to the index VBO that has all the information about the order of the vertices
-        GL15.glBindBuffer(GL15.GL_ELEMENT_ARRAY_BUFFER, vboIndicesHandle);
-        // Draw the vertices
         GL11.glDrawElements(indicesType, indicesCount, indexElemSize, indexOffset);
-        // Put everything back to default (deselect)
-        GL15.glBindBuffer(GL15.GL_ELEMENT_ARRAY_BUFFER, 0);
-        GL20.glDisableVertexAttribArray(colorAttrib);
-        GL20.glDisableVertexAttribArray(positionAttrib);
-        GL20.glDisableVertexAttribArray(textureAttrib);
         GL30.glBindVertexArray(0);
     }
 
     /** {@inheritDoc} */
     @Override
     public void destroy() {
-        // Disable the VBO index from the VAO attributes list
-        //GL20.glDisableVertexAttribArray(0);
-        // Delete the index VBO
-        //GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, 0);
-        //GL15.glDeleteBuffers(vboVerticesHandle);
-        // Delete the vertex VBO
-        //GL15.glBindBuffer(GL15.GL_ELEMENT_ARRAY_BUFFER, 0);
-        //GL15.glDeleteBuffers(vboIndicesHandle);
-        // Delete the VAO
         GL30.glBindVertexArray(0);
         GL30.glDeleteVertexArrays(vaoHandle);
     }
@@ -204,29 +163,28 @@ public class TexturedMesh implements IsRenderable {
             GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, vboVerticesHandle);
             GL15.glBufferData(GL15.GL_ARRAY_BUFFER, verticesBuffer, GL15.GL_STATIC_DRAW);
 
-            GL20.glVertexAttribPointer(ShaderAttributeHandle.POSITION.getLocation(),
-                    Vertex.positionElementCount, GL11.GL_FLOAT, false, Vertex.stride, Vertex.positionByteOffset);
-            GL20.glVertexAttribPointer(ShaderAttributeHandle.COLOR.getLocation(),
-                    Vertex.colorElementCount, GL11.GL_FLOAT, false, Vertex.stride, Vertex.colorByteOffset);
-            GL20.glVertexAttribPointer(ShaderAttributeHandle.TEXTURE_COORD.getLocation(),
-                    Vertex.textureElementCount, GL11.GL_FLOAT, false, Vertex.stride, Vertex.textureByteOffset);
-
-
-            // Create a new VBO for the indices and select it (bind) - INDICES
             final int vboIndicesHandle = GL15.glGenBuffers();
             GL15.glBindBuffer(GL15.GL_ELEMENT_ARRAY_BUFFER, vboIndicesHandle);
             GL15.glBufferData(GL15.GL_ELEMENT_ARRAY_BUFFER, indicesBuffer, GL15.GL_STATIC_DRAW);
-            GL15.glBindBuffer(GL15.GL_ELEMENT_ARRAY_BUFFER, 0);
 
-            // unbind
-            GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, 0);
-            // Deselect (bind to 0) the VAO
+            ShaderAttributeHandle.POSITION.enable();
+            GL20.glVertexAttribPointer(ShaderAttributeHandle.POSITION.getLocation(),
+                    Vertex.positionElementCount, GL11.GL_FLOAT, false, Vertex.stride, Vertex.positionByteOffset);
+
+            ShaderAttributeHandle.COLOR.enable();
+            GL20.glVertexAttribPointer(ShaderAttributeHandle.COLOR.getLocation(),
+                    Vertex.colorElementCount, GL11.GL_FLOAT, false, Vertex.stride, Vertex.colorByteOffset);
+
+            ShaderAttributeHandle.TEXTURE_COORD.enable();
+            GL20.glVertexAttribPointer(ShaderAttributeHandle.TEXTURE_COORD.getLocation(),
+                    Vertex.textureElementCount, GL11.GL_FLOAT, false, Vertex.stride, Vertex.textureByteOffset);
+
+            ShaderAttributeHandle.NORMAL.disable();
+
+            // done with the VAO
             GL30.glBindVertexArray(0);
 
-            return new TexturedMesh(vaoHandle, vboVerticesHandle, vboIndicesHandle, GL11.GL_TRIANGLES, GL11.GL_UNSIGNED_BYTE, indicesCount, 0,
-                    ShaderAttributeHandle.POSITION.getLocation(),
-                    ShaderAttributeHandle.POSITION.getLocation(),
-                    ShaderAttributeHandle.TEXTURE_COORD.getLocation(), texId);
+            return new TexturedMesh(vaoHandle, GL11.GL_TRIANGLES, GL11.GL_UNSIGNED_BYTE, indicesCount, 0, texId);
         }
 
         private int loadPNGTexture(String filename, int textureUnit) {

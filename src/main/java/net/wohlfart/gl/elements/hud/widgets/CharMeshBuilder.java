@@ -77,7 +77,6 @@ class CharMeshBuilder {
         v3.setST(s2, t1);
 
         final Vertex[] vertices = new Vertex[] { v0, v1, v2, v3 };
-        // Put each 'Vertex' in one FloatBuffer the order depends on the shaders positions!
         final FloatBuffer verticesBuffer = BufferUtils.createFloatBuffer(vertices.length * Vertex.elementCount);
         for (int i = 0; i < vertices.length; i++) {
             verticesBuffer.put(vertices[i].getXYZW());
@@ -97,34 +96,31 @@ class CharMeshBuilder {
         final int vaoHandle = GL30.glGenVertexArrays();
         GL30.glBindVertexArray(vaoHandle);
 
-        final int positionAttrib = ShaderAttributeHandle.POSITION.getLocation();
-        // int colorAttrib = ShaderAttributeHandle.COLOR.getLocation();
-        final int textureAttrib = ShaderAttributeHandle.TEXTURE_COORD.getLocation();
-
-        // Create a new Vertex Buffer Object in memory and select it (bind)
         final int vboVerticesHandle = GL15.glGenBuffers();
         GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, vboVerticesHandle);
         GL15.glBufferData(GL15.GL_ARRAY_BUFFER, verticesBuffer, GL15.GL_STATIC_DRAW);
 
-        // Put the positions in attribute list 0
-        GL20.glVertexAttribPointer(positionAttrib, Vertex.positionElementCount, GL11.GL_FLOAT, false, Vertex.stride, Vertex.positionByteOffset);
-        // Put the texture in attribute list 2
-        GL20.glVertexAttribPointer(textureAttrib, Vertex.textureElementCount, GL11.GL_FLOAT, false, Vertex.stride, Vertex.textureByteOffset);
-        // unbind
-        GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, 0);
-
-        // deselect (bind to 0) the VAO
-        GL30.glBindVertexArray(0);
-
-        // Create a new VBO for the indices and select it (bind) - INDICES
         final int vboIndicesHandle = GL15.glGenBuffers();
         GL15.glBindBuffer(GL15.GL_ELEMENT_ARRAY_BUFFER, vboIndicesHandle);
         GL15.glBufferData(GL15.GL_ELEMENT_ARRAY_BUFFER, indicesBuffer, GL15.GL_STATIC_DRAW);
-        GL15.glBindBuffer(GL15.GL_ELEMENT_ARRAY_BUFFER, 0);
+
+        ShaderAttributeHandle.POSITION.enable();
+        GL20.glVertexAttribPointer(ShaderAttributeHandle.POSITION.getLocation(),
+                Vertex.positionElementCount, GL11.GL_FLOAT, false, Vertex.stride, Vertex.positionByteOffset);
+
+        ShaderAttributeHandle.TEXTURE_COORD.enable();
+        GL20.glVertexAttribPointer(ShaderAttributeHandle.TEXTURE_COORD.getLocation(),
+                Vertex.textureElementCount, GL11.GL_FLOAT, false, Vertex.stride, Vertex.textureByteOffset);
+
+        ShaderAttributeHandle.NORMAL.disable();
+
+        ShaderAttributeHandle.COLOR.disable();
+
+        // done with the VAO
+        GL30.glBindVertexArray(0);
 
         final int texId = atlas.getTextureId();
-        return new CharacterMesh(vaoHandle, vboVerticesHandle, vboIndicesHandle, GL11.GL_TRIANGLES, GL11.GL_UNSIGNED_BYTE, indicesCount, 0, positionAttrib,
-                textureAttrib, texId);
+        return new CharacterMesh(vaoHandle, GL11.GL_TRIANGLES, GL11.GL_UNSIGNED_BYTE, indicesCount, 0, texId);
     }
 
     /**

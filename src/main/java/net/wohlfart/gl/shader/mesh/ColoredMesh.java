@@ -18,64 +18,29 @@ import org.slf4j.LoggerFactory;
 public class ColoredMesh implements IsRenderable {
 
     private final int vaoHandle;
-    private final int vboVerticesHandle;
-    private final int vboIndicesHandle;
     private final int indicesCount;
     private final int indexOffset;
     private final int indexElemSize;
     private final int indicesType;
-    private final int colorAttrib;
-    private final int positionAttrib;
 
     // package private, created by the builder
-    protected ColoredMesh(int vaoHandle, int vboVerticesHandle,
-    // index
-            int vboIndicesHandle, int indicesType, int indexElemSize, int indicesCount, int indexOffset,
-            // attrib pos
-            int colorAttrib, int positionAttrib) {
-
+    protected ColoredMesh(int vaoHandle, int indicesType, int indexElemSize, int indicesCount, int indexOffset) {
         this.vaoHandle = vaoHandle;
-        this.vboVerticesHandle = vboVerticesHandle;
-        // index
-        this.vboIndicesHandle = vboIndicesHandle;
         this.indicesType = indicesType;
         this.indexElemSize = indexElemSize;
         this.indicesCount = indicesCount;
         this.indexOffset = indexOffset;
-        // attr pos
-        this.colorAttrib = colorAttrib;
-        this.positionAttrib = positionAttrib;
     }
 
-    /** {@inheritDoc} */
     @Override
     public void render() {
         GL30.glBindVertexArray(vaoHandle);
-        GL20.glEnableVertexAttribArray(colorAttrib);
-        GL20.glEnableVertexAttribArray(positionAttrib);
-        // Bind to the index VBO that has all the information about the order of the vertices
-        GL15.glBindBuffer(GL15.GL_ELEMENT_ARRAY_BUFFER, vboIndicesHandle);
-        // Draw the vertices
         GL11.glDrawElements(indicesType, indicesCount, indexElemSize, indexOffset);
-        // Put everything back to default (deselect)
-        GL15.glBindBuffer(GL15.GL_ELEMENT_ARRAY_BUFFER, 0);
-        GL20.glDisableVertexAttribArray(colorAttrib);
-        GL20.glDisableVertexAttribArray(positionAttrib);
         GL30.glBindVertexArray(0);
     }
 
-    /** {@inheritDoc} */
     @Override
     public void destroy() {
-        // Disable the VBO index from the VAO attributes list
-        GL20.glDisableVertexAttribArray(0);
-        // Delete the index VBO
-        GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, 0);
-        GL15.glDeleteBuffers(vboVerticesHandle);
-        // Delete the vertex VBO
-        GL15.glBindBuffer(GL15.GL_ELEMENT_ARRAY_BUFFER, 0);
-        GL15.glDeleteBuffers(vboIndicesHandle);
-        // Delete the VAO
         GL30.glBindVertexArray(0);
         GL30.glDeleteVertexArrays(vaoHandle);
     }
@@ -133,31 +98,31 @@ public class ColoredMesh implements IsRenderable {
             final int vaoHandle = GL30.glGenVertexArrays();
             GL30.glBindVertexArray(vaoHandle);
 
-            final int positionAttrib = ShaderAttributeHandle.POSITION.getLocation();
-            final int colorAttrib = ShaderAttributeHandle.COLOR.getLocation();
-
-            // Create a new Vertex Buffer Object in memory and bind it
             final int vboVerticesHandle = GL15.glGenBuffers();
             GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, vboVerticesHandle);
             GL15.glBufferData(GL15.GL_ARRAY_BUFFER, verticesBuffer, GL15.GL_STATIC_DRAW);
-            // Put the positions in attribute list 0
-            GL20.glVertexAttribPointer(positionAttrib, 4, GL11.GL_FLOAT, false, Vertex.colorByteCount + Vertex.positionBytesCount, Vertex.positionByteOffset);
-            // Put the colors in attribute list 1
-            GL20.glVertexAttribPointer(colorAttrib, 4, GL11.GL_FLOAT, false, Vertex.colorByteCount + Vertex.positionBytesCount, Vertex.colorByteOffset);
-            // unbind
-            GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, 0);
+
+            final int vboIndicesHandle = GL15.glGenBuffers();
+            GL15.glBindBuffer(GL15.GL_ELEMENT_ARRAY_BUFFER, vboIndicesHandle);
+            GL15.glBufferData(GL15.GL_ELEMENT_ARRAY_BUFFER, indicesBuffer, GL15.GL_STATIC_DRAW);
+
+            ShaderAttributeHandle.POSITION.enable();
+            GL20.glVertexAttribPointer(ShaderAttributeHandle.POSITION.getLocation(),
+                    Vertex.positionElementCount, GL11.GL_FLOAT, false, Vertex.colorByteCount + Vertex.positionBytesCount, Vertex.positionByteOffset);
+
+            ShaderAttributeHandle.COLOR.enable();
+            GL20.glVertexAttribPointer(ShaderAttributeHandle.COLOR.getLocation(),
+                    Vertex.colorElementCount, GL11.GL_FLOAT, false, Vertex.colorByteCount + Vertex.positionBytesCount, Vertex.colorByteOffset);
+
+            ShaderAttributeHandle.NORMAL.disable();
+
+            ShaderAttributeHandle.TEXTURE_COORD.disable();
 
             // Deselect (bind to 0) the VAO
             GL30.glBindVertexArray(0);
 
-            // Create a new VBO for the indices and select it (bind) - INDICES
-            final int vboIndicesHandle = GL15.glGenBuffers();
-            GL15.glBindBuffer(GL15.GL_ELEMENT_ARRAY_BUFFER, vboIndicesHandle);
-            GL15.glBufferData(GL15.GL_ELEMENT_ARRAY_BUFFER, indicesBuffer, GL15.GL_STATIC_DRAW);
-            GL15.glBindBuffer(GL15.GL_ELEMENT_ARRAY_BUFFER, 0);
 
-            return new ColoredMesh(vaoHandle, vboVerticesHandle, vboIndicesHandle, GL11.GL_TRIANGLES, GL11.GL_UNSIGNED_BYTE, indicesCount, 0, colorAttrib,
-                    positionAttrib);
+            return new ColoredMesh(vaoHandle, GL11.GL_TRIANGLES, GL11.GL_UNSIGNED_BYTE, indicesCount, 0);
         }
 
     }
