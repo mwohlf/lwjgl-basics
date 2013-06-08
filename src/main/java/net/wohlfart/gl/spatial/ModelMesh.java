@@ -114,28 +114,34 @@ public class ModelMesh implements IsRenderable {
                              + ShaderAttributeHandle.TEXTURE_COORD.getByteCount();
 
             offset = 0;
-            GL20.glEnableVertexAttribArray(ShaderAttributeHandle.POSITION.getLocation());
+            ShaderAttributeHandle.POSITION.enable();
             GL20.glVertexAttribPointer(ShaderAttributeHandle.POSITION.getLocation(),
                                        ShaderAttributeHandle.POSITION.getFloatCount(), GL11.GL_FLOAT, false, stride, offset);
 
             offset += ShaderAttributeHandle.POSITION.getByteCount();
-            GL20.glEnableVertexAttribArray(ShaderAttributeHandle.NORMAL.getLocation());
+            ShaderAttributeHandle.NORMAL.enable();
             GL20.glVertexAttribPointer(ShaderAttributeHandle.NORMAL.getLocation(),
                                        ShaderAttributeHandle.NORMAL.getFloatCount(), GL11.GL_FLOAT, false, stride, offset);
 
             offset += ShaderAttributeHandle.NORMAL.getByteCount();
-            GL20.glEnableVertexAttribArray(ShaderAttributeHandle.TEXTURE_COORD.getLocation());
+            ShaderAttributeHandle.TEXTURE_COORD.enable();
             GL20.glVertexAttribPointer(ShaderAttributeHandle.TEXTURE_COORD.getLocation(),
                                        ShaderAttributeHandle.TEXTURE_COORD.getFloatCount(), GL11.GL_FLOAT, false, stride, offset);
+
+            ShaderAttributeHandle.COLOR.disable();
+
 
             GL20.glDisableVertexAttribArray(ShaderAttributeHandle.COLOR.getLocation());
 
             GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, 0);
 
-            GL30.glBindVertexArray(0); // @formatter:on
 
             final int idxBufferHandle = createIdxBufferHandle(indices);
             GL15.glBindBuffer(GL15.GL_ELEMENT_ARRAY_BUFFER, 0);
+
+
+            GL30.glBindVertexArray(0); // @formatter:on
+
 
             final int indexElemSize = GL11.GL_UNSIGNED_INT;
             final int indicesCount = indices.length;

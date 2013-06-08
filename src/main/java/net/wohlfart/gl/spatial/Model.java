@@ -84,18 +84,23 @@ public class Model extends AbstractRenderable {
     float[] createVertexStream() {
         // TODO: check if the size of the attributes fits in the array
         int index = 0;
-        final float[] result = new float[attrIdices.size()
-                * (ShaderAttributeHandle.POSITION.getFloatCount() + ShaderAttributeHandle.NORMAL.getFloatCount() + ShaderAttributeHandle.TEXTURE_COORD
-                        .getFloatCount())];
+        final float[] result = new float[attrIdices.size()  // @formatter:off
+                * (       ShaderAttributeHandle.POSITION.getFloatCount()
+                        + ShaderAttributeHandle.NORMAL.getFloatCount()
+                        + ShaderAttributeHandle.TEXTURE_COORD.getFloatCount())];  // @formatter:on
         for (final VertexAttr vertexAttr : attrIdices) {
             result[index++] = positions.get(vertexAttr.positionIdx).x;
             result[index++] = positions.get(vertexAttr.positionIdx).y;
             result[index++] = positions.get(vertexAttr.positionIdx).z;
-            result[index++] = 1;
+            if (ShaderAttributeHandle.POSITION.getFloatCount() == 4) {
+                result[index++] = 1;
+            }
             result[index++] = normals.get(vertexAttr.normalIdx).x;
             result[index++] = normals.get(vertexAttr.normalIdx).y;
             result[index++] = normals.get(vertexAttr.normalIdx).z;
-            result[index++] = 0;
+            if (ShaderAttributeHandle.NORMAL.getFloatCount() == 4) {
+                result[index++] = 0;
+            }
             result[index++] = textureCoords.get(vertexAttr.textureCoordIdx).x;
             result[index++] = textureCoords.get(vertexAttr.textureCoordIdx).y;
         }

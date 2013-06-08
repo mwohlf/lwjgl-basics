@@ -44,20 +44,20 @@ public class ParticleMesh implements IsRenderable {
         GL11.glBindTexture(GL11.GL_TEXTURE_2D, textureId);
 
         GL30.glBindVertexArray(vaoHandle);
-        GL20.glEnableVertexAttribArray(ShaderAttributeHandle.COLOR.getLocation());
-        GL20.glEnableVertexAttribArray(ShaderAttributeHandle.POSITION.getLocation());
-        GL20.glEnableVertexAttribArray(ShaderAttributeHandle.TEXTURE_COORD.getLocation());
-        GL20.glDisableVertexAttribArray(ShaderAttributeHandle.NORMAL.getLocation());
-
+        ShaderAttributeHandle.COLOR.enable();
+        ShaderAttributeHandle.POSITION.enable();
+        ShaderAttributeHandle.TEXTURE_COORD.enable();
+        ShaderAttributeHandle.NORMAL.disable();
 
         // Draw the vertices
         GL11.glDrawArrays(primitive, 0, verticesCount);
 
         // Put everything back to default (deselect)
         GL15.glBindBuffer(GL15.GL_ELEMENT_ARRAY_BUFFER, 0);
-        GL20.glDisableVertexAttribArray(ShaderAttributeHandle.COLOR.getLocation());
-        GL20.glDisableVertexAttribArray(ShaderAttributeHandle.POSITION.getLocation());
-        GL20.glDisableVertexAttribArray(ShaderAttributeHandle.TEXTURE_COORD.getLocation());
+        ShaderAttributeHandle.COLOR.disable();
+        ShaderAttributeHandle.POSITION.disable();
+        ShaderAttributeHandle.TEXTURE_COORD.disable();
+        ShaderAttributeHandle.NORMAL.disable();
         GL30.glBindVertexArray(0);
     }
 
@@ -112,19 +112,19 @@ public class ParticleMesh implements IsRenderable {
             GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, vboHandle);
             GL15.glBufferData(GL15.GL_ARRAY_BUFFER, verticesBuffer, GL15.GL_STATIC_DRAW);
 
-            GL20.glEnableVertexAttribArray(ShaderAttributeHandle.POSITION.getLocation());
+            ShaderAttributeHandle.POSITION.enable();
             GL20.glVertexAttribPointer(ShaderAttributeHandle.POSITION.getLocation(),
                     Vertex.positionElementCount, GL11.GL_FLOAT, false, Vertex.stride, Vertex.positionByteOffset);
 
-            GL20.glEnableVertexAttribArray(ShaderAttributeHandle.COLOR.getLocation());
+            ShaderAttributeHandle.COLOR.enable();
             GL20.glVertexAttribPointer(ShaderAttributeHandle.COLOR.getLocation(),
                     Vertex.colorElementCount, GL11.GL_FLOAT, false, Vertex.stride, Vertex.colorByteOffset);
 
-            GL20.glEnableVertexAttribArray(ShaderAttributeHandle.TEXTURE_COORD.getLocation());
+            ShaderAttributeHandle.TEXTURE_COORD.enable();
             GL20.glVertexAttribPointer(ShaderAttributeHandle.TEXTURE_COORD.getLocation(),
                     Vertex.textureElementCount, GL11.GL_FLOAT, false, Vertex.stride, Vertex.textureByteOffset);
 
-            GL20.glDisableVertexAttribArray(ShaderAttributeHandle.NORMAL.getLocation());
+            ShaderAttributeHandle.NORMAL.disable();
 
 
             // unbind

@@ -37,7 +37,7 @@ public class WireframeMeshBuilder {
      * <p>
      * build.
      * </p>
-     * 
+     *
      * @return a {@link net.wohlfart.gl.shader.mesh.IRenderable} object.
      */
     public IsRenderable build() {
@@ -46,10 +46,10 @@ public class WireframeMeshBuilder {
         final int vaoHandle = GL30.glGenVertexArrays();
         GL30.glBindVertexArray(vaoHandle);
 
-        GL20.glDisableVertexAttribArray(ShaderAttributeHandle.COLOR.getLocation());
-        GL20.glDisableVertexAttribArray(ShaderAttributeHandle.NORMAL.getLocation());
+        ShaderAttributeHandle.COLOR.disable();
+        ShaderAttributeHandle.NORMAL.disable();
+        ShaderAttributeHandle.TEXTURE_COORD.disable();
         final int vboHandle = createVboHandle(getVertices(), ShaderAttributeHandle.POSITION);
-        GL20.glDisableVertexAttribArray(ShaderAttributeHandle.TEXTURE_COORD.getLocation());
 
         final int idxBufferHandle = createIdxBufferHandle(getIndices());
 
@@ -103,16 +103,15 @@ public class WireframeMeshBuilder {
 
     private float[] getVertices() {
         final int posSize = ShaderAttributeHandle.POSITION.getFloatCount();
-        if (posSize < 4) {
-            throw new IllegalArgumentException("vertex position size should be 4");
-        }
         final float[] result = new float[vertices.size() * ShaderAttributeHandle.POSITION.getFloatCount()];
         int i = 0;
         for (final Vector3f v : vertices) {
             result[i++] = v.x;
             result[i++] = v.y;
             result[i++] = v.z;
-            result[i++] = 1f;
+            if (ShaderAttributeHandle.POSITION.getFloatCount() == 4) {
+                result[i++] = 1f;
+            }
         }
         return result;
     }
@@ -130,7 +129,7 @@ public class WireframeMeshBuilder {
      * <p>
      * Setter for the field <code>vertices</code>.
      * </p>
-     * 
+     *
      * @param vertices
      *            a {@link java.util.List} object.
      */
@@ -142,7 +141,7 @@ public class WireframeMeshBuilder {
      * <p>
      * Setter for the field <code>indices</code>.
      * </p>
-     * 
+     *
      * @param indices
      *            an array of {@link java.lang.Integer} objects.
      */
@@ -154,7 +153,7 @@ public class WireframeMeshBuilder {
      * <p>
      * Setter for the field <code>rotation</code>.
      * </p>
-     * 
+     *
      * @param quaternion
      *            a {@link org.lwjgl.util.vector.Quaternion} object.
      */
@@ -166,7 +165,7 @@ public class WireframeMeshBuilder {
      * <p>
      * Setter for the field <code>translation</code>.
      * </p>
-     * 
+     *
      * @param translation
      *            a {@link org.lwjgl.util.vector.Vector3f} object.
      */
@@ -178,7 +177,7 @@ public class WireframeMeshBuilder {
      * <p>
      * Setter for the field <code>color</code>.
      * </p>
-     * 
+     *
      * @param color
      *            a {@link org.lwjgl.util.ReadableColor} object.
      */
@@ -190,7 +189,7 @@ public class WireframeMeshBuilder {
      * <p>
      * Setter for the field <code>linePrimitive</code> defines how the indices are turned into lines, valid values are GL_LINES, GL_LINE_STRIP, GL_LINE_LOOP.
      * </p>
-     * 
+     *
      * @param linePrimitive
      *            a int.
      */

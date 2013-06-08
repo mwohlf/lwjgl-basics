@@ -5,6 +5,7 @@ import java.util.Random;
 import org.lwjgl.util.vector.Matrix3f;
 import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Quaternion;
+import org.lwjgl.util.vector.Vector2f;
 import org.lwjgl.util.vector.Vector3f;
 import org.lwjgl.util.vector.Vector4f;
 
@@ -33,6 +34,12 @@ public final class SimpleMath {
     public static final Vector3f Y_AXIS = new Vector3f(0, 1, 0);
     /** Constant <code>Z_AXIS</code> */
     public static final Vector3f Z_AXIS = new Vector3f(0, 0, 1);
+
+    public static final Vector3f X_NORMAL = new Vector3f(1, 0, 0);
+    public static final Vector2f ZERO2f = new Vector2f(0, 0);
+    public static final Vector3f ZERO3f = new Vector3f(0, 0, 0);
+    public static final Vector4f ZERO4f = new Vector4f(0, 0, 0, 0);
+
 
     /** Constant <code>UNION_MATRIX</code> */
     public static final Matrix4f UNION_MATRIX = Matrix4f.setIdentity(new Matrix4f());
@@ -586,6 +593,7 @@ public final class SimpleMath {
     // TODO: fix this: without allocating new memory...
     // it would also be nice to be thread-safe...
     final static Quaternion ROTATION = new Quaternion();
+
 
     public static void rotate(Quaternion q, float angle, Vector3f axis) {
         axis.normalise();

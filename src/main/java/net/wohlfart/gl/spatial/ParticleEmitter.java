@@ -34,7 +34,7 @@ public class ParticleEmitter extends AbstractRenderable implements Emitter {
     Integer commonTextureId;
 
     public ParticleEmitter() {
-        this.newPerSecond = 50;
+        this.newPerSecond = 5;
     }
 
     protected void add(int count) {

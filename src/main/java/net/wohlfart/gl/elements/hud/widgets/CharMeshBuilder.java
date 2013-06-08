@@ -37,7 +37,7 @@ class CharMeshBuilder {
      * <p>
      * build.
      * </p>
-     * 
+     *
      * @return a {@link net.wohlfart.gl.shader.mesh.IRenderable} object.
      */
     public IsRenderable build() {
@@ -131,7 +131,7 @@ class CharMeshBuilder {
      * <p>
      * setCharInfo.
      * </p>
-     * 
+     *
      * @param info
      *            a {@link net.wohlfart.gl.elements.hud.widgets.CharInfo} object.
      */
@@ -143,7 +143,7 @@ class CharMeshBuilder {
      * <p>
      * setCharAtlas.
      * </p>
-     * 
+     *
      * @param atlas
      *            a {@link net.wohlfart.gl.elements.hud.widgets.CharAtlas} object.
      */
@@ -155,7 +155,7 @@ class CharMeshBuilder {
      * <p>
      * Setter for the field <code>screenX</code>.
      * </p>
-     * 
+     *
      * @param x
      *            a float.
      */
@@ -167,7 +167,7 @@ class CharMeshBuilder {
      * <p>
      * Setter for the field <code>screenY</code>.
      * </p>
-     * 
+     *
      * @param y
      *            a float.
      */
