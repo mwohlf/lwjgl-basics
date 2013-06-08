@@ -27,4 +27,9 @@ public class LwjglClockImpl implements Clock {
         return Long.MAX_VALUE;
     }
 
+    @Override
+    public void destroy() {
+        // no resources to free here
+    }
+
 }

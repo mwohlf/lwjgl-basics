@@ -42,6 +42,11 @@ public class TimerTest {
             return maxValidCount;
         }
 
+        @Override
+        public void destroy() {
+            // nothing to do
+        }
+
     }
 
     /**

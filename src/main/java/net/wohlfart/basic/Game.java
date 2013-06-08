@@ -7,7 +7,8 @@ import java.nio.ByteBuffer;
 
 import net.wohlfart.basic.states.GameState;
 import net.wohlfart.basic.states.GameStateEnum;
-import net.wohlfart.basic.time.Timer;
+import net.wohlfart.basic.time.Clock;
+import net.wohlfart.basic.time.TimerImpl;
 import net.wohlfart.gl.input.InputDispatcher;
 import net.wohlfart.gl.input.InputSource;
 import net.wohlfart.gl.shader.GraphicContextManager;
@@ -40,9 +41,10 @@ class Game implements InitializingBean {
 
     protected Settings settings;
     protected ResourceManager resourceManager;
-    protected Timer globalTimer;
+    protected Clock globalClock;
     protected InputSource inputSource;
     protected InputDispatcher inputDispatcher;
+
 
     /** we need to remember the initial display mode so we can reset it on exit */
     private DisplayMode origDisplayMode;
@@ -55,8 +57,8 @@ class Game implements InitializingBean {
         this.resourceManager = resourceManager;
     }
 
-    public void setGlobalTimer(Timer globalTimer) {
-        this.globalTimer = globalTimer;
+    public void setGlobalClock(Clock globalClock) {
+        this.globalClock = globalClock;
     }
 
     public void setInputSource(InputSource userInputSource) {
@@ -76,7 +78,7 @@ class Game implements InitializingBean {
         LOGGER.debug("<afterPropertiesSet>");
         Assert.notNull(settings, "settings missing, you probably forgot to inject settings in the Game");
         Assert.notNull(resourceManager, "resourceManager missing, you probably forgot to inject resourceManager in the Game");
-        Assert.notNull(globalTimer, "globalTimer missing, you probably forgot to inject globalTimer in the Game");
+        Assert.notNull(globalClock, "globalClock missing, you probably forgot to inject globalClock in the Game");
         Assert.notNull(inputSource, "inputSource missing, you probably forgot to inject inputSource in the Game");
         Assert.notNull(inputDispatcher, "inputDispatcher missing, you probably forgot to inject inputDispatcher in the Game");
     }
@@ -101,13 +103,14 @@ class Game implements InitializingBean {
 
     /**
      * <p>
-     * This is the main loop that does all the work, this method returns when the application is exited by the user.
+     * This is the main loop that does all the work,
+     * this method returns when the application is exited by the user.
      * </p>
      */
     private void runApplicationLoop() {
-        float delta;
+        final TimerImpl globalTimer = new TimerImpl(globalClock);
         while (!currentState.isDone()) {
-            delta = globalTimer.getDelta();
+            float delta = globalTimer.getDelta();
             LOGGER.debug("[ms]/frame: {} ; frame/[s]: {}", delta, 1f / delta);
             // call the models to do their things
             currentState.update(delta);
@@ -125,7 +128,7 @@ class Game implements InitializingBean {
 
     /**
      * setup a OpenGL 3.3 environment, side effect is fixing height/width in the settings
-     * 
+     *
      * @throws IOException
      */
     private void startPlatform() throws LWJGLException, IOException {
@@ -208,7 +211,7 @@ class Game implements InitializingBean {
      * <p>
      * Setter for the field <code>currentState</code>.
      * </p>
-     * 
+     *
      * @param newState
      *            a {@link net.wohlfart.basic.states.GameStateEnum} object.
      */
@@ -232,7 +235,7 @@ class Game implements InitializingBean {
     private void shutdownGame() {
         setCurrentState(GameStateEnum.NULL);
         graphContext.destroy();
-        globalTimer.destroy();
+        globalClock.destroy();
         inputSource.destroy();
     }
 

@@ -21,7 +21,7 @@
        <property name="initialState" value="LIGHTING" />  <!-- SIMPLE  -->
        <property name="gameSettings" ref="gameSettings" />
        <property name="resourceManager" ref="resourceManager" />
-       <property name="globalTimer" ref="globalTimer" />
+       <property name="globalClock" ref="globalClock" />
        <property name="inputSource">
               <bean class="net.wohlfart.gl.input.LwjglInputSource" />
        </property>
@@ -48,11 +48,7 @@
       <property name="shadersDirectory" value="${dir.resources.shaders}" />
     </bean>
 
-    <bean id="globalTimer" class="net.wohlfart.basic.time.TimerImpl" >
-       <constructor-arg >
-          <bean class="net.wohlfart.basic.time.LwjglClockImpl" />
-       </constructor-arg>
-    </bean>
+    <bean id="globalClock" class="net.wohlfart.basic.time.LwjglClockImpl" />
 
     <bean id="camera" class="net.wohlfart.gl.view.Camera" />
 

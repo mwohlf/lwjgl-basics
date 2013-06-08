@@ -114,7 +114,9 @@ public final class SceneCreator {
     public static Model loadModelFromFile(String path) {
         try (InputStream inputStream = ClassLoader.class.getResourceAsStream(path)) {
             if (inputStream == null) {
-                throw new GenericGameException("input stream is null for path '" + path + "'");
+                throw new GenericGameException("input stream is null for path '" + path + "'"
+
+                        );
             }
             return new ModelLoader().getModel(inputStream);
         } catch (final IOException ex) {

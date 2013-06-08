@@ -50,7 +50,7 @@ public class ParticleEmitter extends AbstractRenderable implements Emitter {
 
     @Override
     protected IsRenderable setupMesh() {
-        LOGGER.info("rendering {} particles", particles.size());
+        LOGGER.debug("rendering {} particles", particles.size());
         if (commonTextureId == null) {
             commonTextureId  = loadPNGTexture("/gfx/images/ash_uvgrid01.png", GL13.GL_TEXTURE0);
         }
