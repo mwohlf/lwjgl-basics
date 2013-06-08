@@ -24,56 +24,30 @@ import org.slf4j.LoggerFactory;
 public class ModelMesh implements IsRenderable {
 
     private final int vaoHandle;
-    private final int vboHandle;
-    private final int idxBufferHandle;
     private final int textureHandle;
 
     private final int indicesCount;
     private final int indexElemSize;
     private final int trianglePrimitive;
 
-    ModelMesh(int vaoHandle, int vboHandle, int idxBufferHandle, int textureHandle, int trianglePrimitive, int indexElemSize, int indicesCount) {
-
+    ModelMesh(int vaoHandle, int textureHandle, int trianglePrimitive, int indexElemSize, int indicesCount) {
         this.vaoHandle = vaoHandle;
-        this.vboHandle = vboHandle;
-        this.idxBufferHandle = idxBufferHandle;
         this.textureHandle = textureHandle;
         this.trianglePrimitive = trianglePrimitive;
         this.indexElemSize = indexElemSize;
         this.indicesCount = indicesCount;
     }
 
-    /** {@inheritDoc} */
     @Override
     public void render() {
         GL30.glBindVertexArray(vaoHandle);
-
-        // Bind the texture
-        GL13.glActiveTexture(GL13.GL_TEXTURE0);
         GL11.glBindTexture(GL11.GL_TEXTURE_2D, textureHandle);
-
-        GL20.glEnableVertexAttribArray(ShaderAttributeHandle.POSITION.getLocation());
-        GL15.glBindBuffer(GL15.GL_ELEMENT_ARRAY_BUFFER, idxBufferHandle);
-
         GL11.glDrawElements(trianglePrimitive, indicesCount, indexElemSize, 0);
-
-        GL15.glBindBuffer(GL15.GL_ELEMENT_ARRAY_BUFFER, 0);
-        GL20.glDisableVertexAttribArray(ShaderAttributeHandle.POSITION.getLocation());
-        GL11.glBindTexture(GL11.GL_TEXTURE_2D, 0);
-
         GL30.glBindVertexArray(0);
     }
 
-    /** {@inheritDoc} */
     @Override
     public void destroy() {
-
-        GL15.glBindBuffer(GL15.GL_ELEMENT_ARRAY_BUFFER, 0);
-        GL15.glDeleteBuffers(idxBufferHandle);
-
-        GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, 0);
-        GL15.glDeleteBuffers(vboHandle);
-
         GL30.glBindVertexArray(0);
         GL30.glDeleteVertexArrays(vaoHandle);
     }
@@ -102,13 +76,13 @@ public class ModelMesh implements IsRenderable {
         public IsRenderable build() {
 
             final int vaoHandle = GL30.glGenVertexArrays();
-            GL30.glBindVertexArray(vaoHandle);
+            GL30.glBindVertexArray(vaoHandle); // @formatter:off
 
-            final int textureHandle = createTextureHandle("/models/cube/cube.png", GL13.GL_TEXTURE0);
+            final int textureHandle = createTextureHandle("/models/cube/cube.png", GL13.GL_TEXTURE0);  // also binds the texture
+            createVboHandle(stream); // this also binds the GL15.GL_ARRAY_BUFFER
+            createIdxBufferHandle(indices); // this also binds the GL15.GL_ELEMENT_ARRAY_BUFFER
 
-            final int vboHandle = createVboHandle(stream);
-
-            int offset;  // @formatter:off
+            int offset;
             final int stride = ShaderAttributeHandle.POSITION.getByteCount()
                              + ShaderAttributeHandle.NORMAL.getByteCount()
                              + ShaderAttributeHandle.TEXTURE_COORD.getByteCount();
@@ -116,37 +90,30 @@ public class ModelMesh implements IsRenderable {
             offset = 0;
             ShaderAttributeHandle.POSITION.enable();
             GL20.glVertexAttribPointer(ShaderAttributeHandle.POSITION.getLocation(),
-                                       ShaderAttributeHandle.POSITION.getFloatCount(), GL11.GL_FLOAT, false, stride, offset);
+                                       ShaderAttributeHandle.POSITION.getFloatCount(), GL11.GL_FLOAT,
+                                       false, stride, offset);
 
             offset += ShaderAttributeHandle.POSITION.getByteCount();
             ShaderAttributeHandle.NORMAL.enable();
             GL20.glVertexAttribPointer(ShaderAttributeHandle.NORMAL.getLocation(),
-                                       ShaderAttributeHandle.NORMAL.getFloatCount(), GL11.GL_FLOAT, false, stride, offset);
+                                       ShaderAttributeHandle.NORMAL.getFloatCount(), GL11.GL_FLOAT,
+                                       false, stride, offset);
 
             offset += ShaderAttributeHandle.NORMAL.getByteCount();
             ShaderAttributeHandle.TEXTURE_COORD.enable();
             GL20.glVertexAttribPointer(ShaderAttributeHandle.TEXTURE_COORD.getLocation(),
-                                       ShaderAttributeHandle.TEXTURE_COORD.getFloatCount(), GL11.GL_FLOAT, false, stride, offset);
+                                       ShaderAttributeHandle.TEXTURE_COORD.getFloatCount(), GL11.GL_FLOAT,
+                                       false, stride, offset);
 
             ShaderAttributeHandle.COLOR.disable();
 
-
-            GL20.glDisableVertexAttribArray(ShaderAttributeHandle.COLOR.getLocation());
-
-            GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, 0);
-
-
-            final int idxBufferHandle = createIdxBufferHandle(indices);
-            GL15.glBindBuffer(GL15.GL_ELEMENT_ARRAY_BUFFER, 0);
-
-
+            // we are done with the VAO state
             GL30.glBindVertexArray(0); // @formatter:on
-
 
             final int indexElemSize = GL11.GL_UNSIGNED_INT;
             final int indicesCount = indices.length;
 
-            return new ModelMesh(vaoHandle, vboHandle, idxBufferHandle, textureHandle, triangelPrimitive, indexElemSize, indicesCount);
+            return new ModelMesh(vaoHandle, textureHandle, triangelPrimitive, indexElemSize, indicesCount);
         }
 
         private int createIdxBufferHandle(int[] indices) {
