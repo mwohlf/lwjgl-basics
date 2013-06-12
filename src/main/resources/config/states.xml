@@ -19,7 +19,7 @@
 
     <bean id="GameState.LIGHTING" class="net.wohlfart.basic.states.LightingState" >
         <property name="camera" ref="camera" />
-        <property name="skybox" ref="defaultSkybox" />
+<!--         <property name="skybox" ref="defaultSkybox" /> -->
         <property name="modelBucket" ref="modelBucket" />
 <!--         <property name="modelBucket" ref="emptyModelBucket" /> -->
 <!--         <property name="elemBucket" ref="emptyBucket" /> -->
@@ -70,6 +70,8 @@
            <list>
               <ref bean="ship01" />
               <ref bean="ship02" />
+              <ref bean="icosphere01" />
+              <ref bean="cube01" />
            </list>
         </property>
     </bean>

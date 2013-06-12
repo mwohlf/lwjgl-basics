@@ -1,12 +1,15 @@
 package net.wohlfart.basic.states;
 
 import net.wohlfart.gl.elements.hud.Hud;
+import net.wohlfart.gl.elements.hud.NullHud;
 import net.wohlfart.gl.elements.hud.widgets.Label;
 import net.wohlfart.gl.elements.hud.widgets.MousePositionLabel;
 import net.wohlfart.gl.elements.hud.widgets.Statistics;
+import net.wohlfart.gl.elements.skybox.NullSkybox;
 import net.wohlfart.gl.elements.skybox.Skybox;
 import net.wohlfart.gl.input.InputDispatcher;
-import net.wohlfart.gl.renderer.RenderBucketImpl;
+import net.wohlfart.gl.renderer.NullRenderBucket;
+import net.wohlfart.gl.renderer.RenderBucket;
 import net.wohlfart.gl.view.ElementPicker;
 
 import org.slf4j.Logger;
@@ -16,25 +19,25 @@ import org.springframework.util.Assert;
 
 /**
  * @formatter:off state implementation that consists of (in the order of rendering): - skyboxImpl - elementBucket - hudImpl
- * 
+ *
  * @formatter:on
  */
 final class SimpleState extends AbstractGraphicState implements InitializingBean {
     private static final Logger LOGGER = LoggerFactory.getLogger(SimpleState.class);
 
+    private Skybox skybox = NullSkybox.INSTANCE;
+    private RenderBucket elemBucket = NullRenderBucket.INSTANCE;
+    private Hud hud = NullHud.INSTANCE;
+
     private Statistics statistics;
     private MousePositionLabel mousePositionLabel;
     private ElementPicker elementPicker;
-
-    private Skybox skybox;
-    private RenderBucketImpl elemBucket;
-    private Hud hud;
 
     public void setSkybox(Skybox skybox) {
         this.skybox = skybox;
     }
 
-    public void setElemBucket(RenderBucketImpl elemBucket) {
+    public void setElemBucket(RenderBucket elemBucket) {
         this.elemBucket = elemBucket;
     }
 
@@ -45,9 +48,9 @@ final class SimpleState extends AbstractGraphicState implements InitializingBean
     @Override
     public void afterPropertiesSet() throws Exception {
         LOGGER.debug("<afterPropertiesSet>");
-        Assert.notNull(skybox, "skybox missing, you probably forgot to inject skybox in the configs");
-        Assert.notNull(elemBucket, "elemBucket missing, you probably forgot to inject elemBucket in the configs");
-        Assert.notNull(hud, "hud missing, you probably forgot to inject hud in the configs");
+        Assert.notNull(skybox);
+        Assert.notNull(elemBucket);
+        Assert.notNull(hud);
     }
 
     @Override
@@ -92,7 +95,6 @@ final class SimpleState extends AbstractGraphicState implements InitializingBean
     @Override
     public void destroy() {
         skybox.dispose();
-        elemBucket.dispose();
         hud.dispose();
         super.destroy();
     }

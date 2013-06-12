@@ -84,32 +84,6 @@ final class LightingState extends AbstractGraphicState implements InitializingBe
         modelBucket.addContent(new ParticleEmitter());
         //modelBucket.addContent(new ColorPointEmitter(500));
 
-        /*
-         * Model icosphere = SceneCreator.loadModelFromFile("/models/icosphere/icosphere.obj"); icosphere.setPosition(new Vector3f(0,0,-5));
-         * icosphere.setAction(OrbitAction.create()); //icosphere.setAction(new MoveAction()); //icosphere.setAction(new MoveAction());
-         * modelBucket.add(icosphere);
-         *
-         * Model icosphere2 = SceneCreator.loadModelFromFile("/models/icosphere/icosphere.obj"); icosphere2.setPosition(new Vector3f(0,0,0));
-         * //icosphere2.setAction(new OrbitAction()); //icosphere.setAction(new MoveAction()); //icosphere.setAction(new MoveAction());
-         * modelBucket.add(icosphere2);
-         */
-
-        /*
-         *
-         * int count = 500;
-         *
-         * for (int i = 0; i < count ; i++) { Model icosphere = SceneCreator.loadModelFromFile("/models/ship/ship.obj");
-         * icosphere.setPosition(SceneCreator.getRandomPosition()); icosphere.setAction(SceneCreator.getRandomAction()); modelBucket.add(icosphere); }
-         *
-         *
-         *
-         * for (int i = 0; i < count ; i++) { Model icosphere = SceneCreator.loadModelFromFile("/models/icosphere/icosphere.obj");
-         * icosphere.setPosition(SceneCreator.getRandomPosition()); icosphere.setAction(SceneCreator.getRandomAction()); modelBucket.add(icosphere); }
-         *
-         * for (int i = 0; i < count ; i++) { Model cube = SceneCreator.loadModelFromFile("/models/cube/cube.obj");
-         * cube.setPosition(SceneCreator.getRandomPosition()); cube.setAction(SceneCreator.getRandomAction()); modelBucket.add(cube); }
-         */
-
     }
 
     @Override

@@ -21,6 +21,8 @@ out vec3 pass_Normal;                // normal in eyespace
 out vec3 pass_Position;              // vertex position in eyespace
 out vec3 pass_LightPosition;
 
+out vec4 gl_Position;
+
 
 void main(void) {
 

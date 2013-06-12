@@ -6,10 +6,36 @@
 
 
 
+     <bean id="cube01" class="net.wohlfart.basic.states.SceneCreator"
+                       factory-method="loadModelFromFile">
+        <constructor-arg value="/models/cube/cube.obj" />
+        <property name="position" >
+           <bean class="org.lwjgl.util.vector.Vector3f">
+              <property name="x" value="-17" />
+              <property name="y" value="0" />
+              <property name="z" value="-10" />
+           </bean>
+        </property>
+     </bean>
+
+
+
+     <bean id="icosphere01" class="net.wohlfart.basic.states.SceneCreator"
+                       factory-method="loadModelFromFile">
+        <constructor-arg value="/models/icosphere/icosphere.obj" />
+        <property name="position" >
+           <bean class="org.lwjgl.util.vector.Vector3f">
+              <property name="x" value="17" />
+              <property name="y" value="0" />
+              <property name="z" value="-10" />
+           </bean>
+        </property>
+     </bean>
+
 
 
      <bean id="ship01" class="net.wohlfart.basic.states.SceneCreator"
-                      factory-method="loadModelFromFile">
+                       factory-method="loadModelFromFile">
         <constructor-arg value="/models/ships/01.obj" />
         <property name="position" >
            <bean class="org.lwjgl.util.vector.Vector3f">
@@ -23,7 +49,7 @@
 
 
 
-     <bean id="ship02" 
+     <bean id="ship02"
            class="net.wohlfart.basic.states.SceneCreator"
            factory-method="loadModelFromFile">
         <constructor-arg value="/models/ships/02.obj" />
@@ -35,14 +61,14 @@
            </bean>
         </property>
      </bean>
-     
-     
-     <bean id="rotate" 
+
+
+     <bean id="rotate"
            class="net.wohlfart.gl.action.RotateAction"
            factory-method="create">
      </bean>
 
-     <bean id="orbit" 
+     <bean id="orbit"
            class="net.wohlfart.gl.action.OrbitAction"
            factory-method="create">
      </bean>
