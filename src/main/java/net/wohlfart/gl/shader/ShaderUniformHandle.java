@@ -55,7 +55,7 @@ public enum ShaderUniformHandle {// @formatter:off
     }
 
     public int getLocation() {
-        return INSTANCE.getCurrentGraphicContext().getUniformLocation(lookupString);
+        return INSTANCE.getUniformLocation(lookupString);
     }
 
 

@@ -18,7 +18,6 @@ import org.slf4j.LoggerFactory;
 public enum GraphicContextManager {
     INSTANCE;
 
-    /** Constant <code>LOGGER</code> */
     protected static final Logger LOGGER = LoggerFactory.getLogger(GraphicContextManager.class);
 
     public interface IGraphicContext {
@@ -83,11 +82,12 @@ public enum GraphicContextManager {
         orthographicProjMatrix = new OrthographicProjection().create(settings);
     }
 
-    // the following methods are package private,
-    // and shold only used by ShaderAttributeHandle and ShaderUniformHandle
+    int getAttributeLocation(String lookupString) {
+        return currentGraphicContext.getAttributeLocation(lookupString);
+    }
 
-    IGraphicContext getCurrentGraphicContext() {
-        return currentGraphicContext;
+    int getUniformLocation(String lookupString) {
+        return currentGraphicContext.getUniformLocation(lookupString);
     }
 
     /**

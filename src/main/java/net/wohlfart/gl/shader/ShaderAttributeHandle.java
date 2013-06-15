@@ -71,7 +71,7 @@ public enum ShaderAttributeHandle {// @formatter:off
      * @return a int.
      */
     public int getLocation() {
-        return INSTANCE.getCurrentGraphicContext().getAttributeLocation(lookupString);
+        return INSTANCE.getAttributeLocation(lookupString);
     }
 
     /**
