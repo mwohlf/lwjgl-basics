@@ -2,17 +2,12 @@ package net.wohlfart.basic.states;
 
 import net.wohlfart.gl.elements.hud.Hud;
 import net.wohlfart.gl.elements.hud.NullHud;
-import net.wohlfart.gl.elements.hud.widgets.Label;
-import net.wohlfart.gl.elements.hud.widgets.MousePositionLabel;
-import net.wohlfart.gl.elements.hud.widgets.Statistics;
 import net.wohlfart.gl.elements.skybox.NullSkybox;
 import net.wohlfart.gl.elements.skybox.Skybox;
 import net.wohlfart.gl.renderer.ModelBucket;
 import net.wohlfart.gl.renderer.NullRenderBucket;
 import net.wohlfart.gl.renderer.RenderBucket;
 import net.wohlfart.gl.renderer.RenderBucketImpl;
-import net.wohlfart.gl.spatial.ParticleEmitter;
-import net.wohlfart.gl.view.ElementPicker;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,17 +18,14 @@ import org.springframework.util.Assert;
  *
  *
  */
-final class LightingState extends AbstractGraphicState implements InitializingBean {
-    private static final Logger LOGGER = LoggerFactory.getLogger(LightingState.class);
+final class AmbienteState extends AbstractGraphicState implements InitializingBean {
+    private static final Logger LOGGER = LoggerFactory.getLogger(AmbienteState.class);
 
     private Skybox skybox = NullSkybox.INSTANCE;
     private RenderBucket elemBucket = NullRenderBucket.INSTANCE;
     private Hud hud = NullHud.INSTANCE;
     private ModelBucket modelBucket;
 
-    private Statistics statistics;
-    private MousePositionLabel mousePositionLabel;
-    private ElementPicker elementPicker;
 
     public void setSkybox(Skybox skybox) {
         this.skybox = skybox;
@@ -69,28 +61,12 @@ final class LightingState extends AbstractGraphicState implements InitializingBe
         elemBucket.setup();
         hud.setup();
 
-        statistics = new Statistics(0, -40);
-        mousePositionLabel = new MousePositionLabel(0, -20);
-        elementPicker = new ElementPicker(elemBucket, getScreenWidth(), getScreenHeight());
-        elementPicker.setRenderBucket(elemBucket);
-        elementPicker.setModelBucket(modelBucket);
-
-        hud.add(statistics);
-        hud.add(mousePositionLabel);
-        hud.add(new Label(0, 0, "hello world at (0,0)"));
-
-        getInputDispatcher().register(elementPicker);
-
-        modelBucket.addContent(new ParticleEmitter());
-        //modelBucket.addContent(new ColorPointEmitter(500));
-
     }
 
     @Override
     public void update(float tpf) {
         LOGGER.debug("update called with tpf/fps {}/{}", tpf, 1f / tpf);
         modelBucket.update(tpf);
-        statistics.update(tpf);
     }
 
     @Override

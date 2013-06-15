@@ -141,7 +141,7 @@ public abstract class AbstractRenderable implements Spatial {
             reCreateMatrice = false;
         }
         ShaderUniformHandle.MODEL_TO_WORLD.set(modelToWorldMatrix);
-        ShaderUniformHandle.NORMAL.set(normalMatrix);
+        ShaderUniformHandle.NORMAL_MATRIX.set(normalMatrix);
 
         if (reCreateRenderable) {
             delegate = setupMesh();

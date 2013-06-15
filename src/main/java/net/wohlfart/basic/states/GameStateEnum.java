@@ -2,18 +2,20 @@ package net.wohlfart.basic.states;
 
 import net.wohlfart.basic.IGameContext;
 
+// @formatter:off
 /**
  * <p>
- * Enum class for all valid game states, its a wrapper for state objects, the delegates must be picked up from the context at startup. the key for pickup is
+ * Enum class for all valid game states, its a wrapper for state objects,
+ * the delegates must be picked up from the context at startup. the key for pickup is
  * GAME_STATE_PREFIX + "." + this.name()
- * 
+ *
  * </p>
  */
 public enum GameStateEnum implements GameState {
-    // @formatter:off
     NULL,
     SIMPLE,
     LIGHTING,
+    AMBIENTE,
     ;
     // @formatter:on
 

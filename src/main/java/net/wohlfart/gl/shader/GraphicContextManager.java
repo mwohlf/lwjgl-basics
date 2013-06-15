@@ -11,9 +11,9 @@ import org.slf4j.LoggerFactory;
  * <p>
  * GraphicContextManager class.
  * </p>
- * 
- * 
- * 
+ *
+ *
+ *
  */
 public enum GraphicContextManager {
     INSTANCE;
@@ -23,9 +23,9 @@ public enum GraphicContextManager {
 
     public interface IGraphicContext {
 
-        int getLocation(ShaderAttributeHandle shaderAttributeHandle);
+        Integer getAttributeLocation(String lookupString);
 
-        int getLocation(ShaderUniformHandle shaderUniformHandle);
+        Integer getUniformLocation(String lookupString);
 
         void setup();
 
@@ -34,6 +34,7 @@ public enum GraphicContextManager {
         void unbind();
 
         void dispose();
+
 
     }
 
@@ -53,7 +54,7 @@ public enum GraphicContextManager {
      * <p>
      * Setter for the field <code>currentGraphicContext</code>.
      * </p>
-     * 
+     *
      * @param graphicContext
      *            a {@link net.wohlfart.gl.shader.GraphicContextManager.IGraphicContext} object.
      */
@@ -72,7 +73,7 @@ public enum GraphicContextManager {
      * <p>
      * Setter for the field <code>settings</code>.
      * </p>
-     * 
+     *
      * @param settings
      *            a {@link net.wohlfart.basic.Settings} object.
      */
@@ -93,7 +94,7 @@ public enum GraphicContextManager {
      * <p>
      * Getter for the field <code>perspectiveProjMatrix</code>.
      * </p>
-     * 
+     *
      * @return a {@link org.lwjgl.util.vector.Matrix4f} object.
      */
     public Matrix4f getPerspectiveProjMatrix() {
@@ -104,7 +105,7 @@ public enum GraphicContextManager {
      * <p>
      * Getter for the field <code>orthographicProjMatrix</code>.
      * </p>
-     * 
+     *
      * @return a {@link org.lwjgl.util.vector.Matrix4f} object.
      */
     public Matrix4f getOrthographicProjMatrix() {
@@ -115,7 +116,7 @@ public enum GraphicContextManager {
      * <p>
      * getScreenWidth.
      * </p>
-     * 
+     *
      * @return a int.
      */
     public int getScreenWidth() {
@@ -126,7 +127,7 @@ public enum GraphicContextManager {
      * <p>
      * getScreenHeight.
      * </p>
-     * 
+     *
      * @return a int.
      */
     public int getScreenHeight() {
@@ -137,7 +138,7 @@ public enum GraphicContextManager {
      * <p>
      * getNearPlane.
      * </p>
-     * 
+     *
      * @return a float.
      */
     public float getNearPlane() {
@@ -148,7 +149,7 @@ public enum GraphicContextManager {
      * <p>
      * getFarPlane.
      * </p>
-     * 
+     *
      * @return a float.
      */
     public float getFarPlane() {
@@ -159,7 +160,7 @@ public enum GraphicContextManager {
      * <p>
      * getFieldOfView.
      * </p>
-     * 
+     *
      * @return a float.
      */
     public float getFieldOfView() {
@@ -170,7 +171,7 @@ public enum GraphicContextManager {
      * <p>
      * Setter for the field <code>inputDispatcher</code>.
      * </p>
-     * 
+     *
      * @param inputSource
      *            a {@link net.wohlfart.gl.input.DefaultInputDispatcher} object.
      */
@@ -182,7 +183,7 @@ public enum GraphicContextManager {
      * <p>
      * Getter for the field <code>inputDispatcher</code>.
      * </p>
-     * 
+     *
      * @return a {@link net.wohlfart.gl.input.InputDispatcher} object.
      */
     public InputDispatcher getInputDispatcher() {

@@ -23,7 +23,7 @@ public class DefaultShaderProgram extends AbstractShaderProgram {
      * <p>
      * Constructor for DefaultShaderProgram.
      * </p>
-     * 
+     *
      * @param vertexShader
      *            a {@link java.lang.String} object.
      * @param fragmentShader
@@ -37,7 +37,7 @@ public class DefaultShaderProgram extends AbstractShaderProgram {
     /** {@inheritDoc} */
     @Override
     public String toString() {
-        return "DefaultShaderProgram loaded from: \n" + vertexShader + "\n" + fragmentShader;
+        return "DefaultShaderProgram loaded from: '" + vertexShader + "' and '" + fragmentShader +"'";
     }
 
     /** {@inheritDoc} */

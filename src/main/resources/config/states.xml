@@ -28,6 +28,13 @@
 
     </bean>
 
+    <bean id="GameState.AMBIENTE" class="net.wohlfart.basic.states.AmbienteState" >
+        <property name="camera" ref="camera" />
+<!--         <property name="modelBucket" ref="modelBucket" /> -->
+<!--         <property name="modelBucket" ref="emptyModelBucket" /> -->
+        <property name="modelBucket" ref="originBucket" />
+    </bean>
+
 
     <!-- huds -->
 
@@ -77,6 +84,14 @@
     </bean>
 
 
+    <bean id="originBucket" class="net.wohlfart.gl.renderer.ModelBucket">
+        <property name="camera" ref="camera" />
+        <property name="graphicContext" ref="ambienteShader" />
+        <property name="content" ref="originContent" />
+    </bean>
+
+
+
     <bean id="emptyBucket" class="net.wohlfart.gl.renderer.RenderBucketImpl">
         <property name="camera" ref="camera" />
         <property name="graphicContext" ref="wireframeShader" />
@@ -98,5 +113,21 @@
             </list>
         </constructor-arg>
     </bean>
+
+    <bean id="originContent" class="net.wohlfart.tools.CollectionMergerFactory">
+        <constructor-arg>
+            <list>
+              <ref bean="cube02" />
+              <ref bean="cube03" />
+              <ref bean="cube04" />
+              <ref bean="cube05" />
+              <ref bean="cube06" />
+              <ref bean="cube07" />
+              <ref bean="cube08" />
+              <ref bean="cube09" />
+            </list>
+        </constructor-arg>
+    </bean>
+
 
 </beans>

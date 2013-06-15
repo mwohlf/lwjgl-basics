@@ -92,7 +92,7 @@ public class ModelBucket implements RenderBucket {
         ShaderUniformHandle.MODEL_TO_WORLD.set(SimpleMath.UNION_MATRIX);
         ShaderUniformHandle.WORLD_TO_CAM.set(rotPosMatrix);
         ShaderUniformHandle.CAM_TO_CLIP.set(GraphicContextManager.INSTANCE.getPerspectiveProjMatrix());
-        ShaderUniformHandle.LIGHT.set(new Vector3f(0, 0, 1));
+        ShaderUniformHandle.LIGHT_POSITION.set(new Vector3f(0, 0, 1));
 
         GL11.glEnable(GL11.GL_DEPTH_TEST);
         GL11.glClear(GL11.GL_DEPTH_BUFFER_BIT);

@@ -18,10 +18,113 @@
         </property>
      </bean>
 
+     <bean id="cube02" class="net.wohlfart.basic.states.SceneCreator"
+                       factory-method="loadModelFromFile">
+        <constructor-arg value="/models/cube/cube.obj" />
+        <property name="position" >
+           <bean class="org.lwjgl.util.vector.Vector3f">
+              <property name="x" value="0" />
+              <property name="y" value="0" />
+              <property name="z" value="-5" />
+           </bean>
+        </property>
+     </bean>
+
+
+     <bean id="cube03" class="net.wohlfart.basic.states.SceneCreator"
+                       factory-method="loadModelFromFile">
+        <constructor-arg value="/models/cube/cube.obj" />
+        <property name="position" >
+           <bean class="org.lwjgl.util.vector.Vector3f">
+              <property name="x" value="-15" />
+              <property name="y" value="0" />
+              <property name="z" value="-5" />
+           </bean>
+        </property>
+     </bean>
+
+
+     <bean id="cube04" class="net.wohlfart.basic.states.SceneCreator"
+                       factory-method="loadModelFromFile">
+        <constructor-arg value="/models/cube/cube.obj" />
+        <property name="position" >
+           <bean class="org.lwjgl.util.vector.Vector3f">
+              <property name="x" value="15" />
+              <property name="y" value="0" />
+              <property name="z" value="-5" />
+           </bean>
+        </property>
+     </bean>
+
+
+     <bean id="cube05" class="net.wohlfart.basic.states.SceneCreator"
+                       factory-method="loadModelFromFile">
+        <constructor-arg value="/models/cube/cube.obj" />
+        <property name="position" >
+           <bean class="org.lwjgl.util.vector.Vector3f">
+              <property name="x" value="-10" />
+              <property name="y" value="0" />
+              <property name="z" value="-5" />
+           </bean>
+        </property>
+     </bean>
+
+
+     <bean id="cube06" class="net.wohlfart.basic.states.SceneCreator"
+                       factory-method="loadModelFromFile">
+        <constructor-arg value="/models/cube/cube.obj" />
+        <property name="position" >
+           <bean class="org.lwjgl.util.vector.Vector3f">
+              <property name="x" value="10" />
+              <property name="y" value="0" />
+              <property name="z" value="-5" />
+           </bean>
+        </property>
+     </bean>
+
+
+     <bean id="cube07" class="net.wohlfart.basic.states.SceneCreator"
+                       factory-method="loadModelFromFile">
+        <constructor-arg value="/models/cube/cube.obj" />
+        <property name="position" >
+           <bean class="org.lwjgl.util.vector.Vector3f">
+              <property name="x" value="-5" />
+              <property name="y" value="0" />
+              <property name="z" value="-5" />
+           </bean>
+        </property>
+     </bean>
+
+
+     <bean id="cube08" class="net.wohlfart.basic.states.SceneCreator"
+                       factory-method="loadModelFromFile">
+        <constructor-arg value="/models/cube/cube.obj" />
+        <property name="position" >
+           <bean class="org.lwjgl.util.vector.Vector3f">
+              <property name="x" value="5" />
+              <property name="y" value="0" />
+              <property name="z" value="-5" />
+           </bean>
+        </property>
+     </bean>
+
+
+     <bean id="cube09" class="net.wohlfart.basic.states.SceneCreator"
+                       factory-method="loadModelFromFile">
+        <constructor-arg value="/models/cube/cube.obj" />
+        <property name="position" >
+           <bean class="org.lwjgl.util.vector.Vector3f">
+              <property name="x" value="0" />
+              <property name="y" value="0" />
+              <property name="z" value="-10" />
+           </bean>
+        </property>
+     </bean>
+
 
 
      <bean id="icosphere01" class="net.wohlfart.basic.states.SceneCreator"
-                       factory-method="loadModelFromFile">
+                            factory-method="loadModelFromFile">
         <constructor-arg value="/models/icosphere/icosphere.obj" />
         <property name="position" >
            <bean class="org.lwjgl.util.vector.Vector3f">
@@ -46,7 +149,6 @@
         </property>
         <property name="action" ref="orbit" />
      </bean>
-
 
 
      <bean id="ship02"

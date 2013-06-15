@@ -1,25 +1,24 @@
 package net.wohlfart.gl.shader;
 
-import java.util.Arrays;
+import java.util.HashMap;
 
-import org.lwjgl.opengl.GL20;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
  * @formatter:off modeling an OpenGL Context: - shader - attribute location - uniform locations
  * @formatter:on
- * 
+ *
  *               see: http://www.opengl.org/wiki/OpenGL_Context
- * 
+ *
  */
 public class DefaultGraphicContext implements GraphicContextManager.IGraphicContext {
     private static final Logger LOGGER = LoggerFactory.getLogger(DefaultGraphicContext.class);
 
     private final IShaderProgram shaderProgram;
 
-    private final int[] attributeMap = new int[ShaderAttributeHandle.values().length];
-    private final int[] uniformMap = new int[ShaderUniformHandle.values().length];
+    private final HashMap<String, Integer> attributeMap = new HashMap<String, Integer>();
+    private final HashMap<String, Integer> uniformMap = new HashMap<String, Integer>();
 
     private boolean isInitialized = false;
 
@@ -27,7 +26,7 @@ public class DefaultGraphicContext implements GraphicContextManager.IGraphicCont
      * <p>
      * Constructor for DefaultGraphicContext.
      * </p>
-     * 
+     *
      * @param shaderProgram
      *            a {@link net.wohlfart.gl.shader.IShaderProgram} object.
      */
@@ -36,7 +35,8 @@ public class DefaultGraphicContext implements GraphicContextManager.IGraphicCont
     }
 
     /**
-     * this needs to be called after the OpenGL setup is done this method might be called multiple times if the same shader is used in multiple states
+     * this needs to be called after the OpenGL setup is done
+     * this method might be called multiple times if the same shader is used in multiple states
      */
     @Override
     public void setup() {
@@ -52,68 +52,51 @@ public class DefaultGraphicContext implements GraphicContextManager.IGraphicCont
 
     // read uniforms and attribute locations and buffer them
     private void initMaps() {
-        final int programId = shaderProgram.getProgramId();
-        LOGGER.debug("init gfx context, shader.programId: '{}'", programId);
+        LOGGER.debug("init gfx context, shader: '{}'", shaderProgram);
 
+        attributeMap.clear();
         for (final ShaderAttributeHandle attributeHandle : ShaderAttributeHandle.values()) {
-            final int location = GL20.glGetAttribLocation(programId, attributeHandle.getLookupString());
-            attributeMap[attributeHandle.ordinal()] = location;
-            if (location < 0) {
-                LOGGER.debug("location for AttributeHandle '{}' is '{}' wich is <0, the programId is '{}'",
-                        new Object[] { attributeHandle, location, programId });
-            } else {
-                LOGGER.debug("attributeMap lookup: '{}({})' to '{}'", new Object[] { attributeHandle.name(), attributeHandle.ordinal(), location });
-            }
+            attributeMap.putAll(attributeHandle.getLocationMap(shaderProgram));
         }
-        LOGGER.debug("attributeMap setup: '{}'", Arrays.toString(attributeMap));
+        LOGGER.debug("finished attributeMap setup for shader {}: '{}'", shaderProgram, attributeMap);
 
-        for (final ShaderUniformHandle matrixHandle : ShaderUniformHandle.values()) {
-            final int location = GL20.glGetUniformLocation(programId, matrixHandle.getLookupString());
-            uniformMap[matrixHandle.ordinal()] = location;
-            if (location < 0) {
-                LOGGER.debug("location for UniformHandle '{}' is '{}' wich is <0, the programId is '{}'", new Object[] { matrixHandle, location, programId });
-            } else {
-                LOGGER.debug("matrixMap lookup: '{}({})' to '{}'", new Object[] { matrixHandle.name(), matrixHandle.ordinal(), location });
-            }
+        uniformMap.clear();
+        for (final ShaderUniformHandle uniformHandle : ShaderUniformHandle.values()) {
+            uniformMap.putAll(uniformHandle.getLocationMap(shaderProgram));
         }
-        LOGGER.debug("matrixMap setup: '{}'", Arrays.toString(uniformMap));
+
+        LOGGER.debug("finished uniformMap setup for shader {}: '{}'", shaderProgram, attributeMap);
     }
 
-    /** {@inheritDoc} */
     @Override
     public String toString() {
         return "DefaultGraphicContext with shader: " + shaderProgram;
     }
 
-    /** {@inheritDoc} */
     @Override
     public void bind() {
         shaderProgram.bind();
     }
 
-    /** {@inheritDoc} */
     @Override
     public void unbind() {
         shaderProgram.unbind();
     }
 
-    /** {@inheritDoc} */
     @Override
     public void dispose() {
         shaderProgram.unbind();
         shaderProgram.dispose();
     }
 
-    /** {@inheritDoc} */
     @Override
-    public int getLocation(ShaderAttributeHandle shaderAttributeHandle) {
-        return attributeMap[shaderAttributeHandle.ordinal()];
+    public Integer getAttributeLocation(String attributeName) {
+        return attributeMap.get(attributeName);
     }
 
-    /** {@inheritDoc} */
     @Override
-    public int getLocation(ShaderUniformHandle shaderUniformHandle) {
-        return uniformMap[shaderUniformHandle.ordinal()];
+    public Integer getUniformLocation(String uniformName) {
+        return uniformMap.get(uniformName);
     }
 
 }
