@@ -32,11 +32,11 @@
         </constructor-arg>
     </bean>
 
-    <bean id="ambienteShader" class="net.wohlfart.gl.shader.DefaultGraphicContext">
+    <bean id="ambientShader" class="net.wohlfart.gl.shader.DefaultGraphicContext">
         <constructor-arg index="0">
             <bean class="net.wohlfart.gl.shader.DefaultShaderProgram">
-                <constructor-arg index="0" value="/shaders/ambiente/vertex.glsl" />
-                <constructor-arg index="1" value="/shaders/ambiente/fragment.glsl" />
+                <constructor-arg index="0" value="/shaders/ambient/vertex.glsl" />
+                <constructor-arg index="1" value="/shaders/ambient/fragment.glsl" />
             </bean>
         </constructor-arg>
     </bean>

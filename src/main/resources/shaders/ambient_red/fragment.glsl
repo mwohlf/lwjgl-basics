@@ -14,7 +14,7 @@ in vec3 pass_LightPosition;
 out vec4 gl_FragColor;
 
 void main(void) {
-    vec4 lightColor = vec4 (1, 1, 1, 0.0);
+    vec4 lightColor = vec4 (1, 0, 0, 0.0);
 
     vec3 lightRay = normalize(pass_LightPosition - pass_Position);
 

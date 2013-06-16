@@ -15,7 +15,7 @@ public enum GameStateEnum implements GameState {
     NULL,
     SIMPLE,
     LIGHTING,
-    AMBIENTE,
+    AMBIENT,
     ;
     // @formatter:on
 

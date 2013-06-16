@@ -18,7 +18,7 @@
     </bean>
 
     <bean class="net.wohlfart.basic.Game" scope="singleton">
-       <property name="initialState" value="AMBIENTE" />  <!-- SIMPLE  -->
+       <property name="initialState" value="AMBIENT" />  <!-- SIMPLE  -->
        <property name="gameSettings" ref="gameSettings" />
        <property name="resourceManager" ref="resourceManager" />
        <property name="globalClock" ref="globalClock" />

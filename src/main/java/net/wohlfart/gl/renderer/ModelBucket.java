@@ -10,6 +10,7 @@ import java.util.Set;
 
 import net.wohlfart.gl.shader.GraphicContextManager;
 import net.wohlfart.gl.shader.GraphicContextManager.IGraphicContext;
+import net.wohlfart.gl.shader.LightSource;
 import net.wohlfart.gl.shader.ShaderUniformHandle;
 import net.wohlfart.gl.spatial.Emitter;
 import net.wohlfart.gl.spatial.Model;
@@ -31,6 +32,9 @@ public class ModelBucket implements RenderBucket {
     protected Set<Model> models = new HashSet<>(10100);
     protected Set<Emitter> emitters = new HashSet<>(10100);
     protected Set<IsRenderable> renderables = new HashSet<>(10100);
+    protected Set<LightSource> lights = new HashSet<>(10);
+
+
     private IGraphicContext graphicContext;
     private Camera camera;
 
@@ -78,6 +82,11 @@ public class ModelBucket implements RenderBucket {
         renderables.add(renderable);
     }
 
+    public void addContent(LightSource light) {
+        lights.add(light);
+    }
+
+
     /** {@inheritDoc} */
     @Override
     public void render() {
@@ -98,6 +107,11 @@ public class ModelBucket implements RenderBucket {
         GL11.glClear(GL11.GL_DEPTH_BUFFER_BIT);
         GL11.glDisable(GL11.GL_BLEND);
 
+
+        int i = 0;
+        for (final LightSource light : lights) {
+            ShaderUniformHandle.LIGHTS.set(light, i++);
+        }
         for (final Spatial model : models) {
             model.render();
         }
@@ -105,8 +119,6 @@ public class ModelBucket implements RenderBucket {
             renderable.render();
         }
         for (final Emitter emitter : emitters) {
-            //ShaderUniformHandle.MODEL_TO_WORLD.set(SimpleMath.UNION_MATRIX);
-
             emitter.render();
         }
     }

@@ -29,9 +29,7 @@ public enum ShaderAttributeHandle {// @formatter:off
     NORMAL("in_Normal", 3),
     ;
     // @formatter:on
-
-    private static final Logger LOGGER = LoggerFactory.getLogger(PerspectiveProjection.class);
-
+    private static final Logger LOGGER = LoggerFactory.getLogger(ShaderAttributeHandle.class);
 
     private final String lookupString;
     private final int floatCount;
@@ -39,6 +37,27 @@ public enum ShaderAttributeHandle {// @formatter:off
     ShaderAttributeHandle(String lookupString, int floatCount) {
         this.lookupString = lookupString;
         this.floatCount = floatCount;
+    }
+
+    public int getLocation() {
+        return INSTANCE.getAttributeLocation(lookupString);
+    }
+
+    public void enable() {
+        GL20.glEnableVertexAttribArray(getLocation());
+    }
+
+    Map<String, Integer> getLocationMap(IShaderProgram shaderProgram) {
+        HashMap<String, Integer> result = new HashMap<String, Integer>();
+        final int location = GL20.glGetAttribLocation(shaderProgram.getProgramId(), lookupString);
+        result.put(lookupString, location);
+        if (location < 0) {
+            LOGGER.debug("location for AttributeHandle '{}' is '{}' wich is <0, the shaderProgram is '{}'",
+                    new Object[] { lookupString, location, shaderProgram });
+        } else {
+            LOGGER.debug("attributeMap lookup: '{}' => '{}'", new Object[] { lookupString, location });
+        }
+        return result;
     }
 
     /**
@@ -64,24 +83,6 @@ public enum ShaderAttributeHandle {// @formatter:off
     }
 
     /**
-     * <p>
-     * getLocation.
-     * </p>
-     *
-     * @return a int.
-     */
-    public int getLocation() {
-        return INSTANCE.getAttributeLocation(lookupString);
-    }
-
-    /**
-     * enable the vertex attribute
-     */
-    public void enable() {
-        GL20.glEnableVertexAttribArray(getLocation());
-    }
-
-    /**
      * disable the vertex attribute and set a default null value
      */
     public void disable() {
@@ -100,19 +101,6 @@ public enum ShaderAttributeHandle {// @formatter:off
             GL20.glVertexAttrib4f(getLocation(), 0, 0, 0, 0);
             break;
         }
-    }
-
-    public Map<String, Integer> getLocationMap(IShaderProgram shaderProgram) {
-        HashMap<String, Integer> result = new HashMap<String, Integer>();
-        final int location = GL20.glGetAttribLocation(shaderProgram.getProgramId(), lookupString);
-        result.put(lookupString, location);
-        if (location < 0) {
-            LOGGER.debug("location for AttributeHandle '{}' is '{}' wich is <0, the shaderProgram is '{}'",
-                    new Object[] { lookupString, location, shaderProgram });
-        } else {
-            LOGGER.debug("attributeMap lookup: '{}' => '{}'", new Object[] { lookupString, location });
-        }
-        return result;
     }
 
 }

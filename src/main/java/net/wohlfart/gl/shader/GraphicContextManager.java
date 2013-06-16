@@ -82,11 +82,11 @@ public enum GraphicContextManager {
         orthographicProjMatrix = new OrthographicProjection().create(settings);
     }
 
-    int getAttributeLocation(String lookupString) {
+    Integer getAttributeLocation(String lookupString) {
         return currentGraphicContext.getAttributeLocation(lookupString);
     }
 
-    int getUniformLocation(String lookupString) {
+    Integer getUniformLocation(String lookupString) {
         return currentGraphicContext.getUniformLocation(lookupString);
     }
 
