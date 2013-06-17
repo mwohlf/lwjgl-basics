@@ -32,6 +32,7 @@
         <property name="camera" ref="camera" />
 <!--         <property name="modelBucket" ref="modelBucket" /> -->
 <!--         <property name="modelBucket" ref="emptyModelBucket" /> -->
+        <property name="elemBucket" ref="emptyBucket" />
         <property name="modelBucket" ref="originBucket" />
     </bean>
 

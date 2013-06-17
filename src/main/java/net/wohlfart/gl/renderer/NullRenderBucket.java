@@ -34,7 +34,7 @@ public enum NullRenderBucket implements RenderBucket {
 
     @Override
     public void addContent(IsRenderable renderable) {
-        // do nothing
+        throw new UnsupportedOperationException("can't add content to the null bucket");
     }
 
     @Override

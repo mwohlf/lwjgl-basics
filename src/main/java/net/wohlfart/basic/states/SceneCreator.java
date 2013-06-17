@@ -66,10 +66,11 @@ public final class SceneCreator {
     }
 
     static Collection<IsRenderable> createOriginAxis() {
+        int size = 1;
         final HashSet<IsRenderable> elemBucket = new HashSet<IsRenderable>();
-        elemBucket.add(new Arrow(new Vector3f(1, 0, 0)).withColor(ReadableColor.RED));
-        elemBucket.add(new Arrow(new Vector3f(0, 1, 0)).withColor(ReadableColor.GREEN));
-        elemBucket.add(new Arrow(new Vector3f(0, 0, 1)).withColor(ReadableColor.BLUE));
+        elemBucket.add(new Arrow(new Vector3f(size, 0, 0)).withColor(ReadableColor.RED));
+        elemBucket.add(new Arrow(new Vector3f(0, size, 0)).withColor(ReadableColor.GREEN));
+        elemBucket.add(new Arrow(new Vector3f(0, 0, size)).withColor(ReadableColor.BLUE));
         return elemBucket;
     }
 

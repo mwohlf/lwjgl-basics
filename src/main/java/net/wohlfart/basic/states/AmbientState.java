@@ -6,6 +6,7 @@ import net.wohlfart.gl.elements.hud.Hud;
 import net.wohlfart.gl.elements.hud.NullHud;
 import net.wohlfart.gl.elements.skybox.NullSkybox;
 import net.wohlfart.gl.elements.skybox.Skybox;
+import net.wohlfart.gl.renderer.IsRenderable;
 import net.wohlfart.gl.renderer.ModelBucket;
 import net.wohlfart.gl.renderer.NullRenderBucket;
 import net.wohlfart.gl.renderer.RenderBucket;
@@ -28,7 +29,7 @@ final class AmbientState extends AbstractGraphicState implements InitializingBea
     private static final Logger LOGGER = LoggerFactory.getLogger(AmbientState.class);
 
     private Skybox skybox = NullSkybox.INSTANCE;
-    private RenderBucket elemBucket = NullRenderBucket.INSTANCE;
+    private RenderBucket elemBucket = new RenderBucketImpl();
     private Hud hud = NullHud.INSTANCE;
     private ModelBucket modelBucket;
 
@@ -73,6 +74,10 @@ final class AmbientState extends AbstractGraphicState implements InitializingBea
                 model.setPosition(new Vector3f(x * 7, 0, z * 7));
                 modelBucket.addContent(model);
             }
+        }
+
+        for (IsRenderable renderable : SceneCreator.createOriginAxis()) {
+            elemBucket.addContent(renderable);
         }
 
         LightSource l = new LightSource(
