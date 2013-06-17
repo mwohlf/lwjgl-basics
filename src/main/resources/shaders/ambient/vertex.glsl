@@ -49,32 +49,30 @@ void main(void) {
 
     // transforms the vertex into cam-space
     pass_Position = vec3(worldToCameraMatrix * modelToWorldMatrix * vec4(in_Position, 1.0));
-
     // transforms the normal's orientation into cam-space
     pass_Normal =  normalize(vec3(in_Normal * normalMatrix));
-
-    // get the vector from the light to the vertex in cam-space
-    vec3 lightPos = lights[0].position;
-    vec3 vertexPos = vec3(modelToWorldMatrix * vec4(in_Position, 1.0));
-    vec3 lightVector = normalize(lightPos - vertexPos);
-    float distance = max(length(lightPos - vertexPos), 0.0);
-
-    // the dot product of the light vector and vertex normal is a indication for the amount of light
-    // on the surface
-    float diffuse = max(dot(pass_Normal, lightVector), 0.1);
-
-    // Attenuate the light based on distance.
-    diffuse = diffuse * (1.0 / (1.0 + (0.002 * distance * distance)));
-    //diffuse = 1.0;
-
-    // Multiply the color by the illumination level. It will be interpolated across the triangle.
-    pass_Color = lights[0].diffuse * diffuse + lights[0].ambient;
-
-
-
     // nothing happens to the texture coords, they are piced up in the fragment shader and mapped to
     // one of the textures that are bound
     pass_TextureCoord = in_TexCoord;
+
+    pass_Color = vec4(0,0,0,0);
+    for (int index = 0; index < 2; index++) {
+       vec3 lightPos = lights[index].position;
+       vec3 vertexPos = vec3(modelToWorldMatrix * vec4(in_Position, 1.0));
+       vec3 lightVector = normalize(lights[index].position - vertexPos);
+
+       // the dot product of the light vector and vertex normal is a indication for the amount of light on the surface
+       float diffuse = max(dot(pass_Normal, lightVector), 0.0);
+
+       // Attenuate the light based on distance.
+       float distance = max(length(lights[index].position - vertexPos), 0.0);
+
+       diffuse = diffuse * (1.0 / (1.0 + (0.001 * distance * distance)));
+
+       // Multiply the color by the illumination level. It will be interpolated across the triangle.
+       pass_Color = pass_Color + lights[index].diffuse * diffuse + lights[index].ambient;
+    }
+
 
     // gl_Position is a special variable used to store the final position.
     // its a vec4() in normalized screen coordinates calculated by
