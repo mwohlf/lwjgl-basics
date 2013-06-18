@@ -15,14 +15,12 @@ layout (location = 1) in vec3 in_Normal;
 // the texture position of the vertex
 layout (location = 2) in vec2 in_TexCoord;
 
-struct LightSource {
-  vec4 ambient;
+struct VertexLight {
+  float attenuation;
   vec4 diffuse;
-  vec4 specular;
   vec3 position;
-  vec3 direction;
 };
-uniform LightSource lights[10];
+uniform VertexLight lights[10];
 
 // a matrix that transforms the model into the world-space,
 // the modelToWorldMatrix is created by using the models world position and rotation
@@ -37,7 +35,7 @@ uniform mat4 cameraToClipMatrix;     // projectionMatrix contains the view angle
 // ModelviewMatrix = worldToCameraMatrix * modelToWorldMatrix
 uniform mat3 normalMatrix;           // == inverse(transpose(ModelviewMatrix)), or just the 3x3 piece;
 
-out vec4 pass_Color;
+out vec4 pass_Light;
 out vec2 pass_TextureCoord;
 out vec3 pass_Normal;                // normal in eye-space
 out vec3 pass_Position;              // vertex position in eye-space
@@ -46,6 +44,11 @@ out vec4 gl_Position;
 
 
 void main(void) {
+    // gl_Position is a special variable used to store the final position.
+    // its a vec4() in normalized screen coordinates calculated by
+    // transferring the in_Position from model-space to world-space to view/cam-space to clip-space
+    // the 1.0 is needed to do translations with the matrices
+    gl_Position = cameraToClipMatrix * worldToCameraMatrix * modelToWorldMatrix * vec4(in_Position, 1.0);
 
     // transforms the vertex into cam-space
     pass_Position = vec3(worldToCameraMatrix * modelToWorldMatrix * vec4(in_Position, 1.0));
@@ -55,7 +58,7 @@ void main(void) {
     // one of the textures that are bound
     pass_TextureCoord = in_TexCoord;
 
-    pass_Color = vec4(0,0,0,0);
+    pass_Light = vec4(0,0,0,0);
     for (int index = 0; index < 2; index++) {
        vec3 lightPos = lights[index].position;
        vec3 vertexPos = vec3(modelToWorldMatrix * vec4(in_Position, 1.0));
@@ -67,17 +70,10 @@ void main(void) {
        // Attenuate the light based on distance.
        float distance = max(length(lights[index].position - vertexPos), 0.0);
 
-       diffuse = diffuse * (1.0 / (1.0 + (0.001 * distance * distance)));
+       diffuse = diffuse * (1.0 / (1.0 + (lights[index].attenuation * distance * distance)));
 
        // Multiply the color by the illumination level. It will be interpolated across the triangle.
-       pass_Color = pass_Color + lights[index].diffuse * diffuse + lights[index].ambient;
+       pass_Light = pass_Light + lights[index].diffuse * diffuse;
     }
-
-
-    // gl_Position is a special variable used to store the final position.
-    // its a vec4() in normalized screen coordinates calculated by
-    // transferring the in_Position from model-space to world-space to view/cam-space to clip-space
-    // the 1.0 is needed to do translations with the matrices
-    gl_Position = cameraToClipMatrix * worldToCameraMatrix * modelToWorldMatrix * vec4(in_Position, 1.0);
 
 }

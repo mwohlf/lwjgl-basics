@@ -2,10 +2,10 @@ package net.wohlfart.gl.spatial;
 
 import java.nio.FloatBuffer;
 
+import net.wohlfart.gl.shader.Vertex;
 import net.wohlfart.tools.ObjectPool;
 import net.wohlfart.tools.ObjectPool.PoolableObject;
 import net.wohlfart.tools.SimpleMath;
-import net.wohlfart.tools.Vertex;
 
 import org.lwjgl.BufferUtils;
 import org.lwjgl.util.vector.Vector3f;

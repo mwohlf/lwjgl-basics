@@ -8,9 +8,9 @@ import java.nio.FloatBuffer;
 
 import net.wohlfart.gl.renderer.IsRenderable;
 import net.wohlfart.gl.shader.ShaderAttributeHandle;
+import net.wohlfart.gl.shader.Vertex;
 import net.wohlfart.tools.PNGDecoder;
 import net.wohlfart.tools.PNGDecoder.Format;
-import net.wohlfart.tools.Vertex;
 
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL13;

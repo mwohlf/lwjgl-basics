@@ -9,8 +9,8 @@ import java.util.List;
 import java.util.Set;
 
 import net.wohlfart.gl.shader.GraphicContextManager;
+import net.wohlfart.gl.shader.VertexLight;
 import net.wohlfart.gl.shader.GraphicContextManager.IGraphicContext;
-import net.wohlfart.gl.shader.LightSource;
 import net.wohlfart.gl.shader.ShaderUniformHandle;
 import net.wohlfart.gl.spatial.Emitter;
 import net.wohlfart.gl.spatial.Model;
@@ -32,7 +32,7 @@ public class ModelBucket implements RenderBucket {
     protected Set<Model> models = new HashSet<>(10100);
     protected Set<Emitter> emitters = new HashSet<>(10100);
     protected Set<IsRenderable> renderables = new HashSet<>(10100);
-    protected Set<LightSource> lights = new HashSet<>(10);
+    protected Set<VertexLight> lights = new HashSet<>(10);
 
 
     private IGraphicContext graphicContext;
@@ -82,7 +82,7 @@ public class ModelBucket implements RenderBucket {
         renderables.add(renderable);
     }
 
-    public void addContent(LightSource light) {
+    public void addContent(VertexLight light) {
         lights.add(light);
     }
 
@@ -109,17 +109,17 @@ public class ModelBucket implements RenderBucket {
 
 
         int i = 0;
-        for (final LightSource light : lights) {
+        for (final VertexLight light : lights) {
             ShaderUniformHandle.LIGHTS.set(light, i++);
+        }
+        for (final Emitter emitter : emitters) {
+            emitter.render();
         }
         for (final Spatial model : models) {
             model.render();
         }
         for (final IsRenderable renderable : renderables) {
             renderable.render();
-        }
-        for (final Emitter emitter : emitters) {
-            emitter.render();
         }
     }
 

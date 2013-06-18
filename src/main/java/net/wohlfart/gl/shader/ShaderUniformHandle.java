@@ -6,6 +6,7 @@ import java.nio.FloatBuffer;
 import java.util.HashMap;
 import java.util.Map;
 
+
 import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL20;
 import org.lwjgl.util.ReadableColor;
@@ -35,11 +36,9 @@ public enum ShaderUniformHandle {// @formatter:off
             HashMap<String, Integer> result = new HashMap<String, Integer>();
             for (int i = 0; i < MAX_LIGHT_SOURCES; i++) {
                 result.putAll(super.getLocationMap(shaderProgram,
-                        "lights[" + i + "].ambient",
+                        "lights[" + i + "].attenuation",
                         "lights[" + i + "].diffuse",
-                        "lights[" + i + "].specular",
-                        "lights[" + i + "].position",
-                        "lights[" + i + "].direction"));
+                        "lights[" + i + "].position"));
             }
             return result;
         }
@@ -81,34 +80,24 @@ public enum ShaderUniformHandle {// @formatter:off
     }
 
     // see: http://www.lwjgl.org/wiki/index.php?title=GLSL_Tutorial:_Communicating_with_Shaders
-    public void set(LightSource lightSource, int index) {
+    public void set(VertexLight vertexLight, int index) {
         Integer location;
 
-        location = INSTANCE.getUniformLocation("lights[" + index + "].ambient");
+        location = INSTANCE.getUniformLocation("lights[" + index + "].attenuation");
         if (location != null) {
-            GL20.glUniform4f(location, lightSource.ambient.x, lightSource.ambient.y, lightSource.ambient.z, lightSource.ambient.w);
+            GL20.glUniform1f(location, vertexLight.attenuation);
         }
 
         location = INSTANCE.getUniformLocation("lights[" + index + "].diffuse");
         if (location != null) {
-            GL20.glUniform4f(location, lightSource.diffuse.x, lightSource.diffuse.y, lightSource.diffuse.z, lightSource.diffuse.w);
-        }
-
-        location = INSTANCE.getUniformLocation("lights[" + index + "].specular");
-        if (location != null) {
-            GL20.glUniform4f(location, lightSource.specular.x, lightSource.specular.y, lightSource.specular.z, lightSource.specular.w);
+            GL20.glUniform4f(location, vertexLight.diffuse.x, vertexLight.diffuse.y, vertexLight.diffuse.z, vertexLight.diffuse.w);
         }
 
         location = INSTANCE.getUniformLocation("lights[" + index + "].position");
         if (location != null) {
             // FIXME: we need to transform the light's position here, its done in the shader rigth now
             // INSTANCE.getPerspectiveProjMatrix()
-            GL20.glUniform3f(location, lightSource.position.x, lightSource.position.y, lightSource.position.z);
-        }
-
-        location = INSTANCE.getUniformLocation("lights[" + index + "].direction");
-        if (location != null) {
-            GL20.glUniform3f(location, lightSource.direction.x, lightSource.direction.y, lightSource.direction.z);
+            GL20.glUniform3f(location, vertexLight.position.x, vertexLight.position.y, vertexLight.position.z);
         }
 
     }

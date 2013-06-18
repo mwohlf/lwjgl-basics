@@ -10,8 +10,9 @@ import net.wohlfart.gl.renderer.IsRenderable;
 import net.wohlfart.gl.renderer.ModelBucket;
 import net.wohlfart.gl.renderer.RenderBucket;
 import net.wohlfart.gl.renderer.RenderBucketImpl;
-import net.wohlfart.gl.shader.LightSource;
+import net.wohlfart.gl.shader.VertexLight;
 import net.wohlfart.gl.spatial.Model;
+import net.wohlfart.gl.spatial.ParticleEmitter;
 
 import org.lwjgl.util.vector.Vector3f;
 import org.lwjgl.util.vector.Vector4f;
@@ -79,34 +80,14 @@ final class AmbientState extends AbstractGraphicState implements InitializingBea
             elemBucket.addContent(renderable);
         }
 
-        LightSource l1 = new LightSource(
-                        // ambient: light that comes from all directions equally and is scattered in all directions equally
-                        new Vector4f(0.1f, 0.1f, 0.1f, 1.0f),
-                        // diffuse: light that comes from a particular point source and radiates from the surface in all directions
-                        new Vector4f(1f, 1f, 1f, 1.0f),
-                        // specular: light that comes from a particular point source and radiates from the surface like a mirror
-                        new Vector4f( 0, 0, 0, 1),
-                        // position of the light source if needed
-                        new Vector3f( 0, 10, -17),
-                        // direction of the light if needed
-                        new Vector3f(0,0,0));
-
-
-        LightSource l2 = new LightSource(
-                        // ambient: light that comes from all directions equally and is scattered in all directions equally
-                        new Vector4f(0.1f, 0.1f, 0.1f, 1.0f),
-                        // diffuse: light that comes from a particular point source and radiates from the surface in all directions
-                        new Vector4f(1f, 1f, 1f, 1.0f),
-                        // specular: light that comes from a particular point source and radiates from the surface like a mirror
-                        new Vector4f( 0, 0, 0, 1),
-                        // position of the light source if needed
-                        new Vector3f( 0, 10, 17),
-                        // direction of the light if needed
-                        new Vector3f(0,0,0));
+        VertexLight l1 = new VertexLight(0.00001f, new Vector4f(1f, 1f, 1f, 1.0f), new Vector3f( 0, 10, -17));
+        VertexLight l2 = new VertexLight(0.00001f, new Vector4f(1f, 1f, 1f, 1.0f), new Vector3f( 0, 10, 17));
 
         new PositionFrame(l1).setup();
         modelBucket.addContent(l1);
         modelBucket.addContent(l2);
+
+        modelBucket.addContent(new ParticleEmitter()); // FIXME: the particles need normals for this to work
 
     }
 

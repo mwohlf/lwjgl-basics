@@ -5,7 +5,7 @@ import java.nio.FloatBuffer;
 
 import net.wohlfart.gl.renderer.IsRenderable;
 import net.wohlfart.gl.shader.ShaderAttributeHandle;
-import net.wohlfart.tools.Vertex;
+import net.wohlfart.gl.shader.Vertex;
 
 import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL11;

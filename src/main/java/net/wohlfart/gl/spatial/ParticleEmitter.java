@@ -11,11 +11,11 @@ import java.util.Set;
 
 import net.wohlfart.gl.elements.AbstractRenderable;
 import net.wohlfart.gl.renderer.IsRenderable;
+import net.wohlfart.gl.shader.Vertex;
 import net.wohlfart.gl.shader.mesh.ParticleMesh;
 import net.wohlfart.tools.PNGDecoder;
 import net.wohlfart.tools.PNGDecoder.Format;
 import net.wohlfart.tools.SimpleMath;
-import net.wohlfart.tools.Vertex;
 
 import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL11;
@@ -40,7 +40,7 @@ public class ParticleEmitter extends AbstractRenderable implements Emitter {
     protected void add(int count) {
         for (int i = 0; i < count; i++) {
             particles.add(Particle.create(100, // lifetime
-                    new Vector3f(0, 0, -40), // position
+                    new Vector3f(0, 0, 0), // position
                     new Vector3f(SimpleMath.random(-0.5f, 0.5f), 3f, SimpleMath.random(-0.5f, 0.5f)), // speed
                     new Vector3f(0, -0.3f, 0) // acceleration
                     ));

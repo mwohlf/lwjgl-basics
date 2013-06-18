@@ -8,10 +8,10 @@ import java.nio.IntBuffer;
 import net.wohlfart.gl.elements.skybox.SkyboxParameters.PerlinNoiseParameters;
 import net.wohlfart.gl.shader.GraphicContextManager;
 import net.wohlfart.gl.shader.ShaderAttributeHandle;
+import net.wohlfart.gl.shader.Vertex;
 import net.wohlfart.tools.ColorGradient;
 import net.wohlfart.tools.SimpleMath;
 import net.wohlfart.tools.SimplexNoise;
-import net.wohlfart.tools.Vertex;
 
 import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL11;
