@@ -26,7 +26,7 @@ import org.slf4j.LoggerFactory;
  * 
  */
 public class CharAtlasBuilder {
-    /** Constant <code>LOGGER</code> */
+    
     protected static final Logger LOGGER = LoggerFactory.getLogger(CharAtlasBuilder.class);
 
     private static final float DEFAULT_FONT_SIZE = 17f;

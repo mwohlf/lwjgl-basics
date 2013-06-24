@@ -92,17 +92,19 @@ public class ParticleMesh implements IsRenderable {
 
             ShaderAttributeHandle.POSITION.enable();
             GL20.glVertexAttribPointer(ShaderAttributeHandle.POSITION.getLocation(),
-                    Vertex.positionElementCount, GL11.GL_FLOAT, false, Vertex.stride, Vertex.positionByteOffset);
+                    Vertex.POSITION_ELEM_COUNT, GL11.GL_FLOAT, false, Vertex.stride, Vertex.positionByteOffset);
 
             ShaderAttributeHandle.COLOR.enable();
             GL20.glVertexAttribPointer(ShaderAttributeHandle.COLOR.getLocation(),
-                    Vertex.colorElementCount, GL11.GL_FLOAT, false, Vertex.stride, Vertex.colorByteOffset);
+                    Vertex.COLOR_ELEM_COUNT, GL11.GL_FLOAT, false, Vertex.stride, Vertex.colorByteOffset);
+
+            ShaderAttributeHandle.NORMAL.enable();
+            GL20.glVertexAttribPointer(ShaderAttributeHandle.NORMAL.getLocation(),
+                    Vertex.NORMAL_ELEM_COUNT, GL11.GL_FLOAT, false, Vertex.stride, Vertex.normalByteOffset);
 
             ShaderAttributeHandle.TEXTURE_COORD.enable();
             GL20.glVertexAttribPointer(ShaderAttributeHandle.TEXTURE_COORD.getLocation(),
-                    Vertex.textureElementCount, GL11.GL_FLOAT, false, Vertex.stride, Vertex.textureByteOffset);
-
-            ShaderAttributeHandle.NORMAL.disable();
+                    Vertex.TEXTURE_ELEM_COUNT, GL11.GL_FLOAT, false, Vertex.stride, Vertex.textureByteOffset);
 
             // done setting up the VAO
             GL30.glBindVertexArray(0);

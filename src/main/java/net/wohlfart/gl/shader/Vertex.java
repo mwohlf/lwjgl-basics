@@ -4,54 +4,58 @@ import org.lwjgl.util.vector.Vector3f;
 
 /**
  * <p>
- * Vertex class.<br/>
+ * the vertex class.<br/>
  * see: http://www.lwjgl.org/wiki/index.php?title=The_Quad_interleaved
  * </p>
  */
 public class Vertex {
+
+    public static final int BYTES_PER_FLOAT = 4;
+
+    public static final int POSITION_ELEM_COUNT = 4;
+    public static final int COLOR_ELEM_COUNT = 4;
+    public static final int NORMAL_ELEM_COUNT = 3;
+    public static final int TEXTURE_ELEM_COUNT = 2;
+
+    public static final int positionBytesCount = POSITION_ELEM_COUNT * BYTES_PER_FLOAT;
+    public static final int colorByteCount = COLOR_ELEM_COUNT * BYTES_PER_FLOAT;
+    public static final int normalByteCount = NORMAL_ELEM_COUNT * BYTES_PER_FLOAT;
+    public static final int textureByteCount = TEXTURE_ELEM_COUNT * BYTES_PER_FLOAT;
+
+    // Byte offsets per parameter
+    /** Constant <code>positionByteOffset=0</code> */
+    public static final int positionByteOffset = 0;
+    public static final int colorByteOffset = positionByteOffset + positionBytesCount;
+    public static final int normalByteOffset = colorByteOffset + colorByteCount;
+    public static final int textureByteOffset = normalByteOffset + normalByteCount;
+
+    // The amount of elements that a vertex has
+    public static final int elementCount = POSITION_ELEM_COUNT + COLOR_ELEM_COUNT + NORMAL_ELEM_COUNT + TEXTURE_ELEM_COUNT;
+    // The size of a vertex in bytes, like in C/C++: sizeof(Vertex)
+    public static final int stride = positionBytesCount + colorByteCount + normalByteCount + textureByteCount;
+
+
+
     private float[] xyzw = new float[] { 0f, 0f, 0f, 1f };
     private float[] rgba = new float[] { 1f, 1f, 1f, 1f };
     private float[] normal = new float[] { 1f, 0f, 0f };
     private float[] st = new float[] { 0f, 0f };
 
-    public static final int bytesPerFloat = 4;
 
-    public static final int positionElementCount = 4;
-    public static final int colorElementCount = 4;
-    public static final int normalElementCount = 3;
-    public static final int textureElementCount = 2;
-
-    public static final int positionBytesCount = positionElementCount * bytesPerFloat;
-    public static final int colorByteCount = colorElementCount * bytesPerFloat;
-    public static final int normalByteCount = normalElementCount * bytesPerFloat;
-    public static final int textureByteCount = textureElementCount * bytesPerFloat;
-
-    // Byte offsets per parameter
-    /** Constant <code>positionByteOffset=0</code> */
-    public static final int positionByteOffset = 0;
-    /** Constant <code>colorByteOffset=positionByteOffset + positionBytesCount</code> */
-    public static final int colorByteOffset = positionByteOffset + positionBytesCount;
-    /** Constant <code>textureByteOffset=colorByteOffset + colorByteCount</code> */
-    public static final int textureByteOffset = colorByteOffset + colorByteCount;
-
-    // The amount of elements that a vertex has
-    /** Constant <code>elementCount=positionElementCount + colorElementCount + textureElementCount</code> */
-    public static final int elementCount = positionElementCount + colorElementCount + textureElementCount;
-    // The size of a vertex in bytes, like in C/C++: sizeof(Vertex)
-    /** Constant <code>stride=positionBytesCount + colorByteCount + textureByteCount</code> */
-    public static final int stride = positionBytesCount + colorByteCount + textureByteCount;
-
+    public void setXYZ(Vector3f vec) {
+        this.setXYZW(vec.x, vec.y, vec.z, 1f);
+    }
 
     public void setXYZ(float x, float y, float z) {
         this.setXYZW(x, y, z, 1f);
     }
 
-    public void setNormal(float x, float y, float z) {
-        this.normal = new float[] { x, y, z };
+    public void setNormal(Vector3f vec) {
+        this.setNormal(vec.x, vec.y, vec.z);
     }
 
-    public void setXYZ(Vector3f vec) {
-        this.setXYZW(vec.x, vec.y, vec.z, 1f);
+    public void setNormal(float x, float y, float z) {
+        this.normal = new float[] { x, y, z };
     }
 
     public void setRGB(float r, float g, float b) {
@@ -70,13 +74,7 @@ public class Vertex {
         this.rgba = new float[] { r, g, b, 1f };
     }
 
-    /**
-     * <p>
-     * getElements.
-     * </p>
-     *
-     * @return an array of float.
-     */
+
     public float[] getAllElements() {
         final float[] out = new float[Vertex.elementCount];
         int i = 0;
@@ -101,36 +99,19 @@ public class Vertex {
         return out;
     }
 
-    /**
-     * <p>
-     * getXYZW.
-     * </p>
-     *
-     * @return an array of float.
-     */
     public float[] getXYZW() {
         return new float[] { this.xyzw[0], this.xyzw[1], this.xyzw[2], this.xyzw[3] };
     }
 
-    /**
-     * <p>
-     * getRGBA.
-     * </p>
-     *
-     * @return an array of float.
-     */
     public float[] getRGBA() {
         return new float[] { this.rgba[0], this.rgba[1], this.rgba[2], this.rgba[3] };
     }
 
-    /**
-     * <p>
-     * getST.
-     * </p>
-     *
-     * @return an array of float.
-     */
     public float[] getST() {
         return new float[] { this.st[0], this.st[1] };
+    }
+
+    public float[] getNormal() {
+        return new float[] { this.normal[0], this.normal[1], this.normal[2] };
     }
 }

@@ -1,21 +1,15 @@
 package net.wohlfart.basic.states;
 
 
-import net.wohlfart.gl.elements.debug.PositionFrame;
 import net.wohlfart.gl.elements.hud.Hud;
 import net.wohlfart.gl.elements.hud.NullHud;
 import net.wohlfart.gl.elements.skybox.NullSkybox;
 import net.wohlfart.gl.elements.skybox.Skybox;
-import net.wohlfart.gl.renderer.IsRenderable;
+import net.wohlfart.gl.renderer.DefaultRenderBucket;
 import net.wohlfart.gl.renderer.ModelBucket;
 import net.wohlfart.gl.renderer.RenderBucket;
-import net.wohlfart.gl.renderer.RenderBucketImpl;
-import net.wohlfart.gl.shader.VertexLight;
-import net.wohlfart.gl.spatial.Model;
-import net.wohlfart.gl.spatial.ParticleEmitter;
+import net.wohlfart.gl.spatial.CelestialBody;
 
-import org.lwjgl.util.vector.Vector3f;
-import org.lwjgl.util.vector.Vector4f;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.InitializingBean;
@@ -29,20 +23,26 @@ final class AmbientState extends AbstractGraphicState implements InitializingBea
     private static final Logger LOGGER = LoggerFactory.getLogger(AmbientState.class);
 
     private Skybox skybox = NullSkybox.INSTANCE;
-    private RenderBucket elemBucket = new RenderBucketImpl();
+    private RenderBucket elemBucket = new DefaultRenderBucket();
+
     private Hud hud = NullHud.INSTANCE;
     private ModelBucket modelBucket;
+    private RenderBucket planetBucket;
 
 
     public void setSkybox(Skybox skybox) {
         this.skybox = skybox;
     }
 
+    public void setCelestialBucket(RenderBucket planetBucket) {
+        this.planetBucket = planetBucket;
+    }
+
     public void setModelBucket(ModelBucket modelBucket) {
         this.modelBucket = modelBucket;
     }
 
-    public void setElemBucket(RenderBucketImpl elemBucket) {
+    public void setElemBucket(DefaultRenderBucket elemBucket) {
         this.elemBucket = elemBucket;
     }
 
@@ -54,6 +54,7 @@ final class AmbientState extends AbstractGraphicState implements InitializingBea
     public void afterPropertiesSet() throws Exception {
         LOGGER.debug("<afterPropertiesSet>");
         Assert.notNull(skybox);
+        Assert.notNull(planetBucket);
         Assert.notNull(modelBucket);
         Assert.notNull(elemBucket);
         Assert.notNull(hud);
@@ -64,10 +65,12 @@ final class AmbientState extends AbstractGraphicState implements InitializingBea
         super.setup();
 
         skybox.setup();
+        planetBucket.setup();
         modelBucket.setup();
         elemBucket.setup();
         hud.setup();
 
+        /*
         for (int x = -5; x <=5; x++) {
             for (int z = -5; z <=5; z++) {
                 Model model = SceneCreator.loadModelFromFile("/models/cube/cube.obj");
@@ -88,6 +91,9 @@ final class AmbientState extends AbstractGraphicState implements InitializingBea
         modelBucket.addContent(l2);
 
         modelBucket.addContent(new ParticleEmitter()); // FIXME: the particles need normals for this to work
+        */
+
+        planetBucket.addContent(new CelestialBody(1L));
 
     }
 
@@ -100,6 +106,7 @@ final class AmbientState extends AbstractGraphicState implements InitializingBea
     @Override
     public void render() {
         skybox.render();
+        planetBucket.render();
         modelBucket.render();
         elemBucket.render();
         hud.render();

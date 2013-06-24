@@ -1,12 +1,10 @@
 package net.wohlfart.gl.texture;
 
-import static net.wohlfart.CustomAssert.assertEqualVec;
 import static org.junit.Assert.assertEquals;
 
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import org.lwjgl.util.vector.Vector3f;
 
 /**
  * <p>
@@ -55,54 +53,5 @@ public class PlanetTextureTest {
         assertEquals(1257, planetTexture.getWidth());
     }
 
-    /**
-     * <p>
-     * poleVectors.
-     * </p>
-     */
-    @Test
-    public void poleVectors() {
-        org.lwjgl.util.vector.Vector3f vec;
-
-        vec = planetTexture.getNormalVector(0, 0);
-        assertEqualVec(new Vector3f(0, +1, 0), vec);
-
-        vec = planetTexture.getNormalVector(width - 1, 0);
-        assertEqualVec(new Vector3f(0, +1, 0), vec);
-
-        vec = planetTexture.getNormalVector((width - 1) / 2, 0);
-        assertEqualVec(new Vector3f(0, +1, 0), vec);
-
-        vec = planetTexture.getNormalVector(0, height - 1);
-        assertEqualVec(new Vector3f(0, -1, 0), vec);
-
-        vec = planetTexture.getNormalVector(width - 1, height - 1);
-        assertEqualVec(new Vector3f(0, -1, 0), vec);
-
-        vec = planetTexture.getNormalVector((width - 1) / 2, height - 1);
-        assertEqualVec(new Vector3f(0, -1, 0), vec);
-    }
-
-    /**
-     * <p>
-     * equatorVectors.
-     * </p>
-     */
-    @Test
-    public void equatorVectors() {
-        Vector3f vec;
-
-        vec = planetTexture.getNormalVector(0, (height - 1) / 2);
-        assertEqualVec(new Vector3f(0, 0, +1), vec);
-
-        vec = planetTexture.getNormalVector((width - 1) / 4, (height - 1) / 2);
-        assertEqualVec(new Vector3f(+1, 0, 0), vec);
-
-        vec = planetTexture.getNormalVector((width - 1) / 2, (height - 1) / 2);
-        assertEqualVec(new Vector3f(0, 0, -1), vec);
-
-        vec = planetTexture.getNormalVector((int) (3f * ((float) width - 1) / 4f), (height - 1) / 2);
-        assertEqualVec(new Vector3f(-1, 0, 0), vec);
-    }
 
 }

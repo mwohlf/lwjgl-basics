@@ -19,7 +19,7 @@ import org.slf4j.LoggerFactory;
 // and: http://www.arcsynthesis.org/gltut/Positioning/Tut07%20The%20Perils%20of%20World%20Space.html
 // and: http://www.arcsynthesis.org/gltut/Positioning/Tutorial%2005.html
 class LayerImpl implements Layer {
-    /** Constant <code>LOGGER</code> */
+    
     protected static final Logger LOGGER = LoggerFactory.getLogger(LayerImpl.class);
 
     private final GraphicContextManager cxtManager = GraphicContextManager.INSTANCE;

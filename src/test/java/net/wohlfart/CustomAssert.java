@@ -3,25 +3,26 @@ package net.wohlfart;
 import static org.junit.Assert.assertEquals;
 
 import org.lwjgl.util.vector.Quaternion;
+import org.lwjgl.util.vector.Vector2f;
 import org.lwjgl.util.vector.Vector3f;
 
 /**
  * <p>
  * CustomAssert class.
  * </p>
- * 
- * 
- * 
- * 
+ *
+ *
+ *
+ *
  */
 public final class CustomAssert {
-    private static final float MAX_DIFF = 0.00001f;
+    private static final float MAX_DIFF = 0.001f;
 
     /**
      * <p>
      * assertEqualVec.
      * </p>
-     * 
+     *
      * @param vec1
      *            a {@link org.lwjgl.util.vector.Vector3f} object.
      * @param vec2
@@ -33,11 +34,17 @@ public final class CustomAssert {
         assertEquals("z element doesn't match", vec1.z, vec2.z, MAX_DIFF);
     }
 
+    public static void assertEqualVec(Vector2f vec1, Vector2f vec2) {
+        assertEquals("x element doesn't match", vec1.x, vec2.x, MAX_DIFF);
+        assertEquals("y element doesn't match", vec1.y, vec2.y, MAX_DIFF);
+    }
+
+
     /**
      * <p>
      * assertEqualQuaternion.
      * </p>
-     * 
+     *
      * @param quat1
      *            a {@link org.lwjgl.util.vector.Quaternion} object.
      * @param quat2

@@ -18,11 +18,11 @@ import org.lwjgl.opengl.GL30;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-/*
+/**
  * this creates a mesh for a single character
  */
 class CharMeshBuilder {
-    /** Constant <code>LOGGER</code> */
+
     protected static final Logger LOGGER = LoggerFactory.getLogger(CharMeshBuilder.class);
 
     private final GraphicContextManager cxtManager = GraphicContextManager.INSTANCE;
@@ -33,13 +33,6 @@ class CharMeshBuilder {
     private float screenX;
     private float screenY;
 
-    /**
-     * <p>
-     * build.
-     * </p>
-     *
-     * @return a {@link net.wohlfart.gl.shader.mesh.IRenderable} object.
-     */
     public IsRenderable build() {
         final float atlasWidth = atlas.getImage().getWidth();
         final float atlasHeight = atlas.getImage().getHeight();
@@ -106,11 +99,11 @@ class CharMeshBuilder {
 
         ShaderAttributeHandle.POSITION.enable();
         GL20.glVertexAttribPointer(ShaderAttributeHandle.POSITION.getLocation(),
-                Vertex.positionElementCount, GL11.GL_FLOAT, false, Vertex.stride, Vertex.positionByteOffset);
+                Vertex.POSITION_ELEM_COUNT, GL11.GL_FLOAT, false, Vertex.stride, Vertex.positionByteOffset);
 
         ShaderAttributeHandle.TEXTURE_COORD.enable();
         GL20.glVertexAttribPointer(ShaderAttributeHandle.TEXTURE_COORD.getLocation(),
-                Vertex.textureElementCount, GL11.GL_FLOAT, false, Vertex.stride, Vertex.textureByteOffset);
+                Vertex.TEXTURE_ELEM_COUNT, GL11.GL_FLOAT, false, Vertex.stride, Vertex.textureByteOffset);
 
         ShaderAttributeHandle.NORMAL.disable();
 

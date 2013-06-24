@@ -28,7 +28,8 @@ import org.springframework.util.Assert;
 
 /**
  * <p>
- * This class is bootstrapping the application and handles state changes within the application.
+ * This class is bootstrapping the application and
+ * also handles state changes within the application.
  * </p>
  */
 class Game implements InitializingBean {

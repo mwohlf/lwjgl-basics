@@ -10,7 +10,7 @@ import net.wohlfart.gl.elements.skybox.Skybox;
 import net.wohlfart.gl.renderer.ModelBucket;
 import net.wohlfart.gl.renderer.NullRenderBucket;
 import net.wohlfart.gl.renderer.RenderBucket;
-import net.wohlfart.gl.renderer.RenderBucketImpl;
+import net.wohlfart.gl.renderer.DefaultRenderBucket;
 import net.wohlfart.gl.spatial.ParticleEmitter;
 import net.wohlfart.gl.view.ElementPicker;
 
@@ -43,7 +43,7 @@ final class LightingState extends AbstractGraphicState implements InitializingBe
         this.modelBucket = modelBucket;
     }
 
-    public void setElemBucket(RenderBucketImpl elemBucket) {
+    public void setElemBucket(DefaultRenderBucket elemBucket) {
         this.elemBucket = elemBucket;
     }
 

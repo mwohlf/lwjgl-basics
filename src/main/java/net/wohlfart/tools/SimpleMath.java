@@ -52,67 +52,39 @@ public final class SimpleMath {
 
     // --------- trigeometric stuff
 
-    /**
-     * <p>
-     * sin.
-     * </p>
-     *
-     * @param f
-     *            a float.
-     * @return a float.
-     */
     public static float sin(float f) {
         return (float) Math.sin(f);
     }
 
-    /**
-     * <p>
-     * cos.
-     * </p>
-     *
-     * @param f
-     *            a float.
-     * @return a float.
-     */
     public static float cos(float f) {
         return (float) Math.cos(f);
     }
 
-    /**
-     * <p>
-     * tan.
-     * </p>
-     *
-     * @param angle
-     *            a float.
-     * @return a float.
-     */
     public static float tan(float angle) {
         return (float) Math.tan(angle);
     }
 
-    /**
-     * <p>
-     * rad2deg.
-     * </p>
-     *
-     * @param rad
-     *            a float.
-     * @return a float.
-     */
+    private static float asin(float f) {
+        return (float) Math.asin(f);
+    }
+
+    public static float acos(float f) {
+        return (float) Math.acos(f);
+    }
+
+    public static float atan(float f) {
+        return (float) Math.atan(f);
+    }
+
+    private static float atan2(float y, float x) {
+        return (float) Math.atan2(y,x);
+    }
+
+
     public static float rad2deg(final float rad) {
         return rad * 360f / SimpleMath.TWO_PI;
     }
 
-    /**
-     * <p>
-     * deg2rad.
-     * </p>
-     *
-     * @param deg
-     *            a float.
-     * @return a float.
-     */
     public static float deg2rad(final float deg) {
         return deg * SimpleMath.TWO_PI / 360f;
     }
@@ -710,6 +682,44 @@ public final class SimpleMath {
 
         float distance = SimpleMath.distance(base, pos);
         return distance;
+    }
+
+    /**
+     * convert a 2D texture position into a 3D sphere vector
+     *
+     * 0/0 is top left, the whole texture is wrapped around a sphere
+     *
+     * height, width of the texture in pixel
+     * x,y the position inside the texture
+     */
+    public static Vector3f getNormalVector(float x, float y) {
+        final float latitude = (float) Math.PI * y; // [0 .. PI] (north-south)
+        final float longitude = (float) Math.PI * 2 * x ; // [0 .. TWO_PI]
+
+        final float xx = (float) Math.sin(longitude) * (float) Math.sin(latitude); // 0 -> 0; HALF_PI -> 1 ; PI -> 0
+        final float yy = (float) Math.cos(latitude); // 0 -> 1; HALF_PI -> 0 ; PI -> -1
+        final float zz = (float) Math.cos(longitude) * (float) Math.sin(latitude); // 0 -> 1;...
+
+        return new Vector3f(xx, yy, zz);
+    }
+
+
+    /**
+     * convert a 3D sphere vector into a 2D texture position
+     *
+     * see: http://stackoverflow.com/questions/5674149/3d-coordinates-on-a-sphere-to-latitude-and-longitude
+     */
+    public static Vector2f getPositionVector(Vector3f vec) {
+        final float theta = (float) Math.acos(vec.y / vec.length()); // [-1...+1] -> [0..PI]
+        final float phi = (float) Math.atan2(vec.x, vec.z);   // [-oo...+oo] -> [-PI...+PI]
+
+        final float yy = (((float) Math.PI - theta) / (float) Math.PI);     // [0..PI] -> [1...0]
+        float xx = ( phi / ((float) Math.PI * 2));  // [-PI...+PI] -> [-1/2 ... + 1/2] -> [0...1]
+        if (xx < 0) {
+            xx += 1f; // wrap around
+        }
+
+        return new Vector2f(xx, yy);
     }
 
 }

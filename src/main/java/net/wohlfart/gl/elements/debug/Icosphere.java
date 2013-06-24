@@ -41,26 +41,85 @@ public class Icosphere extends AbstractRenderable {
                     new Vector3f(-t, 0, 1), }));
 
     private List<Integer> indices = Arrays.asList(new Integer[] {
-            0, 11, 11, 5, 5, 0,
-            0, 5, 5, 1, 1, 0,
-            0, 1, 1, 7, 7, 0,
-            0, 7, 7, 10, 10, 0,
-            0, 10, 10, 11, 11, 0,
-            1, 5, 5, 9, 9, 1,
-            5, 11, 11, 4, 4, 5,
-            11, 10, 10, 2, 2, 11,
-            10, 7, 7, 6, 6, 10,
-            7, 1, 1, 8, 8, 7,
-            3, 9, 9, 4, 4, 3,
-            3, 4, 4, 2, 2, 3,
-            3, 2, 2, 6, 6, 3,
-            3, 6, 6, 8, 8, 3,
-            3, 8, 8, 9, 9, 3,
-            4, 9, 9, 5, 5, 4,
-            2, 4, 4, 11, 11, 2,
-            6, 2, 2, 10, 10, 6,
-            8, 6, 6, 7, 7, 8,
-            9, 8, 8, 1, 1, 9,
+              0, 11,
+             11,  5,
+              5,  0,
+
+              0,  5,
+              5,  1,
+              1,  0,
+
+              0,  1,
+              1,  7,
+              7,  0,
+
+              0,  7,
+              7, 10,
+             10,  0,
+
+              0, 10,
+             10, 11,
+             11,  0,
+
+              1,  5,
+              5,  9,
+              9,  1,
+
+              5, 11,
+             11,  4,
+              4,  5,
+
+             11, 10,
+             10,  2,
+              2, 11,
+
+             10,  7,
+             7,   6,
+             6, 10,
+
+             7,  1,
+             1,  8,
+             8,  7,
+
+             3,  9,
+             9, 4,
+             4,  3,
+
+             3,  4,
+             4,  2,
+             2,  3,
+
+             3,  2,
+             2,  6,
+             6,  3,
+
+             3,  6,
+             6, 8,
+             8,  3,
+
+             3,  8,
+             8,  9,
+             9,  3,
+
+             4,  9,
+             9,  5,
+             5,  4,
+
+             2,  4,
+             4,  11,
+            11,  2,
+
+             6,  2,
+             2,  10,
+            10,  6,
+
+             8,  6,
+             6,  7,
+             7,  8,
+
+             9,  8,
+             8,  1,
+             1,  9,
     }); // @formatter:on
 
     /**
@@ -76,7 +135,7 @@ public class Icosphere extends AbstractRenderable {
      * <p>
      * Constructor for Icosphere.
      * </p>
-     * 
+     *
      * @param lod
      *            a int.
      */
@@ -88,7 +147,7 @@ public class Icosphere extends AbstractRenderable {
      * <p>
      * Constructor for Icosphere.
      * </p>
-     * 
+     *
      * @param lod
      *            a int.
      * @param radius
@@ -133,7 +192,7 @@ public class Icosphere extends AbstractRenderable {
         final int indicesPerSide = 6;
         final int newIndices = indicesPerSide * 4;
 
-        for (int i = 0; i < indices.size(); i += indicesPerSide) { // 6 is the number of indices per side
+        for (int i = 0; i < indices.size(); i += indicesPerSide) {
 
             // get the start of the lines of a side
             final Vector3f v1 = vertices.get(indices.get(i + 0)); // top

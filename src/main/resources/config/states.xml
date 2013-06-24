@@ -34,6 +34,7 @@
 <!--         <property name="modelBucket" ref="emptyModelBucket" /> -->
         <property name="elemBucket" ref="emptyBucket" />
         <property name="modelBucket" ref="originBucket" />
+        <property name="celestialBucket" ref="celestialBucket" />
     </bean>
 
 
@@ -92,13 +93,18 @@
     </bean>
 
 
+    <bean id="celestialBucket" class="net.wohlfart.gl.renderer.CelestialBodyBucket">
+        <property name="camera" ref="camera" />
+        <property name="graphicContext" ref="lightingShader" />
+    </bean>
 
-    <bean id="emptyBucket" class="net.wohlfart.gl.renderer.RenderBucketImpl">
+
+    <bean id="emptyBucket" class="net.wohlfart.gl.renderer.DefaultRenderBucket">
         <property name="camera" ref="camera" />
         <property name="graphicContext" ref="wireframeShader" />
     </bean>
 
-    <bean id="elemBucket" class="net.wohlfart.gl.renderer.RenderBucketImpl">
+    <bean id="elemBucket" class="net.wohlfart.gl.renderer.DefaultRenderBucket">
         <property name="camera" ref="camera" />
         <property name="graphicContext" ref="wireframeShader" />
         <property name="content" ref="elemContent" />

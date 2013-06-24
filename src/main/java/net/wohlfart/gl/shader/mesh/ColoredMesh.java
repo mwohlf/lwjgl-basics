@@ -52,7 +52,7 @@ public class ColoredMesh implements IsRenderable {
      * </p>
      */
     public static class Builder {
-        /** Constant <code>LOGGER</code> */
+        
         protected static final Logger LOGGER = LoggerFactory.getLogger(Builder.class);
 
         /**
@@ -108,11 +108,11 @@ public class ColoredMesh implements IsRenderable {
 
             ShaderAttributeHandle.POSITION.enable();
             GL20.glVertexAttribPointer(ShaderAttributeHandle.POSITION.getLocation(),
-                    Vertex.positionElementCount, GL11.GL_FLOAT, false, Vertex.colorByteCount + Vertex.positionBytesCount, Vertex.positionByteOffset);
+                    Vertex.POSITION_ELEM_COUNT, GL11.GL_FLOAT, false, Vertex.colorByteCount + Vertex.positionBytesCount, Vertex.positionByteOffset);
 
             ShaderAttributeHandle.COLOR.enable();
             GL20.glVertexAttribPointer(ShaderAttributeHandle.COLOR.getLocation(),
-                    Vertex.colorElementCount, GL11.GL_FLOAT, false, Vertex.colorByteCount + Vertex.positionBytesCount, Vertex.colorByteOffset);
+                    Vertex.COLOR_ELEM_COUNT, GL11.GL_FLOAT, false, Vertex.colorByteCount + Vertex.positionBytesCount, Vertex.colorByteOffset);
 
             ShaderAttributeHandle.NORMAL.disable();
 

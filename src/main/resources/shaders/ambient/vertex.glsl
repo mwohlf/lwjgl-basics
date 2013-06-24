@@ -72,6 +72,9 @@ void main(void) {
 
        diffuse = diffuse * (1.0 / (1.0 + (lights[index].attenuation * distance * distance)));
 
+
+       diffuse = 0.5; // for testing only
+
        // Multiply the color by the illumination level. It will be interpolated across the triangle.
        pass_Light = pass_Light + lights[index].diffuse * diffuse;
     }

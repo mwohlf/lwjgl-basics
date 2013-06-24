@@ -10,7 +10,7 @@ import org.slf4j.LoggerFactory;
  * </p>
  */
 public class DefaultShaderProgram extends AbstractShaderProgram {
-    /** Constant <code>LOGGER</code> */
+    
     protected static final Logger LOGGER = LoggerFactory.getLogger(DefaultShaderProgram.class);
 
     private int vertexShaderId = -1;

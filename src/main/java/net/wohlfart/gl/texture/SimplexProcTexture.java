@@ -3,6 +3,7 @@ package net.wohlfart.gl.texture;
 import java.awt.Color;
 
 import net.wohlfart.tools.ColorGradient;
+import net.wohlfart.tools.SimpleMath;
 import net.wohlfart.tools.SimplexNoise;
 
 import org.lwjgl.util.vector.Vector3f;
@@ -47,7 +48,7 @@ public class SimplexProcTexture extends ProceduralTexture {
 
         for (int x = 0; x < width; x++) {
             for (int y = 0; y < height; y++) {
-                final Vector3f vector = getNormalVector(x, y);
+                final Vector3f vector = SimpleMath.getNormalVector((float)x/(float)width, (float)y/(float)height);
                 final double noise = createNoise(vector.x, vector.y, vector.z, w, persistence, octaves);
                 final Color color = gradient.getColor(noise);
                 setPixel(x, y, color, data);

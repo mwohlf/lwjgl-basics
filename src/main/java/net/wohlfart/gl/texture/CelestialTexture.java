@@ -27,7 +27,7 @@ public class CelestialTexture implements ITexture {
      * <p>
      * Constructor for CelestialTexture.
      * </p>
-     * 
+     *
      * @param radius
      *            a float.
      * @param celestialType
@@ -47,7 +47,7 @@ public class CelestialTexture implements ITexture {
      * <p>
      * Constructor for CelestialTexture.
      * </p>
-     * 
+     *
      * @param width
      *            a int.
      * @param height
@@ -105,8 +105,9 @@ public class CelestialTexture implements ITexture {
     }
 
     /**
+     * this does a 2D to 3D transformation
      * 0/0 is top left, the whole texture is wrapped around the celestial object
-     * 
+     *
      * @return a vector with each element [0..1]
      */
     final Vector3f getNormalVector(final int x, final int y) {
@@ -178,7 +179,7 @@ public class CelestialTexture implements ITexture {
      * <p>
      * Getter for the field <code>width</code>.
      * </p>
-     * 
+     *
      * @return a int.
      */
     public int getWidth() {
@@ -189,7 +190,7 @@ public class CelestialTexture implements ITexture {
      * <p>
      * Getter for the field <code>height</code>.
      * </p>
-     * 
+     *
      * @return a int.
      */
     public int getHeight() {

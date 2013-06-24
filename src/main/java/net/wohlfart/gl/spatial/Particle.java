@@ -106,6 +106,7 @@ public class Particle implements PoolableObject {
             for (int i = 0; i < vertices.length; i++) {
                verticesBuffer.put(vertices[i].getXYZW());
                verticesBuffer.put(vertices[i].getRGBA());
+               verticesBuffer.put(vertices[i].getNormal());
                verticesBuffer.put(vertices[i].getST());
             }
             return verticesBuffer;
@@ -123,32 +124,38 @@ public class Particle implements PoolableObject {
                     setXYZ(vectors[0].x, vectors[0].y, vectors[0].z);
                     setRGB(1, 0, 0);
                     setST(0, 0);
+                    setNormal(0,0,-1);
                 }},
                 new Vertex() {{
                     setXYZ(vectors[1].x, vectors[1].y, vectors[1].z);
                     setRGB(0, 1, 0);
                     setST(0, 1);
+                    setNormal(0,0,-1);
                 }},
                 new Vertex() {{
                     setXYZ(vectors[2].x, vectors[2].y, vectors[2].z);
                     setRGB(0, 0, 1);
                     setST(1, 1);
+                    setNormal(0,0,-1);
                 }},
 
                 new Vertex() {{
                     setXYZ(vectors[2].x, vectors[2].y, vectors[2].z);
                     setRGB(0, 0, 1);
                     setST(1, 1);
+                    setNormal(0,0,-1);
                 }},
                 new Vertex() {{
                     setXYZ(vectors[3].x, vectors[3].y, vectors[3].z);
                     setRGB(1, 1, 1);
                     setST(1, 0);
+                    setNormal(0,0,-1);
                 }},
                 new Vertex() {{
                     setXYZ(vectors[0].x, vectors[0].y, vectors[0].z);
                     setRGB(1, 0, 0);
                     setST(0, 0);
+                    setNormal(0,0,-1);
                 }}
                 };
         // @formatter:on

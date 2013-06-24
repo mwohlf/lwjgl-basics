@@ -1,5 +1,6 @@
 package net.wohlfart.tools;
 
+import static net.wohlfart.CustomAssert.assertEqualVec;
 import static org.junit.Assert.assertEquals;
 
 import java.util.Random;
@@ -10,6 +11,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.lwjgl.util.vector.Quaternion;
+import org.lwjgl.util.vector.Vector2f;
 import org.lwjgl.util.vector.Vector3f;
 
 /**
@@ -144,6 +146,68 @@ public class AnotherSimpleMathTest extends VectorTestBase {
             assertEquals(0, Vector3f.dot(up, rght), 0.000001);
             SimpleMath.rotate(q, rand.nextFloat(), new Vector3f(rand.nextFloat(), rand.nextFloat(), rand.nextFloat()));
         }
+    }
+
+
+    @Test
+    public void poleVectors() {
+        int width = 1257;
+        int height = 1257;  // we get rounding problems here !
+        Vector3f vec;
+
+        vec = SimpleMath.getNormalVector(0, 0);
+        assertEqualVec(new Vector3f(0, +1, 0), vec);
+
+        vec = SimpleMath.getNormalVector(1, 0);
+        assertEqualVec(new Vector3f(0, +1, 0), vec);
+
+        vec = SimpleMath.getNormalVector(0.5f, 0);
+        assertEqualVec(new Vector3f(0, +1, 0), vec);
+
+        vec = SimpleMath.getNormalVector(0, 1);
+        assertEqualVec(new Vector3f(0, -1, 0), vec);
+
+        vec = SimpleMath.getNormalVector(1, 1);
+        assertEqualVec(new Vector3f(0, -1, 0), vec);
+
+        vec = SimpleMath.getNormalVector(0.5f, 1);
+        assertEqualVec(new Vector3f(0, -1, 0), vec);
+    }
+
+
+    @Test
+    public void equatorVectors() {
+        Vector3f vec;
+
+        vec = SimpleMath.getNormalVector(0, 0.5f);
+        assertEqualVec(new Vector3f(0, 0, +1), vec);
+
+        vec = SimpleMath.getNormalVector(0.25f, 0.5f);
+        assertEqualVec(new Vector3f(+1, 0, 0), vec);
+
+        vec = SimpleMath.getNormalVector(0.5f, 0.5f);
+        assertEqualVec(new Vector3f(0, 0, -1), vec);
+
+        vec = SimpleMath.getNormalVector(0.75f, 0.5f);
+        assertEqualVec(new Vector3f(-1, 0, 0), vec);
+    }
+
+
+    @Test
+    public void equatorVectorsRev() {
+        Vector2f vec;
+
+        vec = SimpleMath.getPositionVector(new Vector3f(0, 0, +1));
+        assertEqualVec(new Vector2f(0f, 0.5f), vec);
+
+        vec = SimpleMath.getPositionVector(new Vector3f(+1, 0, 0));
+        assertEqualVec(new Vector2f(0.25f, 0.5f), vec);
+
+        vec = SimpleMath.getPositionVector(new Vector3f(0, 0, -1));
+        assertEqualVec(new Vector2f(0.5f, 0.5f), vec);
+
+        vec = SimpleMath.getPositionVector(new Vector3f(-1, 0, 0));
+        assertEqualVec(new Vector2f(0.75f, 0.5f), vec);
     }
 
 }

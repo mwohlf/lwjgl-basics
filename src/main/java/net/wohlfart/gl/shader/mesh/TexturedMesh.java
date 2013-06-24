@@ -70,7 +70,7 @@ public class TexturedMesh implements IsRenderable {
 
 
     public static class Builder {
-        /** Constant <code>LOGGER</code> */
+        
         protected static final Logger LOGGER = LoggerFactory.getLogger(Builder.class);
 
         private String textureFilename;
@@ -169,15 +169,15 @@ public class TexturedMesh implements IsRenderable {
 
             ShaderAttributeHandle.POSITION.enable();
             GL20.glVertexAttribPointer(ShaderAttributeHandle.POSITION.getLocation(),
-                    Vertex.positionElementCount, GL11.GL_FLOAT, false, Vertex.stride, Vertex.positionByteOffset);
+                    Vertex.POSITION_ELEM_COUNT, GL11.GL_FLOAT, false, Vertex.stride, Vertex.positionByteOffset);
 
             ShaderAttributeHandle.COLOR.enable();
             GL20.glVertexAttribPointer(ShaderAttributeHandle.COLOR.getLocation(),
-                    Vertex.colorElementCount, GL11.GL_FLOAT, false, Vertex.stride, Vertex.colorByteOffset);
+                    Vertex.COLOR_ELEM_COUNT, GL11.GL_FLOAT, false, Vertex.stride, Vertex.colorByteOffset);
 
             ShaderAttributeHandle.TEXTURE_COORD.enable();
             GL20.glVertexAttribPointer(ShaderAttributeHandle.TEXTURE_COORD.getLocation(),
-                    Vertex.textureElementCount, GL11.GL_FLOAT, false, Vertex.stride, Vertex.textureByteOffset);
+                    Vertex.TEXTURE_ELEM_COUNT, GL11.GL_FLOAT, false, Vertex.stride, Vertex.textureByteOffset);
 
             ShaderAttributeHandle.NORMAL.disable();
 

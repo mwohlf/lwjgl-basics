@@ -14,4 +14,6 @@ out vec4 gl_FragColor;
 
 void main(void) {
     gl_FragColor = texture2D(texture01, pass_TextureCoord) * pass_Light;
+
+    gl_FragColor = pass_Light; // for testing only
 }
