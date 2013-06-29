@@ -1,52 +1,38 @@
 package net.wohlfart.basic.states;
 
 /**
- * <p>
- * A GameState is a set of elements that can be rendered together with some business logic and
- * </p>
- * 
- * 
- * 
+ * A GameState is a set of elements that can be rendered, it also contains some business logic that might be
+ * triggered during the update method call.
  */
-public interface GameState {
+public interface GameState { // REVIEWED
 
     /**
-     * <p>
-     * The initial setup of the state.
-     * </p>
+     * The initial setup of the state, must be called before this object can be used.
      */
     void setup();
 
     /**
-     * <p>
      * A periodic update of this state.
-     * </p>
-     * 
+     *
      * @param tpf
-     *            a float the time since the last update
+     *            a float providing the time since the last update call
      */
     void update(float tpf);
 
     /**
-     * <p>
-     * Do render in the current graphic context.
-     * </p>
+     * call To render in the current graphic context.
      */
     void render();
 
     /**
-     * <p>
      * Check if this state is terminated by the user or some other event.
-     * </p>
-     * 
+     *
      * @return a boolean value of true when this state is done and needs to be switched out.
      */
     boolean isDone();
 
     /**
-     * <p>
      * Destroy instance and free all resources.
-     * </p>
      */
     void destroy();
 

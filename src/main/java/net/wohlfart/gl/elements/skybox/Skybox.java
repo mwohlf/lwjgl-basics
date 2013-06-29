@@ -1,6 +1,6 @@
 package net.wohlfart.gl.elements.skybox;
 
-import net.wohlfart.gl.renderer.IsRenderable;
+import net.wohlfart.basic.elements.IsRenderable;
 
 public interface Skybox extends IsRenderable {
 

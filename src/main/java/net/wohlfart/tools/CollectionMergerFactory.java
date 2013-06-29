@@ -3,7 +3,7 @@ package net.wohlfart.tools;
 import java.util.Collection;
 import java.util.HashSet;
 
-import net.wohlfart.gl.renderer.IsRenderable;
+import net.wohlfart.basic.elements.IsRenderable;
 
 import org.springframework.beans.factory.FactoryBean;
 

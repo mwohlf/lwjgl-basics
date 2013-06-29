@@ -1,4 +1,4 @@
-package net.wohlfart.gl.renderer;
+package net.wohlfart.basic.elements;
 
 public interface IsUpdateable {
 

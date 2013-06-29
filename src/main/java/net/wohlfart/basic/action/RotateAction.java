@@ -1,11 +1,11 @@
-package net.wohlfart.gl.action;
+package net.wohlfart.basic.action;
 
 import net.wohlfart.tools.SimpleMath;
 
 import org.lwjgl.util.vector.Quaternion;
 import org.lwjgl.util.vector.Vector3f;
 
-public final class RotateAction implements Action {
+public final class RotateAction implements SpatialActor.Action {
 
     private float rotTime; // the time for one single rotation
     private Vector3f axis;
@@ -29,10 +29,10 @@ public final class RotateAction implements Action {
     }
 
     @Override
-    public void perform(Actor actor, float time) {
-        final Quaternion q = actor.getRotation();
+    public void perform(SpatialActor spatialActor, float time) {
+        final Quaternion q = spatialActor.getRotation();
         SimpleMath.rotate(q, time * SimpleMath.TWO_PI / rotTime, axis);
-        actor.setRotation(q);
+        spatialActor.setRotation(q);
     }
 
 }

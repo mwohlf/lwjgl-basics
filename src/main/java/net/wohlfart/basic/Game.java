@@ -1,8 +1,6 @@
 package net.wohlfart.basic;
 
 import java.io.IOException;
-import java.io.InputStream;
-import java.net.URL;
 import java.nio.ByteBuffer;
 
 import net.wohlfart.basic.states.GameState;
@@ -12,7 +10,7 @@ import net.wohlfart.basic.time.TimerImpl;
 import net.wohlfart.gl.input.InputDispatcher;
 import net.wohlfart.gl.input.InputSource;
 import net.wohlfart.gl.shader.GraphicContextManager;
-import net.wohlfart.tools.PNGDecoder;
+import net.wohlfart.gl.view.Camera;
 
 import org.lwjgl.LWJGLException;
 import org.lwjgl.opengl.ContextAttribs;
@@ -27,12 +25,10 @@ import org.springframework.beans.factory.InitializingBean;
 import org.springframework.util.Assert;
 
 /**
- * <p>
  * This class is bootstrapping the application and
  * also handles state changes within the application.
- * </p>
  */
-class Game implements InitializingBean {
+class Game implements InitializingBean { // REVIEWED
     private static final Logger LOGGER = LoggerFactory.getLogger(Game.class);
 
     protected final GraphicContextManager graphContext = GraphicContextManager.INSTANCE;
@@ -43,12 +39,14 @@ class Game implements InitializingBean {
     protected Settings settings;
     protected ResourceManager resourceManager;
     protected Clock globalClock;
+    protected Camera camera;
     protected InputSource inputSource;
     protected InputDispatcher inputDispatcher;
 
 
     /** we need to remember the initial display mode so we can reset it on exit */
     private DisplayMode origDisplayMode;
+
 
     public void setGameSettings(Settings settings) {
         this.settings = settings;
@@ -60,6 +58,10 @@ class Game implements InitializingBean {
 
     public void setGlobalClock(Clock globalClock) {
         this.globalClock = globalClock;
+    }
+
+    public void setCamera(Camera camera) {
+        this.camera = camera;
     }
 
     public void setInputSource(InputSource userInputSource) {
@@ -74,10 +76,12 @@ class Game implements InitializingBean {
         this.initialState = initialState;
     }
 
+
     @Override
     public void afterPropertiesSet() throws Exception {
         LOGGER.debug("<afterPropertiesSet>");
         Assert.notNull(settings);
+        Assert.notNull(camera);
         Assert.notNull(resourceManager);
         Assert.notNull(globalClock);
         Assert.notNull(inputSource);
@@ -85,9 +89,7 @@ class Game implements InitializingBean {
     }
 
     /**
-     * <p>
      * Entry point for the application sets the initial state and fire up the main loop.
-     * </p>
      */
     void start() {
         try {
@@ -103,10 +105,8 @@ class Game implements InitializingBean {
     }
 
     /**
-     * <p>
      * This is the main loop that does all the work,
      * this method returns when the application is exited by the user.
-     * </p>
      */
     private void runApplicationLoop() {
         final TimerImpl globalTimer = new TimerImpl(globalClock);
@@ -128,15 +128,15 @@ class Game implements InitializingBean {
     }
 
     /**
-     * setup a OpenGL 3.3 environment, side effect is fixing height/width in the settings
+     * Setup a OpenGL 3.3 environment, side effect is fixing height/width in the settings.
      *
      * @throws IOException, LWJGLException
      */
     private void startPlatform() throws LWJGLException, IOException {
         Display.setIcon(new ByteBuffer[] { // @formatter:off
-                loadIcon(resourceManager.getGfxUrl("icons/main128.png")),
-                loadIcon(resourceManager.getGfxUrl("icons/main32.png")),
-                loadIcon(resourceManager.getGfxUrl("icons/main16.png")),
+                resourceManager.loadIcon(resourceManager.getGfxUrl("icons/main128.png")),
+                resourceManager.loadIcon(resourceManager.getGfxUrl("icons/main32.png")),
+                resourceManager.loadIcon(resourceManager.getGfxUrl("icons/main16.png")),
         }); // @formatter:on
         if (settings.getFullscreen()) {
             setupFullscreen();
@@ -157,6 +157,7 @@ class Game implements InitializingBean {
 
         // wire the stuff after the display has been created and the settings have been fixed
         graphContext.setSettings(settings);
+        graphContext.setCamera(camera);
         graphContext.setInputDispatcher(inputDispatcher);
         // activate inputs
         inputSource.setInputDispatcher(inputDispatcher);
@@ -168,9 +169,9 @@ class Game implements InitializingBean {
         LOGGER.info("max. Texture Image Units: " + GL11.glGetInteger(GL20.GL_MAX_TEXTURE_IMAGE_UNITS));
     }
 
-    // see: http://lwjgl.org/forum/index.php/topic,2951.0.html
-    // for more about setting up a display...
     private void setupWindow() throws LWJGLException {
+        // see: http://lwjgl.org/forum/index.php/topic,2951.0.html
+        // for more about setting up a display...
         final PixelFormat pixelFormat = new PixelFormat();
         final ContextAttribs contextAtributes = new ContextAttribs(3, 3).withForwardCompatible(true).withProfileCore(true);
         Display.setDisplayMode(new DisplayMode(settings.getWidth(), settings.getHeight()));
@@ -210,12 +211,8 @@ class Game implements InitializingBean {
     }
 
     /**
-     * <p>
-     * Setter for the field <code>currentState</code>.
-     * </p>
-     *
-     * @param newState
-     *            a {@link net.wohlfart.basic.states.GameStateEnum} object.
+     * Setter for the field <code>currentState</code>, destroy() is called on the current state
+     * and setup() is called on the new state.
      */
     public void setCurrentState(final GameState newState) {
         currentState.destroy();
@@ -239,16 +236,6 @@ class Game implements InitializingBean {
         graphContext.destroy();
         globalClock.destroy();
         inputSource.destroy();
-    }
-
-    private ByteBuffer loadIcon(URL url) throws IOException {
-        try (InputStream is = url.openStream()) {
-            final PNGDecoder decoder = new PNGDecoder(is);
-            final ByteBuffer byteBuffer = ByteBuffer.allocateDirect(4 * decoder.getWidth() * decoder.getHeight());
-            decoder.decode(byteBuffer, decoder.getWidth() * 4, PNGDecoder.Format.RGBA);
-            byteBuffer.flip();
-            return byteBuffer;
-        }
     }
 
 }

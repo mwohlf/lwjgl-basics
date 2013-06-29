@@ -5,7 +5,7 @@ import java.nio.IntBuffer;
 import java.util.ArrayList;
 import java.util.List;
 
-import net.wohlfart.gl.renderer.IsRenderable;
+import net.wohlfart.basic.elements.IsRenderable;
 import net.wohlfart.gl.shader.ShaderAttributeHandle;
 import net.wohlfart.tools.SimpleMath;
 

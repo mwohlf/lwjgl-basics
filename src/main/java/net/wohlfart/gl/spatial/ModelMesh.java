@@ -7,7 +7,7 @@ import java.nio.ByteBuffer;
 import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
 
-import net.wohlfart.gl.renderer.IsRenderable;
+import net.wohlfart.basic.elements.IsRenderable;
 import net.wohlfart.gl.shader.ShaderAttributeHandle;
 import net.wohlfart.tools.PNGDecoder;
 import net.wohlfart.tools.PNGDecoder.Format;

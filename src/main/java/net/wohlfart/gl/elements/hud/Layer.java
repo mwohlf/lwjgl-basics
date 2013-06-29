@@ -1,7 +1,7 @@
 package net.wohlfart.gl.elements.hud;
 
+import net.wohlfart.basic.elements.IsRenderable;
 import net.wohlfart.gl.elements.hud.widgets.CharAtlas;
-import net.wohlfart.gl.renderer.IsRenderable;
 
 /**
  * <p>

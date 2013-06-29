@@ -3,8 +3,8 @@ package net.wohlfart.gl.spatial;
 import java.util.HashSet;
 import java.util.Set;
 
+import net.wohlfart.basic.elements.IsRenderable;
 import net.wohlfart.gl.elements.AbstractRenderable;
-import net.wohlfart.gl.renderer.IsRenderable;
 import net.wohlfart.gl.shader.ShaderAttributeHandle;
 import net.wohlfart.gl.shader.mesh.SimpleMesh;
 import net.wohlfart.tools.SimpleMath;

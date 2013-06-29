@@ -1,4 +1,4 @@
-package net.wohlfart.gl.renderer;
+package net.wohlfart.basic.container;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -8,11 +8,11 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import net.wohlfart.gl.shader.ShaderUniformHandle;
+import net.wohlfart.basic.elements.IsRenderable;
+import net.wohlfart.basic.elements.SpatialEntity;
 import net.wohlfart.gl.shader.VertexLight;
 import net.wohlfart.gl.spatial.Emitter;
 import net.wohlfart.gl.spatial.Model;
-import net.wohlfart.gl.spatial.Spatial;
 import net.wohlfart.gl.view.PickingRay;
 import net.wohlfart.tools.SimpleMath;
 
@@ -22,7 +22,7 @@ import org.lwjgl.util.vector.Vector3f;
  * <p>
  * A set of Renderables that use the same GraphicContext.
  */
-public class ModelBucket extends AbstractRenderBucket implements RenderBucket {
+public class ModelBucket extends DefaultRenderSet<IsRenderable> {
 
     protected Set<Model> models = new HashSet<>(10100);
     protected Set<Emitter> emitters = new HashSet<>(10100);
@@ -50,8 +50,8 @@ public class ModelBucket extends AbstractRenderBucket implements RenderBucket {
     }
 
     @Override
-    public void addContent(IsRenderable renderable) {
-        renderables.add(renderable);
+    public boolean add(IsRenderable renderable) {
+        return renderables.add(renderable);
     }
 
     public void addContent(VertexLight light) {
@@ -59,7 +59,7 @@ public class ModelBucket extends AbstractRenderBucket implements RenderBucket {
     }
 
 
-    /** {@inheritDoc} */
+    /*
     @Override
     public void render() {
         super.prepareRender();
@@ -71,14 +71,14 @@ public class ModelBucket extends AbstractRenderBucket implements RenderBucket {
         for (final Emitter emitter : emitters) {
             emitter.render();
         }
-        for (final Spatial model : models) {
+        for (final SpatialEntity model : models) {
             model.render();
         }
         for (final IsRenderable renderable : renderables) {
             renderable.render();
         }
     }
-
+*/
     @Override
     public void update(float timeInSec) {
         for (final Model model : models) {
@@ -109,9 +109,9 @@ public class ModelBucket extends AbstractRenderBucket implements RenderBucket {
                 list.add(model);
             }
 
-            Collections.sort(list, new Comparator<Spatial>() {
+            Collections.sort(list, new Comparator<SpatialEntity>() {
                 @Override
-                public int compare(Spatial o1, Spatial o2) {
+                public int compare(SpatialEntity o1, SpatialEntity o2) {
                     float f1 = SimpleMath.distance(ray.getStart(), o1.getPosition());
                     float f2 = SimpleMath.distance(ray.getStart(), o2.getPosition());
                     return Float.compare(f1, f2);

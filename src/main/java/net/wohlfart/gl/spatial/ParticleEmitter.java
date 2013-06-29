@@ -9,8 +9,8 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 
+import net.wohlfart.basic.elements.IsRenderable;
 import net.wohlfart.gl.elements.AbstractRenderable;
-import net.wohlfart.gl.renderer.IsRenderable;
 import net.wohlfart.gl.shader.Vertex;
 import net.wohlfart.gl.shader.mesh.ParticleMesh;
 import net.wohlfart.tools.PNGDecoder;

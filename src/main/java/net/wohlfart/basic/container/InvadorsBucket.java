@@ -1,11 +1,11 @@
-package net.wohlfart.gl.renderer;
+package net.wohlfart.basic.container;
 
 import java.util.List;
 
+import net.wohlfart.basic.action.OrbitAction;
+import net.wohlfart.basic.elements.SpatialEntity;
 import net.wohlfart.basic.states.SceneCreator;
-import net.wohlfart.gl.action.OrbitAction;
 import net.wohlfart.gl.spatial.Model;
-import net.wohlfart.gl.spatial.Spatial;
 import net.wohlfart.gl.view.PickingRay;
 
 import org.lwjgl.util.vector.Vector3f;
@@ -30,15 +30,15 @@ public class InvadorsBucket extends ModelBucket {
 
         int delta = MIN_MODEL_COUNT - models.size();
         for (int i = 0 ; i < delta ; i++) {
-            addContent(createModel());
+            add(createModel());
         }
 
         super.update(timeInSec);
     }
 
 
-    public Spatial createModel() {
-        Spatial model = SceneCreator.loadModelFromFile("/models/ships/02.obj");
+    public SpatialEntity createModel() {
+        SpatialEntity model = SceneCreator.loadModelFromFile("/models/ships/02.obj");
         model.setPosition(SceneCreator.getRandomPosition(1000f));
         model.setAction(SceneCreator.getRandomAction());
         return model;

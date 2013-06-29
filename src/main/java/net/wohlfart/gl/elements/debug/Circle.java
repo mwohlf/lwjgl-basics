@@ -3,8 +3,8 @@ package net.wohlfart.gl.elements.debug;
 import java.util.ArrayList;
 import java.util.List;
 
+import net.wohlfart.basic.elements.IsRenderable;
 import net.wohlfart.gl.elements.AbstractRenderable;
-import net.wohlfart.gl.renderer.IsRenderable;
 import net.wohlfart.tools.SimpleMath;
 
 import org.lwjgl.opengl.GL11;
@@ -63,8 +63,8 @@ public class Circle extends AbstractRenderable {
         builder.setIndices(createIndices());
         builder.setLinePrimitive(GL11.GL_LINES);
         builder.setColor(color);
-        builder.setRotation(rotation);
-        builder.setTranslation(translation);
+        builder.setRotation(initialRotation);
+        builder.setTranslation(initialTranslation);
         return builder.build();
     }
 

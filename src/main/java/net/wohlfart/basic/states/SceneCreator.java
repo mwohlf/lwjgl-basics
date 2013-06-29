@@ -6,8 +6,9 @@ import java.util.Collection;
 import java.util.HashSet;
 
 import net.wohlfart.basic.GenericGameException;
-import net.wohlfart.gl.action.Action;
-import net.wohlfart.gl.action.OrbitAction;
+import net.wohlfart.basic.action.SpatialActor.Action;
+import net.wohlfart.basic.action.OrbitAction;
+import net.wohlfart.basic.elements.IsRenderable;
 import net.wohlfart.gl.antlr4.ModelLoader;
 import net.wohlfart.gl.elements.AbstractRenderable;
 import net.wohlfart.gl.elements.ColoredQuad;
@@ -17,7 +18,6 @@ import net.wohlfart.gl.elements.debug.Circle;
 import net.wohlfart.gl.elements.debug.Cube;
 import net.wohlfart.gl.elements.debug.Icosphere;
 import net.wohlfart.gl.elements.debug.Tetrahedron;
-import net.wohlfart.gl.renderer.IsRenderable;
 import net.wohlfart.gl.shader.GraphicContextManager;
 import net.wohlfart.gl.spatial.Model;
 import net.wohlfart.tools.SimpleMath;
@@ -115,9 +115,7 @@ public final class SceneCreator {
     public static Model loadModelFromFile(String path) {
         try (InputStream inputStream = ClassLoader.class.getResourceAsStream(path)) {
             if (inputStream == null) {
-                throw new GenericGameException("input stream is null for path '" + path + "'"
-
-                        );
+                throw new GenericGameException("input stream is null for path '" + path + "'");
             }
             return new ModelLoader().getModel(inputStream);
         } catch (final IOException ex) {

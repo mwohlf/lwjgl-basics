@@ -1,5 +1,8 @@
 package net.wohlfart.basic.states;
 
+import net.wohlfart.basic.container.DefaultRenderBucket;
+import net.wohlfart.basic.container.DefaultRenderSet;
+import net.wohlfart.basic.container.ModelBucket;
 import net.wohlfart.gl.elements.hud.Hud;
 import net.wohlfart.gl.elements.hud.NullHud;
 import net.wohlfart.gl.elements.hud.widgets.Label;
@@ -7,10 +10,6 @@ import net.wohlfart.gl.elements.hud.widgets.MousePositionLabel;
 import net.wohlfart.gl.elements.hud.widgets.Statistics;
 import net.wohlfart.gl.elements.skybox.NullSkybox;
 import net.wohlfart.gl.elements.skybox.Skybox;
-import net.wohlfart.gl.renderer.DefaultRenderBucket;
-import net.wohlfart.gl.renderer.ModelBucket;
-import net.wohlfart.gl.renderer.NullRenderBucket;
-import net.wohlfart.gl.renderer.RenderBucket;
 import net.wohlfart.gl.spatial.ParticleEmitter;
 import net.wohlfart.gl.view.ElementPicker;
 
@@ -27,7 +26,7 @@ final class LightingState extends AbstractGraphicState implements InitializingBe
     private static final Logger LOGGER = LoggerFactory.getLogger(LightingState.class);
 
     private Skybox skybox = NullSkybox.INSTANCE;
-    private RenderBucket elemBucket = NullRenderBucket.INSTANCE;
+    private DefaultRenderSet elemBucket;
     private Hud hud = NullHud.INSTANCE;
     private ModelBucket modelBucket;
 

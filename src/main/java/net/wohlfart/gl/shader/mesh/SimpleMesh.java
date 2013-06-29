@@ -2,7 +2,7 @@ package net.wohlfart.gl.shader.mesh;
 
 import java.nio.FloatBuffer;
 
-import net.wohlfart.gl.renderer.IsRenderable;
+import net.wohlfart.basic.elements.IsRenderable;
 import net.wohlfart.gl.shader.ShaderAttributeHandle;
 
 import org.lwjgl.BufferUtils;

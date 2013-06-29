@@ -1,10 +1,10 @@
-package net.wohlfart.gl.action;
+package net.wohlfart.basic.action;
 
 import net.wohlfart.tools.SimpleMath;
 
 import org.lwjgl.util.vector.Vector3f;
 
-public final class MoveAction implements Action {
+public final class MoveAction implements SpatialActor.Action {
 
     private float speed; // the time for moving one unit
     private Vector3f direction;
@@ -30,11 +30,11 @@ public final class MoveAction implements Action {
     }
 
     @Override
-    public void perform(Actor actor, float time) {
-        final Vector3f v = actor.getPosition();
+    public void perform(SpatialActor spatialActor, float time) {
+        final Vector3f v = spatialActor.getPosition();
         SimpleMath.scale(direction, time / speed, tmp);
         SimpleMath.add(v, tmp, v);
-        actor.setPosition(v);
+        spatialActor.setPosition(v);
     }
 
 }

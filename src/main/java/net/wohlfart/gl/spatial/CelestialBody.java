@@ -2,11 +2,12 @@ package net.wohlfart.gl.spatial;
 
 import java.util.Random;
 
+import net.wohlfart.basic.elements.IsRenderable;
+import net.wohlfart.basic.elements.SpatialEntity;
 import net.wohlfart.gl.elements.AbstractRenderable;
-import net.wohlfart.gl.renderer.IsRenderable;
 import net.wohlfart.gl.texture.CelestialType;
 
-public class CelestialBody extends AbstractRenderable implements Spatial {
+public class CelestialBody extends AbstractRenderable implements SpatialEntity {
 
     private final long seed;
     private Random random;

@@ -1,5 +1,6 @@
 package net.wohlfart.basic.states;
 
+import net.wohlfart.basic.container.DefaultRenderSet;
 import net.wohlfart.gl.elements.hud.Hud;
 import net.wohlfart.gl.elements.hud.NullHud;
 import net.wohlfart.gl.elements.hud.widgets.Label;
@@ -7,8 +8,6 @@ import net.wohlfart.gl.elements.hud.widgets.MousePositionLabel;
 import net.wohlfart.gl.elements.hud.widgets.Statistics;
 import net.wohlfart.gl.elements.skybox.NullSkybox;
 import net.wohlfart.gl.elements.skybox.Skybox;
-import net.wohlfart.gl.renderer.NullRenderBucket;
-import net.wohlfart.gl.renderer.RenderBucket;
 import net.wohlfart.gl.view.ElementPicker;
 
 import org.slf4j.Logger;
@@ -25,7 +24,7 @@ final class SimpleState extends AbstractGraphicState implements InitializingBean
     private static final Logger LOGGER = LoggerFactory.getLogger(SimpleState.class);
 
     private Skybox skybox = NullSkybox.INSTANCE;
-    private RenderBucket elemBucket = NullRenderBucket.INSTANCE;
+    private DefaultRenderSet elemBucket;
     private Hud hud = NullHud.INSTANCE;
 
     private Statistics statistics;
@@ -36,7 +35,7 @@ final class SimpleState extends AbstractGraphicState implements InitializingBean
         this.skybox = skybox;
     }
 
-    public void setElemBucket(RenderBucket elemBucket) {
+    public void setElemBucket(DefaultRenderSet elemBucket) {
         this.elemBucket = elemBucket;
     }
 

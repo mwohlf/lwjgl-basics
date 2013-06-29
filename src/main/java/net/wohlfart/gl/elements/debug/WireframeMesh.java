@@ -1,6 +1,6 @@
 package net.wohlfart.gl.elements.debug;
 
-import net.wohlfart.gl.renderer.IsRenderable;
+import net.wohlfart.basic.elements.IsRenderable;
 import net.wohlfart.gl.shader.ShaderAttributeHandle;
 
 import org.lwjgl.opengl.GL11;

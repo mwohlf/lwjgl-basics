@@ -3,8 +3,8 @@ package net.wohlfart.gl.elements.debug;
 import java.util.Arrays;
 import java.util.List;
 
+import net.wohlfart.basic.elements.IsRenderable;
 import net.wohlfart.gl.elements.AbstractRenderable;
-import net.wohlfart.gl.renderer.IsRenderable;
 import net.wohlfart.tools.SimpleMath;
 
 import org.lwjgl.opengl.GL11;
@@ -73,7 +73,7 @@ public class Arrow extends AbstractRenderable {
         for (final Vector3f vec : vertices) {
             vec.z *= length;
         }
-        SimpleMath.createQuaternion(vertices[0], tip, rotation);
+        SimpleMath.createQuaternion(vertices[0], tip, initialRotation);
     }
 
     /** {@inheritDoc} */
@@ -84,8 +84,8 @@ public class Arrow extends AbstractRenderable {
         builder.setIndices(indices);
         builder.setLinePrimitive(GL11.GL_LINES);
         builder.setColor(color);
-        builder.setRotation(rotation);
-        builder.setTranslation(translation);
+        builder.setRotation(initialRotation);
+        builder.setTranslation(initialTranslation);
         return builder.build();
     }
 

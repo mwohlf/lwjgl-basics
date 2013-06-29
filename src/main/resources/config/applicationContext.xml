@@ -18,10 +18,11 @@
     </bean>
 
     <bean class="net.wohlfart.basic.Game" scope="singleton">
-       <property name="initialState" value="AMBIENT" />  <!-- SIMPLE  -->
+       <property name="initialState" value="CELESTIAL" />  <!-- SIMPLE, AMBIENT  -->
        <property name="gameSettings" ref="gameSettings" />
        <property name="resourceManager" ref="resourceManager" />
        <property name="globalClock" ref="globalClock" />
+       <property name="camera" ref="camera" />
        <property name="inputSource">
               <bean class="net.wohlfart.gl.input.LwjglInputSource" />
        </property>

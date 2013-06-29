@@ -4,8 +4,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import net.wohlfart.basic.elements.IsRenderable;
 import net.wohlfart.gl.elements.AbstractRenderable;
-import net.wohlfart.gl.renderer.IsRenderable;
 
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.util.vector.Vector3f;
@@ -52,8 +52,8 @@ public class Cube extends AbstractRenderable {
         builder.setIndices(createIndices());
         builder.setLinePrimitive(GL11.GL_LINES);
         builder.setColor(color);
-        builder.setRotation(rotation);
-        builder.setTranslation(translation);
+        builder.setRotation(initialRotation);
+        builder.setTranslation(initialTranslation);
         return builder.build();
     }
 

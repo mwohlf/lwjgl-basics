@@ -4,18 +4,19 @@ import net.wohlfart.basic.Settings;
 
 import org.lwjgl.util.vector.Matrix4f;
 
-class OrthographicProjection {
+/**
+ * creating a simple orthographic matrix
+ */
+class OrthographicProjectionFab {
 
     // this is not used and probably not correct yet
     Matrix4f create(Settings settings) {
         final int screenWidth = settings.getWidth();
         final int screenHeight = settings.getHeight();
-        final float nearPlane = settings.getNearPlane(); // 0.1
-        final float farPlane = settings.getFarPlane(); // 100
+        final float nearPlane = settings.getNearPlane();
+        final float farPlane = settings.getFarPlane();
 
-        // Setup projection matrix
         final Matrix4f matrix = new Matrix4f();
-        // the view angle in degree, 45 is fine
 
         final float frustumLength = farPlane - nearPlane;
 
@@ -31,11 +32,11 @@ class OrthographicProjection {
 
         matrix.m20 = 0;
         matrix.m21 = 0;
-        matrix.m22 = -2 / frustumLength; // zScale
+        matrix.m22 = -2 / frustumLength;
         matrix.m23 = 0;
 
-        matrix.m30 = 0; // reenWidth/2;
-        matrix.m31 = 0; // -screenHeight/2;
+        matrix.m30 = 0;
+        matrix.m31 = 0;
         matrix.m32 = -(nearPlane + farPlane) / frustumLength;
         matrix.m33 = 1;
 

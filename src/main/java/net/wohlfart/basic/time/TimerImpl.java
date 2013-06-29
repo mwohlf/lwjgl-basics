@@ -1,21 +1,17 @@
 package net.wohlfart.basic.time;
 
 /**
- * <p>
  * A Timer implementation that works with any clock.
- * </p>
  */
-public class TimerImpl implements Timer {
+public class TimerImpl implements Timer { // REVIEWED
 
     private final Clock clock;
     private final long maxValidCount;
     private long lastTickCount;
 
     /**
-     * <p>
      * Constructor for TimerImpl.
-     * </p>
-     * 
+     *
      * @param clock
      *            a {@link net.wohlfart.basic.time.Clock} object.
      */
@@ -25,7 +21,6 @@ public class TimerImpl implements Timer {
         this.maxValidCount = clock.getMaxValidCount();
     }
 
-    /** {@inheritDoc} */
     @Override
     public float getDelta() {
         final long now = clock.getTicks();
@@ -38,7 +33,6 @@ public class TimerImpl implements Timer {
         return delta;
     }
 
-    /** {@inheritDoc} */
     @Override
     public void destroy() {
 

@@ -1,25 +1,23 @@
-package net.wohlfart.gl.renderer;
+package net.wohlfart.basic.container;
 
+import net.wohlfart.basic.elements.IsRenderable;
 import net.wohlfart.tools.SimpleMath;
 
 import org.lwjgl.util.vector.Matrix4f;
 
-public enum NullRenderBucket implements RenderBucket {
+public enum NullRenderSet implements RenderSet<IsRenderable> {
     INSTANCE;
 
     @Override
     public void render() {
-            // do nothing
     }
 
     @Override
     public void destroy() {
-        // do nothing
     }
 
     @Override
     public void update(float timeInSec) {
-        // do nothing
     }
 
     @Override
@@ -33,13 +31,7 @@ public enum NullRenderBucket implements RenderBucket {
     }
 
     @Override
-    public void addContent(IsRenderable renderable) {
-        throw new UnsupportedOperationException("can't add content to the null bucket");
-    }
-
-    @Override
     public void setup() {
-        // do nothing
     }
 
 }

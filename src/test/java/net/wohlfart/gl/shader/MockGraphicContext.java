@@ -22,6 +22,11 @@ public class MockGraphicContext implements GraphicContextManager.IGraphicContext
     }
 
     @Override
+    public boolean isInitialized() {
+        return true;
+    }
+
+    @Override
     public void unbind() {
     }
 
@@ -31,7 +36,5 @@ public class MockGraphicContext implements GraphicContextManager.IGraphicContext
 
     @Override
     public void setup() {
-
     }
-
 }

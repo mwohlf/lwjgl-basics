@@ -3,10 +3,10 @@ package net.wohlfart.gl.elements.hud;
 import java.util.Collection;
 import java.util.HashSet;
 
+import net.wohlfart.basic.elements.IsRenderable;
 import net.wohlfart.gl.elements.hud.widgets.AbstractTextComponent;
 import net.wohlfart.gl.elements.hud.widgets.CharAtlas;
 import net.wohlfart.gl.elements.hud.widgets.CharAtlasBuilder;
-import net.wohlfart.gl.renderer.IsRenderable;
 import net.wohlfart.gl.shader.GraphicContextManager;
 import net.wohlfart.gl.shader.mesh.TexturedMesh;
 

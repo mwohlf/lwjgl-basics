@@ -69,6 +69,11 @@ public class DefaultGraphicContext implements GraphicContextManager.IGraphicCont
     }
 
     @Override
+    public boolean isInitialized() {
+        return isInitialized;
+    }
+
+    @Override
     public String toString() {
         return "DefaultGraphicContext with shader: " + shaderProgram;
     }

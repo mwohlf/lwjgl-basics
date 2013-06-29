@@ -2,10 +2,11 @@ package net.wohlfart.gl.view;
 
 import java.util.List;
 
+import net.wohlfart.basic.container.DefaultRenderSet;
+import net.wohlfart.basic.container.ModelBucket;
+import net.wohlfart.basic.container.RenderSet;
 import net.wohlfart.gl.elements.debug.Arrow;
 import net.wohlfart.gl.input.PointEvent;
-import net.wohlfart.gl.renderer.ModelBucket;
-import net.wohlfart.gl.renderer.RenderBucket;
 import net.wohlfart.gl.spatial.Model;
 
 import org.lwjgl.util.vector.Matrix4f;
@@ -18,25 +19,25 @@ public class ElementPicker {
 
     private Matrix4f transformMatrix = new Matrix4f();
 
-    private final HasMatrices hasMatrices;
+    private final RenderSet hasMatrices;
 
     private final float width;
     private final float height;
 
-    private RenderBucket renderBucket;
+    private DefaultRenderSet renderSet;
 
     private ModelBucket modelBucket;
 
 
-    public ElementPicker(HasMatrices hasMatrices, float width, float height) {
+    public ElementPicker(DefaultRenderSet hasMatrices, float width, float height) {
         this.hasMatrices = hasMatrices;
         this.width = width;
         this.height = height;
     }
 
     // for rendering a debug arrow
-    public void setRenderBucket(RenderBucket renderBucket) {
-        this.renderBucket = renderBucket;
+    public void setRenderBucket(DefaultRenderSet renderSet) {
+        this.renderSet = renderSet;
     }
 
     // for picking elements
@@ -51,7 +52,7 @@ public class ElementPicker {
         final float y = clickEvent.getY();
 
         final PickingRay ray = createPickingRay(x, y, hasMatrices);
-        renderBucket.addContent(Arrow.createLink(ray.getStart(), ray.getEnd()));
+        renderSet.add(Arrow.createLink(ray.getStart(), ray.getEnd()));
 
         List<Model> picklist = modelBucket.pick(ray);
 
@@ -59,7 +60,7 @@ public class ElementPicker {
     }
 
 
-    public PickingRay createPickingRay(float x, float y, HasMatrices elemBucket) {
+    public PickingRay createPickingRay(float x, float y, RenderSet elemBucket) {
 
         Matrix4f.mul(elemBucket.getProjectionMatrix(), elemBucket.getModelViewMatrix(), transformMatrix);
         transformMatrix = Matrix4f.invert(transformMatrix, transformMatrix);

@@ -1,9 +1,9 @@
 package net.wohlfart.gl.elements;
 
-import net.wohlfart.gl.action.Action;
-import net.wohlfart.gl.renderer.IsRenderable;
+import net.wohlfart.basic.action.SpatialActor;
+import net.wohlfart.basic.elements.IsRenderable;
+import net.wohlfart.basic.elements.SpatialEntity;
 import net.wohlfart.gl.shader.ShaderUniformHandle;
-import net.wohlfart.gl.spatial.Spatial;
 import net.wohlfart.gl.view.CanMoveImpl;
 import net.wohlfart.gl.view.CanRotateImpl;
 import net.wohlfart.tools.SimpleMath;
@@ -16,18 +16,16 @@ import org.lwjgl.util.vector.Quaternion;
 import org.lwjgl.util.vector.Vector3f;
 
 /**
- * <p>
  * Abstract AbstractRenderable class.
- * </p>
  */
-public abstract class AbstractRenderable implements Spatial {
+public abstract class AbstractRenderable implements SpatialEntity {
 
     private final CanMoveImpl currentTranslation = new CanMoveImpl();
     private final CanRotateImpl currentRotation = new CanRotateImpl();
     private final Matrix4f modelToWorldMatrix = Matrix4f.setZero(new Matrix4f());
     private final Matrix3f normalMatrix = Matrix3f.setZero(new Matrix3f());
 
-    private Action action = Action.NULL;
+    private Action currentAction = SpatialActor.NULL_ACTION;
 
     // a static mesh that is created lazy
     private IsRenderable delegate;
@@ -36,8 +34,8 @@ public abstract class AbstractRenderable implements Spatial {
     private boolean reCreateRenderable = true;
 
     // initial properties of this mesh
-    protected final Vector3f translation = new Vector3f();
-    protected final Quaternion rotation = new Quaternion();
+    protected final Vector3f initialTranslation = new Vector3f();
+    protected final Quaternion initialRotation = new Quaternion();
     protected ReadableColor color = Color.BLUE;
 
     /**
@@ -64,12 +62,12 @@ public abstract class AbstractRenderable implements Spatial {
      * displacement of the object away from the origin.
      * </p>
      *
-     * @param translation
+     * @param initialTranslation
      *            a {@link org.lwjgl.util.vector.Vector3f} object.
      * @return a {@link net.wohlfart.gl.elements.AbstractRenderable} object.
      */
     public AbstractRenderable withTranslation(Vector3f newTranslation) {
-        translation.set(newTranslation);
+        initialTranslation.set(newTranslation);
         reCreateRenderable = true;
         return this;
     }
@@ -79,12 +77,12 @@ public abstract class AbstractRenderable implements Spatial {
      * rotate.
      * </p>
      *
-     * @param rotation
+     * @param initialRotation
      *            a {@link org.lwjgl.util.vector.Quaternion} object.
      * @return a {@link net.wohlfart.gl.elements.AbstractRenderable} object.
      */
     public AbstractRenderable withRotation(Quaternion newRotation) {
-        rotation.set(newRotation);
+        initialRotation.set(newRotation);
         reCreateRenderable = true;
         return this;
     }
@@ -200,12 +198,12 @@ public abstract class AbstractRenderable implements Spatial {
 
     @Override
     public void setAction(Action action) {
-        this.action = action;
+        this.currentAction = action;
     }
 
     @Override
     public void update(float timeInSec) {
-        action.perform(this, timeInSec);
+        currentAction.perform(this, timeInSec);
     }
 
 }

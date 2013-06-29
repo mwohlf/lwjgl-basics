@@ -1,13 +1,14 @@
 package net.wohlfart.basic.states;
 
 
+import net.wohlfart.basic.container.DefaultRenderSet;
+import net.wohlfart.basic.container.DefaultRenderBucket;
+import net.wohlfart.basic.container.ModelBucket;
+import net.wohlfart.basic.container.RenderSet;
 import net.wohlfart.gl.elements.hud.Hud;
 import net.wohlfart.gl.elements.hud.NullHud;
 import net.wohlfart.gl.elements.skybox.NullSkybox;
 import net.wohlfart.gl.elements.skybox.Skybox;
-import net.wohlfart.gl.renderer.DefaultRenderBucket;
-import net.wohlfart.gl.renderer.ModelBucket;
-import net.wohlfart.gl.renderer.RenderBucket;
 import net.wohlfart.gl.spatial.CelestialBody;
 
 import org.lwjgl.util.vector.Vector3f;
@@ -24,18 +25,18 @@ final class AmbientState extends AbstractGraphicState implements InitializingBea
     private static final Logger LOGGER = LoggerFactory.getLogger(AmbientState.class);
 
     private Skybox skybox = NullSkybox.INSTANCE;
-    private RenderBucket elemBucket = new DefaultRenderBucket();
+    private RenderSet elemBucket = new DefaultRenderBucket();
 
     private Hud hud = NullHud.INSTANCE;
     private ModelBucket modelBucket;
-    private RenderBucket planetBucket;
+    private DefaultRenderSet planetBucket;
 
 
     public void setSkybox(Skybox skybox) {
         this.skybox = skybox;
     }
 
-    public void setCelestialBucket(RenderBucket planetBucket) {
+    public void setCelestialBucket(DefaultRenderSet planetBucket) {
         this.planetBucket = planetBucket;
     }
 
@@ -95,7 +96,7 @@ final class AmbientState extends AbstractGraphicState implements InitializingBea
         */
         CelestialBody body = new CelestialBody(0L);
         body.setPosition(new Vector3f(0,0,-7));
-        planetBucket.addContent(body);
+        planetBucket.add(body);
 
     }
 

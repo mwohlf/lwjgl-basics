@@ -3,10 +3,9 @@ package net.wohlfart.gl.shader;
 import org.lwjgl.util.vector.Vector3f;
 
 /**
- * <p>
- * the vertex class.<br/>
+ * tool class to create VAOs and VBOs
+ *
  * see: http://www.lwjgl.org/wiki/index.php?title=The_Quad_interleaved
- * </p>
  */
 public class Vertex {
 
@@ -23,7 +22,6 @@ public class Vertex {
     public static final int textureByteCount = TEXTURE_ELEM_COUNT * BYTES_PER_FLOAT;
 
     // Byte offsets per parameter
-    /** Constant <code>positionByteOffset=0</code> */
     public static final int positionByteOffset = 0;
     public static final int colorByteOffset = positionByteOffset + positionBytesCount;
     public static final int normalByteOffset = colorByteOffset + colorByteCount;

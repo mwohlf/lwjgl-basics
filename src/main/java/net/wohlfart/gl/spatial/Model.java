@@ -3,8 +3,8 @@ package net.wohlfart.gl.spatial;
 import java.util.ArrayList;
 import java.util.List;
 
+import net.wohlfart.basic.elements.IsRenderable;
 import net.wohlfart.gl.elements.AbstractRenderable;
-import net.wohlfart.gl.renderer.IsRenderable;
 import net.wohlfart.gl.shader.ShaderAttributeHandle;
 
 import org.lwjgl.opengl.GL11;
@@ -46,7 +46,7 @@ public class Model extends AbstractRenderable {
         float result = 0;
         Vector3f tmp = new Vector3f();
         for (final Vector3f vec : positions) {
-            tmp.set(translation);
+            tmp.set(initialTranslation);
             tmp = Vector3f.sub(vec, tmp, tmp);
             result = Math.max(result, tmp.length());
         }

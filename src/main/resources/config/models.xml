@@ -166,12 +166,12 @@
 
 
      <bean id="rotate"
-           class="net.wohlfart.gl.action.RotateAction"
+           class="net.wohlfart.basic.action.RotateAction"
            factory-method="create">
      </bean>
 
      <bean id="orbit"
-           class="net.wohlfart.gl.action.OrbitAction"
+           class="net.wohlfart.basic.action.OrbitAction"
            factory-method="create">
      </bean>
 

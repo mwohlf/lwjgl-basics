@@ -1,15 +1,10 @@
 package net.wohlfart.gl.shader;
 
-/**
- * <p>
- * ShaderException class.
- * </p>
- * 
- * 
- * 
- */
+import net.wohlfart.basic.GenericGameException;
+
+
 @SuppressWarnings("serial")
-public class ShaderException extends RuntimeException {
+public class ShaderException extends GenericGameException {  // REVIEWED
 
     ShaderException(String string) {
         super(string);

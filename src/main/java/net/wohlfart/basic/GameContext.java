@@ -6,11 +6,9 @@ import java.util.Set;
 import org.springframework.context.ApplicationContext;
 
 /**
- * <p>
  * Wrapper class for the application context.
- * </p>
  */
-class GameContext implements IGameContext {
+class GameContext implements IGameContext {  //REVIEWED
     private final ApplicationContext delegate;
 
     GameContext(final ApplicationContext context) {
@@ -30,7 +28,7 @@ class GameContext implements IGameContext {
         return t;
     }
 
-    // this is used by the enums to pick up their config from the spring context
+    // this is used by the enums to pick up their configuration from the spring context
     @Override
     public <T> T getBeanOfName(Class<T> clazz, String name) {
         final T bean = delegate.getBean(name, clazz);

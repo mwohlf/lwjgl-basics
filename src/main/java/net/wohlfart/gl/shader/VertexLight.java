@@ -5,6 +5,10 @@ import net.wohlfart.gl.view.CanMove;
 import org.lwjgl.util.vector.Vector3f;
 import org.lwjgl.util.vector.Vector4f;
 
+
+/**
+ * a light source that is applied in the vertex shader
+ */
 public class VertexLight implements CanMove {
     final float attenuation;
     final Vector4f diffuse;

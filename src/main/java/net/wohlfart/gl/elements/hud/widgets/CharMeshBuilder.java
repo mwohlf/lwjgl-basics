@@ -3,7 +3,7 @@ package net.wohlfart.gl.elements.hud.widgets;
 import java.nio.ByteBuffer;
 import java.nio.FloatBuffer;
 
-import net.wohlfart.gl.renderer.IsRenderable;
+import net.wohlfart.basic.elements.IsRenderable;
 import net.wohlfart.gl.shader.GraphicContextManager;
 import net.wohlfart.gl.shader.ShaderAttributeHandle;
 import net.wohlfart.gl.shader.Vertex;

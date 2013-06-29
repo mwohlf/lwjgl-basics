@@ -1,11 +1,11 @@
-package net.wohlfart.gl.action;
+package net.wohlfart.basic.action;
 
 import net.wohlfart.tools.SimpleMath;
 
 import org.lwjgl.util.vector.Quaternion;
 import org.lwjgl.util.vector.Vector3f;
 
-public final class OrbitAction implements Action {
+public final class OrbitAction implements SpatialActor.Action {
 
     private float orbitTime; // in sec
     private Vector3f center;
@@ -44,12 +44,12 @@ public final class OrbitAction implements Action {
 
     // FIXME: too many news in this method...
     @Override
-    public void perform(Actor actor, float timeInSec) {
-        Vector3f v = actor.getPosition();
+    public void perform(SpatialActor spatialActor, float timeInSec) {
+        Vector3f v = spatialActor.getPosition();
         SimpleMath.sub(v, center, tmp1);
         final float radius = tmp1.length(); // tmp1: from the center to the position
 
-        final Quaternion currentRotation = actor.getRotation();
+        final Quaternion currentRotation = spatialActor.getRotation();
 
         // final Vector3f up = SimpleMath.getUp(currentRotation, new Vector3f()); // we want to keep up
         final Vector3f up = axis;
@@ -60,7 +60,7 @@ public final class OrbitAction implements Action {
         tmp2.scale(timeInSec / orbitTime);
 
         final Quaternion rotation = SimpleMath.createQuaternion(new Vector3f(0, 0, 1), forward, new Quaternion());
-        actor.setRotation(rotation);
+        spatialActor.setRotation(rotation);
 
         SimpleMath.add(tmp2, v, tmp1); // tmp1: new position off the radius
 
@@ -68,7 +68,7 @@ public final class OrbitAction implements Action {
         tmp1.normalise(tmp1);
 
         v = SimpleMath.scale(tmp1, radius, v);
-        actor.setPosition(v);
+        spatialActor.setPosition(v);
     }
 
 }

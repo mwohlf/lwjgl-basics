@@ -2,7 +2,7 @@ package net.wohlfart.gl.elements.hud.widgets;
 
 import java.util.Collection;
 
-import net.wohlfart.gl.renderer.IsRenderable;
+import net.wohlfart.basic.elements.IsRenderable;
 
 // a label is a quad for each character
 /**

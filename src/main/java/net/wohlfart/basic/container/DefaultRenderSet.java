@@ -1,7 +1,12 @@
-package net.wohlfart.gl.renderer;
+package net.wohlfart.basic.container;
 
+import java.util.HashSet;
+
+import net.wohlfart.basic.elements.IsRenderable;
+import net.wohlfart.gl.shader.DefaultGraphicContext;
 import net.wohlfart.gl.shader.GraphicContextManager;
 import net.wohlfart.gl.shader.GraphicContextManager.IGraphicContext;
+import net.wohlfart.gl.shader.ShaderRegistry;
 import net.wohlfart.gl.shader.ShaderUniformHandle;
 import net.wohlfart.gl.view.Camera;
 import net.wohlfart.tools.SimpleMath;
@@ -11,55 +16,39 @@ import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector3f;
 
 /**
- * <p>
- * implementing the basic features for a render bucket,
+ * implementing the basic features for a render set,
  * keeping the camera and the graphic context
- * </p>
  */
-abstract class AbstractRenderBucket implements RenderBucket {
+@SuppressWarnings("serial")
+public class DefaultRenderSet<T extends IsRenderable> extends HashSet<T> implements RenderSet<T> {
 
     private IGraphicContext graphicContext;
-    private Camera camera;
 
-    // data for the render loop:
+    // reserve some memory for the render loop:
     private final Vector3f posVector = new Vector3f();
     private final Matrix4f posMatrix = new Matrix4f();
     private final Matrix4f rotMatrix = new Matrix4f();
     private final Matrix4f rotPosMatrix = new Matrix4f();
 
+
     public void setGraphicContext(IGraphicContext graphicContext) {
         this.graphicContext = graphicContext;
     }
 
-    public void setCamera(Camera camera) {
-        this.camera = camera;
-    }
-
     @Override
     public void setup() {
+        if (graphicContext == null) {
+            graphicContext = new DefaultGraphicContext(ShaderRegistry.DEFAULT_SHADER);
+        }
         graphicContext.setup();
     }
 
-
     @Override
-    public void update(float timeInSec) {
-        // do something in the subclass
-    }
-
-    @Override
-    public Matrix4f getProjectionMatrix() {
-        return GraphicContextManager.INSTANCE.getPerspectiveProjMatrix();
-    }
-
-    @Override
-    public Matrix4f getModelViewMatrix() {
-        return rotPosMatrix;
-    }
-
-    protected void prepareRender() {
+    public void render() {
         assert graphicContext != null : "the graphicContext is null";
-        assert camera != null : "the camera is null";
+        assert graphicContext.isInitialized() : "the graphicContext is not initialized, call setup() before using the graphicContext";
 
+        final Camera camera = GraphicContextManager.INSTANCE.getCamera();       // fixme: this calculation should be moved into the camera
         SimpleMath.convert(camera.getPosition().negate(posVector), posMatrix);
         SimpleMath.convert(camera.getRotation(), rotMatrix);
         Matrix4f.mul(rotMatrix, posMatrix, rotPosMatrix);
@@ -73,11 +62,32 @@ abstract class AbstractRenderBucket implements RenderBucket {
         GL11.glClear(GL11.GL_DEPTH_BUFFER_BIT);
         GL11.glDisable(GL11.GL_BLEND);
 
+        for (IsRenderable element : this) {
+            element.render();
+        }
+    }
+
+    @Override
+    public void update(float timeInSec) {
+        // nothing to do yet
+    }
+
+    @Override
+    public Matrix4f getProjectionMatrix() {
+        return GraphicContextManager.INSTANCE.getPerspectiveProjMatrix();
+    }
+
+    @Override
+    public Matrix4f getModelViewMatrix() {
+        return rotPosMatrix;
     }
 
     @Override
     public void destroy() {
-        // nothing to free here
+        for (IsRenderable element : this) {
+            element.destroy();
+        }
     }
+
 
 }

@@ -3,7 +3,7 @@ package net.wohlfart.basic.states;
 /**
  * A simple state that does nothing.
  */
-final class NullState implements GameState {
+final class NullState implements GameState { // REVIEWED
 
     @Override
     public void setup() {

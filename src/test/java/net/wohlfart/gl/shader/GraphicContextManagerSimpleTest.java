@@ -2,7 +2,7 @@ package net.wohlfart.gl.shader;
 
 import static org.junit.Assert.assertEquals;
 import net.wohlfart.basic.Settings;
-import net.wohlfart.gl.view.HasMatrices;
+import net.wohlfart.basic.container.DefaultRenderSet;
 import net.wohlfart.gl.view.ElementPicker;
 import net.wohlfart.gl.view.PickingRay;
 
@@ -21,7 +21,7 @@ public class GraphicContextManagerSimpleTest {
     Settings settings;
     ElementPicker elementPicker;
 
-    HasMatrices matrices = new HasMatrices() {
+    DefaultRenderSet matrices = new DefaultRenderSet() {
 
         @Override
         public Matrix4f getProjectionMatrix() {

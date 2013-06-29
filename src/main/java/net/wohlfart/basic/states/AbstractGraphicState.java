@@ -5,19 +5,39 @@ import net.wohlfart.gl.shader.GraphicContextManager;
 import net.wohlfart.gl.view.Camera;
 
 import org.lwjgl.opengl.Display;
+import org.springframework.util.Assert;
 
 import com.google.common.eventbus.Subscribe;
 
-abstract class AbstractGraphicState implements GameState {
 
-    private final GraphicContextManager graphContextManager = GraphicContextManager.INSTANCE;
+/**
+ * Base class for a game state, the setup() method must be called before this class or any subclass can be used,
+ * the following features are implemented:
+ * - handle input event registration
+ * - handle the camera instance
+ * - checking for quit and close events
+ */
+abstract class AbstractGraphicState implements GameState { // REVIEWED
+
+    private GraphicContextManager graphContextManager;
     private boolean quit = false;
     private Camera camera;
 
+
+    @Override
+    abstract public void update(float tpf);
+
+    // spring bean injected
+    public void setCamera(Camera camera) {
+        this.camera = camera;
+    }
+
     @Override
     public void setup() {
+        Assert.notNull(camera);
+        graphContextManager = GraphicContextManager.INSTANCE;
         graphContextManager.register(camera);
-        graphContextManager.register(this);
+        graphContextManager.register(this); // to get exit notification
     }
 
     protected float getScreenHeight() {
@@ -32,30 +52,15 @@ abstract class AbstractGraphicState implements GameState {
         return camera;
     }
 
-    // spring bean injected
-    public void setCamera(Camera camera) {
-        this.camera = camera;
-    }
-
     protected GraphicContextManager getGraphContextManager() {
         return graphContextManager;
     }
 
-
-    /**
-     * <p>
-     * This method is called by the event bus on exit. You have to register this class in order to get notified.
-     * </p>
-     *
-     * @param exitEvent
-     *            a {@link net.wohlfart.gl.input.CommandEvent.Exit} object.
-     */
-    @Subscribe
+    @Subscribe // called by the event bus
     public synchronized void onExitTriggered(CommandEvent exitEvent) {
         quit = true;
     }
 
-    /** {@inheritDoc} */
     @Override
     public boolean isDone() {
         return Display.isCloseRequested() || quit;

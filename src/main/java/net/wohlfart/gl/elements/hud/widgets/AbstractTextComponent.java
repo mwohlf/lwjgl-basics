@@ -2,8 +2,8 @@ package net.wohlfart.gl.elements.hud.widgets;
 
 import java.util.HashSet;
 
+import net.wohlfart.basic.elements.IsRenderable;
 import net.wohlfart.gl.elements.hud.Layer;
-import net.wohlfart.gl.renderer.IsRenderable;
 
 /**
  * <p>

@@ -5,15 +5,10 @@ import net.wohlfart.tools.SimpleMath;
 import org.lwjgl.util.vector.Quaternion;
 import org.lwjgl.util.vector.Vector3f;
 
-/**
- * <p>
- * CanRotateImpl class.
- * </p>
- */
-@SuppressWarnings("serial")
-public class CanRotateImpl extends Quaternion implements CanRotate {
 
-    /** {@inheritDoc} */
+@SuppressWarnings("serial")
+public class CanRotateImpl extends Quaternion implements CanRotate { // REVIEWED
+
     @Override
     public Quaternion getRotation() {
         return this;
@@ -24,7 +19,6 @@ public class CanRotateImpl extends Quaternion implements CanRotate {
         set(quaternion);
     }
 
-    /** {@inheritDoc} */
     @Override
     public void rotate(float deltaAngle, Vector3f axis) {
         SimpleMath.rotate(this, deltaAngle, axis);

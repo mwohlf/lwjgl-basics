@@ -6,7 +6,6 @@ import java.nio.FloatBuffer;
 import java.util.HashMap;
 import java.util.Map;
 
-
 import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL20;
 import org.lwjgl.util.ReadableColor;
@@ -105,12 +104,14 @@ public enum ShaderUniformHandle {// @formatter:off
     public void set(Matrix4f matrix) {
         matrix.store(matrix4Buffer);
         matrix4Buffer.flip();
-        GL20.glUniformMatrix4(INSTANCE.getUniformLocation(lookupString), false, matrix4Buffer);  // todo: there is a 4f version
+        // NPE here could mean that the graphic context was not yet initialized
+        GL20.glUniformMatrix4(INSTANCE.getUniformLocation(lookupString), false, matrix4Buffer);  // todo: there is a 4f version?
     }
 
     public void set(Matrix3f matrix) {
         matrix.store(matrix3Buffer);
         matrix3Buffer.flip();
+        // NPE here could mean that the graphic context was not yet initialized
         GL20.glUniformMatrix3(INSTANCE.getUniformLocation(lookupString), false, matrix3Buffer);
     }
 

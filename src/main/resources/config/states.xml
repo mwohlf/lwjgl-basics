@@ -17,6 +17,10 @@
         <property name="hud" ref="defaultHud" />
     </bean>
 
+    <bean id="GameState.CELESTIAL" class="net.wohlfart.basic.states.CelestialState">
+        <property name="camera" ref="camera" />
+    </bean>
+
     <bean id="GameState.LIGHTING" class="net.wohlfart.basic.states.LightingState" >
         <property name="camera" ref="camera" />
 <!--         <property name="skybox" ref="defaultSkybox" /> -->
@@ -60,20 +64,17 @@
 
 
 
-    <bean id="emptyModelBucket" class="net.wohlfart.gl.renderer.ModelBucket">
-        <property name="camera" ref="camera" />
+    <bean id="emptyModelBucket" class="net.wohlfart.basic.container.ModelBucket">
         <property name="graphicContext" ref="lightingShader" />
     </bean>
 
 
-    <bean id="invadorsBucket" class="net.wohlfart.gl.renderer.InvadorsBucket">
-        <property name="camera" ref="camera" />
+    <bean id="invadorsBucket" class="net.wohlfart.basic.container.InvadorsBucket">
         <property name="graphicContext" ref="lightingShader" />
     </bean>
 
 
-    <bean id="modelBucket" class="net.wohlfart.gl.renderer.ModelBucket">
-        <property name="camera" ref="camera" />
+    <bean id="modelBucket" class="net.wohlfart.basic.container.ModelBucket">
         <property name="graphicContext" ref="lightingShader" />
         <property name="content">
            <list>
@@ -86,26 +87,22 @@
     </bean>
 
 
-    <bean id="originBucket" class="net.wohlfart.gl.renderer.ModelBucket">
-        <property name="camera" ref="camera" />
+    <bean id="originBucket" class="net.wohlfart.basic.container.ModelBucket">
         <property name="graphicContext" ref="ambientShader" />
 <!--         <property name="content" ref="originContent" /> -->
     </bean>
 
 
-    <bean id="celestialBucket" class="net.wohlfart.gl.renderer.CelestialBodyBucket">
-        <property name="camera" ref="camera" />
+    <bean id="celestialBucket" class="net.wohlfart.basic.container.CelestialBodyBucket">
         <property name="graphicContext" ref="lightingShader" />
     </bean>
 
 
-    <bean id="emptyBucket" class="net.wohlfart.gl.renderer.DefaultRenderBucket">
-        <property name="camera" ref="camera" />
+    <bean id="emptyBucket" class="net.wohlfart.basic.container.DefaultRenderBucket">
         <property name="graphicContext" ref="wireframeShader" />
     </bean>
 
-    <bean id="elemBucket" class="net.wohlfart.gl.renderer.DefaultRenderBucket">
-        <property name="camera" ref="camera" />
+    <bean id="elemBucket" class="net.wohlfart.basic.container.DefaultRenderBucket">
         <property name="graphicContext" ref="wireframeShader" />
         <property name="content" ref="elemContent" />
     </bean>
