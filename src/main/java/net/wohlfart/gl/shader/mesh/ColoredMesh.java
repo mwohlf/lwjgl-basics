@@ -23,7 +23,6 @@ public class ColoredMesh implements IsRenderable {
     private final int indexElemSize;
     private final int indicesType;
 
-    // package private, created by the builder
     protected ColoredMesh(int vaoHandle, int indicesType, int indexElemSize, int indicesCount, int indexOffset) {
         this.vaoHandle = vaoHandle;
         this.indicesType = indicesType;
@@ -46,25 +45,13 @@ public class ColoredMesh implements IsRenderable {
     }
 
 
-    /**
-     * <p>
-     * ColoredMeshBuilder class.
-     * </p>
-     */
+
     public static class Builder {
-        
         protected static final Logger LOGGER = LoggerFactory.getLogger(Builder.class);
 
-        /**
-         * <p>
-         * build.
-         * </p>
-         *
-         * @return a {@link net.wohlfart.gl.shader.mesh.IRenderable} object.
-         */
         public IsRenderable build() {
 
-            // We'll define our quad using 4 vertices of the custom 'Vertex' class
+            // We'll define our quad using 4 vertices
             final Vertex v0 = new Vertex();
             v0.setXYZ(-0.5f, 0.5f, 0f);
             v0.setRGB(1, 0, 0);
@@ -79,7 +66,6 @@ public class ColoredMesh implements IsRenderable {
             v3.setRGB(1, 1, 1);
 
             final Vertex[] vertices = new Vertex[] { v0, v1, v2, v3 };
-            // Put each 'Vertex' in one FloatBuffer the order depends on the shaders positions!
             final FloatBuffer verticesBuffer = BufferUtils.createFloatBuffer(vertices.length * Vertex.elementCount);
             for (int i = 0; i < vertices.length; i++) {
                 verticesBuffer.put(vertices[i].getXYZW());
@@ -118,7 +104,7 @@ public class ColoredMesh implements IsRenderable {
 
             ShaderAttributeHandle.TEXTURE_COORD.disable();
 
-            // Deselect (bind to 0) the VAO
+            // Deselect the VAO
             GL30.glBindVertexArray(0);
 
 
@@ -126,4 +112,6 @@ public class ColoredMesh implements IsRenderable {
         }
 
     }
+
+
 }

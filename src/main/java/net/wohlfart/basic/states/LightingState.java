@@ -7,10 +7,10 @@ import net.wohlfart.gl.elements.hud.widgets.MousePositionLabel;
 import net.wohlfart.gl.elements.hud.widgets.Statistics;
 import net.wohlfart.gl.elements.skybox.NullSkybox;
 import net.wohlfart.gl.elements.skybox.Skybox;
+import net.wohlfart.gl.renderer.DefaultRenderBucket;
 import net.wohlfart.gl.renderer.ModelBucket;
 import net.wohlfart.gl.renderer.NullRenderBucket;
 import net.wohlfart.gl.renderer.RenderBucket;
-import net.wohlfart.gl.renderer.DefaultRenderBucket;
 import net.wohlfart.gl.spatial.ParticleEmitter;
 import net.wohlfart.gl.view.ElementPicker;
 
@@ -79,7 +79,7 @@ final class LightingState extends AbstractGraphicState implements InitializingBe
         hud.add(mousePositionLabel);
         hud.add(new Label(0, 0, "hello world at (0,0)"));
 
-        getInputDispatcher().register(elementPicker);
+        getGraphContextManager().register(elementPicker);
 
         modelBucket.addContent(new ParticleEmitter());
         //modelBucket.addContent(new ColorPointEmitter(500));
@@ -103,6 +103,7 @@ final class LightingState extends AbstractGraphicState implements InitializingBe
 
     @Override
     public void destroy() {
+        getGraphContextManager().unregister(elementPicker);
         super.destroy();
     }
 

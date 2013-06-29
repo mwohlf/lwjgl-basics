@@ -7,7 +7,6 @@ import net.wohlfart.gl.elements.hud.widgets.MousePositionLabel;
 import net.wohlfart.gl.elements.hud.widgets.Statistics;
 import net.wohlfart.gl.elements.skybox.NullSkybox;
 import net.wohlfart.gl.elements.skybox.Skybox;
-import net.wohlfart.gl.input.InputDispatcher;
 import net.wohlfart.gl.renderer.NullRenderBucket;
 import net.wohlfart.gl.renderer.RenderBucket;
 import net.wohlfart.gl.view.ElementPicker;
@@ -69,9 +68,8 @@ final class SimpleState extends AbstractGraphicState implements InitializingBean
         // elemBucket.addContent(SceneCreator.createRandomLocatedSpheres());
 
         // event bus registration
-        final InputDispatcher inputDispatcher = getInputDispatcher();
-        inputDispatcher.register(mousePositionLabel);
-        inputDispatcher.register(elementPicker);
+        getGraphContextManager().register(mousePositionLabel);
+        getGraphContextManager().register(elementPicker);
 
         hud.add(statistics);
         hud.add(mousePositionLabel);
@@ -94,6 +92,8 @@ final class SimpleState extends AbstractGraphicState implements InitializingBean
 
     @Override
     public void destroy() {
+        getGraphContextManager().unregister(mousePositionLabel);
+        getGraphContextManager().unregister(elementPicker);
         skybox.dispose();
         hud.dispose();
         super.destroy();

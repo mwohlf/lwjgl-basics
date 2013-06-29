@@ -19,14 +19,12 @@ public final class SimpleMath {
 
     private static final Random RANDOM = new Random();
 
-    /** Constant <code>QUARTER_PI=(float) (0.25d * Math.PI)</code> */
     public static final float QUARTER_PI = (float) (0.25d * Math.PI);
-    /** Constant <code>HALF_PI=(float) (0.5d * Math.PI)</code> */
     public static final float HALF_PI = (float) (0.5d * Math.PI);
-    /** Constant <code>PI=(float) Math.PI</code> */
     public static final float PI = (float) Math.PI;
-    /** Constant <code>TWO_PI=(float) (2d * Math.PI)</code> */
     public static final float TWO_PI = (float) (2d * Math.PI);
+    public static final float THREE_HALF_PI = (float) (1.5d * Math.PI);
+
 
     /** Constant <code>X_AXIS</code> */
     public static final Vector3f X_AXIS = new Vector3f(1, 0, 0);
@@ -64,7 +62,7 @@ public final class SimpleMath {
         return (float) Math.tan(angle);
     }
 
-    private static float asin(float f) {
+    public static float asin(float f) {
         return (float) Math.asin(f);
     }
 
@@ -76,7 +74,7 @@ public final class SimpleMath {
         return (float) Math.atan(f);
     }
 
-    private static float atan2(float y, float x) {
+    public static float atan2(float y, float x) {
         return (float) Math.atan2(y,x);
     }
 
@@ -567,6 +565,7 @@ public final class SimpleMath {
     final static Quaternion ROTATION = new Quaternion();
 
 
+
     public static void rotate(Quaternion q, float angle, Vector3f axis) {
         axis.normalise();
         final double n = Math.sqrt(axis.x * axis.x + axis.y * axis.y + axis.z * axis.z);
@@ -714,10 +713,7 @@ public final class SimpleMath {
         final float phi = (float) Math.atan2(vec.x, vec.z);   // [-oo...+oo] -> [-PI...+PI]
 
         final float yy = (((float) Math.PI - theta) / (float) Math.PI);     // [0..PI] -> [1...0]
-        float xx = ( phi / ((float) Math.PI * 2));  // [-PI...+PI] -> [-1/2 ... + 1/2] -> [0...1]
-        if (xx < 0) {
-            xx += 1f; // wrap around
-        }
+        float xx = ( phi / ((float) Math.PI * 2));  // [-PI...+PI] -> [-1/2 ... + 1/2]
 
         return new Vector2f(xx, yy);
     }

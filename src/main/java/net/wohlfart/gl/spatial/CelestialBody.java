@@ -5,9 +5,8 @@ import java.util.Random;
 import net.wohlfart.gl.elements.AbstractRenderable;
 import net.wohlfart.gl.renderer.IsRenderable;
 import net.wohlfart.gl.texture.CelestialType;
-import net.wohlfart.tools.SimpleMath;
 
-public class CelestialBody extends AbstractRenderable  implements Spatial {
+public class CelestialBody extends AbstractRenderable implements Spatial {
 
     private final long seed;
     private Random random;
@@ -38,11 +37,16 @@ public class CelestialBody extends AbstractRenderable  implements Spatial {
 
     @Override
     protected IsRenderable setupMesh() {
-        final CelestialBodyMesh.Builder builder = new CelestialBodyMesh.Builder();
+        /*
+        final CelestialBodyMesh.IcosahedronBuilder icosaederBuilder = new CelestialBodyMesh.IcosahedronBuilder();
         this.random = new Random(seed);
-        builder.setRadius(SimpleMath.random(planetType.minRadius, planetType.maxRadius));
-        return builder.build();
-
+        icosaederBuilder.setRadius(SimpleMath.random(planetType.minRadius, planetType.maxRadius));
+        return icosaederBuilder.build();
+        */
+        final CelestialBodyMesh.RevolvedSphereBuilder icosaederBuilder = new CelestialBodyMesh.RevolvedSphereBuilder();
+        this.random = new Random(seed);
+        icosaederBuilder.setLod(3);
+        return icosaederBuilder.build();
     }
 
 }

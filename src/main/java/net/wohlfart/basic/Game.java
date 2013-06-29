@@ -77,11 +77,11 @@ class Game implements InitializingBean {
     @Override
     public void afterPropertiesSet() throws Exception {
         LOGGER.debug("<afterPropertiesSet>");
-        Assert.notNull(settings, "settings missing, you probably forgot to inject settings in the Game");
-        Assert.notNull(resourceManager, "resourceManager missing, you probably forgot to inject resourceManager in the Game");
-        Assert.notNull(globalClock, "globalClock missing, you probably forgot to inject globalClock in the Game");
-        Assert.notNull(inputSource, "inputSource missing, you probably forgot to inject inputSource in the Game");
-        Assert.notNull(inputDispatcher, "inputDispatcher missing, you probably forgot to inject inputDispatcher in the Game");
+        Assert.notNull(settings);
+        Assert.notNull(resourceManager);
+        Assert.notNull(globalClock);
+        Assert.notNull(inputSource);
+        Assert.notNull(inputDispatcher);
     }
 
     /**
@@ -91,8 +91,8 @@ class Game implements InitializingBean {
      */
     void start() {
         try {
-            // side effect during startup is fixing the setting's height/width value
-            // and initializing the OpenGl environment
+            // side effect during startup is fixing the settings' height/width value
+            // and initializing the OpenGL environment
             startPlatform();
             runApplicationLoop();
             shutdownGame();
@@ -130,18 +130,20 @@ class Game implements InitializingBean {
     /**
      * setup a OpenGL 3.3 environment, side effect is fixing height/width in the settings
      *
-     * @throws IOException
+     * @throws IOException, LWJGLException
      */
     private void startPlatform() throws LWJGLException, IOException {
-        Display.setIcon(new ByteBuffer[] { loadIcon(resourceManager.getGfxUrl("icons/main128.png")), loadIcon(resourceManager.getGfxUrl("icons/main32.png")),
-                loadIcon(resourceManager.getGfxUrl("icons/main16.png")), });
+        Display.setIcon(new ByteBuffer[] { // @formatter:off
+                loadIcon(resourceManager.getGfxUrl("icons/main128.png")),
+                loadIcon(resourceManager.getGfxUrl("icons/main32.png")),
+                loadIcon(resourceManager.getGfxUrl("icons/main16.png")),
+        }); // @formatter:on
         if (settings.getFullscreen()) {
             setupFullscreen();
         } else {
             setupWindow();
         }
-
-        // after this point we have a valid OpenGL context
+        // if nothing exploded so far we have a valid OpenGL context
 
         // map the internal OpenGL coordinate system to the entire viewport
         GL11.glViewport(0, 0, settings.width, settings.height);
@@ -149,7 +151,6 @@ class Game implements InitializingBean {
         GL11.glHint(GL11.GL_LINE_SMOOTH_HINT, GL11.GL_NICEST);
         GL11.glClearColor(0.5f, 0.5f, 0.5f, 0f);
         GL11.glClearDepth(1f);
-        // GL11.glClearColor(0.0f, 0.0f, 0.0f, 0f);
         // turn culling off so it will be drawn regardless of which way a surface is facing
         GL11.glDisable(GL11.GL_CULL_FACE); // enable for production
         GL11.glDisable(GL11.GL_DEPTH_TEST); // enable for production and check how this works with the skybox
@@ -157,8 +158,8 @@ class Game implements InitializingBean {
         // wire the stuff after the display has been created and the settings have been fixed
         graphContext.setSettings(settings);
         graphContext.setInputDispatcher(inputDispatcher);
-
-        inputSource.setInputDispatcher(graphContext.getInputDispatcher());
+        // activate inputs
+        inputSource.setInputDispatcher(inputDispatcher);
         setCurrentState(initialState);
 
         LOGGER.info("Vendor: " + GL11.glGetString(GL11.GL_VENDOR));

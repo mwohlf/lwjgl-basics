@@ -10,6 +10,7 @@ import net.wohlfart.gl.renderer.ModelBucket;
 import net.wohlfart.gl.renderer.RenderBucket;
 import net.wohlfart.gl.spatial.CelestialBody;
 
+import org.lwjgl.util.vector.Vector3f;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.InitializingBean;
@@ -92,8 +93,9 @@ final class AmbientState extends AbstractGraphicState implements InitializingBea
 
         modelBucket.addContent(new ParticleEmitter()); // FIXME: the particles need normals for this to work
         */
-
-        planetBucket.addContent(new CelestialBody(1L));
+        CelestialBody body = new CelestialBody(0L);
+        body.setPosition(new Vector3f(0,0,-7));
+        planetBucket.addContent(body);
 
     }
 

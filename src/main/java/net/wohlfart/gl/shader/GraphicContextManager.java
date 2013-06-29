@@ -179,16 +179,14 @@ public enum GraphicContextManager {
         this.inputDispatcher = inputSource;
     }
 
-    /**
-     * <p>
-     * Getter for the field <code>inputDispatcher</code>.
-     * </p>
-     *
-     * @return a {@link net.wohlfart.gl.input.InputDispatcher} object.
-     */
-    public InputDispatcher getInputDispatcher() {
-        return inputDispatcher;
+    public void register(Object inputListener) {
+        inputDispatcher.register(inputListener);
     }
+
+    public void unregister(Object inputListener) {
+        inputDispatcher.unregister(inputListener);
+    }
+
 
     /**
      * <p>
@@ -198,5 +196,7 @@ public enum GraphicContextManager {
     public void destroy() {
 
     }
+
+
 
 }
