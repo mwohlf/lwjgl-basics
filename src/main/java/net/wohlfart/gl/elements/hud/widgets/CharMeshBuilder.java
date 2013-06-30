@@ -43,20 +43,19 @@ class CharMeshBuilder {
         final float atlasWidth = atlas.getImage().getWidth();
         final float atlasHeight = atlas.getImage().getHeight();  // texture atlas size in pixel (512)
 
-        // tan = gegenk.  durch ankat.
         float z = cxtManager.getNearPlane();
 
         // the x/y coordinates must fit into a [-0.5 .. +0.5] interval
-        float x1 = ((screenX / screenWidth)) / xScale;
-        float y1 = ((screenY / screenHeight)) / yScale;
-        float x2 = ((screenX + info.getWidth()) / screenWidth) / xScale;
-        float y2 = ((screenY - info.getHeight()) / screenHeight) / yScale;
+        float x1 = ((screenX / screenWidth) / xScale ) * 2f;
+        float y1 = ((screenY / screenHeight) / yScale ) * 2f;
+        float x2 = (((screenX + info.getWidth()) / screenWidth) / xScale ) * 2f;
+        float y2 = (((screenY - info.getHeight()) / screenHeight) / yScale ) * 2f;
 
-        // resize
-        x1 *= 2f;
-        y1 *= 2f;
-        x2 *= 2f;
-        y2 *= 2f;
+        // the mesh coordinates are:
+        //   x axis is left to right
+        //   y axis is bottom to top
+
+        // TODO: move the origin to the top left
 
         // texture coordinates are in the [0...1] interval
         final float s1 = info.getX() / atlasWidth;
