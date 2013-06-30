@@ -4,32 +4,22 @@ import java.awt.image.BufferedImage;
 import java.nio.ByteBuffer;
 import java.util.HashMap;
 
+import net.wohlfart.basic.elements.IsRenderable;
+import net.wohlfart.gl.shader.GraphicContextManager;
+import net.wohlfart.gl.shader.mesh.TexturedMesh;
+
 import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL13;
 import org.lwjgl.opengl.GL30;
+import org.lwjgl.util.vector.Vector3f;
 
-/*
- * mesh for a complete character set in a specified font and size
- * also serves as texture for building labels with text content
- */
-/**
- * <p>
- * CharAtlas class.
- * </p>
- * 
- * 
- * 
- */
 public class CharAtlas {
 
-    HashMap<Character, CharInfo> map = new HashMap<Character, CharInfo>();
-    BufferedImage buffImage;
-    Integer texId;
+    private final HashMap<Character, CharInfo> map = new HashMap<Character, CharInfo>();
+    private BufferedImage buffImage;
+    private Integer texId;
 
-    CharAtlas() {
-
-    }
 
     // store a single character with its coordinates inside the texture
     void put(char c, float x, float y, float w, float h) {
@@ -41,14 +31,6 @@ public class CharAtlas {
         setupTexture(GL13.GL_TEXTURE1);
     }
 
-    /**
-     * <p>
-     * setupTexture.
-     * </p>
-     * 
-     * @param textureUnit
-     *            a int.
-     */
     protected void setupTexture(int textureUnit) {
 
         final int width = buffImage.getWidth(null);
@@ -87,39 +69,24 @@ public class CharAtlas {
         GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER, GL11.GL_LINEAR_MIPMAP_LINEAR);
     }
 
-    /**
-     * <p>
-     * getImage.
-     * </p>
-     * 
-     * @return a {@link java.awt.image.BufferedImage} object.
-     */
     public BufferedImage getImage() {
         return buffImage;
     }
 
-    /**
-     * <p>
-     * getCharInfo.
-     * </p>
-     * 
-     * @param c
-     *            a char.
-     * @return a {@link net.wohlfart.gl.elements.hud.widgets.CharInfo} object.
-     */
     public CharInfo getCharInfo(char c) {
         return map.get(c);
     }
 
-    /**
-     * <p>
-     * getTextureId.
-     * </p>
-     * 
-     * @return a int.
-     */
     public int getTextureId() {
         return texId;
+    }
+
+    protected IsRenderable getAsRenderable() {
+        final TexturedMesh.Builder builder = new TexturedMesh.Builder();
+        builder.setTextureId(getTextureId());
+        final float z = GraphicContextManager.INSTANCE.getNearPlane() - 1;
+        builder.setTranslation(new Vector3f(0, -0.5f, z));
+        return builder.build();
     }
 
 }

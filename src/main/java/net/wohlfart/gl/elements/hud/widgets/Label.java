@@ -4,15 +4,7 @@ import java.util.Collection;
 
 import net.wohlfart.basic.elements.IsRenderable;
 
-// a label is a quad for each character
-/**
- * <p>
- * Label class.
- * </p>
- *
- *
- *
- */
+
 public class Label extends AbstractTextComponent {
 
     final int x;
@@ -34,6 +26,11 @@ public class Label extends AbstractTextComponent {
         for (final IsRenderable renderable : characters) {
             renderable.render();
         }
+    }
+
+    @Override
+    public void update(float timeInSec) {
+
     }
 
     @Override

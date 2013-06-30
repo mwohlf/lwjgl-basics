@@ -1,6 +1,6 @@
 package net.wohlfart.gl.elements.hud;
 
-import net.wohlfart.gl.elements.hud.widgets.AbstractTextComponent;
+import net.wohlfart.gl.elements.hud.Layer.LayerElement;
 import net.wohlfart.gl.shader.DefaultGraphicContext;
 import net.wohlfart.gl.shader.GraphicContextManager;
 import net.wohlfart.gl.shader.GraphicContextManager.IGraphicContext;
@@ -10,15 +10,10 @@ import net.wohlfart.tools.SimpleMath;
 
 import org.lwjgl.opengl.GL11;
 
-/**
- * this class is responsible for switching context and rendering the hud components
- *
- *
- *
- */
+
 public class HudImpl implements Hud {
 
-    private final LayerImpl layer = new LayerImpl();
+    private final Layer layer = new LayerImpl();
 
     private IGraphicContext graphicContext;
 
@@ -31,13 +26,12 @@ public class HudImpl implements Hud {
     }
 
     @Override
-    public void add(AbstractTextComponent label) {
+    public void add(LayerElement label) {
         layer.add(label);
     }
 
     @Override
     public void render() {
-        assert graphicContext != null : "the graphicContext is null, make sure to call the init method";
 
         GraphicContextManager.INSTANCE.setCurrentGraphicContext(graphicContext);
 
@@ -60,6 +54,11 @@ public class HudImpl implements Hud {
     @Override
     public void dispose() {
 
+    }
+
+    @Override
+    public void update(float tpf) {
+        layer.update(tpf);
     }
 
 }

@@ -1,16 +1,13 @@
 package net.wohlfart.gl.elements.hud;
 
-import java.util.Collection;
 import java.util.HashSet;
 
 import net.wohlfart.basic.elements.IsRenderable;
-import net.wohlfart.gl.elements.hud.widgets.AbstractTextComponent;
+import net.wohlfart.basic.elements.IsUpdateable;
+import net.wohlfart.gl.elements.hud.Layer.LayerElement;
 import net.wohlfart.gl.elements.hud.widgets.CharAtlas;
 import net.wohlfart.gl.elements.hud.widgets.CharAtlasBuilder;
-import net.wohlfart.gl.shader.GraphicContextManager;
-import net.wohlfart.gl.shader.mesh.TexturedMesh;
 
-import org.lwjgl.util.vector.Vector3f;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -18,70 +15,45 @@ import org.slf4j.LoggerFactory;
 // read: http://stackoverflow.com/questions/10617589/why-would-it-be-beneficial-to-have-a-separate-projection-matrix-yet-combine-mod
 // and: http://www.arcsynthesis.org/gltut/Positioning/Tut07%20The%20Perils%20of%20World%20Space.html
 // and: http://www.arcsynthesis.org/gltut/Positioning/Tutorial%2005.html
-class LayerImpl implements Layer {
-    
+@SuppressWarnings("serial")
+class LayerImpl extends HashSet<LayerElement> implements Layer {
+
     protected static final Logger LOGGER = LoggerFactory.getLogger(LayerImpl.class);
-
-    private final GraphicContextManager cxtManager = GraphicContextManager.INSTANCE;
-
-    protected final Collection<IsRenderable> components = new HashSet<IsRenderable>();
-
-    protected IsRenderable meshData;
 
     protected CharAtlas characterAtlas;
 
-    /**
-     * <p>
-     * setup.
-     * </p>
-     *
-     * @return a {@link net.wohlfart.gl.shader.mesh.IRenderable} object.
-     */
-    protected IsRenderable setup() {
-        characterAtlas = new CharAtlasBuilder().build();
-        final TexturedMesh.Builder builder = new TexturedMesh.Builder();
-        builder.setTextureId(characterAtlas.getTextureId());
-        final float z = cxtManager.getNearPlane() - 1;
-        builder.setTranslation(new Vector3f(0, -0.5f, z));
-        return builder.build();
-    }
-
-    /** {@inheritDoc} */
     @Override
     public void render() {
-        if (meshData == null) {
-            meshData = setup();
+        if (characterAtlas == null) {
+            characterAtlas = new CharAtlasBuilder().build();
         }
-        // meshData.draw();
-        for (final IsRenderable component : components) {
+        for (final IsRenderable component : this) {
             component.render();
         }
     }
 
-    /** {@inheritDoc} */
     @Override
     public void destroy() {
-        meshData.destroy();
-        meshData = null;
+       // meshData.destroy();
+       // meshData = null;
     }
 
-    /**
-     * <p>
-     * add.
-     * </p>
-     *
-     * @param label
-     *            a {@link net.wohlfart.gl.elements.hud.widgets.AbstractTextComponent} object.
-     */
-    public void add(AbstractTextComponent label) {
+    @Override
+    public boolean add(LayerElement label) {
         label.setLayer(this); // double dispatch
-        components.add(label);
+        return super.add(label);
     }
 
-    /** {@inheritDoc} */
     @Override
     public CharAtlas getCharacterAtlas() {
         return characterAtlas;
+    }
+
+    @Override
+    public void update(float tpf) {
+        for (final IsUpdateable component : this) {
+            component.update(tpf);
+        }
     }
 
 }

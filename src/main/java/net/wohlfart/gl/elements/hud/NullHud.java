@@ -1,6 +1,6 @@
 package net.wohlfart.gl.elements.hud;
 
-import net.wohlfart.gl.elements.hud.widgets.AbstractTextComponent;
+import net.wohlfart.gl.elements.hud.Layer.LayerElement;
 
 public enum NullHud implements Hud {
     INSTANCE;
@@ -21,12 +21,17 @@ public enum NullHud implements Hud {
     }
 
     @Override
-    public void add(AbstractTextComponent label) {
+    public void add(LayerElement label) {
         throw new UnsupportedOperationException("can't add element to null hud");
     }
 
     @Override
     public void dispose() {
+        // do nothing
+    }
+
+    @Override
+    public void update(float tpf) {
         // do nothing
     }
 

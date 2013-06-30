@@ -64,8 +64,8 @@ public class CelestialState extends AbstractGraphicState {
 
         statistics = new Statistics(0, -40);
         mousePositionLabel = new MousePositionLabel(0, -20);
-        //hud.add(statistics);
-        //hud.add(mousePositionLabel);
+        hud.add(statistics);
+        hud.add(mousePositionLabel);
         hud.add(new Label(0, 0, "hello world at (0,0)"));
 
         hud.setup();
@@ -86,6 +86,7 @@ public class CelestialState extends AbstractGraphicState {
         planetBucket.update(tpf);
         wireframeBucket.update(tpf);
         meshBucket.update(tpf);
+        hud.update(tpf);
     }
 
     @Override

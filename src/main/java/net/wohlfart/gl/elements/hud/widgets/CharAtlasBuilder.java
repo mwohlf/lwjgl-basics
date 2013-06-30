@@ -14,19 +14,9 @@ import java.io.InputStream;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-/*
- * creating an atlas for a font
- */
-/**
- * <p>
- * CharAtlasBuilder class.
- * </p>
- * 
- * 
- * 
- */
+
 public class CharAtlasBuilder {
-    
+
     protected static final Logger LOGGER = LoggerFactory.getLogger(CharAtlasBuilder.class);
 
     private static final float DEFAULT_FONT_SIZE = 17f;
@@ -35,7 +25,6 @@ public class CharAtlasBuilder {
     // private static final String FONT_FILE = "/fonts/AeroviasBrasilNF.ttf";
     private static final String DEFAULT_FONT_FILE = "/fonts/VeraMono.ttf";
 
-    /** Constant <code>NULL_CHAR='_'</code> */
     static final char NULL_CHAR = '_';
     private static final String CHARS = " abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789;:,.-_#+?!\"()";
     {
@@ -51,13 +40,7 @@ public class CharAtlasBuilder {
     private float fontSize = DEFAULT_FONT_SIZE;
     private String fontFile = DEFAULT_FONT_FILE;
 
-    /**
-     * <p>
-     * build.
-     * </p>
-     * 
-     * @return a {@link net.wohlfart.gl.elements.hud.widgets.CharAtlas} object.
-     */
+
     public CharAtlas build() {
         try (InputStream inputStream = ClassLoader.class.getResourceAsStream(fontFile);) {
             Font font = Font.createFont(Font.TRUETYPE_FONT, inputStream);
@@ -68,38 +51,15 @@ public class CharAtlasBuilder {
         }
     }
 
-    /**
-     * <p>
-     * Setter for the field <code>borderOn</code>.
-     * </p>
-     * 
-     * @param borderOn
-     *            a boolean.
-     */
+
     public void setBorderOn(boolean borderOn) {
         this.borderOn = borderOn;
     }
 
-    /**
-     * <p>
-     * Setter for the field <code>fontSize</code>.
-     * </p>
-     * 
-     * @param fontSize
-     *            a float.
-     */
     public void setFontSize(float fontSize) {
         this.fontSize = fontSize;
     }
 
-    /**
-     * <p>
-     * Setter for the field <code>fontFile</code>.
-     * </p>
-     * 
-     * @param fontFile
-     *            a {@link java.lang.String} object.
-     */
     public void setFontFile(String fontFile) {
         this.fontFile = fontFile;
     }

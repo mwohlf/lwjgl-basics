@@ -5,15 +5,8 @@ import java.util.HashSet;
 import net.wohlfart.basic.elements.IsRenderable;
 import net.wohlfart.gl.elements.hud.Layer;
 
-/**
- * <p>
- * Abstract AbstractTextComponent class.
- * </p>
- *
- *
- *
- */
-public abstract class AbstractTextComponent implements IsRenderable {
+
+public abstract class AbstractTextComponent implements Layer.LayerElement {
 
     private Layer layer;
 
