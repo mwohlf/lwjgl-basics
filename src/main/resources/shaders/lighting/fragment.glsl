@@ -1,6 +1,8 @@
 #version 330 core
 
-// fragments are possible pixels
+//
+// 'a fragments is a possible pixels'
+//
 
 uniform sampler2D texture01;
 uniform sampler2D texture02;

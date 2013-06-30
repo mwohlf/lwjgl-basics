@@ -3,10 +3,12 @@ package net.wohlfart.gl.elements.skybox;
 import java.util.ArrayList;
 import java.util.List;
 
+import net.wohlfart.gl.shader.DefaultGraphicContext;
 import net.wohlfart.gl.shader.GraphicContextManager;
 import net.wohlfart.gl.shader.GraphicContextManager.IGraphicContext;
+import net.wohlfart.gl.shader.ShaderRegistry;
 import net.wohlfart.gl.shader.ShaderUniformHandle;
-import net.wohlfart.gl.view.CanRotate;
+import net.wohlfart.gl.view.Camera;
 import net.wohlfart.tools.SimpleMath;
 
 import org.lwjgl.opengl.GL11;
@@ -26,20 +28,12 @@ public class SkyboxImpl implements Skybox, SkyboxParameters {
 
     private BoxSideMesh[] sides;
 
-    private CanRotate camera;
-
     private IGraphicContext graphicContext;
 
-    public void setGraphicContext(IGraphicContext graphicContext) {
-        this.graphicContext = graphicContext;
-    }
-
-    public void setCamera(CanRotate camera) {
-        this.camera = camera;
-    }
 
     @Override
     public void setup() {
+        graphicContext = new DefaultGraphicContext(ShaderRegistry.DEFAULT_SHADER);
         graphicContext.setup();
     }
 
@@ -52,17 +46,17 @@ public class SkyboxImpl implements Skybox, SkyboxParameters {
         sides = newSides.toArray(new BoxSideMesh[values.length]);
     }
 
-    /** {@inheritDoc} */
     @Override
     public void render() {
         assert graphicContext != null : "the graphicContext is null, make sure to call the init method";
-        assert camera != null : "the camera is null, make sure to call the init method";
+        assert graphicContext.isInitialized() : "the graphicContext is not initialized";
 
         GraphicContextManager.INSTANCE.setCurrentGraphicContext(graphicContext);
         if (sides == null) {
             createSides();
         }
 
+        final Camera camera = GraphicContextManager.INSTANCE.getCamera();
         final Matrix4f camViewMatrix = GraphicContextManager.INSTANCE.getPerspectiveProjMatrix();
         SimpleMath.convert(camera.getRotation(), rotMatrix);
 
@@ -78,25 +72,22 @@ public class SkyboxImpl implements Skybox, SkyboxParameters {
         camera.getForward(viewDirection);
         viewDirection.normalise(viewDirection);
         for (final BoxSideMesh side : sides) {
-            if (Vector3f.dot(viewDirection, side.getNormal()) > BoxSide.DOT_PROD_LIMIT) {
+//            if (Vector3f.dot(viewDirection, side.getNormal()) > BoxSide.DOT_PROD_LIMIT) {
                 side.render();
-            }
+//            }
         }
     }
 
-    /** {@inheritDoc} */
     @Override
     public void destroy() {
         sides = null;
     }
 
-    /** {@inheritDoc} */
     @Override
     public PerlinNoiseParameters getNoiseParamClouds() {
         return clouds;
     }
 
-    /** {@inheritDoc} */
     @Override
     public PerlinNoiseParameters getNoiseParamStars() {
         return stars;

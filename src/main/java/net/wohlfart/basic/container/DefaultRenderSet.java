@@ -37,7 +37,7 @@ public class DefaultRenderSet<T extends IsRenderable> extends HashSet<T> impleme
 
     @Override
     public void setup() {
-        if (graphicContext == null) {
+        if (graphicContext == null) { // fallback
             graphicContext = new DefaultGraphicContext(ShaderRegistry.DEFAULT_SHADER);
         }
         graphicContext.setup();

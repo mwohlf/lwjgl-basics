@@ -57,6 +57,10 @@ public class TexturedMesh implements IsRenderable {
         GL30.glBindVertexArray(vaoHandle);
         GL13.glActiveTexture(GL13.GL_TEXTURE0);
         GL11.glBindTexture(GL11.GL_TEXTURE_2D, textureId);
+        // Setup the ST coordinate system
+        GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_S, GL11.GL_REPEAT);
+        GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_T, GL11.GL_REPEAT);
+
         GL11.glDrawElements(indicesType, indicesCount, indexElemSize, indexOffset);
         GL30.glBindVertexArray(0);
     }
@@ -70,7 +74,7 @@ public class TexturedMesh implements IsRenderable {
 
 
     public static class Builder {
-        
+
         protected static final Logger LOGGER = LoggerFactory.getLogger(Builder.class);
 
         private String textureFilename;
@@ -79,16 +83,9 @@ public class TexturedMesh implements IsRenderable {
         private Quaternion rotation = new Quaternion();
         private Vector3f translation = new Vector3f();
 
-        /**
-         * <p>
-         * build.
-         * </p>
-         *
-         * @return a {@link net.wohlfart.gl.shader.mesh.IRenderable} object.
-         */
+
         public IsRenderable build() {
 
-            // load the texture if needed
             if (textureFilename != null) {
                 texId  = loadPNGTexture(textureFilename, GL13.GL_TEXTURE0);
             }
@@ -97,7 +94,8 @@ public class TexturedMesh implements IsRenderable {
                     new Vector3f(-0.5f, +0.5f, 0),
                     new Vector3f(-0.5f, -0.5f, 0),
                     new Vector3f(+0.5f, -0.5f, 0),
-                    new Vector3f(+0.5f, +0.5f, 0) };  // @formatter:on
+                    new Vector3f(+0.5f, +0.5f, 0),
+            };  // @formatter:on
 
             if (rotation != null) {
                 for (final Vector3f vec : vectors) {
@@ -111,37 +109,35 @@ public class TexturedMesh implements IsRenderable {
             }
 
 
-            final Vertex[] vertices = new Vertex[] { new Vertex() {
-                {
-                    setXYZ(vectors[0].x, vectors[0].y, vectors[0].z);
-                    setRGB(1, 0, 0);
-                    setST(0, 0);
-                }
-            }, new Vertex() {
-                {
-                    setXYZ(vectors[1].x, vectors[1].y, vectors[1].z);
-                    setRGB(0, 1, 0);
-                    setST(0, 1);
-                }
-            }, new Vertex() {
-                {
-                    setXYZ(vectors[2].x, vectors[2].y, vectors[2].z);
-                    setRGB(0, 0, 1);
-                    setST(1, 1);
-                }
-            }, new Vertex() {
-                {
-                    setXYZ(vectors[3].x, vectors[3].y, vectors[3].z);
-                    setRGB(1, 1, 1);
-                    setST(1, 0);
-                }
-            } };
+            // @formatter:off
+            final Vertex[] vertices =
+                    new Vertex[] { new Vertex() {{
+                        setXYZ(vectors[0].x, vectors[0].y, vectors[0].z);
+                        setRGB(1, 0, 0);
+                        setST(0, 0);
+                    }},
+                    new Vertex() {{
+                        setXYZ(vectors[1].x, vectors[1].y, vectors[1].z);
+                        setRGB(0, 1, 0);
+                        setST(0, 1);
+                    }},
+                    new Vertex() {{
+                        setXYZ(vectors[2].x, vectors[2].y, vectors[2].z);
+                        setRGB(0, 0, 1);
+                        setST(1, 1);
+                    }},
+                    new Vertex() {{
+                        setXYZ(vectors[3].x, vectors[3].y, vectors[3].z);
+                        setRGB(1, 1, 1);
+                        setST(1, 0);
+                    }}
+            }; // @formatter:on
 
 
             // Put each 'Vertex' in one FloatBuffer the order depends on the shaders positions!
             final FloatBuffer verticesBuffer = BufferUtils.createFloatBuffer(vertices.length * Vertex.elementCount);
             for (int i = 0; i < vertices.length; i++) {
-                verticesBuffer.put(vertices[i].getXYZW());
+                verticesBuffer.put(vertices[i].getXYZ());
                 verticesBuffer.put(vertices[i].getRGBA());
                 verticesBuffer.put(vertices[i].getST());
             }
@@ -167,17 +163,25 @@ public class TexturedMesh implements IsRenderable {
             GL15.glBindBuffer(GL15.GL_ELEMENT_ARRAY_BUFFER, vboIndicesHandle);
             GL15.glBufferData(GL15.GL_ELEMENT_ARRAY_BUFFER, indicesBuffer, GL15.GL_STATIC_DRAW);
 
+            int offset;
+            final int stride = ShaderAttributeHandle.POSITION.getByteCount()
+                             + ShaderAttributeHandle.COLOR.getByteCount()
+                             + ShaderAttributeHandle.TEXTURE_COORD.getByteCount();
+
+            offset = 0;
             ShaderAttributeHandle.POSITION.enable();
             GL20.glVertexAttribPointer(ShaderAttributeHandle.POSITION.getLocation(),
-                    Vertex.POSITION_ELEM_COUNT, GL11.GL_FLOAT, false, Vertex.stride, Vertex.positionByteOffset);
+                    Vertex.POSITION_ELEM_COUNT, GL11.GL_FLOAT, false, stride, offset);
 
+            offset += ShaderAttributeHandle.POSITION.getByteCount();
             ShaderAttributeHandle.COLOR.enable();
             GL20.glVertexAttribPointer(ShaderAttributeHandle.COLOR.getLocation(),
-                    Vertex.COLOR_ELEM_COUNT, GL11.GL_FLOAT, false, Vertex.stride, Vertex.colorByteOffset);
+                    Vertex.COLOR_ELEM_COUNT, GL11.GL_FLOAT, false, stride, offset);
 
+            offset += ShaderAttributeHandle.COLOR.getByteCount();
             ShaderAttributeHandle.TEXTURE_COORD.enable();
             GL20.glVertexAttribPointer(ShaderAttributeHandle.TEXTURE_COORD.getLocation(),
-                    Vertex.TEXTURE_ELEM_COUNT, GL11.GL_FLOAT, false, Vertex.stride, Vertex.textureByteOffset);
+                    Vertex.TEXTURE_ELEM_COUNT, GL11.GL_FLOAT, false, stride, offset);
 
             ShaderAttributeHandle.NORMAL.disable();
 

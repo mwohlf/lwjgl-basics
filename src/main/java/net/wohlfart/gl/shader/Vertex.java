@@ -97,6 +97,10 @@ public class Vertex {
         return out;
     }
 
+    public float[] getXYZ() {
+        return new float[] { this.xyzw[0], this.xyzw[1], this.xyzw[2] };
+    }
+
     public float[] getXYZW() {
         return new float[] { this.xyzw[0], this.xyzw[1], this.xyzw[2], this.xyzw[3] };
     }

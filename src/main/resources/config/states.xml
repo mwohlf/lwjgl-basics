@@ -52,11 +52,7 @@
 
     <!-- skyboxes -->
 
-    <bean id="defaultSkybox" class="net.wohlfart.gl.elements.skybox.SkyboxImpl">
-        <property name="camera" ref="camera" />
-        <property name="graphicContext" ref="defaultShader" />
-    </bean>
-
+    <bean id="defaultSkybox" class="net.wohlfart.gl.elements.skybox.SkyboxImpl" />
 
 
 

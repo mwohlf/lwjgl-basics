@@ -34,7 +34,7 @@ void main(void) {
     pass_TextureCoord = in_TexCoord;
 
     // light must already be in worldspace, should be the same for all models
-    pass_LightPosition = vec3(worldToCameraMatrix * vec4(lightPosition,0));
+    pass_LightPosition = vec3(worldToCameraMatrix * vec4(lightPosition, 0));
 
     //
     pass_Position = vec3(worldToCameraMatrix * modelToWorldMatrix * vec4(in_Position, 1.0));
