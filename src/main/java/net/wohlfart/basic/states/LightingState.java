@@ -6,7 +6,7 @@ import net.wohlfart.basic.container.ModelBucket;
 import net.wohlfart.gl.elements.hud.Hud;
 import net.wohlfart.gl.elements.hud.NullHud;
 import net.wohlfart.gl.elements.hud.widgets.Label;
-import net.wohlfart.gl.elements.hud.widgets.MousePositionLabel;
+import net.wohlfart.gl.elements.hud.widgets.MouseClickLabel;
 import net.wohlfart.gl.elements.hud.widgets.Statistics;
 import net.wohlfart.gl.elements.skybox.NullSkybox;
 import net.wohlfart.gl.elements.skybox.Skybox;
@@ -31,7 +31,7 @@ final class LightingState extends AbstractGraphicState implements InitializingBe
     private ModelBucket modelBucket;
 
     private Statistics statistics;
-    private MousePositionLabel mousePositionLabel;
+    private MouseClickLabel mouseClickLabel;
     private ElementPicker elementPicker;
 
     public void setSkybox(Skybox skybox) {
@@ -69,13 +69,13 @@ final class LightingState extends AbstractGraphicState implements InitializingBe
         hud.setup();
 
         statistics = new Statistics(0, -40);
-        mousePositionLabel = new MousePositionLabel(0, -20);
+        mouseClickLabel = new MouseClickLabel(0, -20);
         elementPicker = new ElementPicker(elemBucket, getScreenWidth(), getScreenHeight());
         elementPicker.setRenderBucket(elemBucket);
         elementPicker.setModelBucket(modelBucket);
 
         hud.add(statistics);
-        hud.add(mousePositionLabel);
+        hud.add(mouseClickLabel);
         hud.add(new Label(0, 0, "hello world at (0,0)"));
 
         getGraphContextManager().register(elementPicker);

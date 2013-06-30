@@ -3,17 +3,7 @@ package net.wohlfart.gl.input;
 import net.wohlfart.tools.ObjectPool;
 import net.wohlfart.tools.ObjectPool.PoolableObject;
 
-/*
- * the high level commands, base class for all kind of high level events/commands
- */
-/**
- * <p>
- * CommandEvent class.
- * </p>
- * 
- * 
- * 
- */
+
 public class PointEvent implements PoolableObject {
 
     private int x;

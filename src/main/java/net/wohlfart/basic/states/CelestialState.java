@@ -6,20 +6,20 @@ import net.wohlfart.gl.elements.TexturedQuad;
 import net.wohlfart.gl.elements.hud.Hud;
 import net.wohlfart.gl.elements.hud.HudImpl;
 import net.wohlfart.gl.elements.hud.widgets.Label;
-import net.wohlfart.gl.elements.hud.widgets.MousePositionLabel;
+import net.wohlfart.gl.elements.hud.widgets.MouseClickLabel;
 import net.wohlfart.gl.elements.hud.widgets.Statistics;
+import net.wohlfart.gl.elements.skybox.NullSkybox;
 import net.wohlfart.gl.elements.skybox.Skybox;
-import net.wohlfart.gl.elements.skybox.SkyboxImpl;
 import net.wohlfart.gl.shader.DefaultGraphicContext;
 import net.wohlfart.gl.shader.ShaderRegistry;
 import net.wohlfart.gl.spatial.CelestialBody;
-import net.wohlfart.gl.view.ElementPicker;
 
 import org.lwjgl.util.vector.Vector3f;
 
 public class CelestialState extends AbstractGraphicState {
 
-    private final Skybox skybox = new SkyboxImpl();   //NullSkybox.INSTANCE;
+    //private final Skybox skybox = new SkyboxImpl();   //NullSkybox.INSTANCE;
+    private final Skybox skybox = NullSkybox.INSTANCE;
 
     private final DefaultRenderSet<CelestialBody> planetBucket = new DefaultRenderSet<>();
 
@@ -28,11 +28,6 @@ public class CelestialState extends AbstractGraphicState {
     private final DefaultRenderSet<IsRenderable> meshBucket = new DefaultRenderSet<>();
 
     private final Hud hud = new HudImpl();
-
-
-    private Statistics statistics;
-    private MousePositionLabel mousePositionLabel;
-    private ElementPicker elementPicker;
 
 
     @Override
@@ -52,7 +47,9 @@ public class CelestialState extends AbstractGraphicState {
         meshBucket.setup();
 
 
-        planetBucket.add(new CelestialBody(0));
+        CelestialBody body = new CelestialBody(0);
+        body.setPosition(new Vector3f(7,0,0));
+        planetBucket.add(body);
         // simple wireframe, no light, no texture, no normals, planes will be black
         //planetBucket.setGraphicContext(new DefaultGraphicContext(ShaderRegistry.WIREFRAME_SHADER));
         // texture, no light sources, no normals
@@ -61,11 +58,8 @@ public class CelestialState extends AbstractGraphicState {
         //planetBucket.setGraphicContext(new DefaultGraphicContext(ShaderRegistry.LIGHTING_SHADER));
         planetBucket.setup();
 
-
-        statistics = new Statistics(0, -40);
-        mousePositionLabel = new MousePositionLabel(0, -20);
-        hud.add(statistics);
-        hud.add(mousePositionLabel);
+        hud.add(new Statistics(0, -40));
+        hud.add(new MouseClickLabel(0, -20));
         hud.add(new Label(0, 0, "hello world at (0,0)"));
 
         hud.setup();
