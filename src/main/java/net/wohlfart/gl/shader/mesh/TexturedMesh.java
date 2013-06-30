@@ -73,7 +73,7 @@ public class TexturedMesh implements IsRenderable {
     }
 
 
-    public static class Builder {
+    public static class Builder { //FIXME: extend AbstractMeshBuilder and move some methods
 
         protected static final Logger LOGGER = LoggerFactory.getLogger(Builder.class);
 

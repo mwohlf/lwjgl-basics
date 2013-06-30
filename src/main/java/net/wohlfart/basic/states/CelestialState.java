@@ -11,6 +11,8 @@ import net.wohlfart.gl.shader.DefaultGraphicContext;
 import net.wohlfart.gl.shader.ShaderRegistry;
 import net.wohlfart.gl.spatial.CelestialBody;
 
+import org.lwjgl.util.vector.Vector3f;
+
 public class CelestialState extends AbstractGraphicState {
 
     private final Skybox skybox = new SkyboxImpl();   //NullSkybox.INSTANCE;
@@ -35,9 +37,10 @@ public class CelestialState extends AbstractGraphicState {
         wireframeBucket.addAll(SceneCreator.createOriginAxis());
         wireframeBucket.setup();
 
-
         meshBucket.setGraphicContext(new DefaultGraphicContext(ShaderRegistry.DEFAULT_SHADER));
-        meshBucket.add(new TexturedQuad());
+        TexturedQuad tex = new TexturedQuad();
+        tex.setPosition(new Vector3f(0,-10,-10));
+        meshBucket.add(tex);
         meshBucket.setup();
 
 
@@ -59,21 +62,23 @@ public class CelestialState extends AbstractGraphicState {
         skybox.render();
         wireframeBucket.render();
         meshBucket.render();
-    //    planetBucket.render();
-    //    hud.render();
+        planetBucket.render();
+        hud.render();
     }
 
     @Override
     public void update(float tpf) {
         planetBucket.update(tpf);
-        wireframeBucket.render();
-
+        wireframeBucket.update(tpf);
+        meshBucket.update(tpf);
     }
 
     @Override
     public void destroy() {
         skybox.destroy();
         planetBucket.destroy();
+        wireframeBucket.destroy();
+        meshBucket.destroy();
         hud.destroy();
         super.destroy();
     }

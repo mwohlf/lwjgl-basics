@@ -63,8 +63,7 @@ enum BoxSide {// @formatter:off
     // main entry point
     BoxSideMesh build(SkyboxParameters parameters) {
 
-        final Vertex[] vertices = new Vertex[] {
-// @formatter:off
+        final Vertex[] vertices = new Vertex[] { // @formatter:off
                 new Vertex() {{
                         setXYZ(translate(rotate(new Vector3f(-dist, +dist, 0f))));
                         setRGB(1, 1, 1);
@@ -89,7 +88,7 @@ enum BoxSide {// @formatter:off
 
         final FloatBuffer verticesBuffer = BufferUtils.createFloatBuffer(vertices.length * Vertex.elementCount);
         for (int i = 0; i < vertices.length; i++) {
-            verticesBuffer.put(vertices[i].getXYZW());
+            verticesBuffer.put(vertices[i].getXYZ());
             verticesBuffer.put(vertices[i].getRGBA());
             verticesBuffer.put(vertices[i].getST());
         }
@@ -116,17 +115,25 @@ enum BoxSide {// @formatter:off
         GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, vboVerticesHandle);
         GL15.glBufferData(GL15.GL_ARRAY_BUFFER, verticesBuffer, GL15.GL_STATIC_DRAW);
 
+        int offset;
+        final int stride = ShaderAttributeHandle.POSITION.getByteCount()
+                         + ShaderAttributeHandle.COLOR.getByteCount()
+                         + ShaderAttributeHandle.TEXTURE_COORD.getByteCount();
+
+        offset = 0;
         ShaderAttributeHandle.POSITION.enable();
         GL20.glVertexAttribPointer(ShaderAttributeHandle.POSITION.getLocation(),
-                Vertex.POSITION_ELEM_COUNT, GL11.GL_FLOAT, false, Vertex.stride, Vertex.positionByteOffset);
+                Vertex.POSITION_ELEM_COUNT, GL11.GL_FLOAT, false, stride, offset);
 
+        offset += ShaderAttributeHandle.POSITION.getByteCount();
         ShaderAttributeHandle.COLOR.enable();
         GL20.glVertexAttribPointer(ShaderAttributeHandle.COLOR.getLocation(),
-                Vertex.COLOR_ELEM_COUNT, GL11.GL_FLOAT, false, Vertex.stride, Vertex.colorByteOffset);
+                Vertex.COLOR_ELEM_COUNT, GL11.GL_FLOAT, false, stride, offset);
 
+        offset += ShaderAttributeHandle.COLOR.getByteCount();
         ShaderAttributeHandle.TEXTURE_COORD.enable();
         GL20.glVertexAttribPointer(ShaderAttributeHandle.TEXTURE_COORD.getLocation(),
-                Vertex.TEXTURE_ELEM_COUNT, GL11.GL_FLOAT, false, Vertex.stride, Vertex.textureByteOffset);
+                Vertex.TEXTURE_ELEM_COUNT, GL11.GL_FLOAT, false, stride, offset);
 
         ShaderAttributeHandle.NORMAL.disable();
 
