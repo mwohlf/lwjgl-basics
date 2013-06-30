@@ -70,10 +70,10 @@ class CharMeshBuilder {
         v3.setST(s2, t1);
 
         final Vertex[] vertices = new Vertex[] { v0, v1, v2, v3 };
-        final FloatBuffer verticesBuffer = BufferUtils.createFloatBuffer(vertices.length * Vertex.elementCount);
+        final FloatBuffer verticesBuffer = BufferUtils.createFloatBuffer(vertices.length * (3 + 4 + 2));
         for (int i = 0; i < vertices.length; i++) {
-            verticesBuffer.put(vertices[i].getXYZW());
-            verticesBuffer.put(vertices[i].getRGBA()); // FIXME: color not needed
+            verticesBuffer.put(vertices[i].getXYZ());
+            //verticesBuffer.put(vertices[i].getRGBA());
             verticesBuffer.put(vertices[i].getST());
         }
         verticesBuffer.flip();
@@ -97,13 +97,22 @@ class CharMeshBuilder {
         GL15.glBindBuffer(GL15.GL_ELEMENT_ARRAY_BUFFER, vboIndicesHandle);
         GL15.glBufferData(GL15.GL_ELEMENT_ARRAY_BUFFER, indicesBuffer, GL15.GL_STATIC_DRAW);
 
+        int offset;
+        final int stride = ShaderAttributeHandle.POSITION.getByteCount()
+              //  + ShaderAttributeHandle.COLOR.getByteCount()
+                + ShaderAttributeHandle.TEXTURE_COORD.getByteCount();
+
+        offset = 0;
+
         ShaderAttributeHandle.POSITION.enable();
         GL20.glVertexAttribPointer(ShaderAttributeHandle.POSITION.getLocation(),
-                Vertex.POSITION_ELEM_COUNT, GL11.GL_FLOAT, false, Vertex.stride, Vertex.positionByteOffset);
+                Vertex.POSITION_ELEM_COUNT, GL11.GL_FLOAT, false, stride, offset);
+        offset += ShaderAttributeHandle.POSITION.getByteCount();
 
         ShaderAttributeHandle.TEXTURE_COORD.enable();
         GL20.glVertexAttribPointer(ShaderAttributeHandle.TEXTURE_COORD.getLocation(),
-                Vertex.TEXTURE_ELEM_COUNT, GL11.GL_FLOAT, false, Vertex.stride, Vertex.textureByteOffset);
+                Vertex.TEXTURE_ELEM_COUNT, GL11.GL_FLOAT, false, stride, offset);
+        offset += ShaderAttributeHandle.TEXTURE_COORD.getByteCount();
 
         ShaderAttributeHandle.NORMAL.disable();
 

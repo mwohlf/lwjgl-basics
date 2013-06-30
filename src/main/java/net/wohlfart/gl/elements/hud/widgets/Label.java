@@ -9,9 +9,9 @@ import net.wohlfart.basic.elements.IsRenderable;
  * <p>
  * Label class.
  * </p>
- * 
- * 
- * 
+ *
+ *
+ *
  */
 public class Label extends AbstractTextComponent {
 
@@ -20,25 +20,12 @@ public class Label extends AbstractTextComponent {
     private final String string;
     private Collection<IsRenderable> characters;
 
-    /**
-     * <p>
-     * Constructor for Label.
-     * </p>
-     * 
-     * @param x
-     *            a int.
-     * @param y
-     *            a int.
-     * @param string
-     *            a {@link java.lang.String} object.
-     */
     public Label(int x, int y, String string) {
         this.x = x;
         this.y = y;
         this.string = string;
     }
 
-    /** {@inheritDoc} */
     @Override
     public void render() {
         if (characters == null) {
@@ -49,7 +36,6 @@ public class Label extends AbstractTextComponent {
         }
     }
 
-    /** {@inheritDoc} */
     @Override
     public void destroy() {
         for (final IsRenderable renderable : characters) {
