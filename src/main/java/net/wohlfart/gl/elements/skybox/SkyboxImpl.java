@@ -35,8 +35,8 @@ public class SkyboxImpl implements Skybox, SkyboxParameters {
     }
 
     private void createSides() {
-        final BoxSide[] values = BoxSide.values();
-        for (final BoxSide side : values) {
+        sides = BoxSide.values();
+        for (final BoxSide side : sides) {
             side.setup(this);
         }
     }

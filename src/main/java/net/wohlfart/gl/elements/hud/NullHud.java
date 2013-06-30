@@ -22,7 +22,7 @@ public enum NullHud implements Hud {
 
     @Override
     public void add(AbstractTextComponent label) {
-        // do nothing
+        throw new UnsupportedOperationException("can't add element to null hud");
     }
 
     @Override

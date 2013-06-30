@@ -1,8 +1,10 @@
 package net.wohlfart.gl.elements.hud;
 
 import net.wohlfart.gl.elements.hud.widgets.AbstractTextComponent;
+import net.wohlfart.gl.shader.DefaultGraphicContext;
 import net.wohlfart.gl.shader.GraphicContextManager;
 import net.wohlfart.gl.shader.GraphicContextManager.IGraphicContext;
+import net.wohlfart.gl.shader.ShaderRegistry;
 import net.wohlfart.gl.shader.ShaderUniformHandle;
 import net.wohlfart.tools.SimpleMath;
 
@@ -10,39 +12,29 @@ import org.lwjgl.opengl.GL11;
 
 /**
  * this class is responsible for switching context and rendering the hud components
- * 
- * 
- * 
+ *
+ *
+ *
  */
 public class HudImpl implements Hud {
 
-    private IGraphicContext graphicContext;
-
     private final LayerImpl layer = new LayerImpl();
 
-    public void setGraphicContext(IGraphicContext graphicContext) {
-        this.graphicContext = graphicContext;
-    }
+    private IGraphicContext graphicContext;
+
+
 
     @Override
     public void setup() {
+        graphicContext = new DefaultGraphicContext(ShaderRegistry.HUD_SHADER);
         graphicContext.setup();
     }
 
-    /**
-     * <p>
-     * add.
-     * </p>
-     * 
-     * @param label
-     *            a {@link net.wohlfart.gl.elements.hud.widgets.AbstractTextComponent} object.
-     */
     @Override
     public void add(AbstractTextComponent label) {
         layer.add(label);
     }
 
-    /** {@inheritDoc} */
     @Override
     public void render() {
         assert graphicContext != null : "the graphicContext is null, make sure to call the init method";
@@ -60,7 +52,6 @@ public class HudImpl implements Hud {
         layer.render();
     }
 
-    /** {@inheritDoc} */
     @Override
     public void destroy() {
         layer.destroy();

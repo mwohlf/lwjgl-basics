@@ -4,7 +4,7 @@ import net.wohlfart.basic.container.DefaultRenderSet;
 import net.wohlfart.basic.elements.IsRenderable;
 import net.wohlfart.gl.elements.TexturedQuad;
 import net.wohlfart.gl.elements.hud.Hud;
-import net.wohlfart.gl.elements.hud.NullHud;
+import net.wohlfart.gl.elements.hud.HudImpl;
 import net.wohlfart.gl.elements.hud.widgets.Label;
 import net.wohlfart.gl.elements.hud.widgets.MousePositionLabel;
 import net.wohlfart.gl.elements.hud.widgets.Statistics;
@@ -27,7 +27,7 @@ public class CelestialState extends AbstractGraphicState {
 
     private final DefaultRenderSet<IsRenderable> meshBucket = new DefaultRenderSet<>();
 
-    private final Hud hud = NullHud.INSTANCE;
+    private final Hud hud = new HudImpl();
 
 
     private Statistics statistics;

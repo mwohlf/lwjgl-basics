@@ -44,9 +44,7 @@
 
     <!-- huds -->
 
-    <bean id="defaultHud" class="net.wohlfart.gl.elements.hud.HudImpl">
-        <property name="graphicContext" ref="hudShader" />
-    </bean>
+    <bean id="defaultHud" class="net.wohlfart.gl.elements.hud.HudImpl"/>
 
 
 
