@@ -57,10 +57,6 @@ public class TexturedMesh implements IsRenderable {
         GL30.glBindVertexArray(vaoHandle);
         GL13.glActiveTexture(GL13.GL_TEXTURE0);
         GL11.glBindTexture(GL11.GL_TEXTURE_2D, textureId);
-        // Setup the ST coordinate system
-        GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_S, GL11.GL_REPEAT);
-        GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_T, GL11.GL_REPEAT);
-
         GL11.glDrawElements(indicesType, indicesCount, indexElemSize, indexOffset);
         GL30.glBindVertexArray(0);
     }
@@ -79,9 +75,12 @@ public class TexturedMesh implements IsRenderable {
 
         private String textureFilename;
         private Integer texId;
+        private float size = 1f;                              // length of one side of the texture
+        private int textureWrap = GL11.GL_REPEAT;
 
-        private Quaternion rotation = new Quaternion();
-        private Vector3f translation = new Vector3f();
+
+        private final Quaternion rotation = Quaternion.setIdentity(new Quaternion());
+        private final Vector3f translation = new Vector3f(0,0,0);
 
 
         public IsRenderable build() {
@@ -91,23 +90,19 @@ public class TexturedMesh implements IsRenderable {
             }
 
             final Vector3f[] vectors = new Vector3f[] { // @formatter:off
-                    new Vector3f(-0.5f, +0.5f, 0),
-                    new Vector3f(-0.5f, -0.5f, 0),
-                    new Vector3f(+0.5f, -0.5f, 0),
-                    new Vector3f(+0.5f, +0.5f, 0),
+                    new Vector3f(-(size/2f), +(size/2f), 0),
+                    new Vector3f(-(size/2f), -(size/2f), 0),
+                    new Vector3f(+(size/2f), -(size/2f), 0),
+                    new Vector3f(+(size/2f), +(size/2f), 0),
             };  // @formatter:on
 
-            if (rotation != null) {
-                for (final Vector3f vec : vectors) {
-                    SimpleMath.mul(rotation, vec, vec);
-                }
-            }
-            if (translation != null) {
-                for (final Vector3f vec : vectors) {
-                    SimpleMath.add(translation, vec, vec);
-                }
+            for (final Vector3f vec : vectors) {
+                SimpleMath.mul(rotation, vec, vec);
             }
 
+            for (final Vector3f vec : vectors) {
+                SimpleMath.add(translation, vec, vec);
+            }
 
             // @formatter:off
             final Vertex[] vertices =
@@ -135,7 +130,7 @@ public class TexturedMesh implements IsRenderable {
 
 
             // Put each 'Vertex' in one FloatBuffer the order depends on the shaders positions!
-            final FloatBuffer verticesBuffer = BufferUtils.createFloatBuffer(vertices.length * Vertex.elementCount);
+            final FloatBuffer verticesBuffer = BufferUtils.createFloatBuffer(vertices.length * (3 + 4 + 2));
             for (int i = 0; i < vertices.length; i++) {
                 verticesBuffer.put(vertices[i].getXYZ());
                 verticesBuffer.put(vertices[i].getRGBA());
@@ -165,23 +160,25 @@ public class TexturedMesh implements IsRenderable {
 
             int offset;
             final int stride = ShaderAttributeHandle.POSITION.getByteCount()
-                             + ShaderAttributeHandle.COLOR.getByteCount()
-                             + ShaderAttributeHandle.TEXTURE_COORD.getByteCount();
+                    + ShaderAttributeHandle.COLOR.getByteCount()
+                    + ShaderAttributeHandle.TEXTURE_COORD.getByteCount();
 
             offset = 0;
+
             ShaderAttributeHandle.POSITION.enable();
             GL20.glVertexAttribPointer(ShaderAttributeHandle.POSITION.getLocation(),
                     Vertex.POSITION_ELEM_COUNT, GL11.GL_FLOAT, false, stride, offset);
-
             offset += ShaderAttributeHandle.POSITION.getByteCount();
+
             ShaderAttributeHandle.COLOR.enable();
             GL20.glVertexAttribPointer(ShaderAttributeHandle.COLOR.getLocation(),
                     Vertex.COLOR_ELEM_COUNT, GL11.GL_FLOAT, false, stride, offset);
-
             offset += ShaderAttributeHandle.COLOR.getByteCount();
+
             ShaderAttributeHandle.TEXTURE_COORD.enable();
             GL20.glVertexAttribPointer(ShaderAttributeHandle.TEXTURE_COORD.getLocation(),
                     Vertex.TEXTURE_ELEM_COUNT, GL11.GL_FLOAT, false, stride, offset);
+            offset += ShaderAttributeHandle.TEXTURE_COORD.getByteCount();
 
             ShaderAttributeHandle.NORMAL.disable();
 
@@ -217,8 +214,8 @@ public class TexturedMesh implements IsRenderable {
                 GL11.glTexImage2D(GL11.GL_TEXTURE_2D, 0, GL11.GL_RGBA8, tWidth, tHeight, 0, GL11.GL_RGBA, GL11.GL_UNSIGNED_BYTE, buffer);
                 GL30.glGenerateMipmap(GL11.GL_TEXTURE_2D);
                 // Setup the ST coordinate system
-                GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_S, GL11.GL_REPEAT);
-                GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_T, GL11.GL_REPEAT);
+                GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_S, textureWrap);
+                GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_T, textureWrap);
                 // Setup what to do when the texture has to be scaled
                 GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_NEAREST);
                 GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER, GL11.GL_LINEAR_MIPMAP_LINEAR);
@@ -231,14 +228,6 @@ public class TexturedMesh implements IsRenderable {
             return texId;
         }
 
-        /**
-         * <p>
-         * Setter for the field <code>textureFilename</code>.
-         * </p>
-         *
-         * @param textureFilename
-         *            a {@link java.lang.String} object.
-         */
         public void setTextureFilename(final String textureFilename) {
             this.textureFilename = textureFilename;
         }
@@ -248,29 +237,22 @@ public class TexturedMesh implements IsRenderable {
         }
 
 
-        /**
-         * <p>
-         * Setter for the field <code>rotation</code>.
-         * </p>
-         *
-         * @param rotation
-         *            a {@link org.lwjgl.util.vector.Quaternion} object.
-         */
         public void setRotation(Quaternion rotation) {
-            this.rotation = rotation;
+            this.rotation.set(rotation);
         }
 
-        /**
-         * <p>
-         * Setter for the field <code>translation</code>.
-         * </p>
-         *
-         * @param translation
-         *            a {@link org.lwjgl.util.vector.Vector3f} object.
-         */
         public void setTranslation(Vector3f translation) {
-            this.translation = translation;
+            this.translation.set(translation);
+        }
+
+        public void setSize(float size) {
+            this.size = size;
+        }
+
+        public void setTextureWrap(int textureWrap) {
+            this.textureWrap = textureWrap;
         }
 
     }
+
 }

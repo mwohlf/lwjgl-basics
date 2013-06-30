@@ -1,8 +1,5 @@
 package net.wohlfart.gl.elements.skybox;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import net.wohlfart.gl.shader.DefaultGraphicContext;
 import net.wohlfart.gl.shader.GraphicContextManager;
 import net.wohlfart.gl.shader.GraphicContextManager.IGraphicContext;
@@ -26,7 +23,7 @@ public class SkyboxImpl implements Skybox, SkyboxParameters {
 
     private final Matrix4f rotMatrix = new Matrix4f();
 
-    private BoxSideMesh[] sides;
+    private BoxSide[] sides;
 
     private IGraphicContext graphicContext;
 
@@ -39,11 +36,9 @@ public class SkyboxImpl implements Skybox, SkyboxParameters {
 
     private void createSides() {
         final BoxSide[] values = BoxSide.values();
-        final List<BoxSideMesh> newSides = new ArrayList<BoxSideMesh>(values.length);
         for (final BoxSide side : values) {
-            newSides.add(side.build(this));
+            side.setup(this);
         }
-        sides = newSides.toArray(new BoxSideMesh[values.length]);
     }
 
     @Override
@@ -71,10 +66,10 @@ public class SkyboxImpl implements Skybox, SkyboxParameters {
         // draw only the visible sides
         camera.getForward(viewDirection);
         viewDirection.normalise(viewDirection);
-        for (final BoxSideMesh side : sides) {
-//            if (Vector3f.dot(viewDirection, side.getNormal()) > BoxSide.DOT_PROD_LIMIT) {
+        for (final BoxSide side : sides) {
+            if (Vector3f.dot(viewDirection, side.getNormal()) > BoxSide.DOT_PROD_LIMIT) {
                 side.render();
-//            }
+            }
         }
     }
 

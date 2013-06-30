@@ -23,11 +23,7 @@ public interface IsRenderable extends Renderable, HasResouces {
         }
     };
 
-    /**
-     * <p>
-     * Display this IsRenderable in the current graphic context.
-     * </p>
-     */
+
     @Override
     void render();
 

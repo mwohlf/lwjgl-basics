@@ -5,11 +5,15 @@ import net.wohlfart.basic.elements.IsRenderable;
 import net.wohlfart.gl.elements.TexturedQuad;
 import net.wohlfart.gl.elements.hud.Hud;
 import net.wohlfart.gl.elements.hud.NullHud;
+import net.wohlfart.gl.elements.hud.widgets.Label;
+import net.wohlfart.gl.elements.hud.widgets.MousePositionLabel;
+import net.wohlfart.gl.elements.hud.widgets.Statistics;
 import net.wohlfart.gl.elements.skybox.Skybox;
 import net.wohlfart.gl.elements.skybox.SkyboxImpl;
 import net.wohlfart.gl.shader.DefaultGraphicContext;
 import net.wohlfart.gl.shader.ShaderRegistry;
 import net.wohlfart.gl.spatial.CelestialBody;
+import net.wohlfart.gl.view.ElementPicker;
 
 import org.lwjgl.util.vector.Vector3f;
 
@@ -23,14 +27,18 @@ public class CelestialState extends AbstractGraphicState {
 
     private final DefaultRenderSet<IsRenderable> meshBucket = new DefaultRenderSet<>();
 
-
     private final Hud hud = NullHud.INSTANCE;
 
+
+    private Statistics statistics;
+    private MousePositionLabel mousePositionLabel;
+    private ElementPicker elementPicker;
 
 
     @Override
     public void setup() {
         super.setup();
+
         skybox.setup();
 
         wireframeBucket.setGraphicContext(new DefaultGraphicContext(ShaderRegistry.WIREFRAME_SHADER));
@@ -47,11 +55,18 @@ public class CelestialState extends AbstractGraphicState {
         planetBucket.add(new CelestialBody(0));
         // simple wireframe, no light, no texture, no normals, planes will be black
         //planetBucket.setGraphicContext(new DefaultGraphicContext(ShaderRegistry.WIREFRAME_SHADER));
-        // texture, no lightsources, no normals
+        // texture, no light sources, no normals
         planetBucket.setGraphicContext(new DefaultGraphicContext(ShaderRegistry.DEFAULT_SHADER));
 
         //planetBucket.setGraphicContext(new DefaultGraphicContext(ShaderRegistry.LIGHTING_SHADER));
         planetBucket.setup();
+
+
+        statistics = new Statistics(0, -40);
+        mousePositionLabel = new MousePositionLabel(0, -20);
+        hud.add(statistics);
+        hud.add(mousePositionLabel);
+        hud.add(new Label(0, 0, "hello world at (0,0)"));
 
         hud.setup();
 
