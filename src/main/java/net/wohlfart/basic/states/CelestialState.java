@@ -58,9 +58,11 @@ public class CelestialState extends AbstractGraphicState {
         //planetBucket.setGraphicContext(new DefaultGraphicContext(ShaderRegistry.LIGHTING_SHADER));
         planetBucket.setup();
 
-        hud.add(new Statistics(0, -40));
-        hud.add(new MouseClickLabel(0, -20));
         hud.add(new Label(0, 0, "hello world at (0,0)"));
+
+
+        hud.add(new Statistics(0, -70));
+        hud.add(new MouseClickLabel(0, -35));
 
         hud.setup();
 

@@ -43,7 +43,7 @@ class PerspectiveProjectionFab { // @formatter:on REVIEWED
         final float farPlane = settings.getFarPlane();
         final float frustumLength = farPlane - nearPlane;
         final float aspectRatio = (float) settings.getWidth() / (float) settings.getHeight();
-        final float yScale = SimpleMath.coTan(SimpleMath.deg2rad(fieldOfView / 2f));
+        final float yScale = 1f / SimpleMath.tan(SimpleMath.deg2rad(fieldOfView / 2f));
         final float xScale = yScale / aspectRatio;
         final float zScale = -((farPlane + nearPlane) / frustumLength);
 

@@ -52,16 +52,19 @@ public class CharAtlasBuilder {
     }
 
 
-    public void setBorderOn(boolean borderOn) {
+    public CharAtlasBuilder setBorderOn(boolean borderOn) {
         this.borderOn = borderOn;
+        return this;
     }
 
-    public void setFontSize(float fontSize) {
+    public CharAtlasBuilder setFontSize(float fontSize) {
         this.fontSize = fontSize;
+        return this;
     }
 
-    public void setFontFile(String fontFile) {
+    public CharAtlasBuilder setFontFile(String fontFile) {
         this.fontFile = fontFile;
+        return this;
     }
 
     private CharAtlas createCharacterAtlas(Font font) {
@@ -94,7 +97,7 @@ public class CharAtlasBuilder {
             atlas.put(c, x, y, width, height);
             if (borderOn) {
                 g.setColor(Color.RED);
-                g.drawRect((int) x, (int) y, (int) width, (int) height);
+                g.drawRect(Math.round(x), Math.round(y), Math.round(width), Math.round(height));
             }
             x += width;
         }

@@ -104,6 +104,9 @@ public enum GraphicContextManager { // REVIEWED
         return settings.getFarPlane(); // 100
     }
 
+    /**
+     * @return field of view in degree
+     */
     public float getFieldOfView() {
         return settings.getFieldOfView();
     }

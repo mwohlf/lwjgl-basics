@@ -79,36 +79,15 @@ public final class SimpleMath {
     }
 
 
-    public static float rad2deg(final float rad) {
+    public static float rad2deg(float rad) {
         return rad * 360f / SimpleMath.TWO_PI;
     }
 
-    public static float deg2rad(final float deg) {
+    public static float deg2rad(float deg) {
         return deg * SimpleMath.TWO_PI / 360f;
     }
 
-    /**
-     * <p>
-     * coTan.
-     * </p>
-     *
-     * @param angle
-     *            a float.
-     * @return a float.
-     */
-    public static float coTan(float angle) {
-        return (float) (1f / Math.tan(angle));
-    }
 
-    /**
-     * <p>
-     * sqrt.
-     * </p>
-     *
-     * @param f
-     *            a float.
-     * @return a float.
-     */
     public static float sqrt(float f) {
         return (float) Math.sqrt(f);
     }
@@ -119,63 +98,22 @@ public final class SimpleMath {
 
     // --------- random function
 
-    /**
-     * <p>
-     * random.
-     * </p>
-     *
-     * @param i
-     *            a int.
-     * @return a int.
-     */
     public static int random(final int i) {
         return RANDOM.nextInt(i); // i exclusive
     }
 
-    /**
-     * <p>
-     * random.
-     * </p>
-     *
-     * @param min
-     *            a int.
-     * @param max
-     *            a int.
-     * @return a int.
-     */
-    public static int random(final int min, final int max) {
+    public static int random(int min, int max) {
         return RANDOM.nextInt(max - min) + min;
     }
 
-    /**
-     * <p>
-     * random.
-     * </p>
-     *
-     * @param min
-     *            a float.
-     * @param max
-     *            a float.
-     * @return a float.
-     */
-    public static float random(final float min, final float max) {
+    public static float random(float min, float max) {
         return RANDOM.nextFloat() * (max - min) + min;
     }
 
     // --------- quaternion and vector stuff
     // mostly from http://content.gpwiki.org/index.php/OpenGL:Tutorials:Using_Quaternions_to_represent_rotation
 
-    /**
-     * rotate the vector by a rotation defined by the quaternion
-     *
-     * @param q
-     *            a {@link org.lwjgl.util.vector.Quaternion} object.
-     * @param vec
-     *            a {@link org.lwjgl.util.vector.Vector3f} object.
-     * @param result
-     *            a {@link org.lwjgl.util.vector.Vector3f} object.
-     */
-    public static Vector3f mul(final Quaternion q, final Vector3f vec, final Vector3f result) {
+    public static Vector3f mul(Quaternion q, Vector3f vec, Vector3f result) {
         float xx, yy, zz;
         // @formatter:off
         xx = q.w * q.w * vec.x + 2 * q.y * q.w * vec.z - 2 * q.z * q.w * vec.y
@@ -205,7 +143,8 @@ public final class SimpleMath {
     }
 
     /**
-     * create a rotation quaternion defined by a start and an end vector, the rotation will be the rotation needed to transform the first vector into the second
+     * create a rotation quaternion defined by a start and an end vector,
+     * the rotation will be the rotation needed to transform the first vector into the second
      *
      * taken from: https://bitbucket.org/sinbad/ogre/src/9db75e3ba05c/OgreMain/include/OgreVector3.h#cl-651
      *
@@ -324,7 +263,7 @@ public final class SimpleMath {
      *            a {@link org.lwjgl.util.vector.Matrix4f} object.
      * @return a {@link org.lwjgl.util.vector.Matrix4f} object.
      */
-    public static Matrix4f convert(final Vector3f move, final Quaternion rot, final Matrix4f mat) {
+    public static Matrix4f convert(Vector3f move, Quaternion rot, Matrix4f mat) {
         // final SimpleMatrix4f mat = new SimpleMatrix4f();
 
         final float xx = rot.x * rot.x;
@@ -374,7 +313,7 @@ public final class SimpleMath {
      * @param mat
      *            a {@link org.lwjgl.util.vector.Matrix4f} object.
      */
-    public static Matrix4f convert(final Vector3f move, final Matrix4f mat) {
+    public static Matrix4f convert(Vector3f move, Matrix4f mat) {
 
         // column-row syntax
         mat.m00 = 1;

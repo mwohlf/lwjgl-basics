@@ -22,10 +22,7 @@ import org.slf4j.LoggerFactory;
  * this creates a mesh for a single character
  */
 class CharMeshBuilder {
-
     protected static final Logger LOGGER = LoggerFactory.getLogger(CharMeshBuilder.class);
-
-    private final GraphicContextManager cxtManager = GraphicContextManager.INSTANCE;
 
     private CharAtlas atlas;
     private CharInfo info;
@@ -34,19 +31,34 @@ class CharMeshBuilder {
     private float screenY;
 
     public IsRenderable build() {
+        final GraphicContextManager cxtManager = GraphicContextManager.INSTANCE;
+        final float screenWidth = cxtManager.getScreenWidth();
+        final float screenHeight = cxtManager.getScreenHeight();  // screen size in pixel 1200/700
+        final float aspectRatio = screenWidth / screenHeight;    // > 1   e.g.1.7
+
+        float alpha = SimpleMath.deg2rad(cxtManager.getFieldOfView()) / 2f;   // 0.39
+        final float yScale = 1f / SimpleMath.tan(alpha);          // 2.41
+        final float xScale = yScale / aspectRatio;                // 1.40
+
         final float atlasWidth = atlas.getImage().getWidth();
-        final float atlasHeight = atlas.getImage().getHeight();
-        final float width = cxtManager.getScreenWidth();
-        final float height = cxtManager.getScreenHeight();
+        final float atlasHeight = atlas.getImage().getHeight();  // texture atlas size in pixel (512)
 
-        // this is the z range we need to have a 1:1 dot match from the mesh to the screen
-        final float z = -0.5f * SimpleMath.coTan(SimpleMath.deg2rad(cxtManager.getFieldOfView() / 2f));
+        // tan = gegenk.  durch ankat.
+        float z = cxtManager.getNearPlane();
 
-        final float x1 = screenX / atlasWidth - 0.5f * (width / height);
-        final float y1 = screenY / atlasHeight + 0.5f;
-        final float x2 = x1 + info.getWidth() / atlasWidth;
-        final float y2 = y1 - info.getHeight() / atlasHeight;
+        // the x/y coordinates must fit into a [-0.5 .. +0.5] interval
+        float x1 = ((screenX / screenWidth)) / xScale;
+        float y1 = ((screenY / screenHeight)) / yScale;
+        float x2 = ((screenX + info.getWidth()) / screenWidth) / xScale;
+        float y2 = ((screenY - info.getHeight()) / screenHeight) / yScale;
 
+        // resize
+        x1 *= 2f;
+        y1 *= 2f;
+        x2 *= 2f;
+        y2 *= 2f;
+
+        // texture coordinates are in the [0...1] interval
         final float s1 = info.getX() / atlasWidth;
         final float t1 = info.getY() / atlasHeight;
         final float s2 = (info.getX() + info.getWidth()) / atlasWidth;
@@ -54,26 +66,25 @@ class CharMeshBuilder {
 
         // We'll define our quad using 4 vertices of the custom 'Vertex' class
         final Vertex v0 = new Vertex();
-        v0.setXYZ(x1, y1, z);
+        v0.setXYZ(x1, y1, -z);
         v0.setST(s1, t1);
 
         final Vertex v1 = new Vertex();
-        v1.setXYZ(x1, y2, z);
+        v1.setXYZ(x1, y2, -z);
         v1.setST(s1, t2);
 
         final Vertex v2 = new Vertex();
-        v2.setXYZ(x2, y2, z);
+        v2.setXYZ(x2, y2, -z);
         v2.setST(s2, t2);
 
         final Vertex v3 = new Vertex();
-        v3.setXYZ(x2, y1, z);
+        v3.setXYZ(x2, y1, -z);
         v3.setST(s2, t1);
 
         final Vertex[] vertices = new Vertex[] { v0, v1, v2, v3 };
-        final FloatBuffer verticesBuffer = BufferUtils.createFloatBuffer(vertices.length * (3 + 4 + 2));
+        final FloatBuffer verticesBuffer = BufferUtils.createFloatBuffer(vertices.length * (3 + 2));
         for (int i = 0; i < vertices.length; i++) {
             verticesBuffer.put(vertices[i].getXYZ());
-            //verticesBuffer.put(vertices[i].getRGBA());
             verticesBuffer.put(vertices[i].getST());
         }
         verticesBuffer.flip();
@@ -99,8 +110,7 @@ class CharMeshBuilder {
 
         int offset;
         final int stride = ShaderAttributeHandle.POSITION.getByteCount()
-              //  + ShaderAttributeHandle.COLOR.getByteCount()
-                + ShaderAttributeHandle.TEXTURE_COORD.getByteCount();
+                         + ShaderAttributeHandle.TEXTURE_COORD.getByteCount();
 
         offset = 0;
 
@@ -125,52 +135,24 @@ class CharMeshBuilder {
         return new CharacterMesh(vaoHandle, GL11.GL_TRIANGLES, GL11.GL_UNSIGNED_BYTE, indicesCount, 0, texId);
     }
 
-    /**
-     * <p>
-     * setCharInfo.
-     * </p>
-     *
-     * @param info
-     *            a {@link net.wohlfart.gl.elements.hud.widgets.CharInfo} object.
-     */
-    public void setCharInfo(CharInfo info) {
+    public CharMeshBuilder setCharInfo(CharInfo info) {
         this.info = info;
+        return this;
     }
 
-    /**
-     * <p>
-     * setCharAtlas.
-     * </p>
-     *
-     * @param atlas
-     *            a {@link net.wohlfart.gl.elements.hud.widgets.CharAtlas} object.
-     */
-    public void setCharAtlas(CharAtlas atlas) {
+    public CharMeshBuilder setCharAtlas(CharAtlas atlas) {
         this.atlas = atlas;
+        return this;
     }
 
-    /**
-     * <p>
-     * Setter for the field <code>screenX</code>.
-     * </p>
-     *
-     * @param x
-     *            a float.
-     */
-    public void setScreenX(float x) {
+    public CharMeshBuilder setScreenX(float x) {
         this.screenX = x;
+        return this;
     }
 
-    /**
-     * <p>
-     * Setter for the field <code>screenY</code>.
-     * </p>
-     *
-     * @param y
-     *            a float.
-     */
-    public void setScreenY(float y) {
+    public CharMeshBuilder setScreenY(float y) {
         this.screenY = y;
+        return this;
     }
 
 }

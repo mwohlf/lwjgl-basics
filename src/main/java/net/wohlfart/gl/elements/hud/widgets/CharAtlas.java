@@ -16,12 +16,15 @@ import org.lwjgl.util.vector.Vector3f;
 
 public class CharAtlas {
 
-    private final HashMap<Character, CharInfo> map = new HashMap<Character, CharInfo>();
+    private final HashMap<Character, CharInfo> map = new HashMap<>();
     private BufferedImage buffImage;
     private Integer texId;
 
 
-    // store a single character with its coordinates inside the texture
+    /**
+     *  store a single character with its coordinates inside the texture
+     *  parameters are in pixel space
+     */
     void put(char c, float x, float y, float w, float h) {
         map.put(c, new CharInfo(c, x, y, w, h));
     }
@@ -81,6 +84,7 @@ public class CharAtlas {
         return texId;
     }
 
+    // for debugging
     protected IsRenderable getAsRenderable() {
         final TexturedMesh.Builder builder = new TexturedMesh.Builder();
         builder.setTextureId(getTextureId());

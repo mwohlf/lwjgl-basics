@@ -11,6 +11,7 @@ public abstract class AbstractTextComponent implements Layer.LayerElement {
     private Layer layer;
 
 
+    @Override
     public void setLayer(Layer layer) {
         this.layer = layer;
     }
@@ -23,31 +24,29 @@ public abstract class AbstractTextComponent implements Layer.LayerElement {
 
     protected HashSet<IsRenderable> createMeshSet(int x, int y, String string) {
         assert string != null : "string to create MeshSet is null";
-        final CharAtlas atlas = layer.getCharacterAtlas();
-        int d = 0;
         final HashSet<IsRenderable> characters = new HashSet<IsRenderable>();
+
+        final CharAtlas atlas = layer.getCharacterAtlas();
+        final CharMeshBuilder builder = new CharMeshBuilder();
+        builder.setCharAtlas(atlas);
+
+        int d = 0;
         final char[] charArray = string.toCharArray();
         for (final char c : charArray) {
             CharInfo info = atlas.getCharInfo(c);
             if (info == null) {
                 info = atlas.getCharInfo(CharAtlasBuilder.NULL_CHAR);
             }
-            final IsRenderable renderable = createSingleCharMesh(x + d, y, info, atlas);
+            builder.setCharInfo(info);
+            builder.setScreenX(x + d);
+            builder.setScreenY(y);
+            final IsRenderable renderable = builder.build();
             d += info.getWidth();
             if (renderable != null) {
                 characters.add(renderable);
             }
         }
         return characters;
-    }
-
-    private IsRenderable createSingleCharMesh(int x, int y, CharInfo info, CharAtlas characterAtlas) {
-        final CharMeshBuilder builder = new CharMeshBuilder();
-        builder.setCharAtlas(characterAtlas);
-        builder.setCharInfo(info);
-        builder.setScreenX(x);
-        builder.setScreenY(y);
-        return builder.build();
     }
 
 }

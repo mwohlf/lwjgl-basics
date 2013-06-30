@@ -25,7 +25,10 @@ class LayerImpl extends HashSet<LayerElement> implements Layer {
     @Override
     public void render() {
         if (characterAtlas == null) {
-            characterAtlas = new CharAtlasBuilder().build();
+            characterAtlas = new CharAtlasBuilder()
+                .setFontSize(12)
+                //.setBorderOn(true)
+                .build();
         }
         for (final IsRenderable component : this) {
             component.render();
@@ -34,8 +37,6 @@ class LayerImpl extends HashSet<LayerElement> implements Layer {
 
     @Override
     public void destroy() {
-       // meshData.destroy();
-       // meshData = null;
     }
 
     @Override

@@ -1,6 +1,7 @@
 package net.wohlfart;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.EventQueue;
@@ -20,26 +21,10 @@ import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.DisplayMode;
 import org.lwjgl.opengl.PixelFormat;
 
-/**
- * <p>
- * CharFrame class.
- * </p>
- * 
- * 
- * 
- * 
- */
+
 @SuppressWarnings("serial")
 public class CharFrame extends JFrame {
 
-    /**
-     * <p>
-     * main.
-     * </p>
-     * 
-     * @param args
-     *            an array of {@link java.lang.String} objects.
-     */
     public static void main(String[] args) {
         try {
             EventQueue.invokeAndWait(new Runnable() {
@@ -75,7 +60,11 @@ public class CharFrame extends JFrame {
 
     private void addContent() {
         final CharAtlasBuilder fontRenderer = new CharAtlasBuilder();
-        final Image image = fontRenderer.build().getImage();
+        final Image image = fontRenderer
+                    .setFontSize(30)
+                    .setBorderOn(true)
+                    .build()
+                    .getImage();
 
         final Container content = getContentPane();
 
@@ -89,6 +78,9 @@ public class CharFrame extends JFrame {
             @Override
             public void paintComponent(Graphics g) {
                 super.paintComponent(g);
+                g.setColor(Color.BLACK);
+                g.fillRect(0, 0, getWidth(), getHeight());
+                g.setColor(Color.WHITE);
                 g.drawImage(image, 0, 0, null);
             }
 
@@ -96,7 +88,6 @@ public class CharFrame extends JFrame {
 
     }
 
-    /** {@inheritDoc} */
     @Override
     public void setVisible(boolean isVisible) {
         super.setVisible(isVisible);
