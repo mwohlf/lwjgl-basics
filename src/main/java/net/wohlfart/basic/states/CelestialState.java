@@ -1,5 +1,6 @@
 package net.wohlfart.basic.states;
 
+
 import net.wohlfart.basic.container.DefaultRenderSet;
 import net.wohlfart.basic.elements.IsRenderable;
 import net.wohlfart.gl.elements.TexturedQuad;
@@ -12,9 +13,11 @@ import net.wohlfart.gl.elements.skybox.NullSkybox;
 import net.wohlfart.gl.elements.skybox.Skybox;
 import net.wohlfart.gl.shader.DefaultGraphicContext;
 import net.wohlfart.gl.shader.ShaderRegistry;
+import net.wohlfart.gl.shader.VertexLight;
 import net.wohlfart.gl.spatial.CelestialBody;
 
 import org.lwjgl.util.vector.Vector3f;
+import org.lwjgl.util.vector.Vector4f;
 
 public class CelestialState extends AbstractGraphicState {
 
@@ -47,15 +50,16 @@ public class CelestialState extends AbstractGraphicState {
         meshBucket.setup();
 
 
+        planetBucket.setGraphicContext(new DefaultGraphicContext(ShaderRegistry.AMBIENT_SHADER));
         CelestialBody body = new CelestialBody(0);
         body.setPosition(new Vector3f(7,0,0));
         planetBucket.add(body);
-        // simple wireframe, no light, no texture, no normals, planes will be black
-        //planetBucket.setGraphicContext(new DefaultGraphicContext(ShaderRegistry.WIREFRAME_SHADER));
-        // texture, no light sources, no normals
-        planetBucket.setGraphicContext(new DefaultGraphicContext(ShaderRegistry.DEFAULT_SHADER));
 
-        //planetBucket.setGraphicContext(new DefaultGraphicContext(ShaderRegistry.LIGHTING_SHADER));
+        VertexLight light1 = new VertexLight(0.00001f, new Vector4f(0.2f, 0.2f, 0.2f, 1.0f), new Vector3f( 0, 10, -17));
+        VertexLight light2 = new VertexLight(0.00001f, new Vector4f(0.2f, 0.2f, 0.2f, 1.0f), new Vector3f( 0, 10, 17));
+        planetBucket.add(light1);
+        planetBucket.add(light2);
+
         planetBucket.setup();
 
         hud.add(new Label(0, 0, "hello world at (0,0)"));

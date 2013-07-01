@@ -1,6 +1,8 @@
 #version 330 core
 
 //
+// this shader need some work, the light caluclation seems to depend on the current camera position...
+//
 //  see: http://pyopengl.sourceforge.net/context/tutorials/shader_6.xhtml
 //
 

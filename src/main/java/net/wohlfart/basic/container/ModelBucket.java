@@ -64,10 +64,7 @@ public class ModelBucket extends DefaultRenderSet<IsRenderable> {
     public void render() {
         super.prepareRender();
 
-        int i = 0;
-        for (final VertexLight light : lights) {
-            ShaderUniformHandle.LIGHTS.set(light, i++);
-        }
+
         for (final Emitter emitter : emitters) {
             emitter.render();
         }

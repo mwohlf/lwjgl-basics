@@ -8,6 +8,7 @@ import net.wohlfart.gl.shader.GraphicContextManager;
 import net.wohlfart.gl.shader.GraphicContextManager.IGraphicContext;
 import net.wohlfart.gl.shader.ShaderRegistry;
 import net.wohlfart.gl.shader.ShaderUniformHandle;
+import net.wohlfart.gl.shader.VertexLight;
 import net.wohlfart.gl.view.Camera;
 import net.wohlfart.tools.SimpleMath;
 
@@ -24,6 +25,8 @@ public class DefaultRenderSet<T extends IsRenderable> extends HashSet<T> impleme
 
     private IGraphicContext graphicContext;
 
+    private final HashSet<VertexLight> lights = new HashSet<VertexLight>(10);
+
     // reserve some memory for the render loop:
     private final Vector3f posVector = new Vector3f();
     private final Matrix4f posMatrix = new Matrix4f();
@@ -34,6 +37,11 @@ public class DefaultRenderSet<T extends IsRenderable> extends HashSet<T> impleme
     public void setGraphicContext(IGraphicContext graphicContext) {
         this.graphicContext = graphicContext;
     }
+
+    public void add(VertexLight light) {
+        lights.add(light);
+    }
+
 
     @Override
     public void setup() {
@@ -57,6 +65,11 @@ public class DefaultRenderSet<T extends IsRenderable> extends HashSet<T> impleme
         ShaderUniformHandle.MODEL_TO_WORLD.set(SimpleMath.UNION_MATRIX);
         ShaderUniformHandle.WORLD_TO_CAM.set(rotPosMatrix);
         ShaderUniformHandle.CAM_TO_CLIP.set(GraphicContextManager.INSTANCE.getPerspectiveProjMatrix());
+
+        int i = 0;
+        for (final VertexLight light : lights) {
+            ShaderUniformHandle.LIGHTS.set(light, i++);
+        }
 
         GL11.glEnable(GL11.GL_DEPTH_TEST);
         GL11.glClear(GL11.GL_DEPTH_BUFFER_BIT);
@@ -88,6 +101,5 @@ public class DefaultRenderSet<T extends IsRenderable> extends HashSet<T> impleme
             element.destroy();
         }
     }
-
 
 }

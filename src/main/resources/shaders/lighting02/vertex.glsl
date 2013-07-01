@@ -11,14 +11,12 @@ layout (location = 1) in vec3 in_Normal;
 layout (location = 2) in vec2 in_TexCoord;
 layout (location = 3) in vec4 in_Color;      // RGBA
 
-struct LightSource {
-  vec4 ambient;
+struct VertexLight {
+  float attenuation;
   vec4 diffuse;
-  vec4 specular;
   vec3 position;
-  vec3 direction;
 };
-uniform LightSource lights[10];       // see: http://www.lwjgl.org/wiki/index.php?title=GLSL_Tutorial:_Communicating_with_Shaders
+uniform VertexLight lights[2];
 
 uniform mat4 modelToWorldMatrix;     // modelMatrix contains model position
 uniform mat4 worldToCameraMatrix;    // viewMatrix contains camera position and directons
@@ -38,30 +36,30 @@ void main(void) {
 
     // transforms the vertex into eye space
     pass_Position = vec3(worldToCameraMatrix * modelToWorldMatrix * vec4(in_Position, 1.0));
- 
+
     // transforms the normal's orientation into eye space
     pass_Normal = vec3(worldToCameraMatrix * modelToWorldMatrix * vec4(in_Normal, 0.0));
- 
- 
+
+
     // needed for attenuation.
     float distance = length(lights[0].position - pass_Position);
- 
+
     // Get a lighting direction vector from the light to the vertex.
     vec3 lightVector = normalize(lights[0].position - pass_Position);
- 
-    // Calculate the dot product of the light vector and vertex normal. 
+
+    // Calculate the dot product of the light vector and vertex normal.
     // If the normal and light vector are pointing in the same direction then it will get max illumination.
     float diffuse = max(dot(pass_Normal, lightVector), 0.1);
- 
+
     // Attenuate the light based on distance.
     diffuse = diffuse * (1.0 / (1.0 + (0.25 * distance * distance)));
- 
+
     // Multiply the color by the illumination level. It will be interpolated across the triangle.
     pass_Color = in_Color * diffuse;
 
     // nothing happens to the texture coords
     pass_TextureCoord = in_TexCoord;
-    
+
     // gl_Position is a special variable used to store the final position.
     // its a vec4() in normalized screen coordinates calculated by
     // transferring the in_Position from model-space to world-space to view/cam-space to clip-space
