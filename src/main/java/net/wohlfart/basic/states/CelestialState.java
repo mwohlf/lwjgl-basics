@@ -47,13 +47,13 @@ public class CelestialState extends AbstractGraphicState {
         meshBucket.setup();
 
 
+        planetBucket.setGraphicContext(new DefaultGraphicContext(ShaderRegistry.AMBIENT_SHADER));
         CelestialBody body = new CelestialBody(0);
         body.setPosition(new Vector3f(7,0,0));
         planetBucket.add(body);
         // simple wireframe, no light, no texture, no normals, planes will be black
         //planetBucket.setGraphicContext(new DefaultGraphicContext(ShaderRegistry.WIREFRAME_SHADER));
         // texture, no light sources, no normals
-        planetBucket.setGraphicContext(new DefaultGraphicContext(ShaderRegistry.DEFAULT_SHADER));
 
         //planetBucket.setGraphicContext(new DefaultGraphicContext(ShaderRegistry.LIGHTING_SHADER));
         planetBucket.setup();

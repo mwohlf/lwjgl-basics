@@ -11,13 +11,6 @@ uniform mat4 cameraToClipMatrix;     // projectionMatrix
 out vec4 pass_Color;
 out vec2 pass_TextureCoord;
 
-// predefined variable names:
-//  out gl_PerVertex {
-//     vec4  gl_Position;
-//     float gl_PointSize;
-//     float gl_ClipDistance[];
-//  };
-
 void main(void) {
 
     // step 1: rotate then move the object to its position in the world
