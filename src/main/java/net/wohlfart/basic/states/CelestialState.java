@@ -2,6 +2,7 @@ package net.wohlfart.basic.states;
 
 
 import net.wohlfart.basic.container.DefaultRenderSet;
+import net.wohlfart.basic.container.ModelRenderSet;
 import net.wohlfart.basic.elements.IsRenderable;
 import net.wohlfart.gl.elements.TexturedQuad;
 import net.wohlfart.gl.elements.hud.Hud;
@@ -15,6 +16,7 @@ import net.wohlfart.gl.shader.DefaultGraphicContext;
 import net.wohlfart.gl.shader.ShaderRegistry;
 import net.wohlfart.gl.shader.VertexLight;
 import net.wohlfart.gl.spatial.CelestialBody;
+import net.wohlfart.gl.view.ElementPicker;
 
 import org.lwjgl.util.vector.Vector3f;
 import org.lwjgl.util.vector.Vector4f;
@@ -29,6 +31,9 @@ public class CelestialState extends AbstractGraphicState {
     private final DefaultRenderSet<IsRenderable> wireframeBucket = new DefaultRenderSet<>();
 
     private final DefaultRenderSet<IsRenderable> meshBucket = new DefaultRenderSet<>();
+
+    private final ModelRenderSet modelSet = new ModelRenderSet();
+
 
     private final Hud hud = new HudImpl();
 
@@ -63,6 +68,11 @@ public class CelestialState extends AbstractGraphicState {
         planetBucket.setup();
 
         hud.add(new Label(0, 0, "hello world at (0,0)"));
+
+        ElementPicker elementPicker = new ElementPicker(wireframeBucket, getScreenWidth(), getScreenHeight());
+        elementPicker.setRenderBucket(wireframeBucket);
+        elementPicker.setModelBucket(modelSet);
+        getGraphContextManager().register(elementPicker);
 
 
         hud.add(new Statistics(0, -70));

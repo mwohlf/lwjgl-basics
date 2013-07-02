@@ -18,10 +18,10 @@ import org.lwjgl.util.vector.Vector3f;
 
 /**
  * implementing the basic features for a render set,
- * keeping the camera and the graphic context
+ * keeping the graphic context and some lights if needed
  */
 @SuppressWarnings("serial")
-public class DefaultRenderSet<T extends IsRenderable> extends HashSet<T> implements RenderSet<T> {
+public class DefaultRenderSet<T extends IsRenderable> extends HashSet<T> implements RenderSet<T> { // REVIEWED
 
     private IGraphicContext graphicContext;
 

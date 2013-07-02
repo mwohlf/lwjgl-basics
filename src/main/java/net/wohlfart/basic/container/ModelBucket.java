@@ -18,11 +18,9 @@ import net.wohlfart.tools.SimpleMath;
 
 import org.lwjgl.util.vector.Vector3f;
 
-/**
- * <p>
- * A set of Renderables that use the same GraphicContext.
- */
-public class ModelBucket extends DefaultRenderSet<IsRenderable> {
+
+@SuppressWarnings("serial")
+public class ModelBucket extends DefaultRenderSet<Model> {
 
     protected Set<Model> models = new HashSet<>(10100);
     protected Set<Emitter> emitters = new HashSet<>(10100);
@@ -49,7 +47,6 @@ public class ModelBucket extends DefaultRenderSet<IsRenderable> {
         emitters.add(renderable);
     }
 
-    @Override
     public boolean add(IsRenderable renderable) {
         return renderables.add(renderable);
     }

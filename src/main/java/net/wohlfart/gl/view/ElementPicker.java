@@ -3,10 +3,11 @@ package net.wohlfart.gl.view;
 import java.util.List;
 
 import net.wohlfart.basic.container.DefaultRenderSet;
-import net.wohlfart.basic.container.ModelBucket;
+import net.wohlfart.basic.container.ModelRenderSet;
 import net.wohlfart.basic.container.RenderSet;
 import net.wohlfart.gl.elements.debug.Arrow;
 import net.wohlfart.gl.input.PointEvent;
+import net.wohlfart.gl.shader.GraphicContextManager;
 import net.wohlfart.gl.spatial.Model;
 
 import org.lwjgl.util.vector.Matrix4f;
@@ -26,7 +27,7 @@ public class ElementPicker {
 
     private DefaultRenderSet renderSet;
 
-    private ModelBucket modelBucket;
+    private ModelRenderSet modelBucket;
 
 
     public ElementPicker(DefaultRenderSet hasMatrices, float width, float height) {
@@ -41,7 +42,7 @@ public class ElementPicker {
     }
 
     // for picking elements
-    public void setModelBucket(ModelBucket modelBucket) {
+    public void setModelBucket(ModelRenderSet modelBucket) {
         this.modelBucket = modelBucket;
     }
 
@@ -78,6 +79,10 @@ public class ElementPicker {
         final Vector3f end = new Vector3f(worldSpaceFar.x / worldSpaceFar.w, worldSpaceFar.y / worldSpaceFar.w, worldSpaceFar.z / worldSpaceFar.w);
 
         return new PickingRay(start, end);
+    }
+
+    public void setup() {
+        GraphicContextManager.INSTANCE.register(this);
     }
 
 }

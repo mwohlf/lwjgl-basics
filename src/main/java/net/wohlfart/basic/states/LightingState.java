@@ -2,7 +2,7 @@ package net.wohlfart.basic.states;
 
 import net.wohlfart.basic.container.DefaultRenderBucket;
 import net.wohlfart.basic.container.DefaultRenderSet;
-import net.wohlfart.basic.container.ModelBucket;
+import net.wohlfart.basic.container.ModelRenderSet;
 import net.wohlfart.gl.elements.hud.Hud;
 import net.wohlfart.gl.elements.hud.NullHud;
 import net.wohlfart.gl.elements.hud.widgets.Label;
@@ -10,7 +10,6 @@ import net.wohlfart.gl.elements.hud.widgets.MouseClickLabel;
 import net.wohlfart.gl.elements.hud.widgets.Statistics;
 import net.wohlfart.gl.elements.skybox.NullSkybox;
 import net.wohlfart.gl.elements.skybox.Skybox;
-import net.wohlfart.gl.spatial.ParticleEmitter;
 import net.wohlfart.gl.view.ElementPicker;
 
 import org.slf4j.Logger;
@@ -28,7 +27,7 @@ final class LightingState extends AbstractGraphicState implements InitializingBe
     private Skybox skybox = NullSkybox.INSTANCE;
     private DefaultRenderSet elemBucket;
     private Hud hud = NullHud.INSTANCE;
-    private ModelBucket modelBucket;
+    private ModelRenderSet modelBucket;
 
     private Statistics statistics;
     private MouseClickLabel mouseClickLabel;
@@ -38,7 +37,7 @@ final class LightingState extends AbstractGraphicState implements InitializingBe
         this.skybox = skybox;
     }
 
-    public void setModelBucket(ModelBucket modelBucket) {
+    public void setModelBucket(ModelRenderSet modelBucket) {
         this.modelBucket = modelBucket;
     }
 
@@ -80,7 +79,7 @@ final class LightingState extends AbstractGraphicState implements InitializingBe
 
         getGraphContextManager().register(elementPicker);
 
-        modelBucket.addContent(new ParticleEmitter());
+        //modelBucket.addContent(new ParticleEmitter());
         //modelBucket.addContent(new ColorPointEmitter(500));
 
     }
@@ -89,6 +88,7 @@ final class LightingState extends AbstractGraphicState implements InitializingBe
     public void update(float tpf) {
         LOGGER.debug("update called with tpf/fps {}/{}", tpf, 1f / tpf);
         modelBucket.update(tpf);
+        elemBucket.update(tpf);
         statistics.update(tpf);
     }
 

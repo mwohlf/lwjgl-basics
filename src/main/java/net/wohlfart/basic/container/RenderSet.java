@@ -5,7 +5,7 @@ import net.wohlfart.basic.elements.IsUpdateable;
 
 import org.lwjgl.util.vector.Matrix4f;
 
-public interface RenderSet<T extends IsRenderable> extends IsRenderable, IsUpdateable {
+public interface RenderSet<T extends IsRenderable> extends IsRenderable, IsUpdateable { // REVIEWED
 
     /**
      * to initialize stuff
