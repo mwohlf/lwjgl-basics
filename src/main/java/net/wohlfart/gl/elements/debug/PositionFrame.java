@@ -23,6 +23,8 @@ public class PositionFrame extends JFrame {
     protected final JTextField position = new JTextField();
     protected final CanMove canMove;
 
+
+    // usage:         new PositionFrame(light1).setup();
     public PositionFrame(CanMove canMove) {
         this.canMove = canMove;
         addContent();

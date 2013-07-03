@@ -21,11 +21,6 @@ public enum NullRenderSet implements RenderSet<IsRenderable> {
     }
 
     @Override
-    public Matrix4f getProjectionMatrix() {
-        return SimpleMath.UNION_MATRIX;
-    }
-
-    @Override
     public Matrix4f getModelViewMatrix() {
         return SimpleMath.UNION_MATRIX;
     }

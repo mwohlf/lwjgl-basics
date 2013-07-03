@@ -36,8 +36,7 @@ abstract class AbstractGraphicState implements GameState { // REVIEWED
     public void setup() {
         Assert.notNull(camera);
         graphContextManager = GraphicContextManager.INSTANCE;
-        graphContextManager.register(camera);
-        graphContextManager.register(this); // to get exit notification
+        graphContextManager.register(this);
     }
 
     protected float getScreenHeight() {
@@ -69,7 +68,6 @@ abstract class AbstractGraphicState implements GameState { // REVIEWED
     @Override
     public void destroy() {
         graphContextManager.unregister(this);
-        graphContextManager.unregister(camera);
     }
 
 }

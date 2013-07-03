@@ -10,15 +10,11 @@ import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 
 /**
- * <p>
  * LwjglInputSource class is the central input processor for handling Mouse, Keyboard and Controllers for lwjgl
- * </p>
- * 
  */
 public class LwjglInputSource implements InputSource {
 
     // the current keyboard state
-
     private final KeyboardDevice keyboardDevice = new KeyboardDevice();
     private final MouseDevice mouseDevice = new MouseDevice();
     private final Integer lastButton = 0;

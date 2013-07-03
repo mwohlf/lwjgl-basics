@@ -19,9 +19,7 @@ import org.lwjgl.util.vector.Quaternion;
 import org.lwjgl.util.vector.Vector3f;
 
 /**
- * <p>
  * A Builder class for creating debug elements. for a scene.
- * </p>
  */
 public class WireframeMeshBuilder {
 

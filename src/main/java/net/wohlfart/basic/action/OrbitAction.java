@@ -49,7 +49,7 @@ public final class OrbitAction implements SpatialActor.Action {
         SimpleMath.sub(v, center, tmp1);
         final float radius = tmp1.length(); // tmp1: from the center to the position
 
-        final Quaternion currentRotation = spatialActor.getRotation();
+        //final Quaternion currentRotation = spatialActor.getRotation();
 
         // final Vector3f up = SimpleMath.getUp(currentRotation, new Vector3f()); // we want to keep up
         final Vector3f up = axis;

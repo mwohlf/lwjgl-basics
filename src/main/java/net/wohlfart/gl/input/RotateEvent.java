@@ -7,6 +7,7 @@ import net.wohlfart.tools.SimpleMath;
 import org.lwjgl.util.vector.Quaternion;
 import org.lwjgl.util.vector.Vector3f;
 
+@SuppressWarnings("serial")
 public class RotateEvent extends Quaternion implements PoolableObject {
 
     private static final float ROTATION_SPEED = SimpleMath.TWO_PI; // one rotation per sec

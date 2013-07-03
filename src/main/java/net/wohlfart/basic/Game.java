@@ -157,8 +157,8 @@ class Game implements InitializingBean { // REVIEWED
 
         // wire the stuff after the display has been created and the settings have been fixed
         graphContext.setSettings(settings);
-        graphContext.setCamera(camera);
         graphContext.setInputDispatcher(inputDispatcher);
+        graphContext.setCamera(camera);
         // activate inputs
         inputSource.setInputDispatcher(inputDispatcher);
         setCurrentState(initialState);

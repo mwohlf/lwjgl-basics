@@ -43,7 +43,6 @@ public enum GraphicContextManager { // REVIEWED
     private IGraphicContext currentGraphicContext;
     // pre-calculated projection matrices to select from
     private Matrix4f perspectiveProjMatrix;
-    private Matrix4f orthographicProjMatrix;
 
     private Settings settings;
     private InputDispatcher inputDispatcher;
@@ -65,11 +64,14 @@ public enum GraphicContextManager { // REVIEWED
     public void setSettings(Settings settings) {
         this.settings = settings;
         perspectiveProjMatrix = new PerspectiveProjectionFab().create(settings);
-        orthographicProjMatrix = new OrthographicProjectionFab().create(settings);
     }
 
     public void setCamera(Camera camera) {
+        if (this.camera != null) {
+            unregister(camera);
+        }
         this.camera = camera;
+        register(camera);
     }
 
     Integer getAttributeLocation(String lookupString) {
@@ -82,10 +84,6 @@ public enum GraphicContextManager { // REVIEWED
 
     public Matrix4f getPerspectiveProjMatrix() {
         return perspectiveProjMatrix;
-    }
-
-    public Matrix4f getOrthographicProjMatrix() {
-        return orthographicProjMatrix;
     }
 
     public int getScreenWidth() {
@@ -127,8 +125,13 @@ public enum GraphicContextManager { // REVIEWED
         inputDispatcher.unregister(inputListener);
     }
 
-    public void destroy() {
-
+    public void post(Object event) {
+        inputDispatcher.post(event);
     }
+
+    public void destroy() {
+        unregister(camera);
+    }
+
 
 }

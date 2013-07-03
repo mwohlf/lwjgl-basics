@@ -61,7 +61,6 @@ final class SimpleState extends AbstractGraphicState implements InitializingBean
 
         statistics = new Statistics(0, -40);
         mouseClickLabel = new MouseClickLabel(0, -20);
-        elementPicker = new ElementPicker(elemBucket, getScreenWidth(), getScreenHeight());
 
         // elemBucket.addContent(new ControllerFrame().init().getCube());
         // elemBucket.addContent(SceneCreator.createRandomLocatedSpheres());

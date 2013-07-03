@@ -40,7 +40,6 @@ public abstract class AbstractMeshBuilder implements IMeshBuilder {
             // Get the width and height of the texture
             final int tWidth = decoder.getWidth();
             final int tHeight = decoder.getHeight();
-            System.out.println(" tWidth: " + tWidth + " tHeight: " + tHeight);
             // Decode the PNG file in a ByteBuffer
             final ByteBuffer buffer = ByteBuffer.allocateDirect(4 * decoder.getWidth() * decoder.getHeight());
             decoder.decode(buffer, decoder.getWidth() * 4, Format.RGBA);

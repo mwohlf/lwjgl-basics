@@ -1,13 +1,8 @@
 package net.wohlfart.gl.view;
 
-import java.util.List;
-
-import net.wohlfart.basic.container.DefaultRenderSet;
-import net.wohlfart.basic.container.ModelBucket;
 import net.wohlfart.basic.container.RenderSet;
-import net.wohlfart.gl.elements.debug.Arrow;
 import net.wohlfart.gl.input.PointEvent;
-import net.wohlfart.gl.spatial.Model;
+import net.wohlfart.gl.shader.GraphicContextManager;
 
 import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector3f;
@@ -19,50 +14,35 @@ public class ElementPicker {
 
     private Matrix4f transformMatrix = new Matrix4f();
 
-    private final RenderSet hasMatrices;
-
     private final float width;
     private final float height;
-
-    private DefaultRenderSet renderSet;
-
-    private ModelBucket modelBucket;
+    private final Matrix4f projectionMatrix;
+    private final RenderSet<?> renderSet;
 
 
-    public ElementPicker(DefaultRenderSet hasMatrices, float width, float height) {
-        this.hasMatrices = hasMatrices;
-        this.width = width;
-        this.height = height;
-    }
-
-    // for rendering a debug arrow
-    public void setRenderBucket(DefaultRenderSet renderSet) {
+    public ElementPicker(RenderSet<?> renderSet) {
+        final GraphicContextManager ctxManager = GraphicContextManager.INSTANCE;
+        this.projectionMatrix = ctxManager.getPerspectiveProjMatrix();
         this.renderSet = renderSet;
+        this.width = ctxManager.getScreenWidth();
+        this.height = ctxManager.getScreenHeight();
     }
-
-    // for picking elements
-    public void setModelBucket(ModelBucket modelBucket) {
-        this.modelBucket = modelBucket;
-    }
-
 
     @Subscribe
     public void onMouseClick(PointEvent clickEvent) {
         final float x = clickEvent.getX();
         final float y = clickEvent.getY();
 
-        final PickingRay ray = createPickingRay(x, y, hasMatrices);
-        renderSet.add(Arrow.createLink(ray.getStart(), ray.getEnd()));
+        final PickingRay ray = createPickingRay(x, y, renderSet.getModelViewMatrix());
+        GraphicContextManager.INSTANCE.post(ray);
 
-        List<Model> picklist = modelBucket.pick(ray);
-
-        System.out.println("picked: " + picklist);
+        System.out.println("ray: " + ray);
     }
 
 
-    public PickingRay createPickingRay(float x, float y, RenderSet elemBucket) {
+    public PickingRay createPickingRay(float x, float y, Matrix4f modelViewMatrix) {
 
-        Matrix4f.mul(elemBucket.getProjectionMatrix(), elemBucket.getModelViewMatrix(), transformMatrix);
+        Matrix4f.mul(projectionMatrix, modelViewMatrix, transformMatrix);
         transformMatrix = Matrix4f.invert(transformMatrix, transformMatrix);
 
         final Vector4f cameraSpaceNear = new Vector4f(x / width * 2f - 1f, y / height * 2f - 1f, -1.0f, 1.0f);
@@ -78,6 +58,10 @@ public class ElementPicker {
         final Vector3f end = new Vector3f(worldSpaceFar.x / worldSpaceFar.w, worldSpaceFar.y / worldSpaceFar.w, worldSpaceFar.z / worldSpaceFar.w);
 
         return new PickingRay(start, end);
+    }
+
+    public void setup() {
+        GraphicContextManager.INSTANCE.register(this);
     }
 
 }

@@ -8,6 +8,7 @@ import net.wohlfart.gl.shader.GraphicContextManager;
 import net.wohlfart.gl.shader.GraphicContextManager.IGraphicContext;
 import net.wohlfart.gl.shader.ShaderRegistry;
 import net.wohlfart.gl.shader.ShaderUniformHandle;
+import net.wohlfart.gl.shader.VertexLight;
 import net.wohlfart.gl.view.Camera;
 import net.wohlfart.tools.SimpleMath;
 
@@ -17,12 +18,14 @@ import org.lwjgl.util.vector.Vector3f;
 
 /**
  * implementing the basic features for a render set,
- * keeping the camera and the graphic context
+ * keeping the graphic context and some lights if needed
  */
 @SuppressWarnings("serial")
-public class DefaultRenderSet<T extends IsRenderable> extends HashSet<T> implements RenderSet<T> {
+public class DefaultRenderSet<T extends IsRenderable> extends HashSet<T> implements RenderSet<T> { // REVIEWED
 
     private IGraphicContext graphicContext;
+
+    private final HashSet<VertexLight> lights = new HashSet<VertexLight>(10);
 
     // reserve some memory for the render loop:
     private final Vector3f posVector = new Vector3f();
@@ -34,6 +37,11 @@ public class DefaultRenderSet<T extends IsRenderable> extends HashSet<T> impleme
     public void setGraphicContext(IGraphicContext graphicContext) {
         this.graphicContext = graphicContext;
     }
+
+    public void add(VertexLight light) {
+        lights.add(light);
+    }
+
 
     @Override
     public void setup() {
@@ -58,6 +66,11 @@ public class DefaultRenderSet<T extends IsRenderable> extends HashSet<T> impleme
         ShaderUniformHandle.WORLD_TO_CAM.set(rotPosMatrix);
         ShaderUniformHandle.CAM_TO_CLIP.set(GraphicContextManager.INSTANCE.getPerspectiveProjMatrix());
 
+        int i = 0;
+        for (final VertexLight light : lights) {
+            ShaderUniformHandle.LIGHTS.set(light, i++);
+        }
+
         GL11.glEnable(GL11.GL_DEPTH_TEST);
         GL11.glClear(GL11.GL_DEPTH_BUFFER_BIT);
         GL11.glDisable(GL11.GL_BLEND);
@@ -73,21 +86,16 @@ public class DefaultRenderSet<T extends IsRenderable> extends HashSet<T> impleme
     }
 
     @Override
-    public Matrix4f getProjectionMatrix() {
-        return GraphicContextManager.INSTANCE.getPerspectiveProjMatrix();
-    }
-
-    @Override
     public Matrix4f getModelViewMatrix() {
         return rotPosMatrix;
     }
 
     @Override
     public void destroy() {
-        for (IsRenderable element : this) {
+        for (final IsRenderable element : this) {
             element.destroy();
         }
+        clear();
     }
-
 
 }
