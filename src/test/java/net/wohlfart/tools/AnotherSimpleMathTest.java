@@ -207,7 +207,7 @@ public class AnotherSimpleMathTest extends VectorTestBase {
         assertEqualVec(new Vector2f(0.5f, 0.5f), vec);
 
         vec = SimpleMath.getPositionVector(new Vector3f(-1, 0, 0));
-        assertEqualVec(new Vector2f(0.75f, 0.5f), vec);
+        assertEqualVec(new Vector2f(0.75f-1f, 0.5f), vec);
     }
 
 }

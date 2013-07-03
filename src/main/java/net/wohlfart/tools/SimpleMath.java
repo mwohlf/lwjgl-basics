@@ -646,6 +646,8 @@ public final class SimpleMath {
      * convert a 3D sphere vector into a 2D texture position
      *
      * see: http://stackoverflow.com/questions/5674149/3d-coordinates-on-a-sphere-to-latitude-and-longitude
+     *
+     * this method might return negative values, we need to have textures with wrap enabled for this to look right
      */
     public static Vector2f getPositionVector(Vector3f vec) {
         final float theta = (float) Math.acos(vec.y / vec.length()); // [-1...+1] -> [0..PI]
