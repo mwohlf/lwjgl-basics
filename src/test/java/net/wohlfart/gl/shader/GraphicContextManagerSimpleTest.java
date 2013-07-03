@@ -3,6 +3,7 @@ package net.wohlfart.gl.shader;
 import static org.junit.Assert.assertEquals;
 import net.wohlfart.basic.Settings;
 import net.wohlfart.basic.container.DefaultRenderSet;
+import net.wohlfart.basic.elements.IsRenderable;
 import net.wohlfart.gl.view.ElementPicker;
 import net.wohlfart.gl.view.PickingRay;
 
@@ -21,12 +22,8 @@ public class GraphicContextManagerSimpleTest {
     Settings settings;
     ElementPicker elementPicker;
 
-    DefaultRenderSet matrices = new DefaultRenderSet() {
-
-        @Override
-        public Matrix4f getProjectionMatrix() {
-            return GraphicContextManager.INSTANCE.getPerspectiveProjMatrix();
-        }
+    @SuppressWarnings("serial")
+    DefaultRenderSet<IsRenderable> matrices = new DefaultRenderSet<IsRenderable>() {
 
         @Override
         public Matrix4f getModelViewMatrix() {
@@ -46,7 +43,7 @@ public class GraphicContextManagerSimpleTest {
         settings = createSettings();
         contxt = GraphicContextManager.INSTANCE;
         contxt.setSettings(settings);
-        elementPicker = new ElementPicker(null, settings.getWidth(), settings.getHeight());
+        elementPicker = new ElementPicker(null);
     }
 
     Settings createSettings() {
@@ -72,7 +69,7 @@ public class GraphicContextManagerSimpleTest {
         PickingRay ray;
 
         // mouse origin is bottom left:
-        ray = elementPicker.createPickingRay(1000, 700, matrices);
+        ray = elementPicker.createPickingRay(1000, 700, new Matrix4f());
 
         assertEquals(0.059173370, ray.getStart().x, 0.01);
         assertEquals(0.041421358, ray.getStart().y, 0.01);
@@ -95,7 +92,7 @@ public class GraphicContextManagerSimpleTest {
         PickingRay ray;
 
         // mouse origin is bottom left:
-        ray = elementPicker.createPickingRay(0, 700, matrices);
+        ray = elementPicker.createPickingRay(0, 700, new Matrix4f());
 
         assertEquals(-0.059173370, ray.getStart().x, 0.01);
         assertEquals(0.041421358, ray.getStart().y, 0.01);
@@ -118,7 +115,7 @@ public class GraphicContextManagerSimpleTest {
         PickingRay ray;
 
         // mouse origin is bottom left:
-        ray = elementPicker.createPickingRay(0, 0, matrices);
+        ray = elementPicker.createPickingRay(0, 0, new Matrix4f());
 
         assertEquals(-0.059173370, ray.getStart().x, 0.01);
         assertEquals(-0.041421358, ray.getStart().y, 0.01);
@@ -141,7 +138,7 @@ public class GraphicContextManagerSimpleTest {
         PickingRay ray;
 
         // mouse origin is bottom left:
-        ray = elementPicker.createPickingRay(1000, 0, matrices);
+        ray = elementPicker.createPickingRay(1000, 0, new Matrix4f());
 
         assertEquals(0.059173370, ray.getStart().x, 0.01);
         assertEquals(-0.041421358, ray.getStart().y, 0.01);
@@ -165,7 +162,7 @@ public class GraphicContextManagerSimpleTest {
 
         // mouse origin is bottom left
         // picking the center of the screen should give us a solid line along the z axis:
-        ray = elementPicker.createPickingRay(settings.getWidth() / 2f, settings.getHeight() / 2f, matrices);
+        ray = elementPicker.createPickingRay(settings.getWidth() / 2f, settings.getHeight() / 2f, new Matrix4f());
 
         assertEquals(0.0, ray.getStart().x, 0.01);
         assertEquals(0.0, ray.getStart().y, 0.01);

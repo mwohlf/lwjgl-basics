@@ -86,20 +86,16 @@ public class DefaultRenderSet<T extends IsRenderable> extends HashSet<T> impleme
     }
 
     @Override
-    public Matrix4f getProjectionMatrix() {
-        return GraphicContextManager.INSTANCE.getPerspectiveProjMatrix();
-    }
-
-    @Override
     public Matrix4f getModelViewMatrix() {
         return rotPosMatrix;
     }
 
     @Override
     public void destroy() {
-        for (IsRenderable element : this) {
+        for (final IsRenderable element : this) {
             element.destroy();
         }
+        clear();
     }
 
 }

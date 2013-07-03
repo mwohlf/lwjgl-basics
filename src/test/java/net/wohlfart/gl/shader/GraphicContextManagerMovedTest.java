@@ -3,7 +3,7 @@ package net.wohlfart.gl.shader;
 import static org.junit.Assert.assertEquals;
 import net.wohlfart.basic.Settings;
 import net.wohlfart.basic.container.DefaultRenderSet;
-import net.wohlfart.basic.container.RenderSet;
+import net.wohlfart.basic.elements.IsRenderable;
 import net.wohlfart.gl.view.ElementPicker;
 import net.wohlfart.gl.view.PickingRay;
 
@@ -22,17 +22,12 @@ public class GraphicContextManagerMovedTest {
     Settings settings;
     ElementPicker elementPicker;
 
-    RenderSet matrices = new DefaultRenderSet() {
-
-        @Override
-        public Matrix4f getProjectionMatrix() {
-            return GraphicContextManager.INSTANCE.getPerspectiveProjMatrix();
-        }
+    @SuppressWarnings("serial")
+    DefaultRenderSet<IsRenderable> matrices = new DefaultRenderSet<IsRenderable>() {
 
         @Override
         public Matrix4f getModelViewMatrix() {
             final Matrix4f m = new Matrix4f();
-            m.m30 = -10;
             return m;
         }
 
@@ -48,7 +43,7 @@ public class GraphicContextManagerMovedTest {
         settings = createSettings();
         contxt = GraphicContextManager.INSTANCE;
         contxt.setSettings(settings);
-        elementPicker = new ElementPicker(null, settings.getWidth(), settings.getHeight());
+        elementPicker = new ElementPicker(null);
     }
 
     Settings createSettings() {
@@ -79,7 +74,7 @@ public class GraphicContextManagerMovedTest {
 
         // mouse origin is bottom left
         // picking the center of the screen should give us a solid line along the z axis:
-        ray = elementPicker.createPickingRay(settings.getWidth() / 2f, settings.getHeight() / 2f, matrices);
+        ray = elementPicker.createPickingRay(settings.getWidth() / 2f, settings.getHeight() / 2f, new Matrix4f());
 
         assertEquals(10.0, ray.getStart().x, 0.01);
         assertEquals(0.0, ray.getStart().y, 0.01);

@@ -69,9 +69,6 @@ final class LightingState extends AbstractGraphicState implements InitializingBe
 
         statistics = new Statistics(0, -40);
         mouseClickLabel = new MouseClickLabel(0, -20);
-        elementPicker = new ElementPicker(elemBucket, getScreenWidth(), getScreenHeight());
-        elementPicker.setRenderBucket(elemBucket);
-        elementPicker.setModelBucket(modelBucket);
 
         hud.add(statistics);
         hud.add(mouseClickLabel);

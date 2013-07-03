@@ -11,7 +11,6 @@ import org.lwjgl.BufferUtils;
 import org.lwjgl.util.vector.Vector3f;
 
 public class Particle implements PoolableObject {
-    private static final int MAX = 10000;
 
     private static ObjectPool<Particle> pool = new ObjectPool<Particle>(10) {
         @Override
@@ -80,7 +79,6 @@ public class Particle implements PoolableObject {
 
 
     private static class FloatBufferStrategy {
-
 
         FloatBuffer create(Vector3f position) {
 
