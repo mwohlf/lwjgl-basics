@@ -16,13 +16,11 @@ public class ElementPicker {
 
     private final float width;
     private final float height;
-    private final Matrix4f projectionMatrix;
     private final RenderSet<?> renderSet;
 
 
     public ElementPicker(RenderSet<?> renderSet) {
         final GraphicContextManager ctxManager = GraphicContextManager.INSTANCE;
-        this.projectionMatrix = ctxManager.getPerspectiveProjMatrix();
         this.renderSet = renderSet;
         this.width = ctxManager.getScreenWidth();
         this.height = ctxManager.getScreenHeight();
@@ -33,14 +31,15 @@ public class ElementPicker {
         final float x = clickEvent.getX();
         final float y = clickEvent.getY();
 
-        final PickingRay ray = createPickingRay(x, y, renderSet.getModelViewMatrix());
+        final PickingRay ray = createPickingRay(x, y, renderSet);
         GraphicContextManager.INSTANCE.post(ray);
-
-        System.out.println("ray: " + ray);
     }
 
 
-    public PickingRay createPickingRay(float x, float y, Matrix4f modelViewMatrix) {
+    public PickingRay createPickingRay(float x, float y, RenderSet<?> renderSet) {
+        final GraphicContextManager ctxManager = GraphicContextManager.INSTANCE;
+        Matrix4f projectionMatrix = ctxManager.getPerspectiveProjMatrix();
+        Matrix4f modelViewMatrix = renderSet.getModelViewMatrix();
 
         Matrix4f.mul(projectionMatrix, modelViewMatrix, transformMatrix);
         transformMatrix = Matrix4f.invert(transformMatrix, transformMatrix);

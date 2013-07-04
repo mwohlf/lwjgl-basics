@@ -12,8 +12,6 @@ public enum GameStateEnum implements GameState { // REVIEWED
     NULL,
     SIMPLE,
     CELESTIAL,
-    LIGHTING,
-    AMBIENT,
     ; // @formatter:on
 
     // for context lookup

@@ -4,7 +4,6 @@ import java.util.List;
 
 import net.wohlfart.basic.action.OrbitAction;
 import net.wohlfart.basic.elements.SpatialEntity;
-import net.wohlfart.basic.states.SceneCreator;
 import net.wohlfart.gl.spatial.Model;
 import net.wohlfart.gl.view.PickingRay;
 
@@ -19,7 +18,7 @@ public class InvadorsBucket extends ModelBucket {
     @Override
     public void setup() {
         super.setup();
-        Model model = SceneCreator.loadModelFromFile("/models/ships/02.obj");
+        Model model = WireframeToolkit.loadModelFromFile("/models/ships/02.obj");
         model.setPosition(new Vector3f(0,0,10));
         model.setAction(OrbitAction.create(10, new Vector3f(0,0,0), new Vector3f(1,0,0)));
         models.add(model);
@@ -38,9 +37,9 @@ public class InvadorsBucket extends ModelBucket {
 
 
     public SpatialEntity createModel() {
-        SpatialEntity model = SceneCreator.loadModelFromFile("/models/ships/02.obj");
-        model.setPosition(SceneCreator.getRandomPosition(1000f));
-        model.setAction(SceneCreator.getRandomAction());
+        SpatialEntity model = WireframeToolkit.loadModelFromFile("/models/ships/02.obj");
+        model.setPosition(WireframeToolkit.getRandomPosition(1000f));
+        model.setAction(WireframeToolkit.getRandomAction());
         return model;
     }
 

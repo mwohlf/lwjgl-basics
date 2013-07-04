@@ -17,10 +17,6 @@ public enum NullRenderSet implements RenderSet<IsRenderable> {
     }
 
     @Override
-    public void update(float timeInSec) {
-    }
-
-    @Override
     public Matrix4f getModelViewMatrix() {
         return SimpleMath.UNION_MATRIX;
     }

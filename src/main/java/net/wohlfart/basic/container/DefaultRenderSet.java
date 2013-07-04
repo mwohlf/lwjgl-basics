@@ -2,7 +2,7 @@ package net.wohlfart.basic.container;
 
 import java.util.HashSet;
 
-import net.wohlfart.basic.elements.IsRenderable;
+import net.wohlfart.basic.elements.IsUpdateable;
 import net.wohlfart.gl.shader.DefaultGraphicContext;
 import net.wohlfart.gl.shader.GraphicContextManager;
 import net.wohlfart.gl.shader.GraphicContextManager.IGraphicContext;
@@ -21,7 +21,7 @@ import org.lwjgl.util.vector.Vector3f;
  * keeping the graphic context and some lights if needed
  */
 @SuppressWarnings("serial")
-public class DefaultRenderSet<T extends IsRenderable> extends HashSet<T> implements RenderSet<T> { // REVIEWED
+public class DefaultRenderSet<T extends IsUpdateable> extends HashSet<T> implements RenderSet<T>, IsUpdateable { // REVIEWED
 
     private IGraphicContext graphicContext;
 
@@ -75,14 +75,16 @@ public class DefaultRenderSet<T extends IsRenderable> extends HashSet<T> impleme
         GL11.glClear(GL11.GL_DEPTH_BUFFER_BIT);
         GL11.glDisable(GL11.GL_BLEND);
 
-        for (IsRenderable element : this) {
+        for (T element : this) {
             element.render();
         }
     }
 
     @Override
     public void update(float timeInSec) {
-        // nothing to do yet
+        for (final T element : this) {
+            element.update(timeInSec);
+        }
     }
 
     @Override
@@ -92,7 +94,7 @@ public class DefaultRenderSet<T extends IsRenderable> extends HashSet<T> impleme
 
     @Override
     public void destroy() {
-        for (final IsRenderable element : this) {
+        for (final T element : this) {
             element.destroy();
         }
         clear();

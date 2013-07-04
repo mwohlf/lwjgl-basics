@@ -3,7 +3,7 @@ package net.wohlfart.gl.shader;
 import static org.junit.Assert.assertEquals;
 import net.wohlfart.basic.Settings;
 import net.wohlfart.basic.container.DefaultRenderSet;
-import net.wohlfart.basic.elements.IsRenderable;
+import net.wohlfart.basic.elements.IsUpdateable;
 import net.wohlfart.gl.view.ElementPicker;
 import net.wohlfart.gl.view.PickingRay;
 
@@ -18,7 +18,7 @@ public class GraphicContextManagerMovedTest {
     ElementPicker elementPicker;
 
     @SuppressWarnings("serial")
-    DefaultRenderSet<IsRenderable> matrices = new DefaultRenderSet<IsRenderable>() {
+    DefaultRenderSet<IsUpdateable> matrices = new DefaultRenderSet<IsUpdateable>() {
 
         @Override
         public Matrix4f getModelViewMatrix() {
@@ -49,7 +49,7 @@ public class GraphicContextManagerMovedTest {
 
     @Test
     public void testCenter() {
-        PickingRay ray = elementPicker.createPickingRay(settings.getWidth() / 2f, settings.getHeight() / 2f, new Matrix4f());
+        PickingRay ray = elementPicker.createPickingRay(settings.getWidth() / 2f, settings.getHeight() / 2f, matrices);
 
         assertEquals(0.0, ray.getStart().x, 0.01);
         assertEquals(0.0, ray.getStart().y, 0.01);
