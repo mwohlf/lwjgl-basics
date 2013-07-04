@@ -52,11 +52,6 @@ public class HudImpl implements Hud {
     }
 
     @Override
-    public void dispose() {
-
-    }
-
-    @Override
     public void update(float tpf) {
         layer.update(tpf);
     }

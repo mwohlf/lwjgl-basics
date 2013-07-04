@@ -10,7 +10,7 @@ import org.springframework.beans.factory.InitializingBean;
 import org.springframework.util.Assert;
 
 /**
- * Deafult implementation of a game state, only contains a hud
+ * Default implementation of a game state, only contains a hud
  */
 final class SimpleState extends AbstractGraphicState implements InitializingBean {
     private static final Logger LOGGER = LoggerFactory.getLogger(SimpleState.class);
@@ -27,7 +27,6 @@ final class SimpleState extends AbstractGraphicState implements InitializingBean
     @Override
     public void setup() {
         super.setup();
-
         hud.setup();
         hud.add(new Label(0, 0, "hello world at (0,0)"));
     }
@@ -44,7 +43,7 @@ final class SimpleState extends AbstractGraphicState implements InitializingBean
 
     @Override
     public void destroy() {
-        hud.dispose();
+        hud.destroy();
         super.destroy();
     }
 

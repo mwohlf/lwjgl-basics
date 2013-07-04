@@ -36,7 +36,6 @@ import com.google.common.eventbus.Subscribe;
 public class CelestialState extends AbstractGraphicState implements InitializingBean {
     private static final Logger LOGGER = LoggerFactory.getLogger(CelestialState.class);
 
-
     //private final Skybox skybox = new SkyboxImpl();   //NullSkybox.INSTANCE;
     private final Skybox skybox = NullSkybox.INSTANCE;
 
@@ -65,6 +64,13 @@ public class CelestialState extends AbstractGraphicState implements Initializing
     public void setup() {
         super.setup();
 
+    }
+
+
+
+    public void setupOffline() {
+        super.setup();
+
         skybox.setup();
 
         modelSet.setGraphicContext(new DefaultGraphicContext(ShaderRegistry.AMBIENT_SHADER));
@@ -81,7 +87,6 @@ public class CelestialState extends AbstractGraphicState implements Initializing
         ship02.setPosition(new Vector3f(20,10,-10));
         modelSet.add(ship02);
         modelSet.setup();
-
 
         for (int x = -5; x <=5; x++) {
             for (int z = -5; z <=5; z++) {
@@ -119,9 +124,8 @@ public class CelestialState extends AbstractGraphicState implements Initializing
         CelestialBody body01 = new CelestialBody(0);
         body01.setPosition(new Vector3f(7,0,0));
         planetSet.add(body01);
-        planetSet.setGraphicContext(new DefaultGraphicContext(ShaderRegistry.AMBIENT_SHADER));
         CelestialBody body02 = new CelestialBody(0);
-        body02.setPosition(new Vector3f(7,0,0));
+        body02.setPosition(new Vector3f(7,0,7));
         planetSet.add(body02);
 
         VertexLight light3 = new VertexLight(0.00001f, new Vector4f(0.2f, 0.2f, 0.2f, 1.0f), new Vector3f( 0, 10, -17));

@@ -11,6 +11,7 @@ import net.wohlfart.basic.IGameContext;
 public enum GameStateEnum implements GameState { // REVIEWED
     NULL,
     SIMPLE,
+    TESTING,
     CELESTIAL,
     ; // @formatter:on
 

@@ -26,11 +26,6 @@ public enum NullHud implements Hud {
     }
 
     @Override
-    public void dispose() {
-        // do nothing
-    }
-
-    @Override
     public void update(float tpf) {
         // do nothing
     }

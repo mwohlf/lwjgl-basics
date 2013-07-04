@@ -1,7 +1,7 @@
 package net.wohlfart.basic.states;
 
 /**
- * A simple state that does nothing.
+ * a simple state that does nothing.
  */
 final class NullState implements GameState { // REVIEWED
 

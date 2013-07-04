@@ -8,7 +8,8 @@ public interface Hud extends IsRenderable, IsUpdateable {
 
     void setup();
 
-    void dispose();
+    @Override
+    void destroy();
 
     void add(LayerElement label);
 
