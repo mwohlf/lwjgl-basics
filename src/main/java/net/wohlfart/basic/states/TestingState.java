@@ -17,7 +17,7 @@ import org.springframework.beans.factory.InitializingBean;
 import org.springframework.util.Assert;
 
 public class TestingState extends AbstractGraphicState implements InitializingBean {
-    private static final Logger LOGGER = LoggerFactory.getLogger(SimpleState.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(TestingState.class);
 
     private final Hud hud = new HudImpl();
 
@@ -38,14 +38,14 @@ public class TestingState extends AbstractGraphicState implements InitializingBe
 
         planetSet.setGraphicContext(new DefaultGraphicContext(ShaderRegistry.AMBIENT_SHADER));
         CelestialBody body01 = new CelestialBody(0);
-        body01.setPosition(new Vector3f(7,0,0));
+        body01.setPosition(new Vector3f(7,0,-7));
         planetSet.add(body01);
         CelestialBody body02 = new CelestialBody(0);
         body02.setPosition(new Vector3f(7,0,7));
         planetSet.add(body02);
 
-        VertexLight light3 = new VertexLight(0.00001f, new Vector4f(0.2f, 0.2f, 0.2f, 1.0f), new Vector3f( 0, 10, -17));
-        VertexLight light4 = new VertexLight(0.00001f, new Vector4f(0.2f, 0.2f, 0.2f, 1.0f), new Vector3f( 0, 10, 17));
+        VertexLight light3 = new VertexLight(0.000001f, new Vector4f(0.9f, 0.9f, 0.9f, 1.0f), new Vector3f( 7, 0, -10));
+        VertexLight light4 = new VertexLight(0.000001f, new Vector4f(0.9f, 0.9f, 0.9f, 1.0f), new Vector3f( 7, 0, 10));
         planetSet.add(light3);
         planetSet.add(light4);
 

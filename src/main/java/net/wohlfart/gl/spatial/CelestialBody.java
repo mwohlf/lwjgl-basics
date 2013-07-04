@@ -38,16 +38,10 @@ public class CelestialBody extends AbstractRenderable implements SpatialEntity {
 
     @Override
     protected IsRenderable setupMesh() {
-        /*
-        final CelestialBodyMesh.IcosahedronBuilder icosaederBuilder = new CelestialBodyMesh.IcosahedronBuilder();
+        final CelestialBodyMesh.RevolvedSphereBuilder builder = new CelestialBodyMesh.RevolvedSphereBuilder();
         this.random = new Random(seed);
-        icosaederBuilder.setRadius(SimpleMath.random(planetType.minRadius, planetType.maxRadius));
-        return icosaederBuilder.build();
-        */
-        final CelestialBodyMesh.RevolvedSphereBuilder icosaederBuilder = new CelestialBodyMesh.RevolvedSphereBuilder();
-        this.random = new Random(seed);
-        icosaederBuilder.setLod(3);
-        return icosaederBuilder.build();
+        builder.setLod(1);
+        return builder.build();
     }
 
 }

@@ -64,13 +64,6 @@ public class CelestialState extends AbstractGraphicState implements Initializing
     public void setup() {
         super.setup();
 
-    }
-
-
-
-    public void setupOffline() {
-        super.setup();
-
         skybox.setup();
 
         modelSet.setGraphicContext(new DefaultGraphicContext(ShaderRegistry.AMBIENT_SHADER));

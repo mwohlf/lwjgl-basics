@@ -6,101 +6,87 @@ import java.util.Random;
 
 import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL11;
-import org.lwjgl.opengl.GL12;
+import org.lwjgl.opengl.GL13;
+import org.lwjgl.opengl.GL30;
 import org.lwjgl.util.vector.Vector3f;
 
-/**
- * <p>
- * CelestialTexture class.
- * </p>
- */
+
+// see: http://www.java-gaming.org/index.php?topic=25516.0
 public class CelestialTexture implements ITexture {
     final long seed;
     final CelestialType celestialType;
     protected final int width;
     protected final int height;
-    protected final IntBuffer texture;
+    private final int textureUnit;
 
-    protected int id;
+    protected int texId;
 
-    /**
-     * <p>
-     * Constructor for CelestialTexture.
-     * </p>
-     *
-     * @param radius
-     *            a float.
-     * @param celestialType
-     *            a {@link net.wohlfart.gl.texture.CelestialType} object.
-     * @param seed
-     *            a long.
-     */
-    public CelestialTexture(final float radius, final CelestialType celestialType, final long seed) {
+
+    public CelestialTexture(float radius, CelestialType celestialType, long seed, int textureUnit) {
         this.width = (int) (radius * 2f * (float) Math.PI + 0.5f);
         this.height = (int) (radius * 2f * (float) Math.PI + 0.5f);
         this.celestialType = celestialType;
         this.seed = seed;
-        texture = BufferUtils.createIntBuffer(width * height);
+        this.textureUnit = textureUnit;
     }
 
-    /**
-     * <p>
-     * Constructor for CelestialTexture.
-     * </p>
-     *
-     * @param width
-     *            a int.
-     * @param height
-     *            a int.
-     * @param celestialType
-     *            a {@link net.wohlfart.gl.texture.CelestialType} object.
-     * @param seed
-     *            a long.
-     */
-    public CelestialTexture(final int width, final int height, CelestialType celestialType, final long seed) {
+
+    public CelestialTexture(int width, int height, CelestialType celestialType, long seed, int textureUnit) {
         this.width = width;
         this.height = height;
         this.celestialType = celestialType;
         this.seed = seed;
-        texture = BufferUtils.createIntBuffer(width * height);
+        this.textureUnit = textureUnit;
     }
 
-    /** {@inheritDoc} */
     @Override
     public void init() {
 
+        IntBuffer intBuffer = BufferUtils.createIntBuffer(width * height);
+
+
         // random for texture variation
         final float textureVariant = new Random(seed).nextFloat();
-        final int[] data = new int[width * height];
-        texture.get(data);
-        // getTexture().mark();
-        texture.rewind();
 
-        Vector3f vector;
-        Color color;
+        final int[] data = new int[width * height]; // 4 byte
         for (int x = 0; x < width; x++) {
             for (int y = 0; y < height; y++) {
-                vector = getNormalVector(x, y);
+                final Vector3f vector = getNormalVector(x, y);
                 // vector.scale(255f);
-                color = celestialType.getColor(vector.x, vector.y, vector.z, textureVariant);
-                // color = Color.BLUE;
+                Color color = celestialType.getColor(vector.x, vector.y, vector.z, textureVariant);
+                color = Color.BLUE;
                 setPixel(x, y, color, width, height, data);
             }
         }
-        texture.put(data);
-        texture.rewind();
+        intBuffer.put(data);
+        intBuffer.flip();
+        intBuffer.rewind();
 
-        GL11.glEnable(GL11.GL_TEXTURE_2D);
+        // Create a new texture object in memory and bind it
+        texId = GL11.glGenTextures();   // generate texture ID
+        GL13.glActiveTexture(textureUnit);
+        GL11.glBindTexture(GL11.GL_TEXTURE_2D, texId);   // bind texture ID
 
-        final IntBuffer buffer = BufferUtils.createIntBuffer(1);
-        GL11.glGenTextures(buffer);
-        id = buffer.get(0);
+        // All RGB bytes are aligned to each other and each component is 1 byte
+        GL11.glPixelStorei(GL11.GL_UNPACK_ALIGNMENT, 1);
+        // Upload the texture data and generate mip maps (for scaling)
+        GL11.glTexImage2D(GL11.GL_TEXTURE_2D, 0, GL11.GL_RGBA8, width, height, 0, GL11.GL_RGBA, GL11.GL_UNSIGNED_BYTE, intBuffer);
+        GL30.glGenerateMipmap(GL11.GL_TEXTURE_2D);
 
-        GL11.glBindTexture(GL11.GL_TEXTURE_2D, id);
+        // Setup the ST coordinate system
+        //Setup wrap mode
+        GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_S, GL11.GL_REPEAT);
+        GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_T, GL11.GL_REPEAT);
+
+        // Setup what to do when the texture has to be scaled
         GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_LINEAR);
         GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER, GL11.GL_LINEAR);
+
+        // All RGB bytes are aligned to each other and each component is 1 byte
+        //GL11.glPixelStorei(GL11.GL_UNPACK_ALIGNMENT, 1);
         // GL11.glTexImage2D(GL11.GL_TEXTURE_2D, 0, GL11.GL_RGBA8, width, height, 0, GL12.GL_BGRA, GL12.GL_UNSIGNED_INT_8_8_8_8_REV, texture);
-        GL11.glTexImage2D(GL11.GL_TEXTURE_2D, 0, GL11.GL_RGBA8, width, height, 0, GL12.GL_BGRA, GL12.GL_UNSIGNED_INT_8_8_8_8_REV, texture);
+        //GL11.glTexImage2D(GL11.GL_TEXTURE_2D, 0, GL11.GL_RGBA8, width, height, 0, GL12.GL_BGRA, GL12.GL_UNSIGNED_INT_8_8_8_8_REV, buffer);
+        //GL11.glTexImage2D(GL11.GL_TEXTURE_2D, 0, GL11.GL_RGBA8, width, height, 0, GL11.GL_RGBA, GL11.GL_UNSIGNED_BYTE, intBuffer);
     }
 
     /**
@@ -145,6 +131,8 @@ public class CelestialTexture implements ITexture {
         value = value << 8;
         value = value | 0xff & color.getBlue();
         value = value << 8;
+        value = value | 0xff & color.getAlpha();
+        //value = value << 8;
 
         // int value = (byte) color.getRed();
         // value >>= 8;
@@ -162,38 +150,26 @@ public class CelestialTexture implements ITexture {
         // data[i + 3] = (byte) color.getAlpha(); // a
     }
 
-    /** {@inheritDoc} */
     @Override
     public void bind() {
-        GL11.glBindTexture(GL11.GL_TEXTURE_2D, id);
+        GL11.glBindTexture(GL11.GL_TEXTURE_2D, texId);
     }
 
-    /** {@inheritDoc} */
     @Override
     public void unbind() {
         GL11.glBindTexture(GL11.GL_TEXTURE_2D, 0);
     }
 
-    /**
-     * <p>
-     * Getter for the field <code>width</code>.
-     * </p>
-     *
-     * @return a int.
-     */
     public int getWidth() {
         return width;
     }
 
-    /**
-     * <p>
-     * Getter for the field <code>height</code>.
-     * </p>
-     *
-     * @return a int.
-     */
     public int getHeight() {
         return height;
+    }
+
+    public int getTextureId() {
+        return texId;
     }
 
 }

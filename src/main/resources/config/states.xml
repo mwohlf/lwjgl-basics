@@ -14,7 +14,11 @@
         <property name="camera" ref="camera" />
     </bean>
 
-    <bean id="GameState.SIMPLE" class="net.wohlfart.basic.states.CelestialState">
+    <bean id="GameState.SIMPLE" class="net.wohlfart.basic.states.SimpleState">
+        <property name="camera" ref="camera" />
+    </bean>
+
+    <bean id="GameState.TESTING" class="net.wohlfart.basic.states.TestingState">
         <property name="camera" ref="camera" />
     </bean>
 
