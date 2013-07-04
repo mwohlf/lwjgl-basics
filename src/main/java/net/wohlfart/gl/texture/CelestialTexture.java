@@ -4,8 +4,11 @@ import java.awt.Color;
 import java.nio.IntBuffer;
 import java.util.Random;
 
+import net.wohlfart.tools.SimpleMath;
+
 import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL11;
+import org.lwjgl.opengl.GL12;
 import org.lwjgl.opengl.GL13;
 import org.lwjgl.opengl.GL30;
 import org.lwjgl.util.vector.Vector3f;
@@ -44,7 +47,6 @@ public class CelestialTexture implements ITexture {
 
         IntBuffer intBuffer = BufferUtils.createIntBuffer(width * height);
 
-
         // random for texture variation
         final float textureVariant = new Random(seed).nextFloat();
 
@@ -52,9 +54,7 @@ public class CelestialTexture implements ITexture {
         for (int x = 0; x < width; x++) {
             for (int y = 0; y < height; y++) {
                 final Vector3f vector = getNormalVector(x, y);
-                // vector.scale(255f);
                 Color color = celestialType.getColor(vector.x, vector.y, vector.z, textureVariant);
-                //color = Color.BLUE;
                 setPixel(x, y, color, width, height, data);
             }
         }
@@ -67,16 +67,15 @@ public class CelestialTexture implements ITexture {
         GL13.glActiveTexture(textureUnit);
         GL11.glBindTexture(GL11.GL_TEXTURE_2D, texId);   // bind texture ID
 
-        // All RGB bytes are aligned to each other and each component is 1 byte
+        // all RGB bytes are aligned to each other and each component is 1 byte
         GL11.glPixelStorei(GL11.GL_UNPACK_ALIGNMENT, 1);
-        // Upload the texture data and generate mip maps (for scaling)
-        GL11.glTexImage2D(GL11.GL_TEXTURE_2D, 0, GL11.GL_RGBA8, width, height, 0, GL11.GL_RGBA, GL11.GL_UNSIGNED_BYTE, intBuffer);
+        // upload the texture data and generate mip maps (for scaling)
+        GL11.glTexImage2D(GL11.GL_TEXTURE_2D, 0, GL11.GL_RGBA8, width, height, 0, GL11.GL_RGBA, GL12.GL_UNSIGNED_INT_8_8_8_8_REV, intBuffer);
         GL30.glGenerateMipmap(GL11.GL_TEXTURE_2D);
 
-        // Setup the ST coordinate system
-        //Setup wrap mode
-        GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_S, GL11.GL_REPEAT);
-        GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_T, GL11.GL_REPEAT);
+        //Setup wrap mode for the ST coordinate system
+        GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_S, GL11.GL_CLAMP);
+        GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_T, GL11.GL_CLAMP);
 
         // Setup what to do when the texture has to be scaled
         GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_LINEAR);
@@ -95,7 +94,13 @@ public class CelestialTexture implements ITexture {
      *
      * @return a vector with each element [0..1]
      */
-    final Vector3f getNormalVector(final int x, final int y) {
+    final Vector3f getNormalVector(int x, int y) {
+        final int yRange = height - 1;
+        final int xRange = width - 1;
+
+        return SimpleMath.getNormalVector((float)x/(float)xRange, (float)y/(float)yRange);
+
+        /*
         final int yRange = height - 1;
         final int xRange = width - 1;
         final float latitude = (float) Math.PI * ((float) y / (float) yRange); // [0 .. PI] (north-south)
@@ -106,6 +111,7 @@ public class CelestialTexture implements ITexture {
         final float zz = (float) Math.cos(longitude) * (float) Math.sin(latitude); // 0 -> 1;...
 
         return new Vector3f(xx, yy, zz);
+        */
     }
 
     private void setPixel(int x, int y, Color color, int width, int height, int[] data) {
@@ -132,22 +138,7 @@ public class CelestialTexture implements ITexture {
         value = value | 0xff & color.getGreen();
         value = value << 8;
         value = value | 0xff & color.getRed();
-        //value = value << 8;
-
-        // int value = (byte) color.getRed();
-        // value >>= 8;
-        // value |= (byte) color.getGreen();
-        // value <<= 8;
-        // value |= (byte) color.getBlue();
-        // value <<= 8;
-        // value |= (byte) color.getAlpha();
-
         data[i] = value;
-
-        // data[i + 0] = (byte) color.getRed(); // r
-        // data[i + 1] = (byte) color.getGreen(); // g
-        // data[i + 2] = (byte) color.getBlue(); // b
-        // data[i + 3] = (byte) color.getAlpha(); // a
     }
 
     @Override

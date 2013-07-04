@@ -6,12 +6,23 @@ import net.wohlfart.basic.elements.IsRenderable;
 import net.wohlfart.basic.elements.SpatialEntity;
 import net.wohlfart.gl.elements.AbstractRenderable;
 import net.wohlfart.gl.texture.CelestialType;
+import net.wohlfart.tools.SimpleMath;
 
 public class CelestialBody extends AbstractRenderable implements SpatialEntity {
+    private final int DEFAULT_LOD = 7;
 
     private final long seed;
-    private Random random;
+
+    private final Random random;
     private final CelestialType planetType;
+
+    private final float radius;
+
+    private final float rotSpeed;
+
+    private final float pathRadius;
+
+    private final float pathArc;
 
 
     public CelestialBody(long seed) {
@@ -20,6 +31,10 @@ public class CelestialBody extends AbstractRenderable implements SpatialEntity {
         // random planet type
         final int index = random.nextInt(CelestialType.values().length);
         this.planetType = CelestialType.values()[index];
+        this.radius = SimpleMath.random(planetType.minRadius, planetType.maxRadius);
+        this.rotSpeed = SimpleMath.random(planetType.minRot, planetType.maxRot);
+        this.pathRadius = SimpleMath.random(planetType.minPathRadius, planetType.maxPathRadius);
+        this.pathArc = SimpleMath.random((float) -Math.PI, (float) Math.PI); // location on the path
     }
 
 
@@ -39,8 +54,10 @@ public class CelestialBody extends AbstractRenderable implements SpatialEntity {
     @Override
     protected IsRenderable setupMesh() {
         final CelestialBodyMesh.RevolvedSphereBuilder builder = new CelestialBodyMesh.RevolvedSphereBuilder();
-        this.random = new Random(seed);
-        builder.setLod(4);
+        builder.setLod(DEFAULT_LOD);
+        builder.setCelestialType(planetType);
+      //  builder.setRadius(radius);
+        builder.setSeed(seed);
         return builder.build();
     }
 

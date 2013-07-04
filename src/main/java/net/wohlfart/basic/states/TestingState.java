@@ -37,15 +37,14 @@ public class TestingState extends AbstractGraphicState implements InitializingBe
         hud.add(new Label(0, 0, "hello world at (0,0)"));
 
         planetSet.setGraphicContext(new DefaultGraphicContext(ShaderRegistry.AMBIENT_SHADER));
-        CelestialBody body01 = new CelestialBody(0);
-        body01.setPosition(new Vector3f(7,0,-7));
-        planetSet.add(body01);
-        CelestialBody body02 = new CelestialBody(0);
-        body02.setPosition(new Vector3f(7,0,7));
-        planetSet.add(body02);
+        for (int i = 0 ; i < 20; i++) {
+            CelestialBody body = new CelestialBody(i);
+            body.setPosition(new Vector3f(7*i,0,0));
+            planetSet.add(body);
+        }
 
-        VertexLight light3 = new VertexLight(0.000001f, new Vector4f(0.9f, 0.9f, 0.9f, 1.0f), new Vector3f( 7, 0, -10));
-        VertexLight light4 = new VertexLight(0.000001f, new Vector4f(0.9f, 0.9f, 0.9f, 1.0f), new Vector3f( 7, 0, 10));
+        VertexLight light3 = new VertexLight(0.001f, new Vector4f(0.9f, 0.9f, 0.9f, 1.0f), new Vector3f( 7, 0, -10));
+        VertexLight light4 = new VertexLight(0.001f, new Vector4f(0.9f, 0.9f, 0.9f, 1.0f), new Vector3f( 7, 0, 10));
         planetSet.add(light3);
         planetSet.add(light4);
 

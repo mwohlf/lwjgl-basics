@@ -62,13 +62,28 @@ public class CelestialBodyMesh implements IsRenderable {
     public static class RevolvedSphereBuilder extends AbstractMeshBuilder {
 
         private int lod = 0;  // starts at 0 for min lod
-        private final float radius = 1f;
-        private final CelestialType celestialType = CelestialType.CONTINENTAL_PLANET;
-        private final long seed = 0;
+        private CelestialType celestialType = CelestialType.CONTINENTAL_PLANET;
+
+        private float radius = 1f;
+        private long seed = 0;
 
         public void setLod(int lod) {
             this.lod = lod;
         }
+
+        public void setCelestialType(CelestialType celestialType) {
+            this.celestialType = celestialType;
+        }
+
+        public void setRadius(float radius) {
+            this.radius = radius;
+        }
+
+        public void setSeed(long seed) {
+            this.seed = seed;
+        }
+
+
 
         @Override
         public IsRenderable build() {
@@ -190,17 +205,17 @@ public class CelestialBodyMesh implements IsRenderable {
                 result.add(new Vertex(){{
                     setXYZ(bottomLeft);
                     setNormal(bottomLeft);
-                    setST(u1/SimpleMath.PI, v1/SimpleMath.PI);
+                    setST(u1/SimpleMath.PI + 0.5f, v1/SimpleMath.PI + 0.5f);
                 }});
                 result.add(new Vertex(){{
                     setXYZ(bottomRight);
                     setNormal(bottomRight);
-                    setST(u2/SimpleMath.PI, v1/SimpleMath.PI);
+                    setST(u2/SimpleMath.PI + 0.5f, v1/SimpleMath.PI + 0.5f);
                 }});
                 result.add(new Vertex(){{
                     setXYZ(topRight);
                     setNormal(topRight);
-                    setST(u2/SimpleMath.PI, v2/SimpleMath.PI);
+                    setST(u2/SimpleMath.PI + 0.5f, v2/SimpleMath.PI + 0.5f);
                 }});
             }
 
@@ -208,17 +223,17 @@ public class CelestialBodyMesh implements IsRenderable {
                 result.add(new Vertex(){{
                     setXYZ(topRight);
                     setNormal(topRight);
-                    setST(u2/SimpleMath.PI, v2/SimpleMath.PI);
+                    setST(u2/SimpleMath.PI + 0.5f, v2/SimpleMath.PI + 0.5f);
                 }});
                 result.add(new Vertex(){{
                     setXYZ(topLeft);
                     setNormal(topLeft);
-                    setST(u1/SimpleMath.PI, v2/SimpleMath.PI);
+                    setST(u1/SimpleMath.PI + 0.5f, v2/SimpleMath.PI + 0.5f);
                 }});
                 result.add(new Vertex(){{
                     setXYZ(bottomLeft);
                     setNormal(bottomLeft);
-                    setST(u1/SimpleMath.PI, v1/SimpleMath.PI);
+                    setST(u1/SimpleMath.PI + 0.5f, v1/SimpleMath.PI + 0.5f);
                 }});
             }
 

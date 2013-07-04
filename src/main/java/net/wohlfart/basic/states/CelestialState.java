@@ -114,12 +114,11 @@ public class CelestialState extends AbstractGraphicState implements Initializing
         meshBucket.setup();
 
         planetSet.setGraphicContext(new DefaultGraphicContext(ShaderRegistry.AMBIENT_SHADER));
-        CelestialBody body01 = new CelestialBody(0);
-        body01.setPosition(new Vector3f(7,0,0));
-        planetSet.add(body01);
-        CelestialBody body02 = new CelestialBody(0);
-        body02.setPosition(new Vector3f(7,0,7));
-        planetSet.add(body02);
+        for (int i = 0 ; i < 20; i++) {
+            CelestialBody body = new CelestialBody(i);
+            body.setPosition(new Vector3f(7*i,0,0));
+            planetSet.add(body);
+        }
 
         VertexLight light3 = new VertexLight(0.00001f, new Vector4f(0.2f, 0.2f, 0.2f, 1.0f), new Vector3f( 0, 10, -17));
         VertexLight light4 = new VertexLight(0.00001f, new Vector4f(0.2f, 0.2f, 0.2f, 1.0f), new Vector3f( 0, 10, 17));
