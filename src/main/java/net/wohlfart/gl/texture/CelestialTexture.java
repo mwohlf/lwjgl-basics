@@ -54,7 +54,7 @@ public class CelestialTexture implements ITexture {
                 final Vector3f vector = getNormalVector(x, y);
                 // vector.scale(255f);
                 Color color = celestialType.getColor(vector.x, vector.y, vector.z, textureVariant);
-                color = Color.BLUE;
+                //color = Color.BLUE;
                 setPixel(x, y, color, width, height, data);
             }
         }
@@ -125,13 +125,13 @@ public class CelestialTexture implements ITexture {
 
         final int i = x + y * width;
         int value = 0;
-        value = value | 0xff & color.getRed();
-        value = value << 8;
-        value = value | 0xff & color.getGreen();
+        value = value | 0xff & color.getAlpha();
         value = value << 8;
         value = value | 0xff & color.getBlue();
         value = value << 8;
-        value = value | 0xff & color.getAlpha();
+        value = value | 0xff & color.getGreen();
+        value = value << 8;
+        value = value | 0xff & color.getRed();
         //value = value << 8;
 
         // int value = (byte) color.getRed();
@@ -142,7 +142,7 @@ public class CelestialTexture implements ITexture {
         // value <<= 8;
         // value |= (byte) color.getAlpha();
 
-        data[i] = color.getRGB();
+        data[i] = value;
 
         // data[i + 0] = (byte) color.getRed(); // r
         // data[i + 1] = (byte) color.getGreen(); // g

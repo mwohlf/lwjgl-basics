@@ -62,8 +62,8 @@ public class CelestialBodyMesh implements IsRenderable {
     public static class RevolvedSphereBuilder extends AbstractMeshBuilder {
 
         private int lod = 0;  // starts at 0 for min lod
-        private final float radius = 3f;
-        private final CelestialType celestialType = CelestialType.GREEN;
+        private final float radius = 1f;
+        private final CelestialType celestialType = CelestialType.CONTINENTAL_PLANET;
         private final long seed = 0;
 
         public void setLod(int lod) {

@@ -40,7 +40,7 @@ public class CelestialBody extends AbstractRenderable implements SpatialEntity {
     protected IsRenderable setupMesh() {
         final CelestialBodyMesh.RevolvedSphereBuilder builder = new CelestialBodyMesh.RevolvedSphereBuilder();
         this.random = new Random(seed);
-        builder.setLod(1);
+        builder.setLod(4);
         return builder.build();
     }
 
