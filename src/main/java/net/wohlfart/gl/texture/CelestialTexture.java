@@ -16,20 +16,19 @@ import org.lwjgl.util.vector.Vector3f;
 
 // see: http://www.java-gaming.org/index.php?topic=25516.0
 public class CelestialTexture implements ITexture {
-    final long seed;
-    final CelestialType celestialType;
-    protected final int width;
-    protected final int height;
+    private final Random random;
+    private final CelestialType celestialType;
+    private final int width;
+    private final int height;
     private final int textureUnit;
-
-    protected int texId;
+    private int texId;
 
 
     public CelestialTexture(float radius, CelestialType celestialType, long seed, int textureUnit) {
         this.width = (int) (radius * 2f * (float) Math.PI + 0.5f);
         this.height = (int) (radius * 2f * (float) Math.PI + 0.5f);
         this.celestialType = celestialType;
-        this.seed = seed;
+        this.random = new Random(seed);
         this.textureUnit = textureUnit;
     }
 
@@ -38,7 +37,7 @@ public class CelestialTexture implements ITexture {
         this.width = width;
         this.height = height;
         this.celestialType = celestialType;
-        this.seed = seed;
+        this.random = new Random(seed);
         this.textureUnit = textureUnit;
     }
 
@@ -48,7 +47,7 @@ public class CelestialTexture implements ITexture {
         IntBuffer intBuffer = BufferUtils.createIntBuffer(width * height);
 
         // random for texture variation
-        final float textureVariant = new Random(seed).nextFloat();
+        final float textureVariant = random.nextFloat();
 
         final int[] data = new int[width * height]; // 4 byte
         for (int x = 0; x < width; x++) {

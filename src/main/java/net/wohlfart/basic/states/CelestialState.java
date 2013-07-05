@@ -14,8 +14,8 @@ import net.wohlfart.gl.elements.hud.HudImpl;
 import net.wohlfart.gl.elements.hud.widgets.Label;
 import net.wohlfart.gl.elements.hud.widgets.MouseClickLabel;
 import net.wohlfart.gl.elements.hud.widgets.Statistics;
-import net.wohlfart.gl.elements.skybox.NullSkybox;
 import net.wohlfart.gl.elements.skybox.Skybox;
+import net.wohlfart.gl.elements.skybox.SkyboxImpl;
 import net.wohlfart.gl.shader.DefaultGraphicContext;
 import net.wohlfart.gl.shader.ShaderRegistry;
 import net.wohlfart.gl.shader.VertexLight;
@@ -36,8 +36,8 @@ import com.google.common.eventbus.Subscribe;
 public class CelestialState extends AbstractGraphicState implements InitializingBean {
     private static final Logger LOGGER = LoggerFactory.getLogger(CelestialState.class);
 
-    //private final Skybox skybox = new SkyboxImpl();   //NullSkybox.INSTANCE;
-    private final Skybox skybox = NullSkybox.INSTANCE;
+    private final Skybox skybox = new SkyboxImpl();   //NullSkybox.INSTANCE;
+    //private final Skybox skybox = NullSkybox.INSTANCE;
 
     private final DefaultRenderSet<CelestialBody> planetSet = new DefaultRenderSet<>();
 
@@ -120,8 +120,8 @@ public class CelestialState extends AbstractGraphicState implements Initializing
             planetSet.add(body);
         }
 
-        VertexLight light3 = new VertexLight(0.00001f, new Vector4f(0.2f, 0.2f, 0.2f, 1.0f), new Vector3f( 0, 10, -17));
-        VertexLight light4 = new VertexLight(0.00001f, new Vector4f(0.2f, 0.2f, 0.2f, 1.0f), new Vector3f( 0, 10, 17));
+        VertexLight light3 = new VertexLight(0.001f, new Vector4f(0.9f, 0.9f, 0.9f, 1.0f), new Vector3f( 7, 0, -10));
+        VertexLight light4 = new VertexLight(0.001f, new Vector4f(0.9f, 0.9f, 0.9f, 1.0f), new Vector3f( 7, 0, 10));
         planetSet.add(light3);
         planetSet.add(light4);
 

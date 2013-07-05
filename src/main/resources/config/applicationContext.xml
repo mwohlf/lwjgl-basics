@@ -16,7 +16,7 @@
     </bean>
 
     <bean class="net.wohlfart.basic.Game" scope="singleton">
-       <property name="initialState" value="TESTING" />  <!-- SIMPLE, CELESTIAL, TEST  -->
+       <property name="initialState" value="CELESTIAL" />  <!-- SIMPLE, CELESTIAL, TEST  -->
        <property name="gameSettings" ref="gameSettings" />
        <property name="resourceManager" ref="resourceManager" />
        <property name="globalClock" ref="globalClock" />

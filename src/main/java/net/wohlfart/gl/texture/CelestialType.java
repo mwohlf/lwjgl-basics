@@ -12,8 +12,8 @@ public enum CelestialType {
 
     GREEN {
         {
-            maxRadius = 40;
-            minRadius = 60;
+            maxRadius = 2f;
+            minRadius = 0.5f;
         }
 
         @Override
@@ -24,8 +24,8 @@ public enum CelestialType {
 
     LAVA_PLANET {
         {
-            maxRadius = 40;
-            minRadius = 60;
+            maxRadius = 4f;
+            minRadius = 1f;
         }
         ColorGradient gradient = new ColorGradient(Color.RED.brighter(), Color.YELLOW);
 
@@ -38,8 +38,8 @@ public enum CelestialType {
 
     WATER_PLANET {
         {
-            maxRadius = 20;
-            minRadius = 30;
+            maxRadius = 5f;
+            minRadius = 1f;
         }
         ColorGradient gradient = new ColorGradient(Color.BLUE, Color.WHITE);
 
@@ -52,8 +52,8 @@ public enum CelestialType {
 
     GAS_PLANET {
         {
-            maxRadius = 70;
-            minRadius = 50;
+            maxRadius = 7f;
+            minRadius = 1f;
         }
         ColorGradient gradient = new ColorGradient(new Color(255, 213, 133), new Color(102, 68, 58));
 
@@ -66,8 +66,8 @@ public enum CelestialType {
 
     CONTINENTAL_PLANET {
         {
-            maxRadius = 30;
-            minRadius = 60;
+            maxRadius = 6f;
+            minRadius = 3f;
         }
         ColorGradient gradient = new ColorGradient(new Color(0, 0, 0), new Color(0, 0, 100), new Color(0, 0, 255), new Color(10, 10, 255), new Color(180, 180,
                 180), new Color(10, 255, 10), new Color(0, 255, 0), new Color(0, 50, 0));
@@ -96,7 +96,7 @@ public enum CelestialType {
 
     /**
      * fallback
-     * 
+     *
      * @param x
      *            [0..1]
      * @param y
