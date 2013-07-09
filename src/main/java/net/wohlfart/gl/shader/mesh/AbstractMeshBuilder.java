@@ -6,15 +6,19 @@ import java.io.InputStream;
 import java.nio.ByteBuffer;
 import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
+import java.util.List;
 
 import net.wohlfart.tools.PNGDecoder;
 import net.wohlfart.tools.PNGDecoder.Format;
+import net.wohlfart.tools.SimpleMath;
 
 import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL13;
 import org.lwjgl.opengl.GL15;
 import org.lwjgl.opengl.GL30;
+import org.lwjgl.util.vector.Quaternion;
+import org.lwjgl.util.vector.Vector3f;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -26,6 +30,10 @@ public abstract class AbstractMeshBuilder implements IMeshBuilder {
 
     // FIXME: ugly hack to keep the same textureID, we need a texture repository
     static int staticTextId = 0;
+
+    private Vector3f translation;
+
+    private Quaternion rotation;
 
     protected int createTextureHandle(String filename, int textureUnit) {
         int texId = 0;
@@ -83,6 +91,16 @@ public abstract class AbstractMeshBuilder implements IMeshBuilder {
         return idxBufferHandle;
     }
 
+    protected int createIdxBufferHandle(byte[] indices) {
+        final ByteBuffer indicesBuffer = BufferUtils.createByteBuffer(indices.length);
+        indicesBuffer.put(indices);
+        indicesBuffer.flip();
+        final int idxBufferHandle = GL15.glGenBuffers();
+        GL15.glBindBuffer(GL15.GL_ELEMENT_ARRAY_BUFFER, idxBufferHandle);
+        GL15.glBufferData(GL15.GL_ELEMENT_ARRAY_BUFFER, indicesBuffer, GL15.GL_STATIC_DRAW);
+        return idxBufferHandle;
+    }
+
     protected int createVboHandle(float[] floatBuff) {
         final FloatBuffer verticesBuffer = BufferUtils.createFloatBuffer(floatBuff.length);
         verticesBuffer.put(floatBuff);
@@ -91,6 +109,27 @@ public abstract class AbstractMeshBuilder implements IMeshBuilder {
         GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, vboVerticesHandle);
         GL15.glBufferData(GL15.GL_ARRAY_BUFFER, verticesBuffer, GL15.GL_STATIC_DRAW);
         return vboVerticesHandle;
+    }
+
+    protected void applyRotationAndTranslation(List<Vector3f> vertices) {
+        if (rotation != null) {
+            for (final Vector3f vec : vertices) {
+                SimpleMath.mul(rotation, vec, vec);
+            }
+        }
+        if (translation != null) {
+            for (final Vector3f vec : vertices) {
+                SimpleMath.add(translation, vec, vec);
+            }
+        }
+    }
+
+    public void setRotation(final Quaternion quaternion) {
+        this.rotation = quaternion;
+    }
+
+    public void setTranslation(final Vector3f translation) {
+        this.translation = translation;
     }
 
 }

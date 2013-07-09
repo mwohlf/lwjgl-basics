@@ -1,13 +1,9 @@
 package net.wohlfart.gl.shader.mesh;
 
-import java.nio.FloatBuffer;
-
 import net.wohlfart.basic.elements.IsRenderable;
 import net.wohlfart.gl.shader.ShaderAttributeHandle;
 
-import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL11;
-import org.lwjgl.opengl.GL15;
 import org.lwjgl.opengl.GL30;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -43,7 +39,7 @@ public class SimpleMesh implements IsRenderable {
 
 
 
-    public static class Builder {
+    public static class Builder extends AbstractMeshBuilder {
         private static final Logger LOGGER = LoggerFactory.getLogger(Builder.class);
 
         private float[] stream;
@@ -58,6 +54,7 @@ public class SimpleMesh implements IsRenderable {
             this.stream = stream;
         }
 
+        @Override
         public IsRenderable build() {
 
             final int vaoHandle = GL30.glGenVertexArrays();
@@ -65,7 +62,7 @@ public class SimpleMesh implements IsRenderable {
 
             createVboHandle(stream);
 
-            final int[] offset = {0};  // @formatter:off
+            final int[] offset = {0};
             final int stride = ShaderAttributeHandle.POSITION.getByteCount()
                              + ShaderAttributeHandle.COLOR.getByteCount()
                              ;
@@ -78,17 +75,6 @@ public class SimpleMesh implements IsRenderable {
 
             LOGGER.debug("bulding a new mesh with {} elements", count);
             return new SimpleMesh(vaoHandle, count, GL11.GL_TRIANGLES);
-        }
-
-
-        private int createVboHandle(float[] floatBuff) {
-            final FloatBuffer verticesBuffer = BufferUtils.createFloatBuffer(floatBuff.length);
-            verticesBuffer.put(floatBuff);
-            verticesBuffer.flip();
-            final int vboVerticesHandle = GL15.glGenBuffers();
-            GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, vboVerticesHandle);
-            GL15.glBufferData(GL15.GL_ARRAY_BUFFER, verticesBuffer, GL15.GL_STATIC_DRAW);
-            return vboVerticesHandle;
         }
 
     }

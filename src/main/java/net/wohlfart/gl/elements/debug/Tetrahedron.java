@@ -11,12 +11,17 @@ import net.wohlfart.tools.SimpleMath;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.util.vector.Vector3f;
 
+// @formatter:off
 /**
- * @formatter:off 0 /|\ / | \ / | \ / 3 \ / - - \ 1 --------- 2
- * @formatter:on
- * 
+ *        0
+ *       /|\
+ *      / | \
+ *     /  |  \
+ *    /   3   \
+ *   /  -   -  \
+ *  1 --------- 2
  */
-public class Tetrahedron extends AbstractRenderable {
+public class Tetrahedron extends AbstractRenderable { // @formatter:on  REVIEWED
 
     private float length = 1;
 
@@ -25,28 +30,15 @@ public class Tetrahedron extends AbstractRenderable {
             0, 2,  2, 3,  3, 0,
             0, 3,  3, 1,  1, 0, });  // @formatter:on
 
-    /**
-     * <p>
-     * Constructor for Tetrahedron.
-     * </p>
-     */
+
     public Tetrahedron() {
         // nothing to do
     }
 
-    /**
-     * <p>
-     * Constructor for Tetrahedron.
-     * </p>
-     * 
-     * @param length
-     *            a float.
-     */
     public Tetrahedron(float length) {
         this.length = length;
     }
 
-    /** {@inheritDoc} */
     @Override
     protected IsRenderable setupMesh() {
         final WireframeMeshBuilder builder = new WireframeMeshBuilder();
@@ -59,14 +51,7 @@ public class Tetrahedron extends AbstractRenderable {
         return builder.build();
     }
 
-    /**
-     * <p>
-     * createVertices.
-     * </p>
-     * 
-     * @return a {@link java.util.List} object.
-     */
-    protected List<Vector3f> createVertices() {
+    private List<Vector3f> createVertices() {
         final float h = +SimpleMath.sqrt(2f / 3f) * length;
         final List<Vector3f> result = new ArrayList<Vector3f>(4);
         result.add(new Vector3f(0, +h / 2f, 0));

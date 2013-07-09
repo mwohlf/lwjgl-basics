@@ -9,11 +9,9 @@ import org.lwjgl.opengl.GL30;
 import org.lwjgl.util.ReadableColor;
 
 /**
- * <p>
- * A Generic WireframeMesh class.
- * </p>
+ * Generic WireframeMesh class.
  */
-public class WireframeMesh implements IsRenderable {
+public class WireframeMesh implements IsRenderable { // REVIEWED
 
     private final int vaoHandle;
     private final int indicesCount;
@@ -24,12 +22,12 @@ public class WireframeMesh implements IsRenderable {
     private final ReadableColor color;
 
 
-    WireframeMesh(int vaoHandle, int linePrimitive, int indexElemSize, int indicesCount, int indexOffset, ReadableColor color) {
+    WireframeMesh(int vaoHandle, int linePrimitive, int indexElemSize, int indicesCount, ReadableColor color) {
         this.vaoHandle = vaoHandle;
         this.linePrimitive = linePrimitive; // GL11.GL_LINE_STRIP, GL11.GL11.GL_LINES, GL11.GL_LINE_LOOP
         this.indexElemSize = indexElemSize; // GL11.GL_UNSIGNED_BYTE
         this.indicesCount = indicesCount;
-        this.indexOffset = indexOffset;
+        this.indexOffset = 0;
         this.color = color;
     }
 

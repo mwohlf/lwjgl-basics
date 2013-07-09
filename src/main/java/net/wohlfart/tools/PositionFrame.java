@@ -1,4 +1,4 @@
-package net.wohlfart.gl.elements.debug;
+package net.wohlfart.tools;
 
 import java.awt.BorderLayout;
 import java.awt.Component;

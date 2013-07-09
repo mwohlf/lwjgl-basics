@@ -11,51 +11,26 @@ import org.lwjgl.opengl.GL11;
 import org.lwjgl.util.vector.Vector3f;
 
 /**
- * <p>
  * A simple Circle class.
- * </p>
  */
-public class Circle extends AbstractRenderable {
+public class Circle extends AbstractRenderable { // REVIEWED
 
     private int pieces = 15; // LOD
     private float radius = 1;
 
-    /**
-     * <p>
-     * Constructor for Circle.
-     * </p>
-     */
+
     public Circle() {
     }
 
-    /**
-     * <p>
-     * Constructor for Circle.
-     * </p>
-     * 
-     * @param radius
-     *            a float.
-     */
     public Circle(float radius) {
         this.radius = radius;
     }
 
-    /**
-     * <p>
-     * Constructor for Circle.
-     * </p>
-     * 
-     * @param radius
-     *            a float.
-     * @param pieces
-     *            the level of detail.
-     */
     public Circle(float radius, int pieces) {
         this.radius = radius;
         this.pieces = pieces;
     }
 
-    /** {@inheritDoc} */
     @Override
     protected IsRenderable setupMesh() {
         final WireframeMeshBuilder builder = new WireframeMeshBuilder();
@@ -68,13 +43,6 @@ public class Circle extends AbstractRenderable {
         return builder.build();
     }
 
-    /**
-     * <p>
-     * createVertices.
-     * </p>
-     * 
-     * @return a {@link java.util.List} object.
-     */
     protected List<Vector3f> createVertices() {
         final List<Vector3f> result = new ArrayList<Vector3f>(pieces);
         for (int i = 0; i < pieces; i++) {
@@ -86,13 +54,7 @@ public class Circle extends AbstractRenderable {
         return result;
     }
 
-    /**
-     * <p>
-     * createIndices.
-     * </p>
-     * 
-     * @return an array of {@link java.lang.Integer} objects.
-     */
+
     protected List<Integer> createIndices() {
         final List<Integer> result = new ArrayList<Integer>(pieces * 2);
         for (int i = 0; i < pieces; i++) {

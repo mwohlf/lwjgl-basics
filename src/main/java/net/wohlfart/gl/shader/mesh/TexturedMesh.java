@@ -68,7 +68,7 @@ public class TexturedMesh implements IsRenderable {
     }
 
 
-    public static class Builder { //FIXME: extend AbstractMeshBuilder and move some methods
+    public static class Builder extends AbstractMeshBuilder {
 
         protected static final Logger LOGGER = LoggerFactory.getLogger(Builder.class);
 
@@ -82,6 +82,7 @@ public class TexturedMesh implements IsRenderable {
         private final Vector3f translation = new Vector3f(0,0,0);
 
 
+        @Override
         public IsRenderable build() {
 
             if (textureFilename != null) {
@@ -137,13 +138,6 @@ public class TexturedMesh implements IsRenderable {
             }
             verticesBuffer.flip();
 
-            // OpenGL expects to draw vertices in counter clockwise order by default
-            final byte[] indices = { 0, 1, 2, 2, 3, 0 };
-            final int indicesCount = indices.length;
-            final ByteBuffer indicesBuffer = BufferUtils.createByteBuffer(indicesCount);
-            indicesBuffer.put(indices);
-            indicesBuffer.flip();
-
             // Create a new Vertex Array Object in memory and select it (bind)
             final int vaoHandle = GL30.glGenVertexArrays();
             GL30.glBindVertexArray(vaoHandle);
@@ -153,15 +147,14 @@ public class TexturedMesh implements IsRenderable {
             GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, vboVerticesHandle);
             GL15.glBufferData(GL15.GL_ARRAY_BUFFER, verticesBuffer, GL15.GL_STATIC_DRAW);
 
-            final int vboIndicesHandle = GL15.glGenBuffers();
-            GL15.glBindBuffer(GL15.GL_ELEMENT_ARRAY_BUFFER, vboIndicesHandle);
-            GL15.glBufferData(GL15.GL_ELEMENT_ARRAY_BUFFER, indicesBuffer, GL15.GL_STATIC_DRAW);
+            byte[] indices = new byte[] { 0, 1, 2, 2, 3, 0 };
+            createIdxBufferHandle(indices);
 
-            int[] offset = {0};
+            final int[] offset = {0};
             final int stride = ShaderAttributeHandle.POSITION.getByteCount()
                     + ShaderAttributeHandle.COLOR.getByteCount()
-                    + ShaderAttributeHandle.TEXTURE_COORD.getByteCount();
-
+                    + ShaderAttributeHandle.TEXTURE_COORD.getByteCount()
+                    ;
             ShaderAttributeHandle.POSITION.enable(stride, offset);
             ShaderAttributeHandle.COLOR.enable(stride, offset);
             ShaderAttributeHandle.TEXTURE_COORD.enable(stride, offset);
@@ -170,7 +163,7 @@ public class TexturedMesh implements IsRenderable {
             // done with the VAO
             GL30.glBindVertexArray(0);
 
-            return new TexturedMesh(vaoHandle, GL11.GL_TRIANGLES, GL11.GL_UNSIGNED_BYTE, indicesCount, 0, texId);
+            return new TexturedMesh(vaoHandle, GL11.GL_TRIANGLES, GL11.GL_UNSIGNED_BYTE, indices.length, 0, texId);
         }
 
         private int loadPNGTexture(String filename, int textureUnit) {
@@ -222,10 +215,12 @@ public class TexturedMesh implements IsRenderable {
         }
 
 
+        @Override
         public void setRotation(Quaternion rotation) {
             this.rotation.set(rotation);
         }
 
+        @Override
         public void setTranslation(Vector3f translation) {
             this.translation.set(translation);
         }

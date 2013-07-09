@@ -5,7 +5,6 @@ import java.util.Set;
 
 import net.wohlfart.basic.elements.IsRenderable;
 import net.wohlfart.gl.elements.AbstractRenderable;
-import net.wohlfart.gl.shader.ShaderAttributeHandle;
 import net.wohlfart.gl.shader.mesh.SimpleMesh;
 import net.wohlfart.tools.SimpleMath;
 
@@ -64,14 +63,11 @@ public class ColorPointEmitter extends AbstractRenderable implements Emitter {
     float[] createVertexStream() {
         // TODO: check if the size of the attributes fits in the array
         int index = 0;// @formatter:off
-        final float[] result = new float[colorPoints.size() * (
-                  ShaderAttributeHandle.POSITION.getFloatCount()
-                + ShaderAttributeHandle.COLOR.getFloatCount()) ];
+        final float[] result = new float[colorPoints.size() * ( 3 + 4 ) ];
         for (final ColorPoint colorPoint : colorPoints) {
             result[index++] = colorPoint.getPosition().x;
             result[index++] = colorPoint.getPosition().y;
             result[index++] = colorPoint.getPosition().z;
-            result[index++] = 1;
             result[index++] = colorPoint.getColor().getRed();
             result[index++] = colorPoint.getColor().getGreen();
             result[index++] = colorPoint.getColor().getBlue();

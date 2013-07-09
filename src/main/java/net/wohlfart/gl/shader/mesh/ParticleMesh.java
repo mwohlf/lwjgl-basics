@@ -50,7 +50,7 @@ public class ParticleMesh implements IsRenderable {
 
 
 
-    public static final class Builder {  // FIXME: extend builder from one common base builder with all the tools
+    public static final class Builder extends AbstractMeshBuilder {
         private static final Logger LOGGER = LoggerFactory.getLogger(Builder.class);
 
         private String textureFilename;
@@ -75,6 +75,7 @@ public class ParticleMesh implements IsRenderable {
             this.verticesBuffer = verticesBuffer;
         }
 
+        @Override
         public ParticleMesh build() {
             // load the texture if needed
             if (textureFilename != null) {
@@ -89,7 +90,7 @@ public class ParticleMesh implements IsRenderable {
             GL15.glBufferData(GL15.GL_ARRAY_BUFFER, verticesBuffer, GL15.GL_STATIC_DRAW);
 
 
-            int[] offset = {0};
+            final int[] offset = {0};
             final int stride = ShaderAttributeHandle.POSITION.getByteCount()
                     + ShaderAttributeHandle.COLOR.getByteCount()
                     + ShaderAttributeHandle.NORMAL.getByteCount()

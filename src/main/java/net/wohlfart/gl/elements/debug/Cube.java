@@ -10,41 +10,34 @@ import net.wohlfart.gl.elements.AbstractRenderable;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.util.vector.Vector3f;
 
+// @formatter:off
 /**
- * @formatter:off
- * 
- *                5---------4 /| /| / | / | 1 ------- 0 | | | | | | 6 - - -|- 7 | / | / |/ |/ 2-------- 3
- * 
- * @formatter:on <p>
- *               A simple Cube class.
- *               </p>
+ *
+ *         5---------4
+ *        /|        /|
+ *       / |       / |
+ *      1 ------- 0  |
+ *      |  |      |  |
+ *      |  6 - - -|- 7
+ *      | /       | /
+ *      |/        |/
+ *      2-------- 3
+ *
+ *        A simple Cube class.
  */
-public class Cube extends AbstractRenderable {
+public class Cube extends AbstractRenderable { // @formatter:on REVIEWED
 
     private float length = 1;
 
-    /**
-     * <p>
-     * Constructor for Cube.
-     * </p>
-     */
+
     public Cube() {
         // nothing to do
     }
 
-    /**
-     * <p>
-     * Constructor for Cube.
-     * </p>
-     * 
-     * @param length
-     *            a float.
-     */
     public Cube(float length) {
         this.length = length;
     }
 
-    /** {@inheritDoc} */
     @Override
     protected IsRenderable setupMesh() {
         final WireframeMeshBuilder builder = new WireframeMeshBuilder();
@@ -57,14 +50,7 @@ public class Cube extends AbstractRenderable {
         return builder.build();
     }
 
-    /**
-     * <p>
-     * createVertices.
-     * </p>
-     * 
-     * @return a {@link java.util.List} object.
-     */
-    protected List<Vector3f> createVertices() {
+    private List<Vector3f> createVertices() {
         final float l = length / 2f;
         final List<Vector3f> result = new ArrayList<Vector3f>(8);
         result.add(new Vector3f(+l, +l, +l));
@@ -78,14 +64,7 @@ public class Cube extends AbstractRenderable {
         return result;
     }
 
-    /**
-     * <p>
-     * createIndices.
-     * </p>
-     * 
-     * @return an array of {@link java.lang.Integer} objects.
-     */
-    protected List<Integer> createIndices() {
+    private List<Integer> createIndices() {
         final List<Integer> result = new ArrayList<Integer>(6 * 2 * 3);
         result.addAll(createIndices(0, 1, 2, 3));
         result.addAll(createIndices(4, 0, 3, 7));
@@ -96,22 +75,7 @@ public class Cube extends AbstractRenderable {
         return result;
     }
 
-    /**
-     * <p>
-     * createIndices.
-     * </p>
-     * 
-     * @param i1
-     *            a int.
-     * @param i2
-     *            a int.
-     * @param i3
-     *            a int.
-     * @param i4
-     *            a int.
-     * @return a {@link java.util.Collection} object.
-     */
-    protected Collection<Integer> createIndices(int i1, int i2, int i3, int i4) {
+    private Collection<Integer> createIndices(int i1, int i2, int i3, int i4) {
         final List<Integer> result = new ArrayList<Integer>();
         result.add(i1);
         result.add(i2);

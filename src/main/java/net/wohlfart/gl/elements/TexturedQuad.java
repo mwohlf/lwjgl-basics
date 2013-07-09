@@ -4,9 +4,7 @@ import net.wohlfart.basic.elements.IsRenderable;
 import net.wohlfart.gl.shader.mesh.TexturedMesh;
 
 /**
- * <p>
  * TexturedQuad class.
- * </p>
  */
 public class TexturedQuad extends AbstractRenderable {
 

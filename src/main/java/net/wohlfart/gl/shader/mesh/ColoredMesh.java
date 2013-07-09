@@ -92,10 +92,10 @@ public class ColoredMesh implements IsRenderable {
             GL15.glBindBuffer(GL15.GL_ELEMENT_ARRAY_BUFFER, vboIndicesHandle);
             GL15.glBufferData(GL15.GL_ELEMENT_ARRAY_BUFFER, indicesBuffer, GL15.GL_STATIC_DRAW);
 
-            int[] offset = {0};
+            final int[] offset = {0};
             final int stride = ShaderAttributeHandle.POSITION.getByteCount()
-                    + ShaderAttributeHandle.COLOR.getByteCount();
-
+                    + ShaderAttributeHandle.COLOR.getByteCount()
+                    ;
             ShaderAttributeHandle.POSITION.enable(stride, offset);
             ShaderAttributeHandle.COLOR.enable(stride, offset);
             ShaderAttributeHandle.NORMAL.disable();

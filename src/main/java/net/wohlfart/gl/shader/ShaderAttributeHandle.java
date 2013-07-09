@@ -10,9 +10,8 @@ import org.lwjgl.opengl.GL20;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-//
+
 /**
- * <p>
  * All handlers for vertex attributes used in any shader.
  * This is not typesafe, the sizes must match those used in the shader
  *
@@ -21,7 +20,6 @@ import org.slf4j.LoggerFactory;
  * a (singleton) enum
  *
  * see: https://www.opengl.org/sdk/docs/man3/
- * </p>
  */
 public enum ShaderAttributeHandle {// @formatter:off
     COLOR("in_Color", 4),
@@ -64,9 +62,7 @@ public enum ShaderAttributeHandle {// @formatter:off
     }
 
     /**
-     * <p>
      * Returns the number of floats this attribute uses.
-     * </p>
      *
      * @return a int.
      */
@@ -75,9 +71,7 @@ public enum ShaderAttributeHandle {// @formatter:off
     }
 
     /**
-     * <p>
      * Returns the number of bytes this attribute uses.
-     * </p>
      *
      * @return a int.
      */

@@ -5,7 +5,6 @@ import java.util.List;
 
 import net.wohlfart.basic.elements.IsRenderable;
 import net.wohlfart.gl.elements.AbstractRenderable;
-import net.wohlfart.gl.shader.ShaderAttributeHandle;
 
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.util.vector.Vector2f;
@@ -64,7 +63,7 @@ public class Model extends AbstractRenderable {
         return builder.build();
     }
 
-    int[] getIndices() {
+    protected int[] getIndices() {
         // TODO: reuse vertices
         final int[] result = new int[attrIdices.size()];
         for (int index = 0; index < result.length; index++) {
@@ -76,45 +75,22 @@ public class Model extends AbstractRenderable {
     /**
      * the vertex stream has the following format:
      *
-     * 4 position coords 4 normal coords 2 texture coords
-     *
+     * 3 position coords 3 normal coords 2 texture coords
      *
      * @return
      */
-    float[] createVertexStream() {
-        // TODO: check if the size of the attributes fits in the array
+    protected float[] createVertexStream() {
         int index = 0;
-        final float[] result = new float[attrIdices.size()  // @formatter:off
-                * (       ShaderAttributeHandle.POSITION.getFloatCount()
-                        + ShaderAttributeHandle.NORMAL.getFloatCount()
-                        + ShaderAttributeHandle.TEXTURE_COORD.getFloatCount())];  // @formatter:on
+        final float[] result = new float[attrIdices.size() * (3 + 3 + 2)];  // @formatter:on
         for (final VertexAttr vertexAttr : attrIdices) {
             result[index++] = positions.get(vertexAttr.positionIdx).x;
             result[index++] = positions.get(vertexAttr.positionIdx).y;
             result[index++] = positions.get(vertexAttr.positionIdx).z;
-            if (ShaderAttributeHandle.POSITION.getFloatCount() == 4) {
-                result[index++] = 1;
-            }
             result[index++] = normals.get(vertexAttr.normalIdx).x;
             result[index++] = normals.get(vertexAttr.normalIdx).y;
             result[index++] = normals.get(vertexAttr.normalIdx).z;
-            if (ShaderAttributeHandle.NORMAL.getFloatCount() == 4) {
-                result[index++] = 0;
-            }
             result[index++] = textureCoords.get(vertexAttr.textureCoordIdx).x;
             result[index++] = textureCoords.get(vertexAttr.textureCoordIdx).y;
-        }
-        return result;
-    }
-
-    float[] createVertexPositionStream() {
-        int index = 0;
-        final float[] result = new float[attrIdices.size() * ShaderAttributeHandle.POSITION.getFloatCount()];
-        for (final VertexAttr vertexAttr : attrIdices) {
-            result[index++] = positions.get(vertexAttr.positionIdx).x;
-            result[index++] = positions.get(vertexAttr.positionIdx).y;
-            result[index++] = positions.get(vertexAttr.positionIdx).z;
-            result[index++] = 1;
         }
         return result;
     }
@@ -131,29 +107,27 @@ public class Model extends AbstractRenderable {
         textureCoords.add(new Vector2f(u, v));
     }
 
-    public void addVertexForStream(final int position, final int textureCoords, final int normal) {
-        attrIdices.add(new VertexAttr() {
-            {
+    public void addVertexForStream(final int position, final int textureCoords, final int normal) { // @formatter:off
+        attrIdices.add(new VertexAttr() { {
                 this.positionIdx = position;
                 this.textureCoordIdx = textureCoords;
                 this.normalIdx = normal;
-            }
-        });
+            }});  // @formatter:on
     }
 
-    List<Vector3f> getPositions() {
+    protected List<Vector3f> getPositions() {
         return positions;
     }
 
-    List<Vector3f> getNormals() {
+    protected List<Vector3f> getNormals() {
         return normals;
     }
 
-    List<Vector2f> getTextureCoords() {
+    protected List<Vector2f> getTextureCoords() {
         return textureCoords;
     }
 
-    List<VertexAttr> getAttrIndices() {
+    protected List<VertexAttr> getAttrIndices() {
         return attrIdices;
     }
 
@@ -162,6 +136,5 @@ public class Model extends AbstractRenderable {
     public String toString() {
         return "Model: '" + name + "'";
     }
-
 
 }

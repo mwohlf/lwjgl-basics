@@ -1,12 +1,12 @@
 package net.wohlfart.gl.elements.hud.widgets;
 
-import java.nio.ByteBuffer;
 import java.nio.FloatBuffer;
 
 import net.wohlfart.basic.elements.IsRenderable;
 import net.wohlfart.gl.shader.GraphicContextManager;
 import net.wohlfart.gl.shader.ShaderAttributeHandle;
 import net.wohlfart.gl.shader.Vertex;
+import net.wohlfart.gl.shader.mesh.AbstractMeshBuilder;
 import net.wohlfart.gl.shader.mesh.CharacterMesh;
 import net.wohlfart.tools.SimpleMath;
 
@@ -20,7 +20,7 @@ import org.slf4j.LoggerFactory;
 /**
  * this creates a mesh for a single character
  */
-class CharMeshBuilder {
+class CharMeshBuilder extends AbstractMeshBuilder {
     protected static final Logger LOGGER = LoggerFactory.getLogger(CharMeshBuilder.class);
 
     private CharAtlas atlas;
@@ -29,6 +29,7 @@ class CharMeshBuilder {
     private float screenX;
     private float screenY;
 
+    @Override
     public IsRenderable build() {
         final GraphicContextManager cxtManager = GraphicContextManager.INSTANCE;
         final float screenWidth = cxtManager.getScreenWidth();
@@ -87,13 +88,6 @@ class CharMeshBuilder {
         }
         verticesBuffer.flip();
 
-        // OpenGL expects to draw vertices in counter clockwise order by default
-        final byte[] indices = { 0, 1, 2, 2, 3, 0 };
-        final int indicesCount = indices.length;
-        final ByteBuffer indicesBuffer = BufferUtils.createByteBuffer(indicesCount);
-        indicesBuffer.put(indices);
-        indicesBuffer.flip();
-
         // Create a new Vertex Array Object in memory and select it (bind)
         final int vaoHandle = GL30.glGenVertexArrays();
         GL30.glBindVertexArray(vaoHandle);
@@ -102,11 +96,11 @@ class CharMeshBuilder {
         GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, vboVerticesHandle);
         GL15.glBufferData(GL15.GL_ARRAY_BUFFER, verticesBuffer, GL15.GL_STATIC_DRAW);
 
-        final int vboIndicesHandle = GL15.glGenBuffers();
-        GL15.glBindBuffer(GL15.GL_ELEMENT_ARRAY_BUFFER, vboIndicesHandle);
-        GL15.glBufferData(GL15.GL_ELEMENT_ARRAY_BUFFER, indicesBuffer, GL15.GL_STATIC_DRAW);
+        // OpenGL expects to draw vertices in counter clockwise order by default
+        byte[] indices = new byte[] { 0, 1, 2, 2, 3, 0 };
+        createIdxBufferHandle(indices);
 
-        int[] offset = {0};
+        final int[] offset = {0};
         final int stride = ShaderAttributeHandle.POSITION.getByteCount()
                          + ShaderAttributeHandle.TEXTURE_COORD.getByteCount()
                          ;
@@ -119,7 +113,7 @@ class CharMeshBuilder {
         GL30.glBindVertexArray(0);
 
         final int texId = atlas.getTextureId();
-        return new CharacterMesh(vaoHandle, GL11.GL_TRIANGLES, GL11.GL_UNSIGNED_BYTE, indicesCount, 0, texId);
+        return new CharacterMesh(vaoHandle, GL11.GL_TRIANGLES, GL11.GL_UNSIGNED_BYTE, indices.length, 0, texId);
     }
 
     public CharMeshBuilder setCharInfo(CharInfo info) {
