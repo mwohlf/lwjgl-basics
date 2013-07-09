@@ -19,7 +19,7 @@ import org.lwjgl.util.vector.Quaternion;
 import org.lwjgl.util.vector.Vector3f;
 
 /**
- * A Builder class for creating debug elements. for a scene.
+ * A Builder class for creating debug elements for a scene.
  */
 public class WireframeMeshBuilder {
 
@@ -31,13 +31,7 @@ public class WireframeMeshBuilder {
     private Vector3f translation;
     private Quaternion rotation;
 
-    /**
-     * <p>
-     * build.
-     * </p>
-     *
-     * @return a {@link net.wohlfart.gl.shader.mesh.IRenderable} object.
-     */
+
     public IsRenderable build() {
         applyRotationAndTranslation();
 
@@ -48,7 +42,10 @@ public class WireframeMeshBuilder {
 
         createIdxBufferHandle(getIndices());
 
-        ShaderAttributeHandle.POSITION.enable();
+        int[] offset = {0};
+        final int stride = ShaderAttributeHandle.POSITION.getByteCount()
+                ;
+        ShaderAttributeHandle.POSITION.enable(stride, offset);
 
         ShaderAttributeHandle.COLOR.disable();
 
@@ -60,9 +57,8 @@ public class WireframeMeshBuilder {
 
         final int indexElemSize = GL11.GL_UNSIGNED_INT;
         final int indicesCount = getIndices().length;
-        final int offset = 0;
 
-        return new WireframeMesh(vaoHandle, linePrimitive, indexElemSize, indicesCount, offset, color);
+        return new WireframeMesh(vaoHandle, linePrimitive, indexElemSize, indicesCount, 0, color);
     }
 
     private void applyRotationAndTranslation() {

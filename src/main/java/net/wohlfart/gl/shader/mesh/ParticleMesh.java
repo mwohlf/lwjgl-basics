@@ -8,14 +8,12 @@ import java.nio.FloatBuffer;
 
 import net.wohlfart.basic.elements.IsRenderable;
 import net.wohlfart.gl.shader.ShaderAttributeHandle;
-import net.wohlfart.gl.shader.Vertex;
 import net.wohlfart.tools.PNGDecoder;
 import net.wohlfart.tools.PNGDecoder.Format;
 
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL13;
 import org.lwjgl.opengl.GL15;
-import org.lwjgl.opengl.GL20;
 import org.lwjgl.opengl.GL30;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -52,7 +50,7 @@ public class ParticleMesh implements IsRenderable {
 
 
 
-    public static final class Builder {  // FIXME: extend builder from one commin base builder with all the tools
+    public static final class Builder {  // FIXME: extend builder from one common base builder with all the tools
         private static final Logger LOGGER = LoggerFactory.getLogger(Builder.class);
 
         private String textureFilename;
@@ -90,21 +88,17 @@ public class ParticleMesh implements IsRenderable {
             GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, vboHandle);
             GL15.glBufferData(GL15.GL_ARRAY_BUFFER, verticesBuffer, GL15.GL_STATIC_DRAW);
 
-            ShaderAttributeHandle.POSITION.enable();
-            GL20.glVertexAttribPointer(ShaderAttributeHandle.POSITION.getLocation(),
-                    Vertex.POSITION_ELEM_COUNT, GL11.GL_FLOAT, false, Vertex.stride, Vertex.positionByteOffset);
 
-            ShaderAttributeHandle.COLOR.enable();
-            GL20.glVertexAttribPointer(ShaderAttributeHandle.COLOR.getLocation(),
-                    Vertex.COLOR_ELEM_COUNT, GL11.GL_FLOAT, false, Vertex.stride, Vertex.colorByteOffset);
-
-            ShaderAttributeHandle.NORMAL.enable();
-            GL20.glVertexAttribPointer(ShaderAttributeHandle.NORMAL.getLocation(),
-                    Vertex.NORMAL_ELEM_COUNT, GL11.GL_FLOAT, false, Vertex.stride, Vertex.normalByteOffset);
-
-            ShaderAttributeHandle.TEXTURE_COORD.enable();
-            GL20.glVertexAttribPointer(ShaderAttributeHandle.TEXTURE_COORD.getLocation(),
-                    Vertex.TEXTURE_ELEM_COUNT, GL11.GL_FLOAT, false, Vertex.stride, Vertex.textureByteOffset);
+            int[] offset = {0};
+            final int stride = ShaderAttributeHandle.POSITION.getByteCount()
+                    + ShaderAttributeHandle.COLOR.getByteCount()
+                    + ShaderAttributeHandle.NORMAL.getByteCount()
+                    + ShaderAttributeHandle.TEXTURE_COORD.getByteCount()
+                    ;
+            ShaderAttributeHandle.POSITION.enable(stride, offset);
+            ShaderAttributeHandle.COLOR.enable(stride, offset);
+            ShaderAttributeHandle.NORMAL.enable(stride, offset);
+            ShaderAttributeHandle.TEXTURE_COORD.enable(stride, offset);
 
             // done setting up the VAO
             GL30.glBindVertexArray(0);

@@ -8,7 +8,6 @@ import net.wohlfart.gl.shader.ShaderAttributeHandle;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL15;
-import org.lwjgl.opengl.GL20;
 import org.lwjgl.opengl.GL30;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -66,25 +65,16 @@ public class SimpleMesh implements IsRenderable {
 
             createVboHandle(stream);
 
-            int offset;  // @formatter:off
+            final int[] offset = {0};  // @formatter:off
             final int stride = ShaderAttributeHandle.POSITION.getByteCount()
-                             + ShaderAttributeHandle.COLOR.getByteCount();
+                             + ShaderAttributeHandle.COLOR.getByteCount()
+                             ;
+            ShaderAttributeHandle.POSITION.enable(stride, offset);
+            ShaderAttributeHandle.COLOR.enable(stride, offset);
+            ShaderAttributeHandle.TEXTURE_COORD.disable();
+            ShaderAttributeHandle.NORMAL.disable();
 
-            offset = 0;
-            ShaderAttributeHandle.POSITION.enable();
-            GL20.glVertexAttribPointer(ShaderAttributeHandle.POSITION.getLocation(),
-                                       ShaderAttributeHandle.POSITION.getFloatCount(), GL11.GL_FLOAT, false, stride, offset);
-
-            offset += ShaderAttributeHandle.POSITION.getByteCount();
-            ShaderAttributeHandle.COLOR.enable();
-            GL20.glVertexAttribPointer(ShaderAttributeHandle.COLOR.getLocation(),
-                                       ShaderAttributeHandle.COLOR.getFloatCount(), GL11.GL_FLOAT, false, stride, offset);
-
-            ShaderAttributeHandle.TEXTURE_COORD.enable();
-
-            ShaderAttributeHandle.NORMAL.enable();
-
-            GL30.glBindVertexArray(0); // @formatter:on
+            GL30.glBindVertexArray(0);
 
             LOGGER.debug("bulding a new mesh with {} elements", count);
             return new SimpleMesh(vaoHandle, count, GL11.GL_TRIANGLES);

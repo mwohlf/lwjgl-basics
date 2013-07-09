@@ -5,6 +5,7 @@ import static net.wohlfart.gl.shader.GraphicContextManager.INSTANCE;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL20;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -43,8 +44,10 @@ public enum ShaderAttributeHandle {// @formatter:off
         return INSTANCE.getAttributeLocation(lookupString);
     }
 
-    public void enable() {
+    public void enable(int stride, int[] offset) {
         GL20.glEnableVertexAttribArray(getLocation());
+        GL20.glVertexAttribPointer(getLocation(), getFloatCount(), GL11.GL_FLOAT, false, stride, offset[0]);
+        offset[0] += getByteCount();
     }
 
     Map<String, Integer> getLocationMap(IShaderProgram shaderProgram) {

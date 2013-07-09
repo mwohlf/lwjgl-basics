@@ -13,7 +13,6 @@ import net.wohlfart.tools.SimpleMath;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL15;
-import org.lwjgl.opengl.GL20;
 import org.lwjgl.opengl.GL30;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -107,24 +106,13 @@ class CharMeshBuilder {
         GL15.glBindBuffer(GL15.GL_ELEMENT_ARRAY_BUFFER, vboIndicesHandle);
         GL15.glBufferData(GL15.GL_ELEMENT_ARRAY_BUFFER, indicesBuffer, GL15.GL_STATIC_DRAW);
 
-        int offset;
+        int[] offset = {0};
         final int stride = ShaderAttributeHandle.POSITION.getByteCount()
-                         + ShaderAttributeHandle.TEXTURE_COORD.getByteCount();
-
-        offset = 0;
-
-        ShaderAttributeHandle.POSITION.enable();
-        GL20.glVertexAttribPointer(ShaderAttributeHandle.POSITION.getLocation(),
-                Vertex.POSITION_ELEM_COUNT, GL11.GL_FLOAT, false, stride, offset);
-        offset += ShaderAttributeHandle.POSITION.getByteCount();
-
-        ShaderAttributeHandle.TEXTURE_COORD.enable();
-        GL20.glVertexAttribPointer(ShaderAttributeHandle.TEXTURE_COORD.getLocation(),
-                Vertex.TEXTURE_ELEM_COUNT, GL11.GL_FLOAT, false, stride, offset);
-        offset += ShaderAttributeHandle.TEXTURE_COORD.getByteCount();
-
+                         + ShaderAttributeHandle.TEXTURE_COORD.getByteCount()
+                         ;
+        ShaderAttributeHandle.POSITION.enable(stride, offset);
+        ShaderAttributeHandle.TEXTURE_COORD.enable(stride, offset);
         ShaderAttributeHandle.NORMAL.disable();
-
         ShaderAttributeHandle.COLOR.disable();
 
         // done with the VAO

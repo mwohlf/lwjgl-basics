@@ -100,9 +100,9 @@ public class Particle implements PoolableObject {
             vertices[4].setXYZ(vectors[3].x, vectors[3].y, vectors[3].z);
             vertices[5].setXYZ(vectors[0].x, vectors[0].y, vectors[0].z);
 
-            FloatBuffer verticesBuffer = BufferUtils.createFloatBuffer(vertices.length * Vertex.elementCount);
+            FloatBuffer verticesBuffer = BufferUtils.createFloatBuffer(vertices.length * (3 + 4 + 3 + 2));
             for (int i = 0; i < vertices.length; i++) {
-               verticesBuffer.put(vertices[i].getXYZW());
+               verticesBuffer.put(vertices[i].getXYZ());
                verticesBuffer.put(vertices[i].getRGBA());
                verticesBuffer.put(vertices[i].getNormal());
                verticesBuffer.put(vertices[i].getST());

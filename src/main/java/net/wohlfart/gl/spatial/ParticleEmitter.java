@@ -11,7 +11,6 @@ import java.util.Set;
 
 import net.wohlfart.basic.elements.IsRenderable;
 import net.wohlfart.gl.elements.AbstractRenderable;
-import net.wohlfart.gl.shader.Vertex;
 import net.wohlfart.gl.shader.mesh.ParticleMesh;
 import net.wohlfart.tools.PNGDecoder;
 import net.wohlfart.tools.PNGDecoder.Format;
@@ -30,7 +29,7 @@ public class ParticleEmitter extends AbstractRenderable implements Emitter {
 
     Set<Particle> particles = new HashSet<Particle>();
     int newPerSecond; // new particles per second;
-    float leftover; // fract from last update
+    float leftover; // fraction from last update
     Integer commonTextureId;
 
     public ParticleEmitter() {
@@ -92,7 +91,7 @@ public class ParticleEmitter extends AbstractRenderable implements Emitter {
      * @return
      */
     FloatBuffer getFlippedFloatBuffer() {
-        FloatBuffer verticesBuffer = BufferUtils.createFloatBuffer(particles.size() * 6 * Vertex.elementCount);
+        FloatBuffer verticesBuffer = BufferUtils.createFloatBuffer(particles.size() * 6 * (3 + 4 + 3 + 2));
         for (Particle particle : particles) {
             verticesBuffer.put(particle.getVerticesBuffer());
         }

@@ -21,6 +21,7 @@ import net.wohlfart.gl.shader.ShaderRegistry;
 import net.wohlfart.gl.shader.VertexLight;
 import net.wohlfart.gl.spatial.CelestialBody;
 import net.wohlfart.gl.spatial.Model;
+import net.wohlfart.gl.spatial.ParticleEmitter;
 import net.wohlfart.gl.view.ElementPicker;
 import net.wohlfart.gl.view.PickingRay;
 
@@ -42,6 +43,8 @@ public class CelestialState extends AbstractGraphicState implements Initializing
     private final DefaultRenderSet<CelestialBody> planetSet = new DefaultRenderSet<>();
 
     private final ModelRenderSet modelSet = new ModelRenderSet();
+
+    private final DefaultRenderSet<ParticleEmitter> emitterSet = new DefaultRenderSet<>();
 
     private final DefaultRenderSet<IsUpdateable> wireframeBucket = new DefaultRenderSet<>();
 
@@ -98,6 +101,16 @@ public class CelestialState extends AbstractGraphicState implements Initializing
         modelSet.add(light1);
         modelSet.add(light2);
 
+        ParticleEmitter particleEmitter = new ParticleEmitter();
+        particleEmitter.setPosition(new Vector3f(20,0,0));
+        emitterSet.setGraphicContext(new DefaultGraphicContext(ShaderRegistry.AMBIENT_SHADER));
+        emitterSet.add(particleEmitter);
+        VertexLight light3 = new VertexLight(0.001f, new Vector4f(0.9f, 0.9f, 0.9f, 1.0f), new Vector3f( 7, 0, -10));
+        VertexLight light4 = new VertexLight(0.001f, new Vector4f(0.9f, 0.9f, 0.9f, 1.0f), new Vector3f( 7, 0, 10));
+        emitterSet.add(light3);
+        emitterSet.add(light4);
+        emitterSet.setup();
+
 
         wireframeBucket.setGraphicContext(new DefaultGraphicContext(ShaderRegistry.WIREFRAME_SHADER));
         wireframeBucket.addAll(WireframeToolkit.createCircledTarget());
@@ -105,6 +118,7 @@ public class CelestialState extends AbstractGraphicState implements Initializing
         wireframeBucket.addAll(WireframeToolkit.createOriginAxis());
         wireframeBucket.addAll(WireframeToolkit.createRandomElements());
         wireframeBucket.addAll(WireframeToolkit.createRandomLocatedSpheres());
+
         wireframeBucket.setup();
 
         meshBucket.setGraphicContext(new DefaultGraphicContext(ShaderRegistry.DEFAULT_SHADER));
@@ -120,10 +134,10 @@ public class CelestialState extends AbstractGraphicState implements Initializing
             planetSet.add(body);
         }
 
-        VertexLight light3 = new VertexLight(0.001f, new Vector4f(0.9f, 0.9f, 0.9f, 1.0f), new Vector3f( 7, 0, -10));
-        VertexLight light4 = new VertexLight(0.001f, new Vector4f(0.9f, 0.9f, 0.9f, 1.0f), new Vector3f( 7, 0, 10));
-        planetSet.add(light3);
-        planetSet.add(light4);
+        VertexLight light5 = new VertexLight(0.001f, new Vector4f(0.9f, 0.9f, 0.9f, 1.0f), new Vector3f( 7, 0, -10));
+        VertexLight light6 = new VertexLight(0.001f, new Vector4f(0.9f, 0.9f, 0.9f, 1.0f), new Vector3f( 7, 0, 10));
+        planetSet.add(light5);
+        planetSet.add(light6);
 
         planetSet.setup();
 
@@ -149,6 +163,7 @@ public class CelestialState extends AbstractGraphicState implements Initializing
     public void render() {
         skybox.render();
         planetSet.render();
+        emitterSet.render();
         modelSet.render();
         wireframeBucket.render();
         meshBucket.render();
@@ -158,6 +173,7 @@ public class CelestialState extends AbstractGraphicState implements Initializing
     @Override
     public void update(float tpf) {
         planetSet.update(tpf);
+        emitterSet.update(tpf);
         modelSet.update(tpf);
         wireframeBucket.update(tpf);
         meshBucket.update(tpf);

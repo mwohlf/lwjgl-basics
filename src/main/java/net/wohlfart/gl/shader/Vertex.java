@@ -9,28 +9,28 @@ import org.lwjgl.util.vector.Vector3f;
  */
 public class Vertex {
 
-    public static final int BYTES_PER_FLOAT = 4;
+    private static final int BYTES_PER_FLOAT = 4;
 
-    public static final int POSITION_ELEM_COUNT = 4;
-    public static final int COLOR_ELEM_COUNT = 4;
-    public static final int NORMAL_ELEM_COUNT = 3;
-    public static final int TEXTURE_ELEM_COUNT = 2;
+    private static final int POSITION_ELEM_COUNT = 4;
+    private static final int COLOR_ELEM_COUNT = 4;
+    private static final int NORMAL_ELEM_COUNT = 3;
+    private static final int TEXTURE_ELEM_COUNT = 2;
 
-    public static final int positionBytesCount = POSITION_ELEM_COUNT * BYTES_PER_FLOAT;
-    public static final int colorByteCount = COLOR_ELEM_COUNT * BYTES_PER_FLOAT;
-    public static final int normalByteCount = NORMAL_ELEM_COUNT * BYTES_PER_FLOAT;
-    public static final int textureByteCount = TEXTURE_ELEM_COUNT * BYTES_PER_FLOAT;
+    private static final int positionBytesCount = POSITION_ELEM_COUNT * BYTES_PER_FLOAT;
+    private static final int colorByteCount = COLOR_ELEM_COUNT * BYTES_PER_FLOAT;
+    private static final int normalByteCount = NORMAL_ELEM_COUNT * BYTES_PER_FLOAT;
+    private static final int textureByteCount = TEXTURE_ELEM_COUNT * BYTES_PER_FLOAT;
 
     // Byte offsets per parameter
-    public static final int positionByteOffset = 0;
-    public static final int colorByteOffset = positionByteOffset + positionBytesCount;
-    public static final int normalByteOffset = colorByteOffset + colorByteCount;
-    public static final int textureByteOffset = normalByteOffset + normalByteCount;
+    private static final int positionByteOffset = 0;
+    private static final int colorByteOffset = positionByteOffset + positionBytesCount;
+    private static final int normalByteOffset = colorByteOffset + colorByteCount;
+    private static final int textureByteOffset = normalByteOffset + normalByteCount;
 
     // The amount of elements that a vertex has
-    public static final int elementCount = POSITION_ELEM_COUNT + COLOR_ELEM_COUNT + NORMAL_ELEM_COUNT + TEXTURE_ELEM_COUNT;
+    private static final int elementCount = POSITION_ELEM_COUNT + COLOR_ELEM_COUNT + NORMAL_ELEM_COUNT + TEXTURE_ELEM_COUNT;
     // The size of a vertex in bytes, like in C/C++: sizeof(Vertex)
-    public static final int stride = positionBytesCount + colorByteCount + normalByteCount + textureByteCount;
+    private static final int stride = positionBytesCount + colorByteCount + normalByteCount + textureByteCount;
 
 
 
@@ -40,37 +40,45 @@ public class Vertex {
     private float[] st = new float[] { 0f, 0f };
 
 
-    public void setXYZ(Vector3f vec) {
+    public Vertex setXYZ(Vector3f vec) {
         this.setXYZW(vec.x, vec.y, vec.z, 1f);
-    }
+        return this;
+   }
 
-    public void setXYZ(float x, float y, float z) {
+    public Vertex setXYZ(float x, float y, float z) {
         this.setXYZW(x, y, z, 1f);
+        return this;
     }
 
-    public void setNormal(Vector3f vec) {
+    public Vertex setNormal(Vector3f vec) {
         this.setNormal(vec.x, vec.y, vec.z);
+        return this;
     }
 
-    public void setNormal(float x, float y, float z) {
+    public Vertex setNormal(float x, float y, float z) {
         this.normal = new float[] { x, y, z };
-    }
+        return this;
+   }
 
-    public void setRGB(float r, float g, float b) {
+    public Vertex setRGB(float r, float g, float b) {
         this.setRGBA(r, g, b, 1f);
-    }
+        return this;
+   }
 
-    public void setXYZW(float x, float y, float z, float w) {
+    public Vertex setXYZW(float x, float y, float z, float w) {
         this.xyzw = new float[] { x, y, z, w };
+        return this;
     }
 
-    public void setST(float s, float t) {
+    public Vertex setST(float s, float t) {
         this.st = new float[] { s, t };
-    }
+        return this;
+   }
 
-    public void setRGBA(float r, float g, float b, float a) {
+    public Vertex setRGBA(float r, float g, float b, float a) {
         this.rgba = new float[] { r, g, b, 1f };
-    }
+        return this;
+   }
 
 
     public float[] getAllElements() {

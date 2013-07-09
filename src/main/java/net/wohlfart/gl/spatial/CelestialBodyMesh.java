@@ -12,7 +12,6 @@ import net.wohlfart.tools.SimpleMath;
 
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL13;
-import org.lwjgl.opengl.GL20;
 import org.lwjgl.opengl.GL30;
 import org.lwjgl.util.vector.Vector3f;
 
@@ -157,29 +156,14 @@ public class CelestialBodyMesh implements IsRenderable {
 
             createVboHandle(stream); // this also binds the GL15.GL_ARRAY_BUFFER
 
-            int offset;
+            final int[] offset = {0};
             final int stride = ShaderAttributeHandle.POSITION.getByteCount()
                              + ShaderAttributeHandle.NORMAL.getByteCount()
-                             + ShaderAttributeHandle.TEXTURE_COORD.getByteCount();
-
-            offset = 0;
-            ShaderAttributeHandle.POSITION.enable();
-            GL20.glVertexAttribPointer(ShaderAttributeHandle.POSITION.getLocation(),
-                                       ShaderAttributeHandle.POSITION.getFloatCount(), GL11.GL_FLOAT,
-                                       false, stride, offset);
-
-            offset += ShaderAttributeHandle.POSITION.getByteCount();
-            ShaderAttributeHandle.NORMAL.enable();
-            GL20.glVertexAttribPointer(ShaderAttributeHandle.NORMAL.getLocation(),
-                                       ShaderAttributeHandle.NORMAL.getFloatCount(), GL11.GL_FLOAT,
-                                       false, stride, offset);
-
-            offset += ShaderAttributeHandle.NORMAL.getByteCount();
-            ShaderAttributeHandle.TEXTURE_COORD.enable();
-            GL20.glVertexAttribPointer(ShaderAttributeHandle.TEXTURE_COORD.getLocation(),
-                                       ShaderAttributeHandle.TEXTURE_COORD.getFloatCount(), GL11.GL_FLOAT,
-                                       false, stride, offset);
-
+                             + ShaderAttributeHandle.TEXTURE_COORD.getByteCount()
+                             ;
+            ShaderAttributeHandle.POSITION.enable(stride, offset);
+            ShaderAttributeHandle.NORMAL.enable(stride, offset);
+            ShaderAttributeHandle.TEXTURE_COORD.enable(stride, offset);
             ShaderAttributeHandle.COLOR.disable();
 
             // we are done with the VAO state

@@ -18,6 +18,9 @@ import org.lwjgl.opengl.GL30;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+/**
+ *
+ */
 public abstract class AbstractMeshBuilder implements IMeshBuilder {
     static final Logger LOGGER = LoggerFactory.getLogger(AbstractMeshBuilder.class);
 

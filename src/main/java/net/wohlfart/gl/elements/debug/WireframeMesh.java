@@ -33,7 +33,6 @@ public class WireframeMesh implements IsRenderable {
         this.color = color;
     }
 
-    /** {@inheritDoc} */
     @Override
     public void render() {
         GL30.glBindVertexArray(vaoHandle);
@@ -43,7 +42,6 @@ public class WireframeMesh implements IsRenderable {
         GL30.glBindVertexArray(0);
     }
 
-    /** {@inheritDoc} */
     @Override
     public void destroy() {
         GL30.glBindVertexArray(0);

@@ -17,7 +17,6 @@ import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL13;
 import org.lwjgl.opengl.GL15;
-import org.lwjgl.opengl.GL20;
 import org.lwjgl.opengl.GL30;
 import org.lwjgl.util.vector.Quaternion;
 import org.lwjgl.util.vector.Vector3f;
@@ -158,28 +157,14 @@ public class TexturedMesh implements IsRenderable {
             GL15.glBindBuffer(GL15.GL_ELEMENT_ARRAY_BUFFER, vboIndicesHandle);
             GL15.glBufferData(GL15.GL_ELEMENT_ARRAY_BUFFER, indicesBuffer, GL15.GL_STATIC_DRAW);
 
-            int offset;
+            int[] offset = {0};
             final int stride = ShaderAttributeHandle.POSITION.getByteCount()
                     + ShaderAttributeHandle.COLOR.getByteCount()
                     + ShaderAttributeHandle.TEXTURE_COORD.getByteCount();
 
-            offset = 0;
-
-            ShaderAttributeHandle.POSITION.enable();
-            GL20.glVertexAttribPointer(ShaderAttributeHandle.POSITION.getLocation(),
-                    Vertex.POSITION_ELEM_COUNT, GL11.GL_FLOAT, false, stride, offset);
-            offset += ShaderAttributeHandle.POSITION.getByteCount();
-
-            ShaderAttributeHandle.COLOR.enable();
-            GL20.glVertexAttribPointer(ShaderAttributeHandle.COLOR.getLocation(),
-                    Vertex.COLOR_ELEM_COUNT, GL11.GL_FLOAT, false, stride, offset);
-            offset += ShaderAttributeHandle.COLOR.getByteCount();
-
-            ShaderAttributeHandle.TEXTURE_COORD.enable();
-            GL20.glVertexAttribPointer(ShaderAttributeHandle.TEXTURE_COORD.getLocation(),
-                    Vertex.TEXTURE_ELEM_COUNT, GL11.GL_FLOAT, false, stride, offset);
-            offset += ShaderAttributeHandle.TEXTURE_COORD.getByteCount();
-
+            ShaderAttributeHandle.POSITION.enable(stride, offset);
+            ShaderAttributeHandle.COLOR.enable(stride, offset);
+            ShaderAttributeHandle.TEXTURE_COORD.enable(stride, offset);
             ShaderAttributeHandle.NORMAL.disable();
 
             // done with the VAO

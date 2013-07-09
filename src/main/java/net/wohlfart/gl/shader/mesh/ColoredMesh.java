@@ -10,7 +10,6 @@ import net.wohlfart.gl.shader.Vertex;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL15;
-import org.lwjgl.opengl.GL20;
 import org.lwjgl.opengl.GL30;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -46,9 +45,10 @@ public class ColoredMesh implements IsRenderable {
 
 
 
-    public static class Builder {
+    public static class Builder extends AbstractMeshBuilder {
         protected static final Logger LOGGER = LoggerFactory.getLogger(Builder.class);
 
+        @Override
         public IsRenderable build() {
 
             // We'll define our quad using 4 vertices
@@ -66,9 +66,9 @@ public class ColoredMesh implements IsRenderable {
             v3.setRGB(1, 1, 1);
 
             final Vertex[] vertices = new Vertex[] { v0, v1, v2, v3 };
-            final FloatBuffer verticesBuffer = BufferUtils.createFloatBuffer(vertices.length * Vertex.elementCount);
+            final FloatBuffer verticesBuffer = BufferUtils.createFloatBuffer(vertices.length * ( 3 + 4 ));
             for (int i = 0; i < vertices.length; i++) {
-                verticesBuffer.put(vertices[i].getXYZW());
+                verticesBuffer.put(vertices[i].getXYZ());
                 verticesBuffer.put(vertices[i].getRGBA());
             }
             verticesBuffer.flip();
@@ -92,16 +92,13 @@ public class ColoredMesh implements IsRenderable {
             GL15.glBindBuffer(GL15.GL_ELEMENT_ARRAY_BUFFER, vboIndicesHandle);
             GL15.glBufferData(GL15.GL_ELEMENT_ARRAY_BUFFER, indicesBuffer, GL15.GL_STATIC_DRAW);
 
-            ShaderAttributeHandle.POSITION.enable();
-            GL20.glVertexAttribPointer(ShaderAttributeHandle.POSITION.getLocation(),
-                    Vertex.POSITION_ELEM_COUNT, GL11.GL_FLOAT, false, Vertex.colorByteCount + Vertex.positionBytesCount, Vertex.positionByteOffset);
+            int[] offset = {0};
+            final int stride = ShaderAttributeHandle.POSITION.getByteCount()
+                    + ShaderAttributeHandle.COLOR.getByteCount();
 
-            ShaderAttributeHandle.COLOR.enable();
-            GL20.glVertexAttribPointer(ShaderAttributeHandle.COLOR.getLocation(),
-                    Vertex.COLOR_ELEM_COUNT, GL11.GL_FLOAT, false, Vertex.colorByteCount + Vertex.positionBytesCount, Vertex.colorByteOffset);
-
+            ShaderAttributeHandle.POSITION.enable(stride, offset);
+            ShaderAttributeHandle.COLOR.enable(stride, offset);
             ShaderAttributeHandle.NORMAL.disable();
-
             ShaderAttributeHandle.TEXTURE_COORD.disable();
 
             // Deselect the VAO
