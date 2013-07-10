@@ -37,4 +37,5 @@ public class MockGraphicContext implements GraphicContextManager.IGraphicContext
     @Override
     public void setup() {
     }
+
 }

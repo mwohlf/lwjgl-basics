@@ -19,7 +19,7 @@ import org.slf4j.LoggerFactory;
  * <p>
  * All handlers for uniforms used in any shader, this is not typesafe, you should really know
  * what you are doing when setting uniform parameters in the shaders.
- * NOte that the uniforms are optimized out at compile time if they are not used in the shader,
+ * note that the uniforms are optimized out at compile time if they are not used in the shader,
  * in this case their location will be -1.
  * </p>
  */
@@ -30,14 +30,14 @@ public enum ShaderUniformHandle {// @formatter:off
     NORMAL_MATRIX("normalMatrix"),
     LIGHT_POSITION("lightPosition"),  // FIXME: where is the texture?
     LIGHTS(null) {
-        @Override
+        @Override // replacing the default behavior and returning all possible uniform names for this attribute array
         Map<String, Integer> getLocationMap(IShaderProgram shaderProgram) {
             HashMap<String, Integer> result = new HashMap<String, Integer>();
             for (int i = 0; i < MAX_LIGHT_SOURCES; i++) {
                 result.putAll(super.getLocationMap(shaderProgram,
-                        "lights[" + i + "].attenuation",
-                        "lights[" + i + "].diffuse",
-                        "lights[" + i + "].position"));
+                        LIGHT_ATTENTUATION_KEYS[i],
+                        LIGHT_DIFFUSE_KEYS[i],
+                        LIGHT_POSITION_KEYS[i]));
             }
             return result;
         }
@@ -46,6 +46,19 @@ public enum ShaderUniformHandle {// @formatter:off
     // @formatter:on
     private static final Logger LOGGER = LoggerFactory.getLogger(ShaderUniformHandle.class);
     private static final int MAX_LIGHT_SOURCES = 10;  // must match with the shader
+
+    private static final String[] LIGHT_ATTENTUATION_KEYS = new String[MAX_LIGHT_SOURCES];
+    private static final String[] LIGHT_DIFFUSE_KEYS = new String[MAX_LIGHT_SOURCES];
+    private static final String[] LIGHT_POSITION_KEYS = new String[MAX_LIGHT_SOURCES];
+
+    static { // setting up the strings so we don't need to concat at runtime in the render loop
+        for (int i = 0; i < MAX_LIGHT_SOURCES; i++) {
+            LIGHT_ATTENTUATION_KEYS[i] = "lights[" + i + "].attenuation";
+            LIGHT_DIFFUSE_KEYS[i] = "lights[" + i + "].diffuse";
+            LIGHT_POSITION_KEYS[i] = "lights[" + i + "].position";
+        }
+    }
+
 
     private final String lookupString;
 
@@ -64,7 +77,7 @@ public enum ShaderUniformHandle {// @formatter:off
     }
 
     private Map<String, Integer> getLocationMap(IShaderProgram shaderProgram, String... lookupStrings) {
-        HashMap<String, Integer> result = new HashMap<String, Integer>();
+        final HashMap<String, Integer> result = new HashMap<String, Integer>();
         for (String lookupString : lookupStrings) {
             final int location = GL20.glGetUniformLocation(shaderProgram.getProgramId(), lookupString);
             result.put(lookupString, location);
@@ -82,19 +95,19 @@ public enum ShaderUniformHandle {// @formatter:off
     public void set(VertexLight vertexLight, int index) {
         Integer location;
 
-        location = INSTANCE.getUniformLocation("lights[" + index + "].attenuation");
+        location = INSTANCE.getUniformLocation(LIGHT_ATTENTUATION_KEYS[index]);
         if (location != null) {
             GL20.glUniform1f(location, vertexLight.attenuation);
         }
 
-        location = INSTANCE.getUniformLocation("lights[" + index + "].diffuse");
+        location = INSTANCE.getUniformLocation(LIGHT_DIFFUSE_KEYS[index]);
         if (location != null) {
             GL20.glUniform4f(location, vertexLight.diffuse.x, vertexLight.diffuse.y, vertexLight.diffuse.z, vertexLight.diffuse.w);
         }
 
-        location = INSTANCE.getUniformLocation("lights[" + index + "].position");
+        location = INSTANCE.getUniformLocation(LIGHT_POSITION_KEYS[index]);
         if (location != null) {
-            // FIXME: we need to transform the light's position here, its done in the shader rigth now
+            // FIXME: for performance reasons we could transform the light's position here, its done in the shader right now
             // INSTANCE.getPerspectiveProjMatrix()
             GL20.glUniform3f(location, vertexLight.position.x, vertexLight.position.y, vertexLight.position.z);
         }

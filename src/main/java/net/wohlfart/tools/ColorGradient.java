@@ -7,9 +7,6 @@ import java.util.TreeSet;
 
 /**
  * converting noise to color
- * 
- * 
- * 
  */
 @SuppressWarnings("serial")
 public class ColorGradient implements Serializable {
@@ -18,14 +15,7 @@ public class ColorGradient implements Serializable {
 
     private final Set<GradientPoint> gradientPoints = new TreeSet<GradientPoint>();
 
-    /**
-     * <p>
-     * Constructor for ColorGradient.
-     * </p>
-     * 
-     * @param colors
-     *            a {@link java.awt.Color} object.
-     */
+
     public ColorGradient(Color... colors) {
         if (colors.length == 1) {
             gradientPoints.add(new GradientPoint(LEFT, colors[0]));
@@ -38,14 +28,6 @@ public class ColorGradient implements Serializable {
         }
     }
 
-    /**
-     * <p>
-     * Constructor for ColorGradient.
-     * </p>
-     * 
-     * @param points
-     *            a {@link net.wohlfart.tools.ColorGradient.GradientPoint} object.
-     */
     public ColorGradient(GradientPoint... points) {
         for (final GradientPoint gradientPoint : points) {
             gradientPoints.add(gradientPoint);
@@ -57,15 +39,7 @@ public class ColorGradient implements Serializable {
         return gradientPoints;
     }
 
-    /**
-     * <p>
-     * getColor.
-     * </p>
-     * 
-     * @param value
-     *            [-1 .. +1]
-     * @return a {@link java.awt.Color} object.
-     */
+
     public Color getColor(final double value) {
 
         final int size = gradientPoints.size();
@@ -107,14 +81,10 @@ public class ColorGradient implements Serializable {
         return calculateRGBColor(left, right, distanceLeft, distanceRight);
     }
 
-    private Color calculateRGBColor(final GradientPoint left2, final GradientPoint right2, final double distanceLeft, final double distanceRight) {
-
+    private Color calculateRGBColor(GradientPoint left2, GradientPoint right2, double distanceLeft, double distanceRight) {
         final float red = (left2.color.getRed() * (float) distanceRight + right2.color.getRed() * (float) distanceLeft) / 256f;
-
         final float green = (left2.color.getGreen() * (float) distanceRight + right2.color.getGreen() * (float) distanceLeft) / 256f;
-
         final float blue = (left2.color.getBlue() * (float) distanceRight + right2.color.getBlue() * (float) distanceLeft) / 256f;
-
         return new Color(red, green, blue);
     }
 
@@ -147,19 +117,6 @@ public class ColorGradient implements Serializable {
 
     }
 
-    /**
-     * <p>
-     * cosGradient.
-     * </p>
-     * 
-     * @param top
-     *            a {@link java.awt.Color} object.
-     * @param low
-     *            a {@link java.awt.Color} object.
-     * @param v
-     *            a float.
-     * @return a {@link java.awt.Color} object.
-     */
     public static Color cosGradient(final Color top, final Color low, final float v) {
         // v [-1 .. 1]
         float value = v;
@@ -174,19 +131,7 @@ public class ColorGradient implements Serializable {
         return new Color(red, green, blue);
     }
 
-    /**
-     * <p>
-     * linearGradient.
-     * </p>
-     * 
-     * @param top
-     *            a {@link java.awt.Color} object.
-     * @param low
-     *            a {@link java.awt.Color} object.
-     * @param skyNoise
-     *            a double.
-     * @return a {@link java.awt.Color} object.
-     */
+
     public static Color linearGradient(final Color top, final Color low, final double skyNoise) {
         // v [-1 .. 1]
         final float value = (float) (skyNoise + 1f) / 2f;

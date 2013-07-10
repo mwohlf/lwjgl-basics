@@ -17,8 +17,8 @@ public class DefaultGraphicContext implements GraphicContextManager.IGraphicCont
 
     private final IShaderProgram shaderProgram;
 
-    private final HashMap<String, Integer> attributeMap = new HashMap<String, Integer>();
-    private final HashMap<String, Integer> uniformMap = new HashMap<String, Integer>();
+    private final HashMap<String, Integer> attributeMap = new HashMap<>();
+    private final HashMap<String, Integer> uniformMap = new HashMap<>();
 
     private boolean isInitialized = false;
 

@@ -101,6 +101,7 @@ public class CelestialState extends AbstractGraphicState implements Initializing
         modelSet.add(light1);
         modelSet.add(light2);
 
+        /*
         ParticleEmitter particleEmitter = new ParticleEmitter();
         particleEmitter.setPosition(new Vector3f(20,0,0));
         emitterSet.setGraphicContext(new DefaultGraphicContext(ShaderRegistry.AMBIENT_SHADER));
@@ -108,7 +109,7 @@ public class CelestialState extends AbstractGraphicState implements Initializing
         VertexLight light3 = new VertexLight(0.001f, new Vector4f(0.9f, 0.9f, 0.9f, 1.0f), new Vector3f( 7, 0, -10));
         VertexLight light4 = new VertexLight(0.001f, new Vector4f(0.9f, 0.9f, 0.9f, 1.0f), new Vector3f( 7, 0, 10));
         emitterSet.add(light3);
-        emitterSet.add(light4);
+        emitterSet.add(light4);  */
         emitterSet.setup();
 
 

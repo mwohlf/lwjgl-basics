@@ -94,20 +94,7 @@ public enum CelestialType {
 
     public float maxAxisDeplacement = 0.25f; // this value is randomly added to a normalized up vectors x and y values, earth is around 23.4 degree
 
-    /**
-     * fallback
-     *
-     * @param x
-     *            [0..1]
-     * @param y
-     *            [0..1]
-     * @param z
-     *            [0..1]
-     * @param textureVariant
-     * @param texture
-     *            , needed for access to some randomness
-     * @return the color on the surface at the location with the specified normal vector
-     */
+
     Color getColor(final float x, final float y, final float z, final float textureVariant) {
         return Color.YELLOW;
     }
