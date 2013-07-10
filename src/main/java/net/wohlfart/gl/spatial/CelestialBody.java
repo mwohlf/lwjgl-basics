@@ -53,7 +53,7 @@ public class CelestialBody extends AbstractRenderable implements SpatialEntity {
 
     @Override
     protected IsRenderable setupMesh() {
-        final CelestialBodyMesh.RevolvedSphereBuilder builder = new CelestialBodyMesh.RevolvedSphereBuilder();
+        final CelestialBodyMesh.Builder builder = new CelestialBodyMesh.Builder();
         builder.setLod(DEFAULT_LOD);
         builder.setCelestialType(planetType);
         builder.setRadius(radius);

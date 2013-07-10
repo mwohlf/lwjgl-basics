@@ -24,14 +24,15 @@ public class WireframeMeshBuilder extends AbstractMeshBuilder { // REVIEWED
     private ReadableColor color = ReadableColor.GREY;
     @Override
     public IsRenderable build() {
-        applyRotationAndTranslation(vertices);
-
         final int vaoHandle = GL30.glGenVertexArrays();
         GL30.glBindVertexArray(vaoHandle);
 
+        applyRotationAndTranslation(vertices);
+
         createVboHandle(getVertices());
 
-        createIdxBufferHandle(getIndices());
+        int[] idc = getIndices();
+        createIdxBufferHandle(idc);
 
         final int[] offset = {0};
         final int stride = ShaderAttributeHandle.POSITION.getByteCount()
@@ -43,9 +44,7 @@ public class WireframeMeshBuilder extends AbstractMeshBuilder { // REVIEWED
 
         GL30.glBindVertexArray(0);
 
-        final int indexElemSize = GL11.GL_UNSIGNED_INT;
-        final int indicesCount = getIndices().length;
-        return new WireframeMesh(vaoHandle, linePrimitive, indexElemSize, indicesCount, color);
+        return new WireframeMesh(vaoHandle, linePrimitive, GL11.GL_UNSIGNED_INT, idc.length, color);
     }
 
     private float[] getVertices() {

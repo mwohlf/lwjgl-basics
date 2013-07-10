@@ -56,7 +56,6 @@ public class SimpleMesh implements IsRenderable {
 
         @Override
         public IsRenderable build() {
-
             final int vaoHandle = GL30.glGenVertexArrays();
             GL30.glBindVertexArray(vaoHandle);
 

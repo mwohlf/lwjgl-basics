@@ -58,7 +58,7 @@ public class CelestialBodyMesh implements IsRenderable {
 
 
 
-    public static class RevolvedSphereBuilder extends AbstractMeshBuilder {
+    public static class Builder extends AbstractMeshBuilder {
 
         private int lod = 0;  // starts at 0 for min lod
         private CelestialType celestialType = CelestialType.CONTINENTAL_PLANET;
@@ -86,8 +86,35 @@ public class CelestialBodyMesh implements IsRenderable {
 
         @Override
         public IsRenderable build() {
+            final int vaoHandle = GL30.glGenVertexArrays();
+            GL30.glBindVertexArray(vaoHandle);
+
+            CelestialTexture texture = new CelestialTexture(512, 512, celestialType, seed, GL13.GL_TEXTURE0);
+            texture.init();
+            int textureHandle = texture.getTextureId();
+
+            final ArrayList<Vertex> vertices = new ArrayList<Vertex>();
+            createVboHandle(createStream(vertices)); // this also binds the GL15.GL_ARRAY_BUFFER
+
+            final int[] offset = {0};
+            final int stride = ShaderAttributeHandle.POSITION.getByteCount()
+                             + ShaderAttributeHandle.NORMAL.getByteCount()
+                             + ShaderAttributeHandle.TEXTURE_COORD.getByteCount()
+                             ;
+            ShaderAttributeHandle.POSITION.enable(stride, offset);
+            ShaderAttributeHandle.NORMAL.enable(stride, offset);
+            ShaderAttributeHandle.TEXTURE_COORD.enable(stride, offset);
+            ShaderAttributeHandle.COLOR.disable();
+
+            // we are done with the VAO state
+            GL30.glBindVertexArray(0);
+
+            return new CelestialBodyMesh(vaoHandle, textureHandle, GL11.GL_TRIANGLES, vertices.size(), -1);
+        }
+
+
+        float[] createStream(ArrayList<Vertex> vertices) {
             float radFragment = SimpleMath.HALF_PI / (lod + 1);
-            ArrayList<Vertex> vertices = new ArrayList<Vertex>();
 
             for (int slice = 0; slice <= lod; slice++) { // slices along the y-axis
 
@@ -118,6 +145,7 @@ public class CelestialBodyMesh implements IsRenderable {
                     vertices.addAll(createQuad(d1, down2, d2, down1));
 
                 }
+
             }
 
             // we need to create this:
@@ -140,39 +168,7 @@ public class CelestialBodyMesh implements IsRenderable {
                 stream[i* elemSize + 7] = vertex.getST()[1];
             }
 
-
-
-            final int vaoHandle = GL30.glGenVertexArrays();
-            GL30.glBindVertexArray(vaoHandle); // @formatter:off
-
-            // int textureHandle = createTextureHandle("/gfx/images/ash_uvgrid04.png", GL13.GL_TEXTURE0);  // also binds the texture
-
-            CelestialTexture texture = new CelestialTexture(512, 512, celestialType, seed, GL13.GL_TEXTURE0);
-            texture.init();
-            int textureHandle = texture.getTextureId();
-
-            //textureHandle = createTextureHandle("/gfx/images/ash_uvgrid04.png", GL13.GL_TEXTURE0);  // also binds the texture
-
-
-            createVboHandle(stream); // this also binds the GL15.GL_ARRAY_BUFFER
-
-            final int[] offset = {0};
-            final int stride = ShaderAttributeHandle.POSITION.getByteCount()
-                             + ShaderAttributeHandle.NORMAL.getByteCount()
-                             + ShaderAttributeHandle.TEXTURE_COORD.getByteCount()
-                             ;
-            ShaderAttributeHandle.POSITION.enable(stride, offset);
-            ShaderAttributeHandle.NORMAL.enable(stride, offset);
-            ShaderAttributeHandle.TEXTURE_COORD.enable(stride, offset);
-            ShaderAttributeHandle.COLOR.disable();
-
-            // we are done with the VAO state
-            GL30.glBindVertexArray(0); // @formatter:on
-
-            final int primitiveType = GL11.GL_TRIANGLES;
-            final int count = vertices.size();
-
-            return new CelestialBodyMesh(vaoHandle, textureHandle, primitiveType, count, -1);
+            return stream;
 
         }
 

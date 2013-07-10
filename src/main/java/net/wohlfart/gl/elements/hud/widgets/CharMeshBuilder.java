@@ -1,7 +1,5 @@
 package net.wohlfart.gl.elements.hud.widgets;
 
-import java.nio.FloatBuffer;
-
 import net.wohlfart.basic.elements.IsRenderable;
 import net.wohlfart.gl.shader.GraphicContextManager;
 import net.wohlfart.gl.shader.ShaderAttributeHandle;
@@ -10,9 +8,7 @@ import net.wohlfart.gl.shader.mesh.AbstractMeshBuilder;
 import net.wohlfart.gl.shader.mesh.CharacterMesh;
 import net.wohlfart.tools.SimpleMath;
 
-import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL11;
-import org.lwjgl.opengl.GL15;
 import org.lwjgl.opengl.GL30;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -31,6 +27,32 @@ class CharMeshBuilder extends AbstractMeshBuilder {
 
     @Override
     public IsRenderable build() {
+        final int vaoHandle = GL30.glGenVertexArrays();
+        GL30.glBindVertexArray(vaoHandle);
+
+        createVboHandle(createVertexStream());
+
+        // OpenGL expects to draw vertices in counter clockwise order by default
+        byte[] indices = new byte[] { 0, 1, 2, 2, 3, 0 };
+        createIdxBufferHandle(indices);
+
+        final int[] offset = {0};
+        final int stride = ShaderAttributeHandle.POSITION.getByteCount()
+                         + ShaderAttributeHandle.TEXTURE_COORD.getByteCount()
+                         ;
+        ShaderAttributeHandle.POSITION.enable(stride, offset);
+        ShaderAttributeHandle.TEXTURE_COORD.enable(stride, offset);
+        ShaderAttributeHandle.NORMAL.disable();
+        ShaderAttributeHandle.COLOR.disable();
+
+        // done with the VAO
+        GL30.glBindVertexArray(0);
+
+        final int texId = atlas.getTextureId();
+        return new CharacterMesh(vaoHandle, GL11.GL_TRIANGLES, GL11.GL_UNSIGNED_BYTE, indices.length, 0, texId);
+    }
+
+    protected float[] createVertexStream() {
         final GraphicContextManager cxtManager = GraphicContextManager.INSTANCE;
         final float screenWidth = cxtManager.getScreenWidth();
         final float screenHeight = cxtManager.getScreenHeight();  // screen size in pixel 1200/700
@@ -81,40 +103,19 @@ class CharMeshBuilder extends AbstractMeshBuilder {
         v3.setST(s2, t1);
 
         final Vertex[] vertices = new Vertex[] { v0, v1, v2, v3 };
-        final FloatBuffer verticesBuffer = BufferUtils.createFloatBuffer(vertices.length * (3 + 2));
-        for (int i = 0; i < vertices.length; i++) {
-            verticesBuffer.put(vertices[i].getXYZ());
-            verticesBuffer.put(vertices[i].getST());
+        final float[] verticesBuffer = new float[vertices.length * (3 + 2)];
+        int i = 0;
+        for (Vertex vertex : vertices) {
+            verticesBuffer[i++] = vertex.getXYZ()[0];
+            verticesBuffer[i++] = vertex.getXYZ()[1];
+            verticesBuffer[i++] = vertex.getXYZ()[2];
+            verticesBuffer[i++] = vertex.getST()[0];
+            verticesBuffer[i++] = vertex.getST()[1];
         }
-        verticesBuffer.flip();
 
-        // Create a new Vertex Array Object in memory and select it (bind)
-        final int vaoHandle = GL30.glGenVertexArrays();
-        GL30.glBindVertexArray(vaoHandle);
-
-        final int vboVerticesHandle = GL15.glGenBuffers();
-        GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, vboVerticesHandle);
-        GL15.glBufferData(GL15.GL_ARRAY_BUFFER, verticesBuffer, GL15.GL_STATIC_DRAW);
-
-        // OpenGL expects to draw vertices in counter clockwise order by default
-        byte[] indices = new byte[] { 0, 1, 2, 2, 3, 0 };
-        createIdxBufferHandle(indices);
-
-        final int[] offset = {0};
-        final int stride = ShaderAttributeHandle.POSITION.getByteCount()
-                         + ShaderAttributeHandle.TEXTURE_COORD.getByteCount()
-                         ;
-        ShaderAttributeHandle.POSITION.enable(stride, offset);
-        ShaderAttributeHandle.TEXTURE_COORD.enable(stride, offset);
-        ShaderAttributeHandle.NORMAL.disable();
-        ShaderAttributeHandle.COLOR.disable();
-
-        // done with the VAO
-        GL30.glBindVertexArray(0);
-
-        final int texId = atlas.getTextureId();
-        return new CharacterMesh(vaoHandle, GL11.GL_TRIANGLES, GL11.GL_UNSIGNED_BYTE, indices.length, 0, texId);
+        return verticesBuffer;
     }
+
 
     public CharMeshBuilder setCharInfo(CharInfo info) {
         this.info = info;

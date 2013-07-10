@@ -4,7 +4,6 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.ByteBuffer;
-import java.nio.FloatBuffer;
 
 import net.wohlfart.basic.elements.IsRenderable;
 import net.wohlfart.gl.shader.ShaderAttributeHandle;
@@ -13,10 +12,8 @@ import net.wohlfart.tools.PNGDecoder;
 import net.wohlfart.tools.PNGDecoder.Format;
 import net.wohlfart.tools.SimpleMath;
 
-import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL13;
-import org.lwjgl.opengl.GL15;
 import org.lwjgl.opengl.GL30;
 import org.lwjgl.util.vector.Quaternion;
 import org.lwjgl.util.vector.Vector3f;
@@ -84,10 +81,35 @@ public class TexturedMesh implements IsRenderable {
 
         @Override
         public IsRenderable build() {
+            final int vaoHandle = GL30.glGenVertexArrays();
+            GL30.glBindVertexArray(vaoHandle);
 
             if (textureFilename != null) {
                 texId  = loadPNGTexture(textureFilename, GL13.GL_TEXTURE0);
             }
+
+            createVboHandle(createStream());
+
+            byte[] indices = new byte[] { 0, 1, 2, 2, 3, 0 };
+            createIdxBufferHandle(indices);
+
+            final int[] offset = {0};
+            final int stride = ShaderAttributeHandle.POSITION.getByteCount()
+                    + ShaderAttributeHandle.COLOR.getByteCount()
+                    + ShaderAttributeHandle.TEXTURE_COORD.getByteCount()
+                    ;
+            ShaderAttributeHandle.POSITION.enable(stride, offset);
+            ShaderAttributeHandle.COLOR.enable(stride, offset);
+            ShaderAttributeHandle.TEXTURE_COORD.enable(stride, offset);
+            ShaderAttributeHandle.NORMAL.disable();
+
+            // done with the VAO
+            GL30.glBindVertexArray(0);
+
+            return new TexturedMesh(vaoHandle, GL11.GL_TRIANGLES, GL11.GL_UNSIGNED_BYTE, indices.length, 0, texId);
+        }
+
+        protected float[] createStream() {
 
             final Vector3f[] vectors = new Vector3f[] { // @formatter:off
                     new Vector3f(-(size/2f), +(size/2f), 0),
@@ -104,7 +126,6 @@ public class TexturedMesh implements IsRenderable {
                 SimpleMath.add(translation, vec, vec);
             }
 
-            // @formatter:off
             final Vertex[] vertices =
                     new Vertex[] { new Vertex() {{
                         setXYZ(vectors[0].x, vectors[0].y, vectors[0].z);
@@ -126,44 +147,24 @@ public class TexturedMesh implements IsRenderable {
                         setRGB(1, 1, 1);
                         setST(1, 0);
                     }}
-            }; // @formatter:on
+            };
 
 
             // Put each 'Vertex' in one FloatBuffer the order depends on the shaders positions!
-            final FloatBuffer verticesBuffer = BufferUtils.createFloatBuffer(vertices.length * (3 + 4 + 2));
-            for (int i = 0; i < vertices.length; i++) {
-                verticesBuffer.put(vertices[i].getXYZ());
-                verticesBuffer.put(vertices[i].getRGBA());
-                verticesBuffer.put(vertices[i].getST());
+            float[] stream = new float[vertices.length * (3 + 4 + 2)];
+            int i = 0;
+            for (Vertex vertex : vertices) {
+                stream[i++] = vertex.getXYZ()[0];
+                stream[i++] = vertex.getXYZ()[1];
+                stream[i++] = vertex.getXYZ()[2];
+                stream[i++] = vertex.getRGBA()[0];
+                stream[i++] = vertex.getRGBA()[1];
+                stream[i++] = vertex.getRGBA()[2];
+                stream[i++] = vertex.getRGBA()[3];
+                stream[i++] = vertex.getST()[0];
+                stream[i++] = vertex.getST()[1];
             }
-            verticesBuffer.flip();
-
-            // Create a new Vertex Array Object in memory and select it (bind)
-            final int vaoHandle = GL30.glGenVertexArrays();
-            GL30.glBindVertexArray(vaoHandle);
-
-            // Create a new Vertex Buffer Object in memory and select it (bind)
-            final int vboVerticesHandle = GL15.glGenBuffers();
-            GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, vboVerticesHandle);
-            GL15.glBufferData(GL15.GL_ARRAY_BUFFER, verticesBuffer, GL15.GL_STATIC_DRAW);
-
-            byte[] indices = new byte[] { 0, 1, 2, 2, 3, 0 };
-            createIdxBufferHandle(indices);
-
-            final int[] offset = {0};
-            final int stride = ShaderAttributeHandle.POSITION.getByteCount()
-                    + ShaderAttributeHandle.COLOR.getByteCount()
-                    + ShaderAttributeHandle.TEXTURE_COORD.getByteCount()
-                    ;
-            ShaderAttributeHandle.POSITION.enable(stride, offset);
-            ShaderAttributeHandle.COLOR.enable(stride, offset);
-            ShaderAttributeHandle.TEXTURE_COORD.enable(stride, offset);
-            ShaderAttributeHandle.NORMAL.disable();
-
-            // done with the VAO
-            GL30.glBindVertexArray(0);
-
-            return new TexturedMesh(vaoHandle, GL11.GL_TRIANGLES, GL11.GL_UNSIGNED_BYTE, indices.length, 0, texId);
+            return stream;
         }
 
         private int loadPNGTexture(String filename, int textureUnit) {

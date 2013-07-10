@@ -50,7 +50,7 @@ public class ParticleMesh implements IsRenderable {
 
 
 
-    public static final class Builder extends AbstractMeshBuilder {
+    public static class Builder extends AbstractMeshBuilder {
         private static final Logger LOGGER = LoggerFactory.getLogger(Builder.class);
 
         private String textureFilename;
@@ -59,7 +59,7 @@ public class ParticleMesh implements IsRenderable {
         private FloatBuffer verticesBuffer;
         private int count;
 
-        public void setTextureFilename(final String textureFilename) {
+        public void setTextureFilename(String textureFilename) {
             this.textureFilename = textureFilename;
         }
 
@@ -76,19 +76,19 @@ public class ParticleMesh implements IsRenderable {
         }
 
         @Override
-        public ParticleMesh build() {
-            // load the texture if needed
+        public IsRenderable build() {
+            final int vaoHandle = GL30.glGenVertexArrays();
+            GL30.glBindVertexArray(vaoHandle);
+
+           // load the texture if needed
             if (textureFilename != null) {
                 texId  = loadPNGTexture(textureFilename, GL13.GL_TEXTURE0);
             }
 
-            final int vaoHandle = GL30.glGenVertexArrays();
-            GL30.glBindVertexArray(vaoHandle);
-
+            // FIXME: use createStream
             final int vboHandle = GL15.glGenBuffers();
             GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, vboHandle);
             GL15.glBufferData(GL15.GL_ARRAY_BUFFER, verticesBuffer, GL15.GL_STATIC_DRAW);
-
 
             final int[] offset = {0};
             final int stride = ShaderAttributeHandle.POSITION.getByteCount()
@@ -101,10 +101,8 @@ public class ParticleMesh implements IsRenderable {
             ShaderAttributeHandle.NORMAL.enable(stride, offset);
             ShaderAttributeHandle.TEXTURE_COORD.enable(stride, offset);
 
-            // done setting up the VAO
             GL30.glBindVertexArray(0);
 
-            LOGGER.debug("bulding a new mesh with {} elements", count);
             return new ParticleMesh(vaoHandle, count * 6, GL11.GL_TRIANGLES, texId);
         }
 
