@@ -25,19 +25,19 @@ public class MoveEvent extends Vector3f implements PoolableObject {
 
     // ---- package private static factory methods
 
-    static Object wheel(float time, int delta) {
+    static MoveEvent wheel(float time, int delta) {
         return move(0, 0, time * MOVE_SPEED * WHEEL_SENSITIVITY * delta);
     }
 
-    public static Object moveRight(float time) {
+    static MoveEvent moveRight(float time) {
         return move(+time * MOVE_SPEED, 0, 0);
     }
 
-    public static Object moveLeft(float time) {
+    static MoveEvent moveLeft(float time) {
         return move(-time * MOVE_SPEED, 0, 0);
     }
 
-    public static Object moveDown(float time) {
+    static MoveEvent moveDown(float time) {
         return move(0, -time * MOVE_SPEED, 0);
     }
 
@@ -45,7 +45,7 @@ public class MoveEvent extends Vector3f implements PoolableObject {
         return move(0, +time * MOVE_SPEED, 0);
     }
 
-    static Object moveForward(float time) {
+    static MoveEvent moveForward(float time) {
         return move(0, 0, -time * MOVE_SPEED);
     }
 
@@ -53,7 +53,7 @@ public class MoveEvent extends Vector3f implements PoolableObject {
         return move(0, 0, +time * MOVE_SPEED);
     }
 
-    public static MoveEvent move(float x, float y, float z) {
+    private static MoveEvent move(float x, float y, float z) {
         final MoveEvent result = pool.borrowObject();
         result.x = x;
         result.y = y;

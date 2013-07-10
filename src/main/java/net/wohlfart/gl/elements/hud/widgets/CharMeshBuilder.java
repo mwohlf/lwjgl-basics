@@ -10,20 +10,21 @@ import net.wohlfart.tools.SimpleMath;
 
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL30;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * this creates a mesh for a single character
  */
 class CharMeshBuilder extends AbstractMeshBuilder {
-    protected static final Logger LOGGER = LoggerFactory.getLogger(CharMeshBuilder.class);
 
     private CharAtlas atlas;
     private CharInfo info;
 
     private float screenX;
     private float screenY;
+
+    private final Vertex[] vertices = new Vertex[] {new Vertex(), new Vertex(), new Vertex(), new Vertex()};
+    private final float[] verticesBuffer = new float[vertices.length * (3 + 2)];
+
 
     @Override
     public IsRenderable build() {
@@ -86,24 +87,11 @@ class CharMeshBuilder extends AbstractMeshBuilder {
         final float t2 = (info.getY() + info.getHeight()) / atlasHeight;
 
         // We'll define our quad using 4 vertices of the custom 'Vertex' class
-        final Vertex v0 = new Vertex();
-        v0.setXYZ(x1, y1, -z);
-        v0.setST(s1, t1);
+        vertices[0].setXYZ(x1, y1, -z).setST(s1, t1);
+        vertices[1].setXYZ(x1, y2, -z).setST(s1, t2);
+        vertices[2].setXYZ(x2, y2, -z).setST(s2, t2);
+        vertices[3].setXYZ(x2, y1, -z).setST(s2, t1);
 
-        final Vertex v1 = new Vertex();
-        v1.setXYZ(x1, y2, -z);
-        v1.setST(s1, t2);
-
-        final Vertex v2 = new Vertex();
-        v2.setXYZ(x2, y2, -z);
-        v2.setST(s2, t2);
-
-        final Vertex v3 = new Vertex();
-        v3.setXYZ(x2, y1, -z);
-        v3.setST(s2, t1);
-
-        final Vertex[] vertices = new Vertex[] { v0, v1, v2, v3 };
-        final float[] verticesBuffer = new float[vertices.length * (3 + 2)];
         int i = 0;
         for (Vertex vertex : vertices) {
             verticesBuffer[i++] = vertex.getXYZ()[0];

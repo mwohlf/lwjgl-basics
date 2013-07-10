@@ -21,7 +21,7 @@ public class PointEvent implements PoolableObject {
         }
     };
 
-    public static PointEvent create(int screenX, int screenY, Key key) {
+    static PointEvent create(int screenX, int screenY, Key key) {
         final PointEvent result = pool.borrowObject();
         result.x = screenX;
         result.y = screenY;

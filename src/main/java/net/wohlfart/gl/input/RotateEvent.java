@@ -24,50 +24,34 @@ public class RotateEvent extends Quaternion implements PoolableObject {
         pool.returnObject(this);
     }
 
-    static Object rotateLeft(float time) {
-        final RotateEvent result = pool.borrowObject();
-        final Quaternion q = new Quaternion();
-        SimpleMath.rotate(q, ROTATION_SPEED / 360f, new Vector3f(0, 1, 0));
-        result.set(q);
-        return result;
+    static RotateEvent rotateLeft(float time) {
+        return rotate(time, new Vector3f(0, 1, 0));
     }
 
-    static Object rotateRight(float time) {
-        final RotateEvent result = pool.borrowObject();
-        final Quaternion q = new Quaternion();
-        SimpleMath.rotate(q, ROTATION_SPEED / 360f, new Vector3f(0, -1, 0));
-        result.set(q);
-        return result;
+    static RotateEvent rotateRight(float time) {
+        return rotate(time, new Vector3f(0, -1, 0));
     }
 
-    static Object rotateUp(float time) {
-        final RotateEvent result = pool.borrowObject();
-        final Quaternion q = new Quaternion();
-        SimpleMath.rotate(q, ROTATION_SPEED / 360f, new Vector3f(1, 0, 0));
-        result.set(q);
-        return result;
+    static RotateEvent rotateUp(float time) {
+        return rotate(time, new Vector3f(1, 0, 0));
     }
 
-    static Object rotateDown(float time) {
-        final RotateEvent result = pool.borrowObject();
-        final Quaternion q = new Quaternion();
-        SimpleMath.rotate(q, ROTATION_SPEED / 360f, new Vector3f(-1, 0, 0));
-        result.set(q);
-        return result;
+    static RotateEvent rotateDown(float time) {
+        return rotate(time, new Vector3f(-1, 0, 0));
     }
 
-    static Object rotateClockwise(float time) {
-        final RotateEvent result = pool.borrowObject();
-        final Quaternion q = new Quaternion();
-        SimpleMath.rotate(q, ROTATION_SPEED / 360f, new Vector3f(0, 0, 1));
-        result.set(q);
-        return result;
+    static RotateEvent rotateClockwise(float time) {
+        return rotate(time, new Vector3f(0, 0, 1));
     }
 
-    static Object rotateCounterClockwise(float time) {
+    static RotateEvent rotateCounterClockwise(float time) {
+        return rotate(time, new Vector3f(0, 0, -1));
+    }
+
+    private static RotateEvent rotate(float time, Vector3f axis) {
         final RotateEvent result = pool.borrowObject();
         final Quaternion q = new Quaternion();
-        SimpleMath.rotate(q, ROTATION_SPEED / 360f, new Vector3f(0, 0, -1));
+        SimpleMath.rotate(q, ROTATION_SPEED / 360f, axis);
         result.set(q);
         return result;
     }

@@ -4,6 +4,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 
 import net.wohlfart.basic.GenericGameException;
+import net.wohlfart.tools.ObjectPool.PoolableObject;
 
 import org.lwjgl.LWJGLException;
 import org.lwjgl.input.Keyboard;
@@ -108,22 +109,32 @@ public class LwjglInputSource implements InputSource {
         private static final int MOUSE_KEY2 = 2;
 
         public void wheel(float delta, int amount) {
-            inputDispatcher.post(MoveEvent.wheel(delta, amount));
+            MoveEvent evt = MoveEvent.wheel(delta, amount);
+            inputDispatcher.post(evt);
+            evt.reset();
         }
 
         public void up(int key, int x, int y, float time) {
         }
 
         public void down(int key, int x, int y, float time) {
+            PointEvent evt;
             switch (key) {
-            case MOUSE_KEY0:
-                inputDispatcher.post(PointEvent.create(x, y, PointEvent.Key.PICK));
-                break;
-            case MOUSE_KEY1:
-                break;
-            case MOUSE_KEY2:
-                inputDispatcher.post(PointEvent.create(x, y, PointEvent.Key.CONTEXT));
-                break;
+                case MOUSE_KEY0:
+                    evt = PointEvent.create(x, y, PointEvent.Key.PICK);
+                    break;
+                case MOUSE_KEY1:
+                    evt = null;
+                    break;
+                case MOUSE_KEY2:
+                    evt = PointEvent.create(x, y, PointEvent.Key.CONTEXT);
+                    break;
+                default:
+                    evt = null;
+            }
+            if (evt != null) {
+                inputDispatcher.post(evt);
+                evt.reset();
             }
         }
 
@@ -151,12 +162,17 @@ public class LwjglInputSource implements InputSource {
 
         public void down(int key) {
             pressedKeys.add(key);
+            final PoolableObject evt;
             switch (key) {
-            case Keyboard.KEY_ESCAPE:
-                inputDispatcher.post(CommandEvent.exit());
-                break;
-            default:
-                // do nothing
+                case Keyboard.KEY_ESCAPE:
+                    evt = CommandEvent.exit();
+                    break;
+                default:
+                    evt = null;
+            }
+            if (evt != null) {
+                inputDispatcher.post(evt);
+                evt.reset();
             }
         }
 
@@ -179,46 +195,50 @@ public class LwjglInputSource implements InputSource {
         }
 
         private void processPressedKey(float time, int key) {
-
+            final PoolableObject evt;
             switch (key) {
             case Keyboard.KEY_W:
-                inputDispatcher.post(MoveEvent.moveForward(time));
+                evt = MoveEvent.moveForward(time);
                 break;
             case Keyboard.KEY_Y:
-                inputDispatcher.post(MoveEvent.moveBack(time));
+                evt = MoveEvent.moveBack(time);
                 break;
             case Keyboard.KEY_A:
-                inputDispatcher.post(MoveEvent.moveLeft(time));
+                evt = MoveEvent.moveLeft(time);
                 break;
             case Keyboard.KEY_S:
-                inputDispatcher.post(MoveEvent.moveRight(time));
+                evt = MoveEvent.moveRight(time);
                 break;
             case Keyboard.KEY_Q:
-                inputDispatcher.post(MoveEvent.moveUp(time));
+                evt = MoveEvent.moveUp(time);
                 break;
             case Keyboard.KEY_X:
-                inputDispatcher.post(MoveEvent.moveDown(time));
+                evt = MoveEvent.moveDown(time);
                 break;
             case Keyboard.KEY_LEFT:
-                inputDispatcher.post(RotateEvent.rotateLeft(time));
+                evt = RotateEvent.rotateLeft(time);
                 break;
             case Keyboard.KEY_RIGHT:
-                inputDispatcher.post(RotateEvent.rotateRight(time));
+                evt = RotateEvent.rotateRight(time);
                 break;
             case Keyboard.KEY_UP:
-                inputDispatcher.post(RotateEvent.rotateUp(time));
+                evt = RotateEvent.rotateUp(time);
                 break;
             case Keyboard.KEY_DOWN:
-                inputDispatcher.post(RotateEvent.rotateDown(time));
+                evt = RotateEvent.rotateDown(time);
                 break;
             case Keyboard.KEY_PRIOR:
-                inputDispatcher.post(RotateEvent.rotateClockwise(time));
+                evt = RotateEvent.rotateClockwise(time);
                 break;
             case Keyboard.KEY_NEXT:
-                inputDispatcher.post(RotateEvent.rotateCounterClockwise(time));
+                evt = RotateEvent.rotateCounterClockwise(time);
                 break;
             default:
-                // do nothing
+                evt = null;
+            }
+            if (evt!= null) {
+                inputDispatcher.post(evt);
+                evt.reset();
             }
         }
 
