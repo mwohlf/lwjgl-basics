@@ -7,8 +7,6 @@ import net.wohlfart.gl.shader.mesh.AbstractMeshBuilder;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL13;
 import org.lwjgl.opengl.GL30;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 public class ModelMesh implements IsRenderable {
 
@@ -43,7 +41,6 @@ public class ModelMesh implements IsRenderable {
 
 
     public static class Builder extends AbstractMeshBuilder {
-        private static final Logger LOGGER = LoggerFactory.getLogger(Builder.class);
 
         private int[] indices;
         private int triangelPrimitive;

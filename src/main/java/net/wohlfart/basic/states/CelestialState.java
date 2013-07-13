@@ -101,15 +101,17 @@ public class CelestialState extends AbstractGraphicState implements Initializing
         modelSet.add(light1);
         modelSet.add(light2);
 
-        /*
+
         ParticleEmitter particleEmitter = new ParticleEmitter();
         particleEmitter.setPosition(new Vector3f(20,0,0));
         emitterSet.setGraphicContext(new DefaultGraphicContext(ShaderRegistry.AMBIENT_SHADER));
         emitterSet.add(particleEmitter);
         VertexLight light3 = new VertexLight(0.001f, new Vector4f(0.9f, 0.9f, 0.9f, 1.0f), new Vector3f( 7, 0, -10));
         VertexLight light4 = new VertexLight(0.001f, new Vector4f(0.9f, 0.9f, 0.9f, 1.0f), new Vector3f( 7, 0, 10));
+        VertexLight light5 = new VertexLight(0.001f, new Vector4f(0.9f, 0.9f, 0.9f, 1.0f), new Vector3f( 20, 10, 3));
         emitterSet.add(light3);
-        emitterSet.add(light4);  */
+        emitterSet.add(light4);
+        emitterSet.add(light5);
         emitterSet.setup();
 
 
@@ -135,10 +137,10 @@ public class CelestialState extends AbstractGraphicState implements Initializing
             planetSet.add(body);
         }
 
-        VertexLight light5 = new VertexLight(0.001f, new Vector4f(0.9f, 0.9f, 0.9f, 1.0f), new Vector3f( 7, 0, -10));
-        VertexLight light6 = new VertexLight(0.001f, new Vector4f(0.9f, 0.9f, 0.9f, 1.0f), new Vector3f( 7, 0, 10));
-        planetSet.add(light5);
+        VertexLight light6 = new VertexLight(0.001f, new Vector4f(0.9f, 0.9f, 0.9f, 1.0f), new Vector3f( 7, 0, -10));
+        VertexLight light7 = new VertexLight(0.001f, new Vector4f(0.9f, 0.9f, 0.9f, 1.0f), new Vector3f( 7, 0, 10));
         planetSet.add(light6);
+        planetSet.add(light7);
 
         planetSet.setup();
 

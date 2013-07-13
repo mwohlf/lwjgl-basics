@@ -41,10 +41,8 @@ public class LwjglInputSource implements InputSource {
         processKeyboardState(delta);
         processMouseWheel(delta);
         processMouseButtonChanges(delta);
-
-        /*
-         * processMousePosition(delta); processMouseMove(delta);
-         */
+        processMousePosition(delta);
+        processMouseMove(delta);
     }
 
     /** {@inheritDoc} */

@@ -171,7 +171,7 @@ public final class SimpleMath {
         if (dot <= -(1f - EPSILON)) {
             // opposite direction, create a random axis
             Vector3f axis = Vector3f.cross(startNorm, X_AXIS, new Vector3f());
-            if (axis.length() <= EPSILON) {// pick another if colinear
+            if (axis.length() <= EPSILON) {// pick another if co-linear
                 axis = Vector3f.cross(startNorm, Y_AXIS, new Vector3f());
             }
             axis.normalise();
@@ -532,15 +532,7 @@ public final class SimpleMath {
         q.w = q.w / l;
     }
 
-    /**
-     * <p>
-     * multLocal.
-     * </p>
-     *
-     * @param vec
-     *            a {@link org.lwjgl.util.vector.Vector3f} object.
-     * @return a {@link org.lwjgl.util.vector.Vector3f} object.
-     */
+
     public static Vector3f multLocal(Vector3f vec, Quaternion q) {
         float xx, yy, zz;
         // @formatter:off

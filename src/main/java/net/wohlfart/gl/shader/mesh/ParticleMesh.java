@@ -26,7 +26,7 @@ public class ParticleMesh implements IsRenderable {
     private final int textureId;
 
 
-    protected ParticleMesh(int vaoHandle, int verticesCount, int primitive, int textureId) {
+    private ParticleMesh(int vaoHandle, int verticesCount, int primitive, int textureId) {
         this.vaoHandle = vaoHandle;
         this.verticesCount = verticesCount;
         this.primitive = primitive;

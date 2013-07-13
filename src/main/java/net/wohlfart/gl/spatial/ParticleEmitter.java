@@ -84,8 +84,10 @@ public class ParticleEmitter extends AbstractRenderable implements Emitter {
 
     /**
      * the vertex stream has the following format:
-     *
-     * 4 position coords 4 normal coords 2 texture coords
+     * 3 position coords
+     * 4 color coords
+     * 3 normal coords
+     * 2 texture coords
      *
      *
      * @return

@@ -151,8 +151,6 @@ public class AnotherSimpleMathTest extends VectorTestBase {
 
     @Test
     public void poleVectors() {
-        int width = 1257;
-        int height = 1257;  // we get rounding problems here !
         Vector3f vec;
 
         vec = SimpleMath.getNormalVector(0, 0);

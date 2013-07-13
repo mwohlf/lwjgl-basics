@@ -18,11 +18,11 @@ public class CelestialBody extends AbstractRenderable implements SpatialEntity {
 
     private final float radius;
 
-    private final float rotSpeed;
 
-    private final float pathRadius;
-
-    private final float pathArc;
+    // needed later for rendering inside the system
+    //private final float rotSpeed;
+    //private final float pathRadius;
+    //private final float pathArc;
 
 
     public CelestialBody(long seed) {
@@ -32,9 +32,9 @@ public class CelestialBody extends AbstractRenderable implements SpatialEntity {
         final int index = random.nextInt(CelestialType.values().length);
         this.planetType = CelestialType.values()[index];
         this.radius = SimpleMath.random(planetType.minRadius, planetType.maxRadius);
-        this.rotSpeed = SimpleMath.random(planetType.minRot, planetType.maxRot);
-        this.pathRadius = SimpleMath.random(planetType.minPathRadius, planetType.maxPathRadius);
-        this.pathArc = SimpleMath.random((float) -Math.PI, (float) Math.PI); // location on the path
+        //this.rotSpeed = SimpleMath.random(planetType.minRot, planetType.maxRot);
+        //this.pathRadius = SimpleMath.random(planetType.minPathRadius, planetType.maxPathRadius);
+        //this.pathArc = SimpleMath.random((float) -Math.PI, (float) Math.PI); // location on the path
     }
 
 

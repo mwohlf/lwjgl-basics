@@ -38,7 +38,7 @@ public class TexturedMesh implements IsRenderable {
     private final int textureId;
 
 
-    protected TexturedMesh(int vaoHandle, int indicesType, int indexElemSize, int indicesCount, int indexOffset, int textureId) {
+    private TexturedMesh(int vaoHandle, int indicesType, int indexElemSize, int indicesCount, int indexOffset, int textureId) {
         this.vaoHandle = vaoHandle;
         this.indicesType = indicesType;
         this.indexElemSize = indexElemSize;

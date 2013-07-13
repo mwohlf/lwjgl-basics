@@ -9,6 +9,7 @@ import net.wohlfart.gl.view.PickingRay;
 
 import org.lwjgl.util.vector.Vector3f;
 
+@SuppressWarnings("serial")
 public class InvadorsBucket extends ModelBucket {
 
     private static final int MIN_MODEL_COUNT = 3000;

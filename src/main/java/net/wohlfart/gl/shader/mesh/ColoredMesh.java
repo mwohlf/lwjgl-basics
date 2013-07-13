@@ -17,7 +17,7 @@ public class ColoredMesh implements IsRenderable {
     private final int indexElemSize;
     private final int indicesType;
 
-    protected ColoredMesh(int vaoHandle, int indicesType, int indexElemSize, int indicesCount, int indexOffset) {
+    private ColoredMesh(int vaoHandle, int indicesType, int indexElemSize, int indicesCount, int indexOffset) {
         this.vaoHandle = vaoHandle;
         this.indicesType = indicesType;
         this.indexElemSize = indexElemSize;

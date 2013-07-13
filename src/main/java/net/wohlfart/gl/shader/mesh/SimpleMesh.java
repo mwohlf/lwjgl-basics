@@ -18,7 +18,7 @@ public class SimpleMesh implements IsRenderable {
     private final int indicesCount;
     private final int primitive;
 
-    protected SimpleMesh(int vaoHandle, int indicesCount, int primitive) {
+    private SimpleMesh(int vaoHandle, int indicesCount, int primitive) {
         this.vaoHandle = vaoHandle;
         this.indicesCount = indicesCount;
         this.primitive = primitive;

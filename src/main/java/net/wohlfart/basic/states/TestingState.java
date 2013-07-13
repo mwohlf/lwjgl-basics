@@ -34,11 +34,11 @@ public class TestingState extends AbstractGraphicState implements InitializingBe
     public void setup() {
         super.setup();
         hud.setup();
-        hud.add(new Label(0, 0, "hello world at (0,0)"));
+        hud.add(new Label(-100, -100, "test state"));
 
         ParticleEmitter particleEmitter = new ParticleEmitter();
-        particleEmitter.setPosition(new Vector3f(20,0,0));
-        emitterSet.setGraphicContext(new DefaultGraphicContext(ShaderRegistry.AMBIENT_SHADER));
+        particleEmitter.setPosition(new Vector3f(0,0,-10));
+        emitterSet.setGraphicContext(new DefaultGraphicContext(ShaderRegistry.DEFAULT_SHADER));
         emitterSet.add(particleEmitter);
 
         VertexLight light3 = new VertexLight(0.001f, new Vector4f(0.9f, 0.9f, 0.9f, 1.0f), new Vector3f( 7, 0, -10));
