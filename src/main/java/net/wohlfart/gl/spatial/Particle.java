@@ -48,7 +48,7 @@ public class Particle implements PoolableObject {
     }
 
 
-    public void update(float delta) {
+    public void update(float delta, Vector3f emitterPos) {
 
         lifetime -= delta;
         if (lifetime < 0) {
@@ -63,7 +63,7 @@ public class Particle implements PoolableObject {
         v.scale(delta);
         position = Vector3f.add(position, v, position);
 
-        verticesBuffer = floatBufferStrategy.create(position);
+        verticesBuffer = floatBufferStrategy.create(position, emitterPos);
     }
 
     public FloatBuffer getVerticesBuffer() {
@@ -132,11 +132,14 @@ public class Particle implements PoolableObject {
         // @formatter:on
 
 
-        FloatBuffer create(Vector3f position) {
+        FloatBuffer create(Vector3f position, Vector3f emitterPos) {
             Camera cam = GraphicContextManager.INSTANCE.getCamera();
 
+            Vector3f worldPos = new Vector3f(position);
+            Vector3f.add(worldPos, emitterPos, worldPos);
+
             Vector3f normal = new Vector3f(cam.getPosition());
-            Vector3f.sub(normal, position, normal);
+            Vector3f.sub(normal, worldPos, normal);
             normal.normalise();
 
             // facing cam
@@ -147,8 +150,6 @@ public class Particle implements PoolableObject {
             vectors[1].set(-0.5f, -0.5f, 0);
             vectors[2].set(+0.5f, -0.5f, 0);
             vectors[3].set(+0.5f, +0.5f, 0);
-
-
 
             for (final Vector3f vec : vectors) {
                 SimpleMath.mul(q, vec, vec);

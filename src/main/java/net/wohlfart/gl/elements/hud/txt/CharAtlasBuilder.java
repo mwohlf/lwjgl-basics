@@ -1,4 +1,4 @@
-package net.wohlfart.gl.elements.hud.widgets;
+package net.wohlfart.gl.elements.hud.txt;
 
 import java.awt.Color;
 import java.awt.Font;
@@ -10,6 +10,8 @@ import java.awt.font.LineMetrics;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.InputStream;
+
+import net.wohlfart.basic.GenericGameException;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -47,7 +49,7 @@ public class CharAtlasBuilder {
             font = font.deriveFont(fontSize); // size
             return createCharacterAtlas(font);
         } catch (FontFormatException | IOException ex) {
-            throw new WidgetError("can't create font from file '" + fontFile + "'", ex);
+            throw new GenericGameException("can't create font from file '" + fontFile + "'", ex);
         }
     }
 

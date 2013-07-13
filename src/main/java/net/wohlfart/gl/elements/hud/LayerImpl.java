@@ -3,10 +3,9 @@ package net.wohlfart.gl.elements.hud;
 import java.util.HashSet;
 
 import net.wohlfart.basic.elements.IsRenderable;
-import net.wohlfart.basic.elements.IsUpdateable;
-import net.wohlfart.gl.elements.hud.Layer.LayerElement;
-import net.wohlfart.gl.elements.hud.widgets.CharAtlas;
-import net.wohlfart.gl.elements.hud.widgets.CharAtlasBuilder;
+import net.wohlfart.gl.elements.hud.Layer.Widget;
+import net.wohlfart.gl.elements.hud.txt.CharAtlas;
+import net.wohlfart.gl.elements.hud.txt.CharAtlasBuilder;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,7 +15,7 @@ import org.slf4j.LoggerFactory;
 // and: http://www.arcsynthesis.org/gltut/Positioning/Tut07%20The%20Perils%20of%20World%20Space.html
 // and: http://www.arcsynthesis.org/gltut/Positioning/Tutorial%2005.html
 @SuppressWarnings("serial")
-class LayerImpl extends HashSet<LayerElement> implements Layer {
+class LayerImpl extends HashSet<Widget> implements Layer {
 
     protected static final Logger LOGGER = LoggerFactory.getLogger(LayerImpl.class);
 
@@ -24,12 +23,6 @@ class LayerImpl extends HashSet<LayerElement> implements Layer {
 
     @Override
     public void render() {
-        if (characterAtlas == null) {
-            characterAtlas = new CharAtlasBuilder()
-                .setFontSize(12)
-                //.setBorderOn(true)
-                .build();
-        }
         for (final IsRenderable component : this) {
             component.render();
         }
@@ -40,7 +33,7 @@ class LayerImpl extends HashSet<LayerElement> implements Layer {
     }
 
     @Override
-    public boolean add(LayerElement label) {
+    public boolean add(Widget label) {
         label.setLayer(this); // double dispatch
         return super.add(label);
     }
@@ -52,7 +45,13 @@ class LayerImpl extends HashSet<LayerElement> implements Layer {
 
     @Override
     public void update(float tpf) {
-        for (final IsUpdateable component : this) {
+        if (characterAtlas == null) {
+            characterAtlas = new CharAtlasBuilder()
+                .setFontSize(12)
+                //.setBorderOn(true)
+                .build();
+        }
+        for (final Widget component : this) {
             component.update(tpf);
         }
     }

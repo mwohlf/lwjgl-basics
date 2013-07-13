@@ -1,4 +1,4 @@
-package net.wohlfart.gl.elements.hud.widgets;
+package net.wohlfart.gl.elements.hud.txt;
 
 import java.awt.image.BufferedImage;
 import java.nio.ByteBuffer;

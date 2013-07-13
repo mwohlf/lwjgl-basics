@@ -13,7 +13,7 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.WindowConstants;
 
-import net.wohlfart.gl.elements.hud.widgets.CharAtlasBuilder;
+import net.wohlfart.gl.elements.hud.txt.CharAtlasBuilder;
 
 import org.lwjgl.LWJGLException;
 import org.lwjgl.opengl.ContextAttribs;

@@ -1,4 +1,4 @@
-package net.wohlfart.gl.elements.hud.widgets;
+package net.wohlfart.gl.elements.hud.txt;
 
 import java.util.HashSet;
 
@@ -6,7 +6,7 @@ import net.wohlfart.basic.elements.IsRenderable;
 import net.wohlfart.gl.elements.hud.Layer;
 
 
-public abstract class AbstractTextComponent implements Layer.LayerElement {
+public abstract class AbstractCharComponent implements Layer.Widget {
 
     private Layer layer;
 
@@ -22,7 +22,7 @@ public abstract class AbstractTextComponent implements Layer.LayerElement {
     }
 
 
-    protected HashSet<IsRenderable> createMeshSet(int x, int y, String string) {
+    protected HashSet<IsRenderable> createCharElements(int x, int y, String string) {
         assert string != null : "string to create MeshSet is null";
         final HashSet<IsRenderable> characters = new HashSet<IsRenderable>();
 

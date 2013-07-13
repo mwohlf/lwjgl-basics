@@ -3,9 +3,10 @@ package net.wohlfart.gl.elements.hud.widgets;
 import java.util.Collection;
 
 import net.wohlfart.basic.elements.IsRenderable;
+import net.wohlfart.gl.elements.hud.txt.AbstractCharComponent;
 
 
-public class Label extends AbstractTextComponent {
+public class Label extends AbstractCharComponent {
 
     final int x;
     final int y;
@@ -21,7 +22,7 @@ public class Label extends AbstractTextComponent {
     @Override
     public void render() {
         if (characters == null) {
-            characters = createMeshSet(x, y, string);
+            characters = createCharElements(x, y, string);
         }
         for (final IsRenderable renderable : characters) {
             renderable.render();
@@ -30,7 +31,6 @@ public class Label extends AbstractTextComponent {
 
     @Override
     public void update(float timeInSec) {
-
     }
 
     @Override

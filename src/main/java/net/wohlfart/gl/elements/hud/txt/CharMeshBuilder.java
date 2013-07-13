@@ -1,4 +1,4 @@
-package net.wohlfart.gl.elements.hud.widgets;
+package net.wohlfart.gl.elements.hud.txt;
 
 import net.wohlfart.basic.elements.IsRenderable;
 import net.wohlfart.gl.shader.GraphicContextManager;

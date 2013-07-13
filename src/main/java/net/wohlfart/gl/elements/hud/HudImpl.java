@@ -1,6 +1,6 @@
 package net.wohlfart.gl.elements.hud;
 
-import net.wohlfart.gl.elements.hud.Layer.LayerElement;
+import net.wohlfart.gl.elements.hud.Layer.Widget;
 import net.wohlfart.gl.shader.DefaultGraphicContext;
 import net.wohlfart.gl.shader.GraphicContextManager;
 import net.wohlfart.gl.shader.GraphicContextManager.IGraphicContext;
@@ -26,7 +26,7 @@ public class HudImpl implements Hud {
     }
 
     @Override
-    public void add(LayerElement label) {
+    public void add(Widget label) {
         layer.add(label);
     }
 

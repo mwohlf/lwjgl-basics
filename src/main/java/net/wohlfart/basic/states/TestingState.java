@@ -6,11 +6,9 @@ import net.wohlfart.gl.elements.hud.HudImpl;
 import net.wohlfart.gl.elements.hud.widgets.Label;
 import net.wohlfart.gl.shader.DefaultGraphicContext;
 import net.wohlfart.gl.shader.ShaderRegistry;
-import net.wohlfart.gl.shader.VertexLight;
 import net.wohlfart.gl.spatial.ParticleEmitter;
 
 import org.lwjgl.util.vector.Vector3f;
-import org.lwjgl.util.vector.Vector4f;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.InitializingBean;
@@ -37,14 +35,11 @@ public class TestingState extends AbstractGraphicState implements InitializingBe
         hud.add(new Label(-100, -100, "test state"));
 
         ParticleEmitter particleEmitter = new ParticleEmitter();
-        particleEmitter.setPosition(new Vector3f(0,0,-10));
+        particleEmitter.setPosition(new Vector3f(0,0,-30));
         emitterSet.setGraphicContext(new DefaultGraphicContext(ShaderRegistry.DEFAULT_SHADER));
         emitterSet.add(particleEmitter);
 
-        VertexLight light3 = new VertexLight(0.001f, new Vector4f(0.9f, 0.9f, 0.9f, 1.0f), new Vector3f( 7, 0, -10));
-        VertexLight light4 = new VertexLight(0.001f, new Vector4f(0.9f, 0.9f, 0.9f, 1.0f), new Vector3f( 7, 0, 10));
-        emitterSet.add(light3);
-        emitterSet.add(light4);
+
         emitterSet.setup();
     }
 

@@ -27,10 +27,10 @@ import org.slf4j.LoggerFactory;
 public class ParticleEmitter extends AbstractRenderable implements Emitter {
     private static final Logger LOGGER = LoggerFactory.getLogger(ParticleEmitter.class);
 
-    Set<Particle> particles = new HashSet<Particle>();
-    int newPerSecond; // new particles per second;
-    float leftover; // fraction from last update
-    Integer commonTextureId;
+    private final Set<Particle> particles = new HashSet<Particle>();
+    private final int newPerSecond; // new particles per second;
+    private float leftover; // fraction from last update
+    private Integer commonTextureId;
 
     public ParticleEmitter() {
         this.newPerSecond = 5;
@@ -76,7 +76,7 @@ public class ParticleEmitter extends AbstractRenderable implements Emitter {
                 iterator.remove();
                 particle.reset();
             }
-            particle.update(timeInSec);
+            particle.update(timeInSec, getPosition());
         }
         reCreateRenderable(true);
         super.update(timeInSec);
