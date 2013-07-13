@@ -3,7 +3,7 @@ package net.wohlfart.basic.states;
 import net.wohlfart.basic.container.DefaultRenderSet;
 import net.wohlfart.gl.elements.hud.Hud;
 import net.wohlfart.gl.elements.hud.HudImpl;
-import net.wohlfart.gl.elements.hud.widgets.Label;
+import net.wohlfart.gl.elements.hud.widgets.SimpleLabel;
 import net.wohlfart.gl.shader.DefaultGraphicContext;
 import net.wohlfart.gl.shader.ShaderRegistry;
 import net.wohlfart.gl.spatial.ParticleEmitter;
@@ -32,7 +32,7 @@ public class TestingState extends AbstractGraphicState implements InitializingBe
     public void setup() {
         super.setup();
         hud.setup();
-        hud.add(new Label(-100, -100, "test state"));
+        hud.add(new SimpleLabel(-100, -100, "test state"));
 
         ParticleEmitter particleEmitter = new ParticleEmitter();
         particleEmitter.setPosition(new Vector3f(0,0,-30));

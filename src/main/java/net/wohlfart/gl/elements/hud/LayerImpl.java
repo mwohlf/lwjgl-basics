@@ -6,6 +6,9 @@ import net.wohlfart.basic.elements.IsRenderable;
 import net.wohlfart.gl.elements.hud.Layer.Widget;
 import net.wohlfart.gl.elements.hud.txt.CharAtlas;
 import net.wohlfart.gl.elements.hud.txt.CharAtlasBuilder;
+import net.wohlfart.gl.elements.hud.txt.CharInfo;
+import net.wohlfart.gl.elements.hud.txt.CharMeshBuilder;
+import net.wohlfart.gl.elements.hud.txt.CharSet;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -39,8 +42,30 @@ class LayerImpl extends HashSet<Widget> implements Layer {
     }
 
     @Override
-    public CharAtlas getCharacterAtlas() {
-        return characterAtlas;
+    public IsRenderable createCharElements(int x, int y, String string) {
+        assert string != null : "string to create MeshSet is null";
+        final CharSet characters = new CharSet();
+
+        final CharMeshBuilder builder = new CharMeshBuilder();
+        builder.setCharAtlas(characterAtlas);
+
+        int d = 0;
+        final char[] charArray = string.toCharArray();
+        for (final char c : charArray) {
+            CharInfo info = characterAtlas.getCharInfo(c);
+            if (info == null) {
+                info = characterAtlas.getCharInfo(CharAtlasBuilder.NULL_CHAR);
+            }
+            builder.setCharInfo(info);
+            builder.setScreenX(x + d);
+            builder.setScreenY(y);
+            final IsRenderable renderable = builder.build();
+            d += info.getWidth();
+            if (renderable != null) {
+                characters.add(renderable);
+            }
+        }
+        return characters;
     }
 
     @Override

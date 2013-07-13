@@ -14,7 +14,7 @@ import org.lwjgl.opengl.GL30;
 /**
  * this creates a mesh for a single character
  */
-class CharMeshBuilder extends AbstractMeshBuilder {
+public class CharMeshBuilder extends AbstractMeshBuilder {
 
     private CharAtlas atlas;
     private CharInfo info;

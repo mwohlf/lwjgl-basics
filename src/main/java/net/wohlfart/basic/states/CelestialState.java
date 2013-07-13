@@ -11,9 +11,9 @@ import net.wohlfart.gl.elements.TexturedQuad;
 import net.wohlfart.gl.elements.debug.Arrow;
 import net.wohlfart.gl.elements.hud.Hud;
 import net.wohlfart.gl.elements.hud.HudImpl;
-import net.wohlfart.gl.elements.hud.widgets.Label;
+import net.wohlfart.gl.elements.hud.widgets.SimpleLabel;
 import net.wohlfart.gl.elements.hud.widgets.MouseClickLabel;
-import net.wohlfart.gl.elements.hud.widgets.Statistics;
+import net.wohlfart.gl.elements.hud.widgets.StatisticLabel;
 import net.wohlfart.gl.elements.skybox.Skybox;
 import net.wohlfart.gl.elements.skybox.SkyboxImpl;
 import net.wohlfart.gl.shader.DefaultGraphicContext;
@@ -144,12 +144,12 @@ public class CelestialState extends AbstractGraphicState implements Initializing
 
         planetSet.setup();
 
-        hud.add(new Label(0, 0, "hello world at (0,0)"));
+        hud.add(new SimpleLabel(0, 0, "hello world at (0,0)"));
 
         ElementPicker elementPicker = new ElementPicker(wireframeBucket);
         getGraphContextManager().register(elementPicker);
 
-        hud.add(new Statistics(0, -70));
+        hud.add(new StatisticLabel(0, -70));
         hud.add(new MouseClickLabel(0, -35));
 
         hud.setup();

@@ -3,7 +3,7 @@ package net.wohlfart.gl.elements.hud.txt;
 /*
  * dimension info for a single character
  */
-class CharInfo {
+public class CharInfo {
     protected final char c;
     protected final float x;
     protected final float y;

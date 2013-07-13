@@ -25,6 +25,6 @@ public interface IsRenderable extends Renderable, HasResouces {
 
 
     @Override
-    void render();
+    public void render();
 
 }

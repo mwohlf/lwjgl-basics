@@ -2,7 +2,6 @@ package net.wohlfart.gl.elements.hud;
 
 import net.wohlfart.basic.elements.IsRenderable;
 import net.wohlfart.basic.elements.IsUpdatable;
-import net.wohlfart.gl.elements.hud.txt.CharAtlas;
 
 
 public interface Layer extends IsRenderable, IsUpdatable {
@@ -23,7 +22,7 @@ public interface Layer extends IsRenderable, IsUpdatable {
     }
 
 
-    CharAtlas getCharacterAtlas();
+    IsRenderable createCharElements(int x, int y, String string);
 
     boolean add(Widget widget);
 

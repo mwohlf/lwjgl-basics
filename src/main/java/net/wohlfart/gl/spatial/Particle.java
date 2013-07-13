@@ -35,7 +35,7 @@ public class Particle implements PoolableObject {
     private FloatBuffer verticesBuffer;
 
 
-    public static Particle create(  float lifetime,
+    public static Particle create(float lifetime,
             Vector3f position,
             Vector3f velocity,
             Vector3f acceleration) {

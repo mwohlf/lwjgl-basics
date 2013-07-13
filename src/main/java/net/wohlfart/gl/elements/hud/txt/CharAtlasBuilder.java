@@ -27,7 +27,7 @@ public class CharAtlasBuilder {
     // private static final String FONT_FILE = "/fonts/AeroviasBrasilNF.ttf";
     private static final String DEFAULT_FONT_FILE = "/fonts/VeraMono.ttf";
 
-    static final char NULL_CHAR = '_';
+    public static final char NULL_CHAR = '_';
     private static final String CHARS = " abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789;:,.-_#+?!\"()";
     {
         if (!CHARS.contains(String.valueOf(NULL_CHAR))) {

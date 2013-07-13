@@ -1,19 +1,17 @@
 package net.wohlfart.gl.elements.hud.widgets;
 
-import java.util.Collection;
-
 import net.wohlfart.basic.elements.IsRenderable;
 import net.wohlfart.gl.elements.hud.txt.AbstractCharComponent;
 
 
-public class Label extends AbstractCharComponent {
+public class SimpleLabel extends AbstractCharComponent {
 
     final int x;
     final int y;
     private final String string;
-    private Collection<IsRenderable> characters;
+    private IsRenderable characters;
 
-    public Label(int x, int y, String string) {
+    public SimpleLabel(int x, int y, String string) {
         this.x = x;
         this.y = y;
         this.string = string;
@@ -22,11 +20,9 @@ public class Label extends AbstractCharComponent {
     @Override
     public void render() {
         if (characters == null) {
-            characters = createCharElements(x, y, string);
+            characters = getLayer().createCharElements(x, y, string);
         }
-        for (final IsRenderable renderable : characters) {
-            renderable.render();
-        }
+        characters.render();
     }
 
     @Override
@@ -35,9 +31,7 @@ public class Label extends AbstractCharComponent {
 
     @Override
     public void destroy() {
-        for (final IsRenderable renderable : characters) {
-            renderable.destroy();
-        }
+        characters.destroy();
         characters = null;
     }
 

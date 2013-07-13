@@ -2,7 +2,7 @@ package net.wohlfart.basic.states;
 
 import net.wohlfart.gl.elements.hud.Hud;
 import net.wohlfart.gl.elements.hud.HudImpl;
-import net.wohlfart.gl.elements.hud.widgets.Label;
+import net.wohlfart.gl.elements.hud.widgets.SimpleLabel;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -28,7 +28,7 @@ final class SimpleState extends AbstractGraphicState implements InitializingBean
     public void setup() {
         super.setup();
         hud.setup();
-        hud.add(new Label(0, 0, "hello world at (0,0)"));
+        hud.add(new SimpleLabel(0, 0, "hello world at (0,0)"));
     }
 
     @Override

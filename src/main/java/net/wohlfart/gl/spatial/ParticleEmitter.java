@@ -24,6 +24,11 @@ import org.lwjgl.util.vector.Vector3f;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+//
+// we seriously need to optimize here...
+// see: http://stackoverflow.com/questions/10697161/why-floatbuffer-instead-of-float
+// see: http://www.java-gaming.org/index.php?topic=22699.0
+//
 public class ParticleEmitter extends AbstractRenderable implements Emitter {
     private static final Logger LOGGER = LoggerFactory.getLogger(ParticleEmitter.class);
 
@@ -38,7 +43,7 @@ public class ParticleEmitter extends AbstractRenderable implements Emitter {
 
     protected void add(int count) {
         for (int i = 0; i < count; i++) {
-            particles.add(Particle.create(100, // lifetime
+            particles.add(Particle.create(10, // lifetime
                     new Vector3f(0, 0, 0), // position
                     new Vector3f(SimpleMath.random(-0.5f, 0.5f), 3f, SimpleMath.random(-0.5f, 0.5f)), // speed
                     new Vector3f(0, -0.3f, 0) // acceleration
@@ -58,7 +63,6 @@ public class ParticleEmitter extends AbstractRenderable implements Emitter {
         builder.setFlippedFloatBuffer(getFlippedFloatBuffer());
         builder.setParticleCount(particles.size());
         builder.setTextureId(commonTextureId);
-        // builder.setTextureFilename("/gfx/images/ash_uvgrid01.png");
         return builder.build();
     }
 
@@ -88,9 +92,6 @@ public class ParticleEmitter extends AbstractRenderable implements Emitter {
      * 4 color coords
      * 3 normal coords
      * 2 texture coords
-     *
-     *
-     * @return
      */
     FloatBuffer getFlippedFloatBuffer() {
         FloatBuffer verticesBuffer = BufferUtils.createFloatBuffer(particles.size() * 6 * (3 + 4 + 3 + 2));

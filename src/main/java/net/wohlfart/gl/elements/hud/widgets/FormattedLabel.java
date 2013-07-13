@@ -1,7 +1,6 @@
 package net.wohlfart.gl.elements.hud.widgets;
 
 import java.text.MessageFormat;
-import java.util.Collection;
 
 import net.wohlfart.basic.elements.IsRenderable;
 import net.wohlfart.gl.elements.hud.txt.AbstractCharComponent;
@@ -12,7 +11,7 @@ public class FormattedLabel extends AbstractCharComponent {
     private final int x;
     private final int y;
     private final MessageFormat format;
-    private Collection<IsRenderable> characters;
+    private IsRenderable characters;
     private Object[] arguments;
 
 
@@ -36,11 +35,9 @@ public class FormattedLabel extends AbstractCharComponent {
     public void render() {
         if (characters == null) {
             final String string = format.format(arguments, new StringBuffer(), null).toString();
-            characters = createCharElements(x, y, string);
+            characters = getLayer().createCharElements(x, y, string);
         }
-        for (final IsRenderable renderable : characters) {
-            renderable.render();
-        }
+        characters.render();
     }
 
     @Override
@@ -51,9 +48,7 @@ public class FormattedLabel extends AbstractCharComponent {
         if (characters == null) {
             return;
         }
-        for (final IsRenderable renderable : characters) {
-            renderable.destroy();
-        }
+        characters.destroy();
         characters = null;
     }
 
