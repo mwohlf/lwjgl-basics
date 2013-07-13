@@ -2,7 +2,7 @@ package net.wohlfart.basic.container;
 
 import java.util.HashSet;
 
-import net.wohlfart.basic.elements.IsUpdateable;
+import net.wohlfart.basic.elements.IsUpdatable;
 import net.wohlfart.gl.shader.DefaultGraphicContext;
 import net.wohlfart.gl.shader.GraphicContextManager;
 import net.wohlfart.gl.shader.GraphicContextManager.IGraphicContext;
@@ -21,7 +21,7 @@ import org.lwjgl.util.vector.Vector3f;
  * keeping the graphic context and some lights if needed
  */
 @SuppressWarnings("serial")
-public class DefaultRenderSet<T extends IsUpdateable> extends HashSet<T> implements RenderSet<T>, IsUpdateable { // REVIEWED
+public class DefaultRenderSet<T extends IsUpdatable> extends HashSet<T> implements RenderSet<T>, IsUpdatable { // REVIEWED
 
     private IGraphicContext graphicContext;
 

@@ -6,7 +6,7 @@ import net.wohlfart.basic.container.DefaultRenderSet;
 import net.wohlfart.basic.container.ModelRenderSet;
 import net.wohlfart.basic.container.ModelToolkit;
 import net.wohlfart.basic.container.WireframeToolkit;
-import net.wohlfart.basic.elements.IsUpdateable;
+import net.wohlfart.basic.elements.IsUpdatable;
 import net.wohlfart.gl.elements.TexturedQuad;
 import net.wohlfart.gl.elements.debug.Arrow;
 import net.wohlfart.gl.elements.hud.Hud;
@@ -46,9 +46,9 @@ public class CelestialState extends AbstractGraphicState implements Initializing
 
     private final DefaultRenderSet<ParticleEmitter> emitterSet = new DefaultRenderSet<>();
 
-    private final DefaultRenderSet<IsUpdateable> wireframeBucket = new DefaultRenderSet<>();
+    private final DefaultRenderSet<IsUpdatable> wireframeBucket = new DefaultRenderSet<>();
 
-    private final DefaultRenderSet<IsUpdateable> meshBucket = new DefaultRenderSet<>();
+    private final DefaultRenderSet<IsUpdatable> meshBucket = new DefaultRenderSet<>();
 
     private final Hud hud = new HudImpl();
 

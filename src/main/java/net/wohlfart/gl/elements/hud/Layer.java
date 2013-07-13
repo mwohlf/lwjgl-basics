@@ -1,13 +1,13 @@
 package net.wohlfart.gl.elements.hud;
 
 import net.wohlfart.basic.elements.IsRenderable;
-import net.wohlfart.basic.elements.IsUpdateable;
+import net.wohlfart.basic.elements.IsUpdatable;
 import net.wohlfart.gl.elements.hud.txt.CharAtlas;
 
 
-public interface Layer extends IsRenderable, IsUpdateable {
+public interface Layer extends IsRenderable, IsUpdatable {
 
-    interface Widget extends IsUpdateable, IsRenderable {
+    interface Widget extends IsUpdatable, IsRenderable {
 
         void setLayer(Layer layer);
 

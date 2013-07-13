@@ -1,6 +1,6 @@
 package net.wohlfart.basic.elements;
 
-public interface IsUpdateable extends IsRenderable {
+public interface IsUpdatable extends IsRenderable {
 
     /**
      * call to update the internal state of this object

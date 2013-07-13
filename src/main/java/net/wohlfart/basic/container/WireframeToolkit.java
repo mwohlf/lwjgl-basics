@@ -8,7 +8,7 @@ import java.util.HashSet;
 import net.wohlfart.basic.GenericGameException;
 import net.wohlfart.basic.action.OrbitAction;
 import net.wohlfart.basic.action.SpatialActor.Action;
-import net.wohlfart.basic.elements.IsUpdateable;
+import net.wohlfart.basic.elements.IsUpdatable;
 import net.wohlfart.gl.antlr4.ModelLoader;
 import net.wohlfart.gl.elements.AbstractRenderable;
 import net.wohlfart.gl.elements.ColoredQuad;
@@ -31,8 +31,8 @@ import org.lwjgl.util.vector.Vector3f;
  */
 public final class WireframeToolkit {
 
-    public static Collection<IsUpdateable> createCircledTarget() {
-        final HashSet<IsUpdateable> elemBucket = new HashSet<>();
+    public static Collection<IsUpdatable> createCircledTarget() {
+        final HashSet<IsUpdatable> elemBucket = new HashSet<>();
         elemBucket.add(new Circle(1));
         elemBucket.add(new Circle(10));
         elemBucket.add(new Circle(20));
@@ -47,8 +47,8 @@ public final class WireframeToolkit {
         return elemBucket;
     }
 
-    public static Collection<IsUpdateable> createRandomLocatedSpheres() {
-        final HashSet<IsUpdateable> elemBucket = new HashSet<>();
+    public static Collection<IsUpdatable> createRandomLocatedSpheres() {
+        final HashSet<IsUpdatable> elemBucket = new HashSet<>();
         final GraphicContextManager graphContext = GraphicContextManager.INSTANCE;
         final float farPlane = graphContext.getFarPlane();
         for (int i = 0; i < 10000; i++) {
@@ -63,17 +63,17 @@ public final class WireframeToolkit {
         return elemBucket;
     }
 
-    public static Collection<IsUpdateable> createOriginAxis() {
+    public static Collection<IsUpdatable> createOriginAxis() {
         int size = 1;
-        final HashSet<IsUpdateable> elemBucket = new HashSet<>();
+        final HashSet<IsUpdatable> elemBucket = new HashSet<>();
         elemBucket.add(new Arrow(new Vector3f(size, 0, 0)).withColor(ReadableColor.RED));
         elemBucket.add(new Arrow(new Vector3f(0, size, 0)).withColor(ReadableColor.GREEN));
         elemBucket.add(new Arrow(new Vector3f(0, 0, size)).withColor(ReadableColor.BLUE));
         return elemBucket;
     }
 
-    public static Collection<IsUpdateable> createDebugElements() {
-        final HashSet<IsUpdateable> elemBucket = new HashSet<>();
+    public static Collection<IsUpdatable> createDebugElements() {
+        final HashSet<IsUpdatable> elemBucket = new HashSet<>();
         elemBucket.add(new Arrow(new Vector3f(1, 0, 0)).withColor(ReadableColor.GREEN).withTranslation(new Vector3f(-10, 0, 0)));
         elemBucket.add(new Circle(1).withColor(ReadableColor.RED).withTranslation(new Vector3f(-8, 0, 0)));
         elemBucket.add(new Cube(1).withColor(ReadableColor.BLUE).withTranslation(new Vector3f(-4, 0, 0)));
@@ -82,8 +82,8 @@ public final class WireframeToolkit {
         return elemBucket;
     }
 
-    public static Collection<IsUpdateable> createRandomElements() {
-        final HashSet<IsUpdateable> elemBucket = new HashSet<>();
+    public static Collection<IsUpdatable> createRandomElements() {
+        final HashSet<IsUpdatable> elemBucket = new HashSet<>();
 
         elemBucket.add(new Arrow(new Vector3f(1, 0, 0)).withColor(ReadableColor.RED));
         elemBucket.add(new Arrow(new Vector3f(0, 1, 0)).withColor(ReadableColor.GREEN));
