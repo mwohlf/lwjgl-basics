@@ -31,16 +31,16 @@ public class TestingState extends AbstractGraphicState implements InitializingBe
     @Override
     public void setup() {
         super.setup();
-        hud.setup();
-        hud.add(new SimpleLabel(-100, -100, "test state"));
 
         ParticleEmitter particleEmitter = new ParticleEmitter();
         particleEmitter.setPosition(new Vector3f(0,0,-30));
         emitterSet.setGraphicContext(new DefaultGraphicContext(ShaderRegistry.DEFAULT_SHADER));
         emitterSet.add(particleEmitter);
-
-
         emitterSet.setup();
+
+        hud.setup();
+        hud.add(new SimpleLabel(200, 200, "test state"));
+
     }
 
     @Override

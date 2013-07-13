@@ -31,11 +31,15 @@ import org.slf4j.LoggerFactory;
 //
 public class ParticleEmitter extends AbstractRenderable implements Emitter {
     private static final Logger LOGGER = LoggerFactory.getLogger(ParticleEmitter.class);
+    public static final int MAX_PARTICLES = 500;
 
-    private final Set<Particle> particles = new HashSet<Particle>();
+    private final Set<Particle> particles = new HashSet<Particle>(MAX_PARTICLES);
     private final int newPerSecond; // new particles per second;
     private float leftover; // fraction from last update
     private Integer commonTextureId;
+
+    private final FloatBuffer verticesBuffer = BufferUtils.createFloatBuffer(MAX_PARTICLES * 6 * (3 + 4 + 3 + 2));
+
 
     public ParticleEmitter() {
         this.newPerSecond = 5;
@@ -43,6 +47,9 @@ public class ParticleEmitter extends AbstractRenderable implements Emitter {
 
     protected void add(int count) {
         for (int i = 0; i < count; i++) {
+            if (particles.size() > MAX_PARTICLES) {
+                return;
+            }
             particles.add(Particle.create(10, // lifetime
                     new Vector3f(0, 0, 0), // position
                     new Vector3f(SimpleMath.random(-0.5f, 0.5f), 3f, SimpleMath.random(-0.5f, 0.5f)), // speed
@@ -94,7 +101,7 @@ public class ParticleEmitter extends AbstractRenderable implements Emitter {
      * 2 texture coords
      */
     FloatBuffer getFlippedFloatBuffer() {
-        FloatBuffer verticesBuffer = BufferUtils.createFloatBuffer(particles.size() * 6 * (3 + 4 + 3 + 2));
+        verticesBuffer.clear();
         for (Particle particle : particles) {
             verticesBuffer.put(particle.getVerticesBuffer());
         }
