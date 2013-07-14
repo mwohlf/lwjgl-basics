@@ -22,6 +22,7 @@ import net.wohlfart.gl.shader.VertexLight;
 import net.wohlfart.gl.spatial.CelestialBody;
 import net.wohlfart.gl.spatial.Model;
 import net.wohlfart.gl.spatial.ParticleEmitter;
+import net.wohlfart.gl.texture.CelestialType;
 import net.wohlfart.gl.view.ElementPicker;
 import net.wohlfart.gl.view.PickingRay;
 
@@ -99,8 +100,8 @@ public class CelestialState extends AbstractGraphicState implements Initializing
         light2.setPosition(new Vector3f(0,10,-20));
 
         //new PositionFrame(l1).setup();
-        modelSet.add(light1);
-        modelSet.add(light2);
+        //modelSet.add(light1);
+        //modelSet.add(light2);
 
         ParticleEmitter particleEmitter = new ParticleEmitter();
         particleEmitter.setPosition(new Vector3f(20,0,0));
@@ -129,10 +130,19 @@ public class CelestialState extends AbstractGraphicState implements Initializing
             planetSet.add(body);
         }
 
-        VertexLight light6 = new VertexLight(0.001f, new Vector4f(0.9f, 0.9f, 0.9f, 1.0f), new Vector3f( 7, 0, -10));
-        VertexLight light7 = new VertexLight(0.001f, new Vector4f(0.9f, 0.9f, 0.9f, 1.0f), new Vector3f( 7, 0, 10));
+        VertexLight light6 = new VertexLight(0.001f, new Vector4f(0.9f, 0.9f, 0.9f, 1.0f), new Vector3f( 7, 7, -13));
+        VertexLight light7 = new VertexLight(0.001f, new Vector4f(0.9f, 0.9f, 0.9f, 1.0f), new Vector3f( 7, 7, 13));
         planetSet.add(light6);
         planetSet.add(light7);
+
+        CelestialBody sun1 = new CelestialBody(1L, CelestialType.SUN, 1f);
+        sun1.setPosition(light6.getPosition());
+        planetSet.add(sun1);
+
+        CelestialBody sun2 = new CelestialBody(1L, CelestialType.SUN, 1f);
+        sun2.setPosition(light7.getPosition());
+        planetSet.add(sun2);
+
 
         planetSet.setup();
 
@@ -171,6 +181,8 @@ public class CelestialState extends AbstractGraphicState implements Initializing
         GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
         emitterSet.render();
 
+        // FIXME: transparency is broken
+        GL11.glDisable(GL11.GL_BLEND);
         modelSet.render();
         wireframeBucket.render();
         meshBucket.render();

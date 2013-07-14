@@ -110,6 +110,11 @@ public final class SimpleMath {
         return RANDOM.nextFloat() * (max - min) + min;
     }
 
+    public static float random(Random random, float min, float max) {
+        return random.nextFloat() * (max - min) + min;
+    }
+
+
     // --------- quaternion and vector stuff
     // mostly from http://content.gpwiki.org/index.php/OpenGL:Tutorials:Using_Quaternions_to_represent_rotation
 

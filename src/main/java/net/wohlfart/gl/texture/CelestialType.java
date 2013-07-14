@@ -6,15 +6,24 @@ import net.wohlfart.tools.ColorGradient;
 import net.wohlfart.tools.SimplexNoise;
 
 /**
- * different strategies for building planets
+ * different strategies for building celestial objects like planets, suns and moons...
  */
 public enum CelestialType {
+    // @formatter:off
+    SUN {{
+            maxRadius = 0.5f;
+            minRadius = 0.5f; }
 
-    GREEN {
-        {
-            maxRadius = 2f;
-            minRadius = 0.5f;
+        @Override
+        Color getColor(final float x, final float y, final float z, final float v) {
+            return Color.WHITE;
         }
+    },
+
+
+    GREEN {{
+            maxRadius = 2f;
+            minRadius = 0.5f; }
 
         @Override
         Color getColor(final float x, final float y, final float z, final float v) {
@@ -22,8 +31,7 @@ public enum CelestialType {
         }
     },
 
-    LAVA_PLANET {
-        {
+    LAVA_PLANET {{
             maxRadius = 4f;
             minRadius = 1f;
         }
@@ -36,8 +44,7 @@ public enum CelestialType {
         }
     },
 
-    WATER_PLANET {
-        {
+    WATER_PLANET {{
             maxRadius = 5f;
             minRadius = 1f;
         }
@@ -50,8 +57,7 @@ public enum CelestialType {
         }
     },
 
-    GAS_PLANET {
-        {
+    GAS_PLANET {{
             maxRadius = 7f;
             minRadius = 1f;
         }
@@ -64,13 +70,19 @@ public enum CelestialType {
         }
     },
 
-    CONTINENTAL_PLANET {
-        {
+    CONTINENTAL_PLANET {{
             maxRadius = 6f;
             minRadius = 3f;
         }
-        ColorGradient gradient = new ColorGradient(new Color(0, 0, 0), new Color(0, 0, 100), new Color(0, 0, 255), new Color(10, 10, 255), new Color(180, 180,
-                180), new Color(10, 255, 10), new Color(0, 255, 0), new Color(0, 50, 0));
+        ColorGradient gradient = new ColorGradient(
+                new Color(0, 0, 0),
+                new Color(0, 0, 100),
+                new Color(0, 0, 255),
+                new Color(10, 10, 255),
+                new Color(180, 180, 180),
+                new Color(10, 255, 10),
+                new Color(0, 255, 0),
+                new Color(0, 50, 0));
 
         @Override
         Color getColor(final float x, final float y, final float z, final float v) {
@@ -80,6 +92,8 @@ public enum CelestialType {
             return ColorGradient.linearGradient(ground, Color.WHITE, skyNoise);
         }
     };
+
+    // @formatter:on
 
     // all lengths in [10^3 km]
 
@@ -115,8 +129,7 @@ public enum CelestialType {
     // calling the noise
     double createNoise(final float x, final float y, final float z, final float v, final float amplitude, final float frequency) {
         // the noise returns [-1 .. +1]
-        // double noise = PerlinNoise.noise(x * frequency, y * frequency, z *
-        // frequency);
+        // double noise = PerlinNoise.noise(x * frequency, y * frequency, z * frequency);
         final double noise = SimplexNoise.noise(x * frequency, y * frequency, z * frequency, v);
         return amplitude * noise;
     }
