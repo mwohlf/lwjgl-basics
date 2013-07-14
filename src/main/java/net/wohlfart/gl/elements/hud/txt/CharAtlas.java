@@ -52,10 +52,6 @@ public class CharAtlas {
 
         // create a new texture object in memory and bind it
         texId = GL11.glGenTextures();
-        // not sure if we need that here
-        GL11.glEnable(GL11.GL_BLEND);
-        // GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_SRC_ALPHA);
-        GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
 
         GL13.glActiveTexture(textureUnit);
         GL11.glBindTexture(GL11.GL_TEXTURE_2D, texId);

@@ -8,7 +8,6 @@ import net.wohlfart.gl.shader.ShaderUniformHandle;
 import net.wohlfart.gl.view.Camera;
 import net.wohlfart.tools.SimpleMath;
 
-import org.lwjgl.opengl.GL11;
 import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector3f;
 
@@ -58,10 +57,6 @@ public class SkyboxImpl implements Skybox, SkyboxParameters {
         ShaderUniformHandle.MODEL_TO_WORLD.set(SimpleMath.UNION_MATRIX);
         ShaderUniformHandle.WORLD_TO_CAM.set(rotMatrix);
         ShaderUniformHandle.CAM_TO_CLIP.set(camViewMatrix);
-
-        GL11.glDisable(GL11.GL_DEPTH_TEST);
-        GL11.glClear(GL11.GL_DEPTH_BUFFER_BIT);
-        GL11.glDisable(GL11.GL_BLEND);
 
         // draw only the visible sides
         camera.getForward(viewDirection);

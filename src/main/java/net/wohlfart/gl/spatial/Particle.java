@@ -22,12 +22,10 @@ public class Particle implements PoolableObject {
     private final Vector3f a = new Vector3f();
     private final Vector3f v = new Vector3f();
 
-
     private float lifetime;        // [s]
     private Vector3f position;     // [m]
     private Vector3f velocity;     // [m/s]
     private Vector3f acceleration; // [m/s^2]
-
 
     // @formatter:off
     final Vector3f[] vectors = new Vector3f[] {
@@ -77,11 +75,7 @@ public class Particle implements PoolableObject {
     };
 
     private float[] verticesBuffer = new float[vertices.length * (3 + 4 + 3 + 2)];
-
-
     // @formatter:on
-
-
 
     public static Particle create(float lifetime,
             Vector3f position,

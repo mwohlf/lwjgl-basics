@@ -112,9 +112,6 @@ enum BoxSide implements IsRenderable {// @formatter:off
         GL13.glActiveTexture(textureUnit);
         GL11.glBindTexture(GL11.GL_TEXTURE_2D, texId);
 
-        GL11.glDisable(GL11.GL_BLEND);
-        GL11.glBlendFunc(GL11.GL_CONSTANT_ALPHA, GL11.GL_ZERO);
-
         GL11.glPixelStorei(GL11.GL_UNPACK_ALIGNMENT, 1);
         GL11.glTexImage2D(GL11.GL_TEXTURE_2D, 0, GL11.GL_RGBA8, width, height, 0, GL11.GL_RGBA, GL12.GL_UNSIGNED_INT_8_8_8_8, buffer);
 

@@ -8,8 +8,6 @@ import net.wohlfart.gl.shader.ShaderRegistry;
 import net.wohlfart.gl.shader.ShaderUniformHandle;
 import net.wohlfart.tools.SimpleMath;
 
-import org.lwjgl.opengl.GL11;
-
 
 public class HudImpl implements Hud {
 
@@ -38,10 +36,6 @@ public class HudImpl implements Hud {
         ShaderUniformHandle.MODEL_TO_WORLD.set(SimpleMath.UNION_MATRIX);
         ShaderUniformHandle.WORLD_TO_CAM.set(SimpleMath.UNION_MATRIX);
         ShaderUniformHandle.CAM_TO_CLIP.set(GraphicContextManager.INSTANCE.getPerspectiveProjMatrix());
-
-        GL11.glDisable(GL11.GL_DEPTH_TEST);
-        GL11.glClear(GL11.GL_DEPTH_BUFFER_BIT);
-        GL11.glEnable(GL11.GL_BLEND);
 
         layer.render();
     }

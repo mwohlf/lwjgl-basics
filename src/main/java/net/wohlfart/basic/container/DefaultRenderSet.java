@@ -12,7 +12,6 @@ import net.wohlfart.gl.shader.VertexLight;
 import net.wohlfart.gl.view.Camera;
 import net.wohlfart.tools.SimpleMath;
 
-import org.lwjgl.opengl.GL11;
 import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector3f;
 
@@ -70,10 +69,6 @@ public class DefaultRenderSet<T extends IsUpdatable> extends HashSet<T> implemen
         for (final VertexLight light : lights) {
             ShaderUniformHandle.LIGHTS.set(light, i++);
         }
-
-        GL11.glEnable(GL11.GL_DEPTH_TEST);
-        GL11.glClear(GL11.GL_DEPTH_BUFFER_BIT);
-        GL11.glDisable(GL11.GL_BLEND);
 
         for (T element : this) {
             element.render();

@@ -115,8 +115,6 @@ class Game implements InitializingBean { // REVIEWED
             LOGGER.debug("[ms]/frame: {} ; frame/[s]: {}", delta, 1f / delta);
             // call the models to do their things
             currentState.update(delta);
-            // clear the screen buffer, not needed if we have a skybox working
-            GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT | GL11.GL_STENCIL_BUFFER_BIT);
             // do the render magic
             currentState.render();
             Display.sync(settings.getSync());
@@ -153,7 +151,6 @@ class Game implements InitializingBean { // REVIEWED
         GL11.glClearDepth(1f);
         // turn culling off so it will be drawn regardless of which way a surface is facing
         GL11.glDisable(GL11.GL_CULL_FACE); // enable for production
-        GL11.glDisable(GL11.GL_DEPTH_TEST); // enable for production and check how this works with the skybox
 
         // wire the stuff after the display has been created and the settings have been fixed
         graphContext.setSettings(settings);
