@@ -1,29 +1,17 @@
 package net.wohlfart.gl.view;
 
-import net.wohlfart.basic.container.RenderSet;
 import net.wohlfart.gl.input.PointEvent;
 import net.wohlfart.gl.shader.GraphicContextManager;
-
-import org.lwjgl.util.vector.Matrix4f;
-import org.lwjgl.util.vector.Vector3f;
-import org.lwjgl.util.vector.Vector4f;
 
 import com.google.common.eventbus.Subscribe;
 
 public class ElementPicker {
 
-    private Matrix4f transformMatrix = new Matrix4f();
-
-    private final float width;
-    private final float height;
-    private final RenderSet<?> renderSet;
+    private float width;
+    private float height;
 
 
-    public ElementPicker(RenderSet<?> renderSet) {
-        final GraphicContextManager ctxManager = GraphicContextManager.INSTANCE;
-        this.renderSet = renderSet;
-        this.width = ctxManager.getScreenWidth();
-        this.height = ctxManager.getScreenHeight();
+    public ElementPicker() {
     }
 
     @Subscribe
@@ -31,49 +19,22 @@ public class ElementPicker {
         final float x = clickEvent.getX();
         final float y = clickEvent.getY();
 
-        final PickingRay ray = createPickingRay(x, y, renderSet);
+        final PickEvent ray = new PickEvent(width, height, x, y);
         GraphicContextManager.INSTANCE.post(ray);
     }
 
 
 
-    // FIXME: we need to put this calculation down to the
-    // render set itself where the matrixes are available
-    // to do this post the complete picking ray as event and call a factory inside the render set to create the
-    // actual start /endpoint...
-    PickingRay createPickingRay(float x, float y, RenderSet<?> renderSet) {
+    public void setup() {
         final GraphicContextManager ctxManager = GraphicContextManager.INSTANCE;
-        Matrix4f projectionMatrix = ctxManager.getPerspectiveProjMatrix();
-        Matrix4f modelViewMatrix = renderSet.getModelViewMatrix();
-
-        Matrix4f.mul(projectionMatrix, modelViewMatrix, transformMatrix);
-        transformMatrix = Matrix4f.invert(transformMatrix, transformMatrix);
-
-        final Vector4f cameraSpaceNear = new Vector4f(x / width * 2f - 1f, y / height * 2f - 1f, -1.0f, 1.0f);
-        final Vector4f cameraSpaceFar = new Vector4f(x / width * 2f - 1f, y / height * 2f - 1f, 1.0f, 1.0f);
-
-        final Vector4f worldSpaceNear = new Vector4f();
-        Matrix4f.transform(transformMatrix, cameraSpaceNear, worldSpaceNear);
-
-        final Vector4f worldSpaceFar = new Vector4f();
-        Matrix4f.transform(transformMatrix, cameraSpaceFar, worldSpaceFar);
-
-        // @formatter:off
-        final Vector3f start = new Vector3f(
-                worldSpaceNear.x / worldSpaceNear.w,
-                worldSpaceNear.y / worldSpaceNear.w,
-                worldSpaceNear.z / worldSpaceNear.w);
-        final Vector3f end = new Vector3f(
-                worldSpaceFar.x / worldSpaceFar.w,
-                worldSpaceFar.y / worldSpaceFar.w,
-                worldSpaceFar.z / worldSpaceFar.w);
-        // @formatter:on
-
-        return new PickingRay(start, end);
+        this.width = ctxManager.getScreenWidth();
+        this.height = ctxManager.getScreenHeight();
+        GraphicContextManager.INSTANCE.register(this);
     }
 
-    public void setup() {
-        GraphicContextManager.INSTANCE.register(this);
+    public void destroy() {
+        GraphicContextManager.INSTANCE.unregister(this);
+
     }
 
 }

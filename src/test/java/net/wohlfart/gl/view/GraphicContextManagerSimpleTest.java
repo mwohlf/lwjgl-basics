@@ -10,16 +10,12 @@ import org.junit.Before;
 import org.junit.Test;
 import org.lwjgl.util.vector.Matrix4f;
 
-/**
- * <p>
- * GraphicContextManagerSimpleTest class.
- * </p>
- */
+
 public class GraphicContextManagerSimpleTest {
 
     GraphicContextManager contxt;
     Settings settings;
-    ElementPicker elementPicker;
+    PickEvent pickEvent;
 
     @SuppressWarnings("serial")
     DefaultRenderSet<IsUpdatable> matrices = new DefaultRenderSet<IsUpdatable>() {
@@ -30,19 +26,21 @@ public class GraphicContextManagerSimpleTest {
             return m;
         }
 
+
+        @Override
+        public Matrix4f getProjectionMatrix() {
+            final Matrix4f m = contxt.getPerspectiveProjMatrix();
+            return m;
+        }
+
     };
 
-    /**
-     * <p>
-     * setup.
-     * </p>
-     */
     @Before
     public void setup() {
         settings = createSettings();
         contxt = GraphicContextManager.INSTANCE;
         contxt.setSettings(settings);
-        elementPicker = new ElementPicker(null);
+        pickEvent = new PickEvent(settings.getWidth(), settings.getHeight(), settings.getWidth() / 2f, settings.getHeight() / 2f);
     }
 
     Settings createSettings() {
@@ -56,19 +54,11 @@ public class GraphicContextManagerSimpleTest {
         return settings;
     }
 
-    /**
-     * <p>
-     * testTopRight.
-     * </p>
-     */
     @Test
     public void testTopRight() {
-        // createPickingRay for: 1000.0,700.0------------
-        // final vectors: Vector3f[0.05917337, 0.041421358, -0.0998002],Vector3f[59.17337, 41.42136, -99.8002]------------
-        PickingRay ray;
-
         // mouse origin is bottom left:
-        ray = elementPicker.createPickingRay(1000, 700, matrices);
+        pickEvent = new PickEvent(settings.getWidth(), settings.getHeight(), settings.getWidth(), settings.getHeight());
+        PickingRay ray = pickEvent.createPickingRay(matrices);
 
         assertEquals(0.059173370, ray.getStart().x, 0.01);
         assertEquals(0.041421358, ray.getStart().y, 0.01);
@@ -79,19 +69,11 @@ public class GraphicContextManagerSimpleTest {
         assertEquals(-99.99999, ray.getEnd().z, 0.01);
     }
 
-    /**
-     * <p>
-     * testTopLeft.
-     * </p>
-     */
     @Test
     public void testTopLeft() {
-        // createPickingRay for: 1000.0,700.0------------
-        // final vectors: Vector3f[0.05917337, 0.041421358, -0.0998002],Vector3f[59.17337, 41.42136, -99.8002]------------
-        PickingRay ray;
-
         // mouse origin is bottom left:
-        ray = elementPicker.createPickingRay(0, 700, matrices);
+        pickEvent = new PickEvent(settings.getWidth(), settings.getHeight(), 0, 700);
+        PickingRay ray = pickEvent.createPickingRay(matrices);
 
         assertEquals(-0.059173370, ray.getStart().x, 0.01);
         assertEquals(0.041421358, ray.getStart().y, 0.01);
@@ -102,19 +84,14 @@ public class GraphicContextManagerSimpleTest {
         assertEquals(-99.99999, ray.getEnd().z, 0.01);
     }
 
-    /**
-     * <p>
-     * testBottomLeft.
-     * </p>
-     */
     @Test
     public void testBottomLeft() {
         // createPickingRay for: 0.0,0.0------------
         // final vectors: Vector3f[-0.05917337, -0.041421358, -0.0998002],Vector3f[-59.17337, -41.42136, -99.8002]------------
-        PickingRay ray;
 
         // mouse origin is bottom left:
-        ray = elementPicker.createPickingRay(0, 0, matrices);
+        pickEvent = new PickEvent(settings.getWidth(), settings.getHeight(), 0, 0);
+        PickingRay ray = pickEvent.createPickingRay(matrices);
 
         assertEquals(-0.059173370, ray.getStart().x, 0.01);
         assertEquals(-0.041421358, ray.getStart().y, 0.01);
@@ -125,19 +102,11 @@ public class GraphicContextManagerSimpleTest {
         assertEquals(-99.99999, ray.getEnd().z, 0.01);
     }
 
-    /**
-     * <p>
-     * testBottomRigth.
-     * </p>
-     */
     @Test
     public void testBottomRigth() {
-        // createPickingRay for: 0.0,0.0------------
-        // final vectors: Vector3f[-0.05917337, -0.041421358, -0.0998002],Vector3f[-59.17337, -41.42136, -99.8002]------------
-        PickingRay ray;
-
         // mouse origin is bottom left:
-        ray = elementPicker.createPickingRay(1000, 0, matrices);
+        pickEvent = new PickEvent(settings.getWidth(), settings.getHeight(), 1000, 0);
+        PickingRay ray = pickEvent.createPickingRay(matrices);
 
         assertEquals(0.059173370, ray.getStart().x, 0.01);
         assertEquals(-0.041421358, ray.getStart().y, 0.01);
@@ -148,20 +117,12 @@ public class GraphicContextManagerSimpleTest {
         assertEquals(-99.99999, ray.getEnd().z, 0.01);
     }
 
-    /**
-     * <p>
-     * testCenter.
-     * </p>
-     */
     @Test
     public void testCenter() {
-        // createPickingRay for: 500.0,350.0
-        // final vectors: Vector3f[0.0, 0.0, -0.0998002],Vector3f[0.0, 0.0, -99.8002]
-        PickingRay ray;
-
         // mouse origin is bottom left
         // picking the center of the screen should give us a solid line along the z axis:
-        ray = elementPicker.createPickingRay(settings.getWidth() / 2f, settings.getHeight() / 2f, matrices);
+        pickEvent = new PickEvent(settings.getWidth(), settings.getHeight(), settings.getWidth() / 2f, settings.getHeight() / 2f);
+        PickingRay ray = pickEvent.createPickingRay(matrices);
 
         assertEquals(0.0, ray.getStart().x, 0.01);
         assertEquals(0.0, ray.getStart().y, 0.01);

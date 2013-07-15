@@ -18,7 +18,7 @@ public interface RenderSet<T extends IsRenderable> extends IsRenderable { // REV
      *
      * @return a {@link org.lwjgl.util.vector.Matrix4f} object.
      */
-    // Matrix4f getProjectionMatrix();
+    Matrix4f getProjectionMatrix();
 
     /**
      * Get the current modelView matrix, this matrix changes when the

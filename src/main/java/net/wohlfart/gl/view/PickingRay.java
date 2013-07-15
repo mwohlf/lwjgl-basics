@@ -3,7 +3,7 @@ package net.wohlfart.gl.view;
 import org.lwjgl.util.vector.Vector3f;
 
 /**
- * PickingRay class.
+ * PickingRay class created by the Element picker.
  */
 public class PickingRay {
 
@@ -16,11 +16,9 @@ public class PickingRay {
         this.end = end;
     }
 
-
     public Vector3f getStart() {
         return start;
     }
-
 
     public Vector3f getEnd() {
         return end;

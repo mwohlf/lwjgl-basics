@@ -9,6 +9,10 @@ public enum NullRenderSet implements RenderSet<IsRenderable> {
     INSTANCE;
 
     @Override
+    public void setup() {
+    }
+
+    @Override
     public void render() {
     }
 
@@ -22,7 +26,8 @@ public enum NullRenderSet implements RenderSet<IsRenderable> {
     }
 
     @Override
-    public void setup() {
+    public Matrix4f getProjectionMatrix() {
+        return SimpleMath.UNION_MATRIX;
     }
 
 }

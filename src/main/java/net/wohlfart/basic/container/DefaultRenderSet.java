@@ -31,7 +31,7 @@ public class DefaultRenderSet<T extends IsUpdatable> extends HashSet<T> implemen
     private final Matrix4f posMatrix = new Matrix4f();
     private final Matrix4f rotMatrix = new Matrix4f();
     private final Matrix4f rotPosMatrix = new Matrix4f();
-
+    private final Matrix4f projMatrix = new Matrix4f();
 
     public void setGraphicContext(IGraphicContext graphicContext) {
         this.graphicContext = graphicContext;
@@ -44,6 +44,7 @@ public class DefaultRenderSet<T extends IsUpdatable> extends HashSet<T> implemen
 
     @Override
     public void setup() {
+        projMatrix.load(GraphicContextManager.INSTANCE.getPerspectiveProjMatrix());
         if (graphicContext == null) { // fallback
             graphicContext = new DefaultGraphicContext(ShaderRegistry.DEFAULT_SHADER);
         }
@@ -63,7 +64,7 @@ public class DefaultRenderSet<T extends IsUpdatable> extends HashSet<T> implemen
         GraphicContextManager.INSTANCE.setCurrentGraphicContext(graphicContext);
         ShaderUniformHandle.MODEL_TO_WORLD.set(SimpleMath.UNION_MATRIX);
         ShaderUniformHandle.WORLD_TO_CAM.set(rotPosMatrix);
-        ShaderUniformHandle.CAM_TO_CLIP.set(GraphicContextManager.INSTANCE.getPerspectiveProjMatrix());
+        ShaderUniformHandle.CAM_TO_CLIP.set(projMatrix);
 
         int i = 0;
         for (final VertexLight light : lights) {
@@ -85,6 +86,11 @@ public class DefaultRenderSet<T extends IsUpdatable> extends HashSet<T> implemen
     @Override
     public Matrix4f getModelViewMatrix() {
         return rotPosMatrix;
+    }
+
+    @Override
+    public Matrix4f getProjectionMatrix() {
+        return projMatrix;
     }
 
     @Override

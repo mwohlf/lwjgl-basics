@@ -14,7 +14,7 @@ public class GraphicContextManagerMovedTest {
 
     GraphicContextManager contxt;
     Settings settings;
-    ElementPicker elementPicker;
+    PickEvent pickEvent;
 
     @SuppressWarnings("serial")
     DefaultRenderSet<IsUpdatable> matrices = new DefaultRenderSet<IsUpdatable>() {
@@ -25,6 +25,12 @@ public class GraphicContextManagerMovedTest {
             return m;
         }
 
+        @Override
+        public Matrix4f getProjectionMatrix() {
+            final Matrix4f m = contxt.getPerspectiveProjMatrix();
+            return m;
+        }
+
     };
 
     @Before
@@ -32,7 +38,7 @@ public class GraphicContextManagerMovedTest {
         settings = createSettings();
         contxt = GraphicContextManager.INSTANCE;
         contxt.setSettings(settings);
-        elementPicker = new ElementPicker(null);
+        pickEvent = new PickEvent(settings.getWidth(), settings.getHeight(), settings.getWidth() / 2f, settings.getHeight() / 2f);
     }
 
     Settings createSettings() {
@@ -48,7 +54,7 @@ public class GraphicContextManagerMovedTest {
 
     @Test
     public void testCenter() {
-        PickingRay ray = elementPicker.createPickingRay(settings.getWidth() / 2f, settings.getHeight() / 2f, matrices);
+        PickingRay ray = pickEvent.createPickingRay(matrices);
 
         assertEquals(0.0, ray.getStart().x, 0.01);
         assertEquals(0.0, ray.getStart().y, 0.01);

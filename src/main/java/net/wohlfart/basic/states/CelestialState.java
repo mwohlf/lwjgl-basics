@@ -24,6 +24,7 @@ import net.wohlfart.gl.spatial.Model;
 import net.wohlfart.gl.spatial.ParticleEmitter;
 import net.wohlfart.gl.texture.CelestialType;
 import net.wohlfart.gl.view.ElementPicker;
+import net.wohlfart.gl.view.PickEvent;
 import net.wohlfart.gl.view.PickingRay;
 
 import org.lwjgl.opengl.GL11;
@@ -55,6 +56,8 @@ public class CelestialState extends AbstractGraphicState implements Initializing
     private final DefaultRenderSet<IsUpdatable> meshBucket = new DefaultRenderSet<>();
 
     private final Hud hud = new HudImpl();
+
+    private final ElementPicker elementPicker = new ElementPicker();
 
     @Override
     public void afterPropertiesSet() throws Exception {
@@ -151,8 +154,7 @@ public class CelestialState extends AbstractGraphicState implements Initializing
 
         hud.add(new SimpleLabel(0, 0, "hello world at (0,0)"));
 
-        ElementPicker elementPicker = new ElementPicker(wireframeBucket);
-        getGraphContextManager().register(elementPicker);
+        elementPicker.setup();
 
         hud.add(new StatisticLabel(0, -70));
         hud.add(new MouseClickLabel(0, -35));
@@ -161,7 +163,8 @@ public class CelestialState extends AbstractGraphicState implements Initializing
     }
 
     @Subscribe
-    public void onPickEvent(PickingRay pickingRay) {
+    public void onPickEvent(PickEvent pickEvent) {
+        PickingRay pickingRay = pickEvent.createPickingRay(wireframeBucket);
         wireframeBucket.add(Arrow.createLink(pickingRay.getStart(), pickingRay.getEnd()));
         List<Model> picklist = modelSet.pick(pickingRay);
         System.out.println("picking: " + picklist);
@@ -211,6 +214,7 @@ public class CelestialState extends AbstractGraphicState implements Initializing
 
     @Override
     public void destroy() {
+        elementPicker.destroy();
         skybox.destroy();
         planetSet.destroy();
         sunSet.destroy();
