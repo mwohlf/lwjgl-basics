@@ -1,19 +1,17 @@
 package net.wohlfart.gl.shader;
 
 /**
- * <p>
  * MockGraphicContext class.
- * </p>
  */
 public class MockGraphicContext implements GraphicContextManager.IGraphicContext {
 
     @Override
-    public Integer getAttributeLocation(String lookupString) {
+    public int getAttributeLocation(String lookupString) {
         return 0;
     }
 
     @Override
-    public Integer getUniformLocation(String lookupString) {
+    public int getUniformLocation(String lookupString) {
         return 0;
     }
 

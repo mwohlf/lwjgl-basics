@@ -23,9 +23,9 @@ public enum GraphicContextManager { // REVIEWED
 
     public interface IGraphicContext {
 
-        Integer getAttributeLocation(String lookupString);
+        int getAttributeLocation(String lookupString);
 
-        Integer getUniformLocation(String lookupString);
+        int getUniformLocation(String lookupString);
 
         void setup();
 
@@ -74,11 +74,11 @@ public enum GraphicContextManager { // REVIEWED
         register(camera);
     }
 
-    Integer getAttributeLocation(String lookupString) {
+    int getAttributeLocation(String lookupString) {
         return currentGraphicContext.getAttributeLocation(lookupString);
     }
 
-    Integer getUniformLocation(String lookupString) {
+    int getUniformLocation(String lookupString) {
         return currentGraphicContext.getUniformLocation(lookupString);
     }
 

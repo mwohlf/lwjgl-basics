@@ -6,11 +6,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * @formatter:off modeling an OpenGL Context: - shader - attribute location - uniform locations
- * @formatter:on
+ * modeling an OpenGL Context:
+ *  - shader
+ *  - attribute location
+ *  - uniform locations
  *
- *               see: http://www.opengl.org/wiki/OpenGL_Context
- *
+ *  see: http://www.opengl.org/wiki/OpenGL_Context
  */
 public class DefaultGraphicContext implements GraphicContextManager.IGraphicContext {
     private static final Logger LOGGER = LoggerFactory.getLogger(DefaultGraphicContext.class);
@@ -22,14 +23,7 @@ public class DefaultGraphicContext implements GraphicContextManager.IGraphicCont
 
     private boolean isInitialized = false;
 
-    /**
-     * <p>
-     * Constructor for DefaultGraphicContext.
-     * </p>
-     *
-     * @param shaderProgram
-     *            a {@link net.wohlfart.gl.shader.IShaderProgram} object.
-     */
+
     public DefaultGraphicContext(IShaderProgram shaderProgram) {
         this.shaderProgram = shaderProgram;
     }
@@ -84,6 +78,16 @@ public class DefaultGraphicContext implements GraphicContextManager.IGraphicCont
     }
 
     @Override
+    public int getAttributeLocation(String attributeName) {
+        return attributeMap.get(attributeName).intValue();
+    }
+
+    @Override
+    public int getUniformLocation(String uniformName) {
+        return uniformMap.get(uniformName).intValue();
+    }
+
+    @Override
     public void unbind() {
         shaderProgram.unbind();
     }
@@ -92,16 +96,6 @@ public class DefaultGraphicContext implements GraphicContextManager.IGraphicCont
     public void dispose() {
         shaderProgram.unbind();
         shaderProgram.dispose();
-    }
-
-    @Override
-    public Integer getAttributeLocation(String attributeName) {
-        return attributeMap.get(attributeName);
-    }
-
-    @Override
-    public Integer getUniformLocation(String uniformName) {
-        return uniformMap.get(uniformName);
     }
 
 }

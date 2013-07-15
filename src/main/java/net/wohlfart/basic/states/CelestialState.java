@@ -44,6 +44,8 @@ public class CelestialState extends AbstractGraphicState implements Initializing
 
     private final DefaultRenderSet<CelestialBody> planetSet = new DefaultRenderSet<>();
 
+    private final DefaultRenderSet<CelestialBody> sunSet = new DefaultRenderSet<>();
+
     private final ModelRenderSet modelSet = new ModelRenderSet();
 
     private final DefaultRenderSet<ParticleEmitter> emitterSet = new DefaultRenderSet<>();
@@ -71,7 +73,7 @@ public class CelestialState extends AbstractGraphicState implements Initializing
 
         skybox.setup();
 
-        modelSet.setGraphicContext(new DefaultGraphicContext(ShaderRegistry.AMBIENT_SHADER));
+        modelSet.setGraphicContext(new DefaultGraphicContext(ShaderRegistry.LIGHTING_SHADER));
         Model cube = ModelToolkit.createCube();
         cube.setPosition(new Vector3f(30,20,10));
         modelSet.add(cube);
@@ -123,7 +125,7 @@ public class CelestialState extends AbstractGraphicState implements Initializing
         meshBucket.add(tex);
         meshBucket.setup();
 
-        planetSet.setGraphicContext(new DefaultGraphicContext(ShaderRegistry.AMBIENT_SHADER));
+        planetSet.setGraphicContext(new DefaultGraphicContext(ShaderRegistry.LIGHTING_SHADER));
         for (int i = 0 ; i < 20; i++) {
             CelestialBody body = new CelestialBody(i);
             body.setPosition(new Vector3f(7*i,0,0));
@@ -134,17 +136,18 @@ public class CelestialState extends AbstractGraphicState implements Initializing
         VertexLight light7 = new VertexLight(0.001f, new Vector4f(0.9f, 0.9f, 0.9f, 1.0f), new Vector3f( 7, 7, 13));
         planetSet.add(light6);
         planetSet.add(light7);
+        planetSet.setup();
 
+
+        sunSet.setGraphicContext(new DefaultGraphicContext(ShaderRegistry.DEFAULT_SHADER));
         CelestialBody sun1 = new CelestialBody(1L, CelestialType.SUN, 1f);
         sun1.setPosition(light6.getPosition());
-        planetSet.add(sun1);
-
+        sunSet.add(sun1);
         CelestialBody sun2 = new CelestialBody(1L, CelestialType.SUN, 1f);
         sun2.setPosition(light7.getPosition());
-        planetSet.add(sun2);
+        sunSet.add(sun2);
+        sunSet.setup();
 
-
-        planetSet.setup();
 
         hud.add(new SimpleLabel(0, 0, "hello world at (0,0)"));
 
@@ -176,6 +179,7 @@ public class CelestialState extends AbstractGraphicState implements Initializing
         GL11.glEnable(GL11.GL_DEPTH_TEST);
         GL11.glDisable(GL11.GL_BLEND);
         planetSet.render();
+        sunSet.render();
 
         GL11.glEnable(GL11.GL_BLEND);
         GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
@@ -197,6 +201,7 @@ public class CelestialState extends AbstractGraphicState implements Initializing
     @Override
     public void update(float tpf) {
         planetSet.update(tpf);
+        sunSet.update(tpf);
         emitterSet.update(tpf);
         modelSet.update(tpf);
         wireframeBucket.update(tpf);
@@ -208,6 +213,7 @@ public class CelestialState extends AbstractGraphicState implements Initializing
     public void destroy() {
         skybox.destroy();
         planetSet.destroy();
+        sunSet.destroy();
         modelSet.destroy();
         wireframeBucket.destroy();
         meshBucket.destroy();

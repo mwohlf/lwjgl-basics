@@ -17,17 +17,22 @@ public class ShaderRegistry {
     private static final String LIGHTING02_VERTEX_SHADER = "/shaders/lighting02/vertex.glsl";
     private static final String LIGHTING02_FRAGMENT_SHADER = "/shaders/lighting02/fragment.glsl";
 
-    private static final String AMBIENT_VERTEX_SHADER = "/shaders/ambient/vertex.glsl";
-    private static final String AMBIENT_FRAGMENT_SHADER = "/shaders/ambient/fragment.glsl";
+    private static final String LIGHTING03_VERTEX_SHADER = "/shaders/lighting03/vertex.glsl";
+    private static final String LIGHTING03_FRAGMENT_SHADER = "/shaders/lighting03/fragment.glsl";
+
+    private static final String LIGHTING_VERTEX_SHADER = "/shaders/lighting/vertex.glsl";
+    private static final String LIGHTING_FRAGMENT_SHADER = "/shaders/lighting/fragment.glsl";
 
 
 
-    // more complex light this shader needs some light sources otherwise the surfaces will tay black
-    public static final IShaderProgram AMBIENT_SHADER = new DefaultShaderProgram(AMBIENT_VERTEX_SHADER, AMBIENT_FRAGMENT_SHADER);
+    // more complex light this shader needs some light sources otherwise the surfaces will stay black
+    public static final IShaderProgram LIGHTING_SHADER = new DefaultShaderProgram(LIGHTING_VERTEX_SHADER, LIGHTING_FRAGMENT_SHADER);
     // simple lighting shader, light from one direction only
     public static final IShaderProgram LIGHTING01_SHADER = new DefaultShaderProgram(LIGHTING01_VERTEX_SHADER, LIGHTING01_FRAGMENT_SHADER);
     // simple lighting shader, light from one direction only
     public static final IShaderProgram LIGHTING02_SHADER = new DefaultShaderProgram(LIGHTING02_VERTEX_SHADER, LIGHTING02_FRAGMENT_SHADER);
+    // better lighting, needs light sources
+    public static final IShaderProgram LIGHTING03_SHADER = new DefaultShaderProgram(LIGHTING03_VERTEX_SHADER, LIGHTING03_FRAGMENT_SHADER);
     // no normals, no light source, just texture
     public static final IShaderProgram DEFAULT_SHADER = new DefaultShaderProgram(DEFAULT_VERTEX_SHADER, DEFAULT_FRAGMENT_SHADER);
     // wireframe only shader, planes  will be black, no shadow

@@ -1,11 +1,10 @@
-package net.wohlfart.gl.shader;
+package net.wohlfart.gl.view;
 
 import static org.junit.Assert.assertEquals;
 import net.wohlfart.basic.Settings;
 import net.wohlfart.basic.container.DefaultRenderSet;
 import net.wohlfart.basic.elements.IsUpdatable;
-import net.wohlfart.gl.view.ElementPicker;
-import net.wohlfart.gl.view.PickingRay;
+import net.wohlfart.gl.shader.GraphicContextManager;
 
 import org.junit.Before;
 import org.junit.Test;

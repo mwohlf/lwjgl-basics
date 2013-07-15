@@ -36,7 +36,12 @@ public class ElementPicker {
     }
 
 
-    public PickingRay createPickingRay(float x, float y, RenderSet<?> renderSet) {
+
+    // FIXME: we need to put this calculation down to the
+    // render set itself where the matrixes are available
+    // to do this post the complete picking ray as event and call a factory inside the render set to create the
+    // actual start /endpoint...
+    PickingRay createPickingRay(float x, float y, RenderSet<?> renderSet) {
         final GraphicContextManager ctxManager = GraphicContextManager.INSTANCE;
         Matrix4f projectionMatrix = ctxManager.getPerspectiveProjMatrix();
         Matrix4f modelViewMatrix = renderSet.getModelViewMatrix();
@@ -53,8 +58,16 @@ public class ElementPicker {
         final Vector4f worldSpaceFar = new Vector4f();
         Matrix4f.transform(transformMatrix, cameraSpaceFar, worldSpaceFar);
 
-        final Vector3f start = new Vector3f(worldSpaceNear.x / worldSpaceNear.w, worldSpaceNear.y / worldSpaceNear.w, worldSpaceNear.z / worldSpaceNear.w);
-        final Vector3f end = new Vector3f(worldSpaceFar.x / worldSpaceFar.w, worldSpaceFar.y / worldSpaceFar.w, worldSpaceFar.z / worldSpaceFar.w);
+        // @formatter:off
+        final Vector3f start = new Vector3f(
+                worldSpaceNear.x / worldSpaceNear.w,
+                worldSpaceNear.y / worldSpaceNear.w,
+                worldSpaceNear.z / worldSpaceNear.w);
+        final Vector3f end = new Vector3f(
+                worldSpaceFar.x / worldSpaceFar.w,
+                worldSpaceFar.y / worldSpaceFar.w,
+                worldSpaceFar.z / worldSpaceFar.w);
+        // @formatter:on
 
         return new PickingRay(start, end);
     }
