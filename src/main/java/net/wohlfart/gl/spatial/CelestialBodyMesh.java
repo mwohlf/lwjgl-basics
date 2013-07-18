@@ -18,7 +18,7 @@ import org.lwjgl.util.vector.Vector3f;
 public class CelestialBodyMesh implements IsRenderable {
 
     private final int vaoHandle;
-    private final int textureHandle;
+    private final int texHandle;
 
     private final int count;
     private final int indexElemSize;
@@ -26,7 +26,7 @@ public class CelestialBodyMesh implements IsRenderable {
 
     CelestialBodyMesh(int vaoHandle, int textureHandle, int trianglePrimitive, int count, int indexElemSize) {
         this.vaoHandle = vaoHandle;
-        this.textureHandle = textureHandle;
+        this.texHandle = textureHandle;
         this.trianglePrimitive = trianglePrimitive;
         this.count = count;
         this.indexElemSize = indexElemSize;
@@ -35,7 +35,7 @@ public class CelestialBodyMesh implements IsRenderable {
     @Override
     public void render() {
         GL30.glBindVertexArray(vaoHandle);
-        GL11.glBindTexture(GL11.GL_TEXTURE_2D, textureHandle);
+        GL11.glBindTexture(GL11.GL_TEXTURE_2D, texHandle);
         // Setup the ST coordinate system
         GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_S, GL11.GL_REPEAT);
         GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_T, GL11.GL_REPEAT);

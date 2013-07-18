@@ -19,8 +19,7 @@ import net.wohlfart.tools.SimpleMath;
 import org.lwjgl.util.vector.Vector3f;
 
 
-@SuppressWarnings("serial")
-public class ModelBucket extends DefaultRenderSet<Model> {
+public class ModelBucket extends DefaultRenderBatch<Model> {
 
     protected Set<Model> models = new HashSet<>(10100);
     protected Set<Emitter> emitters = new HashSet<>(10100);

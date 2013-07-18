@@ -18,7 +18,7 @@ public class CharacterMesh implements IsRenderable {
     private final int indexOffset;
     private final int indexElemSize;
     private final int indicesType;
-    private final int textureId;
+    private final int texHandle;
 
 
     public CharacterMesh(int vaoHandle, int indicesType, int indexElemSize, int indicesCount, int indexOffset, int textureId) {
@@ -27,7 +27,7 @@ public class CharacterMesh implements IsRenderable {
         this.indexElemSize = indexElemSize;
         this.indicesCount = indicesCount;
         this.indexOffset = indexOffset;
-        this.textureId = textureId;
+        this.texHandle = textureId;
     }
 
     @Override
@@ -35,7 +35,7 @@ public class CharacterMesh implements IsRenderable {
         // Bind the texture
         GL30.glBindVertexArray(vaoHandle);
         GL13.glActiveTexture(GL13.GL_TEXTURE0);
-        GL11.glBindTexture(GL11.GL_TEXTURE_2D, textureId);
+        GL11.glBindTexture(GL11.GL_TEXTURE_2D, texHandle);
         GL11.glDrawElements(indicesType, indicesCount, indexElemSize, indexOffset);
         GL30.glBindVertexArray(0);
     }

@@ -13,28 +13,27 @@ import net.wohlfart.tools.SimpleMath;
 import org.lwjgl.util.vector.Vector3f;
 
 
-@SuppressWarnings("serial")
-public class ModelRenderSet extends DefaultRenderSet<Model> {
+public class ModelRenderSet extends DefaultRenderBatch<Model> {
 
     @Override
     public void update(float timeInSec) {
-        for (final Model model : this) {
+        for (final Model model : getElements()) {
             model.update(timeInSec);
         }
     }
 
     @Override
     public void destroy() {
-        for (final Model model : this) {
+        for (final Model model : getElements()) {
             model.destroy();
         }
-        clear();
+        getElements().clear();
     }
 
     public List<Model> pick(final PickingRay ray) {
         List<Model> list = new ArrayList<>();
 
-        for (final Model model : this) {
+        for (final Model model : getElements()) {
             Vector3f pos = model.getPosition();
             float d = SimpleMath.distance(ray.getStart(), ray.getEnd(), pos);
             float radius = model.getRadius();

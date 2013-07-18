@@ -2,7 +2,7 @@ package net.wohlfart.basic.states;
 
 import java.util.List;
 
-import net.wohlfart.basic.container.DefaultRenderSet;
+import net.wohlfart.basic.container.DefaultRenderBatch;
 import net.wohlfart.basic.container.ModelRenderSet;
 import net.wohlfart.basic.container.ModelToolkit;
 import net.wohlfart.basic.container.WireframeToolkit;
@@ -43,17 +43,17 @@ public class CelestialState extends AbstractGraphicState implements Initializing
     private final Skybox skybox = new SkyboxImpl();   //NullSkybox.INSTANCE;
     //private final Skybox skybox = NullSkybox.INSTANCE;
 
-    private final DefaultRenderSet<CelestialBody> planetSet = new DefaultRenderSet<>();
+    private final DefaultRenderBatch<CelestialBody> planetSet = new DefaultRenderBatch<>();
 
-    private final DefaultRenderSet<CelestialBody> sunSet = new DefaultRenderSet<>();
+    private final DefaultRenderBatch<CelestialBody> sunSet = new DefaultRenderBatch<>();
 
     private final ModelRenderSet modelSet = new ModelRenderSet();
 
-    private final DefaultRenderSet<ParticleEmitter> emitterSet = new DefaultRenderSet<>();
+    private final DefaultRenderBatch<ParticleEmitter> emitterSet = new DefaultRenderBatch<>();
 
-    private final DefaultRenderSet<IsUpdatable> wireframeBucket = new DefaultRenderSet<>();
+    private final DefaultRenderBatch<IsUpdatable> wireframeBucket = new DefaultRenderBatch<>();
 
-    private final DefaultRenderSet<IsUpdatable> meshBucket = new DefaultRenderSet<>();
+    private final DefaultRenderBatch<IsUpdatable> meshBucket = new DefaultRenderBatch<>();
 
     private final Hud hud = new HudImpl();
 
@@ -143,6 +143,7 @@ public class CelestialState extends AbstractGraphicState implements Initializing
 
 
         sunSet.setGraphicContext(new DefaultGraphicContext(ShaderRegistry.DEFAULT_SHADER));
+
         CelestialBody sun1 = new CelestialBody(1L, CelestialType.SUN, 1f);
         sun1.setPosition(light6.getPosition());
         sunSet.add(sun1);
@@ -172,7 +173,6 @@ public class CelestialState extends AbstractGraphicState implements Initializing
 
     @Override
     public void render() {
-        // clear the screen buffer, not needed if we have a skybox working
         GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT | GL11.GL_STENCIL_BUFFER_BIT);
         GL11.glDisable(GL11.GL_DEPTH_TEST);
         GL11.glDisable(GL11.GL_BLEND);

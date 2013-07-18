@@ -5,7 +5,7 @@ import net.wohlfart.tools.SimpleMath;
 
 import org.lwjgl.util.vector.Matrix4f;
 
-public enum NullRenderSet implements RenderSet<IsRenderable> {
+public enum NullRenderBatch implements RenderBatch<IsRenderable> {
     INSTANCE;
 
     @Override

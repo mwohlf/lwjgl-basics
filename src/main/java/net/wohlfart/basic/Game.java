@@ -16,8 +16,10 @@ import org.lwjgl.LWJGLException;
 import org.lwjgl.opengl.ContextAttribs;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.DisplayMode;
+import org.lwjgl.opengl.EXTFramebufferMultisample;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL20;
+import org.lwjgl.opengl.GLContext;
 import org.lwjgl.opengl.PixelFormat;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -164,6 +166,11 @@ class Game implements InitializingBean { // REVIEWED
         LOGGER.info("Version: " + GL11.glGetString(GL11.GL_VERSION));
         LOGGER.info("max. Vertex Attributes: " + GL11.glGetInteger(GL20.GL_MAX_VERTEX_ATTRIBS));
         LOGGER.info("max. Texture Image Units: " + GL11.glGetInteger(GL20.GL_MAX_TEXTURE_IMAGE_UNITS));
+        LOGGER.info("GL_EXT_framebuffer_object: " + GLContext.getCapabilities().GL_EXT_framebuffer_object);
+        LOGGER.info("GL_EXT_packed_depth_stencil: " + GLContext.getCapabilities().GL_EXT_packed_depth_stencil);
+        LOGGER.info("GL_EXT_framebuffer_multisample: " + GLContext.getCapabilities().GL_EXT_framebuffer_multisample);
+        LOGGER.info("GL_EXT_framebuffer_blit: " + GLContext.getCapabilities().GL_EXT_framebuffer_blit);
+        LOGGER.info("GL_MAX_SAMPLES_EXT: " + GL11.glGetInteger(EXTFramebufferMultisample.GL_MAX_SAMPLES_EXT));
     }
 
     private void setupWindow() throws LWJGLException {

@@ -11,6 +11,8 @@ public class ColoredQuad extends AbstractRenderable {
     @Override
     protected IsRenderable setupMesh() {
         final ColoredMesh.Builder builder = new ColoredMesh.Builder();
+        builder.setInitRotation(initialRotation);
+        builder.setInitTranslation(initialTranslation);
         return builder.build();
     }
 

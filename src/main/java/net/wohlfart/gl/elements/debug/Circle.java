@@ -38,8 +38,8 @@ public class Circle extends AbstractRenderable { // REVIEWED
         builder.setIndices(createIndices());
         builder.setLinePrimitive(GL11.GL_LINES);
         builder.setColor(color);
-        builder.setRotation(initialRotation);
-        builder.setTranslation(initialTranslation);
+        builder.setInitRotation(initialRotation);
+        builder.setInitTranslation(initialTranslation);
         return builder.build();
     }
 

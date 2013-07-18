@@ -70,6 +70,8 @@ public class ParticleEmitter extends AbstractRenderable implements Emitter {
         builder.setFlippedFloatBuffer(getFlippedFloatBuffer());
         builder.setParticleCount(particles.size());
         builder.setTextureId(commonTextureId);
+        builder.setInitRotation(initialRotation);
+        builder.setInitTranslation(initialTranslation);
         return builder.build();
     }
 
@@ -111,7 +113,7 @@ public class ParticleEmitter extends AbstractRenderable implements Emitter {
 
 
     private int loadPNGTexture(String filename, int textureUnit) {
-        int texId = 0;
+        int texHandle = -1;
 
         // InputStream inputStream = new FileInputStream(filename);
         try (InputStream inputStream = ClassLoader.class.getResourceAsStream(filename)) {
@@ -127,9 +129,9 @@ public class ParticleEmitter extends AbstractRenderable implements Emitter {
             buffer.flip();
 
             // Create a new texture object in memory and bind it
-            texId = GL11.glGenTextures();
+            texHandle = GL11.glGenTextures();
             GL13.glActiveTexture(textureUnit);
-            GL11.glBindTexture(GL11.GL_TEXTURE_2D, texId);
+            GL11.glBindTexture(GL11.GL_TEXTURE_2D, texHandle);
             // All RGB bytes are aligned to each other and each component is 1 byte
             GL11.glPixelStorei(GL11.GL_UNPACK_ALIGNMENT, 1);
             // Upload the texture data and generate mip maps (for scaling)
@@ -147,7 +149,7 @@ public class ParticleEmitter extends AbstractRenderable implements Emitter {
         } catch (final IOException ex) {
             LOGGER.error("can't load texture image", ex);
         }
-        return texId;
+        return texHandle;
     }
 
 }

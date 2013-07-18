@@ -4,28 +4,23 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.ByteBuffer;
+import java.util.Arrays;
 
 import net.wohlfart.basic.elements.IsRenderable;
 import net.wohlfart.gl.shader.ShaderAttributeHandle;
 import net.wohlfart.gl.shader.Vertex;
 import net.wohlfart.tools.PNGDecoder;
 import net.wohlfart.tools.PNGDecoder.Format;
-import net.wohlfart.tools.SimpleMath;
 
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL13;
 import org.lwjgl.opengl.GL30;
-import org.lwjgl.util.vector.Quaternion;
 import org.lwjgl.util.vector.Vector3f;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * <p>
  * TexturedFragmentMesh class.
- * </p>
- *
- *
  *
  */
 public class TexturedMesh implements IsRenderable {
@@ -47,7 +42,6 @@ public class TexturedMesh implements IsRenderable {
         this.textureId = textureId;
     }
 
-    /** {@inheritDoc} */
     @Override
     public void render() {
         GL30.glBindVertexArray(vaoHandle);
@@ -57,7 +51,6 @@ public class TexturedMesh implements IsRenderable {
         GL30.glBindVertexArray(0);
     }
 
-    /** {@inheritDoc} */
     @Override
     public void destroy() {
         GL30.glBindVertexArray(0);
@@ -75,17 +68,15 @@ public class TexturedMesh implements IsRenderable {
         private int textureWrap = GL11.GL_REPEAT;
 
 
-        private final Quaternion rotation = Quaternion.setIdentity(new Quaternion());
-        private final Vector3f translation = new Vector3f(0,0,0);
-
-
         @Override
         public IsRenderable build() {
             final int vaoHandle = GL30.glGenVertexArrays();
             GL30.glBindVertexArray(vaoHandle);
 
             if (textureFilename != null) {
-                texId  = loadPNGTexture(textureFilename, GL13.GL_TEXTURE0);
+                texId  = createTextureHandle(textureFilename, GL13.GL_TEXTURE0);
+            } else {
+                texId = AbstractMeshBuilder.texHandle;
             }
 
             createVboHandle(createStream());
@@ -116,18 +107,12 @@ public class TexturedMesh implements IsRenderable {
                     new Vector3f(-(size/2f), -(size/2f), 0),
                     new Vector3f(+(size/2f), -(size/2f), 0),
                     new Vector3f(+(size/2f), +(size/2f), 0),
-            };  // @formatter:on
+            };
 
-            for (final Vector3f vec : vectors) {
-                SimpleMath.mul(rotation, vec, vec);
-            }
+            applyRotationAndTranslation(Arrays.asList(vectors));
 
-            for (final Vector3f vec : vectors) {
-                SimpleMath.add(translation, vec, vec);
-            }
-
-            final Vertex[] vertices =
-                    new Vertex[] { new Vertex() {{
+            final Vertex[] vertices = new Vertex[] {
+                    new Vertex() {{
                         setXYZ(vectors[0].x, vectors[0].y, vectors[0].z);
                         setRGB(1, 0, 0);
                         setST(0, 0);
@@ -147,7 +132,7 @@ public class TexturedMesh implements IsRenderable {
                         setRGB(1, 1, 1);
                         setST(1, 0);
                     }}
-            };
+            }; // @formatter:on
 
 
             // Put each 'Vertex' in one FloatBuffer the order depends on the shaders positions!
@@ -168,7 +153,7 @@ public class TexturedMesh implements IsRenderable {
         }
 
         private int loadPNGTexture(String filename, int textureUnit) {
-            int texId = 0;
+            int texHandle = -1;
 
             // InputStream inputStream = new FileInputStream(filename);
             try (InputStream inputStream = ClassLoader.class.getResourceAsStream(filename)) {
@@ -184,9 +169,9 @@ public class TexturedMesh implements IsRenderable {
                 buffer.flip();
 
                 // Create a new texture object in memory and bind it
-                texId = GL11.glGenTextures();
+                texHandle = GL11.glGenTextures();
                 GL13.glActiveTexture(textureUnit);
-                GL11.glBindTexture(GL11.GL_TEXTURE_2D, texId);
+                GL11.glBindTexture(GL11.GL_TEXTURE_2D, texHandle);
                 // All RGB bytes are aligned to each other and each component is 1 byte
                 GL11.glPixelStorei(GL11.GL_UNPACK_ALIGNMENT, 1);
                 // Upload the texture data and generate mip maps (for scaling)
@@ -204,7 +189,7 @@ public class TexturedMesh implements IsRenderable {
             } catch (final IOException ex) {
                 LOGGER.error("can't load texture image", ex);
             }
-            return texId;
+            return texHandle;
         }
 
         public void setTextureFilename(final String textureFilename) {
@@ -213,17 +198,6 @@ public class TexturedMesh implements IsRenderable {
 
         public void setTextureId(int texId) {
             this.texId = texId;
-        }
-
-
-        @Override
-        public void setRotation(Quaternion rotation) {
-            this.rotation.set(rotation);
-        }
-
-        @Override
-        public void setTranslation(Vector3f translation) {
-            this.translation.set(translation);
         }
 
         public void setSize(float size) {

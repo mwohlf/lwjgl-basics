@@ -4,7 +4,7 @@ import net.wohlfart.basic.elements.IsRenderable;
 
 import org.lwjgl.util.vector.Matrix4f;
 
-public interface RenderSet<T extends IsRenderable> extends IsRenderable { // REVIEWED
+public interface RenderBatch<T extends IsRenderable> extends IsRenderable { // REVIEWED
 
     /**
      * to initialize stuff

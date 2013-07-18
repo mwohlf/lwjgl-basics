@@ -1,6 +1,6 @@
 package net.wohlfart.gl.view;
 
-import net.wohlfart.basic.container.RenderSet;
+import net.wohlfart.basic.container.RenderBatch;
 
 import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector3f;
@@ -30,7 +30,7 @@ public class PickEvent {
     // render set itself where the matrixes are available
     // to do this post the complete picking ray as event and call a factory inside the render set to create the
     // actual start /endpoint...
-    public PickingRay createPickingRay(RenderSet<?> renderSet) {
+    public PickingRay createPickingRay(RenderBatch<?> renderSet) {
 
         Matrix4f matrx = transformMatrix.get();
 

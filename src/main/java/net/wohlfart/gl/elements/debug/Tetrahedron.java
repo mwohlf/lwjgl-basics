@@ -46,8 +46,8 @@ public class Tetrahedron extends AbstractRenderable { // @formatter:on  REVIEWED
         builder.setIndices(indices);
         builder.setLinePrimitive(GL11.GL_LINES);
         builder.setColor(color);
-        builder.setRotation(initialRotation);
-        builder.setTranslation(initialTranslation);
+        builder.setInitRotation(initialRotation);
+        builder.setInitTranslation(initialTranslation);
         return builder.build();
     }
 

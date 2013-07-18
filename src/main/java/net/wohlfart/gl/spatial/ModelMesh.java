@@ -11,15 +11,15 @@ import org.lwjgl.opengl.GL30;
 public class ModelMesh implements IsRenderable {
 
     private final int vaoHandle;
-    private final int textureHandle;
+    private final int texHandle;
 
     private final int indicesCount;
     private final int indexElemSize;
     private final int trianglePrimitive;
 
-    ModelMesh(int vaoHandle, int textureHandle, int trianglePrimitive, int indexElemSize, int indicesCount) {
+    ModelMesh(int vaoHandle, int texHandle, int trianglePrimitive, int indexElemSize, int indicesCount) {
         this.vaoHandle = vaoHandle;
-        this.textureHandle = textureHandle;
+        this.texHandle = texHandle;
         this.trianglePrimitive = trianglePrimitive;
         this.indexElemSize = indexElemSize;
         this.indicesCount = indicesCount;
@@ -28,7 +28,7 @@ public class ModelMesh implements IsRenderable {
     @Override
     public void render() {
         GL30.glBindVertexArray(vaoHandle);
-        GL11.glBindTexture(GL11.GL_TEXTURE_2D, textureHandle);
+        GL11.glBindTexture(GL11.GL_TEXTURE_2D, texHandle);
         GL11.glDrawElements(trianglePrimitive, indicesCount, indexElemSize, 0);
         GL30.glBindVertexArray(0);
     }

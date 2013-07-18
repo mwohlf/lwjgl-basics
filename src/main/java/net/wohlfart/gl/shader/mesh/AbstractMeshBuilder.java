@@ -23,23 +23,23 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- *
+ * class contains only tool methods for building a mesh,
+ * the build method needs to be implemented by a concrete subclass
  */
 public abstract class AbstractMeshBuilder implements IMeshBuilder {
     static final Logger LOGGER = LoggerFactory.getLogger(AbstractMeshBuilder.class);
 
     // FIXME: ugly hack to keep the same textureID, we need a texture repository
-    static int staticTextId = 0;
+    protected static int texHandle = 0;
 
-    private Vector3f translation;
-
-    private Quaternion rotation;
+    private final Quaternion initRotation = Quaternion.setIdentity(new Quaternion());
+    private final Vector3f initTranslation = new Vector3f(0,0,0);
 
     protected int createTextureHandle(String filename, int textureUnit) {
-        int texId = 0;
+        int handle = 0;
 
-        if (staticTextId != 0) {
-            return staticTextId;
+        if (texHandle != 0) {
+            return texHandle;
         }
 
         // InputStream inputStream = new FileInputStream(filename);
@@ -56,9 +56,9 @@ public abstract class AbstractMeshBuilder implements IMeshBuilder {
             buffer.flip();
 
             // Create a new texture object in memory and bind it
-            texId = GL11.glGenTextures();
+            handle = GL11.glGenTextures();
             GL13.glActiveTexture(textureUnit);
-            GL11.glBindTexture(GL11.GL_TEXTURE_2D, texId);
+            GL11.glBindTexture(GL11.GL_TEXTURE_2D, handle);
 
             // All RGB bytes are aligned to each other and each component is 1 byte
             GL11.glPixelStorei(GL11.GL_UNPACK_ALIGNMENT, 1);
@@ -77,8 +77,8 @@ public abstract class AbstractMeshBuilder implements IMeshBuilder {
         } catch (final IOException ex) {
             LOGGER.error("can't load texture image", ex);
         }
-        staticTextId = texId;
-        return texId;
+        AbstractMeshBuilder.texHandle = handle; // whatever we resolve first is used anywhere
+        return handle;
     }
 
     protected int createIdxBufferHandle(int[] indices) {
@@ -112,24 +112,28 @@ public abstract class AbstractMeshBuilder implements IMeshBuilder {
     }
 
     protected void applyRotationAndTranslation(List<Vector3f> vertices) {
-        if (rotation != null) {
+        if (initRotation != null) {
             for (final Vector3f vec : vertices) {
-                SimpleMath.mul(rotation, vec, vec);
+                SimpleMath.mul(initRotation, vec, vec);
             }
         }
-        if (translation != null) {
+        if (initTranslation != null) {
             for (final Vector3f vec : vertices) {
-                SimpleMath.add(translation, vec, vec);
+                SimpleMath.add(initTranslation, vec, vec);
             }
         }
     }
 
-    public void setRotation(final Quaternion quaternion) {
-        this.rotation = quaternion;
+    public void setInitRotation(Quaternion rotation) {
+        this.initRotation.set(rotation);
     }
 
-    public void setTranslation(final Vector3f translation) {
-        this.translation = translation;
+    public void setInitTranslation(Vector3f translation) {
+        this.initTranslation.set(translation);
+    }
+
+    public void setTexHandle(int textHandle) {
+        AbstractMeshBuilder.texHandle = textHandle;
     }
 
 }

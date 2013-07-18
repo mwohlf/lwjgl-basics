@@ -2,7 +2,7 @@ package net.wohlfart.gl.view;
 
 import static org.junit.Assert.assertEquals;
 import net.wohlfart.basic.Settings;
-import net.wohlfart.basic.container.DefaultRenderSet;
+import net.wohlfart.basic.container.DefaultRenderBatch;
 import net.wohlfart.basic.elements.IsUpdatable;
 import net.wohlfart.gl.shader.GraphicContextManager;
 
@@ -17,8 +17,7 @@ public class GraphicContextManagerSimpleTest {
     Settings settings;
     PickEvent pickEvent;
 
-    @SuppressWarnings("serial")
-    DefaultRenderSet<IsUpdatable> matrices = new DefaultRenderSet<IsUpdatable>() {
+    DefaultRenderBatch<IsUpdatable> matrices = new DefaultRenderBatch<IsUpdatable>() {
 
         @Override
         public Matrix4f getModelViewMatrix() {

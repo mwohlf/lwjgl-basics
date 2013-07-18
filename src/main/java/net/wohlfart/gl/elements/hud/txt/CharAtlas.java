@@ -18,7 +18,7 @@ public class CharAtlas {
 
     private final HashMap<Character, CharInfo> map = new HashMap<>();
     private BufferedImage buffImage;
-    private Integer texId;
+    private Integer texHandle;
 
 
     /**
@@ -51,10 +51,10 @@ public class CharAtlas {
         buffer.flip();
 
         // create a new texture object in memory and bind it
-        texId = GL11.glGenTextures();
+        texHandle = GL11.glGenTextures();
 
         GL13.glActiveTexture(textureUnit);
-        GL11.glBindTexture(GL11.GL_TEXTURE_2D, texId);
+        GL11.glBindTexture(GL11.GL_TEXTURE_2D, texHandle);
         // all RGB bytes are aligned to each other and each component is 1 byte
         GL11.glPixelStorei(GL11.GL_UNPACK_ALIGNMENT, 1);
         // upload the texture data and generate mip maps (for scaling)
@@ -77,7 +77,7 @@ public class CharAtlas {
     }
 
     public int getTextureId() {
-        return texId;
+        return texHandle;
     }
 
     // for debugging
@@ -85,7 +85,7 @@ public class CharAtlas {
         final TexturedMesh.Builder builder = new TexturedMesh.Builder();
         builder.setTextureId(getTextureId());
         final float z = GraphicContextManager.INSTANCE.getNearPlane() - 1;
-        builder.setTranslation(new Vector3f(0, -0.5f, z));
+        builder.setInitTranslation(new Vector3f(0, -0.5f, z));
         return builder.build();
     }
 

@@ -7,7 +7,7 @@ import org.lwjgl.util.vector.Vector3f;
 
 @SuppressWarnings("serial")
 public class MoveEvent extends Vector3f implements PoolableObject {
-    private static final float MOVE_SPEED = 100f; // 100 units per sec
+    private static final float MOVE_SPEED = 40f; // 100 units per sec
     private static final float WHEEL_SENSITIVITY = 0.05f; //
 
     private static ObjectPool<MoveEvent> pool = new ObjectPool<MoveEvent>(10) {

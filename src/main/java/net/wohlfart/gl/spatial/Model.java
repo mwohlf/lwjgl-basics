@@ -60,6 +60,8 @@ public class Model extends AbstractRenderable {
         builder.setIndices(getIndices());
         builder.setVertexStream(createVertexStream());
         builder.setTrianglePrimitive(GL11.GL_TRIANGLES);
+        builder.setInitRotation(initialRotation);
+        builder.setInitTranslation(initialTranslation);
         return builder.build();
     }
 

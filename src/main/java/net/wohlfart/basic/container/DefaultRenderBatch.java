@@ -1,5 +1,6 @@
 package net.wohlfart.basic.container;
 
+import java.util.Collection;
 import java.util.HashSet;
 
 import net.wohlfart.basic.elements.IsUpdatable;
@@ -19,14 +20,14 @@ import org.lwjgl.util.vector.Vector3f;
  * implementing the basic features for a render set,
  * keeping the graphic context and some lights if needed
  */
-@SuppressWarnings("serial")
-public class DefaultRenderSet<T extends IsUpdatable> extends HashSet<T> implements RenderSet<T>, IsUpdatable { // REVIEWED
+public class DefaultRenderBatch<T extends IsUpdatable>  implements RenderBatch<T>, IsUpdatable { // REVIEWED
 
     private IGraphicContext graphicContext;
 
+    private final HashSet<T> elements = new HashSet<T>();
     private final HashSet<VertexLight> lights = new HashSet<VertexLight>(10);
 
-    // reserve some memory for the render loop:
+    // reserve some memory for the render loop:  FIXME: need to be Thread local
     private final Vector3f posVector = new Vector3f();
     private final Matrix4f posMatrix = new Matrix4f();
     private final Matrix4f rotMatrix = new Matrix4f();
@@ -41,6 +42,17 @@ public class DefaultRenderSet<T extends IsUpdatable> extends HashSet<T> implemen
         lights.add(light);
     }
 
+    public void add(T element) {
+        elements.add(element);
+    }
+
+    public void addAll(Collection<T> multipleElements) {
+        elements.addAll(multipleElements);
+    }
+
+    public HashSet<T> getElements() {
+        return elements;
+    }
 
     @Override
     public void setup() {
@@ -62,7 +74,7 @@ public class DefaultRenderSet<T extends IsUpdatable> extends HashSet<T> implemen
         Matrix4f.mul(rotMatrix, posMatrix, rotPosMatrix);
 
         GraphicContextManager.INSTANCE.setCurrentGraphicContext(graphicContext);
-        ShaderUniformHandle.MODEL_TO_WORLD.set(SimpleMath.UNION_MATRIX);
+        ShaderUniformHandle.MODEL_TO_WORLD.set(SimpleMath.UNION_MATRIX); // the default, each model should set its own later
         ShaderUniformHandle.WORLD_TO_CAM.set(rotPosMatrix);
         ShaderUniformHandle.CAM_TO_CLIP.set(projMatrix);
 
@@ -71,14 +83,14 @@ public class DefaultRenderSet<T extends IsUpdatable> extends HashSet<T> implemen
             ShaderUniformHandle.LIGHTS.set(light, i++);
         }
 
-        for (T element : this) {
+        for (T element : elements) {
             element.render();
         }
     }
 
     @Override
     public void update(float timeInSec) {
-        for (final T element : this) {
+        for (final T element : elements) {
             element.update(timeInSec);
         }
     }
@@ -95,10 +107,11 @@ public class DefaultRenderSet<T extends IsUpdatable> extends HashSet<T> implemen
 
     @Override
     public void destroy() {
-        for (final T element : this) {
+        for (final T element : elements) {
             element.destroy();
         }
-        clear();
+        elements.clear();
     }
+
 
 }

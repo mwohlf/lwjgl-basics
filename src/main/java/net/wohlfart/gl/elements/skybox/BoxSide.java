@@ -86,10 +86,10 @@ enum BoxSide implements IsRenderable {// @formatter:off
 
         final TexturedMesh.Builder builder = new TexturedMesh.Builder();
         builder.setTextureId(textureId);
-        builder.setRotation(rotation);
+        builder.setInitRotation(rotation);
         builder.setSize(dist * 2f);
         builder.setTextureWrap(GL12.GL_CLAMP_TO_EDGE);
-        builder.setTranslation(translation);
+        builder.setInitTranslation(translation);
 
         delegate = builder.build();
         normal = translation.negate(new Vector3f());
@@ -108,16 +108,16 @@ enum BoxSide implements IsRenderable {// @formatter:off
         buffer.put(canvas);
         buffer.rewind();
 
-        final int texId = GL11.glGenTextures();
+        final int texHandle = GL11.glGenTextures();
         GL13.glActiveTexture(textureUnit);
-        GL11.glBindTexture(GL11.GL_TEXTURE_2D, texId);
+        GL11.glBindTexture(GL11.GL_TEXTURE_2D, texHandle);
 
         GL11.glPixelStorei(GL11.GL_UNPACK_ALIGNMENT, 1);
         GL11.glTexImage2D(GL11.GL_TEXTURE_2D, 0, GL11.GL_RGBA8, width, height, 0, GL11.GL_RGBA, GL12.GL_UNSIGNED_INT_8_8_8_8, buffer);
 
         GL30.glGenerateMipmap(GL11.GL_TEXTURE_2D);
 
-        return texId;
+        return texHandle;
     }
 
     protected int[] createClouds(int[] data, int width, int height, PerlinNoiseParameters param) {
