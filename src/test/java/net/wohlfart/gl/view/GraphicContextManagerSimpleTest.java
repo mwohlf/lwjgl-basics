@@ -4,7 +4,7 @@ import static org.junit.Assert.assertEquals;
 import net.wohlfart.basic.Settings;
 import net.wohlfart.basic.container.DefaultRenderBatch;
 import net.wohlfart.basic.elements.IsUpdatable;
-import net.wohlfart.gl.shader.GraphicContextManager;
+import net.wohlfart.gl.shader.GraphicContextHolder;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -13,7 +13,7 @@ import org.lwjgl.util.vector.Matrix4f;
 
 public class GraphicContextManagerSimpleTest {
 
-    GraphicContextManager contxt;
+    GraphicContextHolder contxt;
     Settings settings;
     PickEvent pickEvent;
 
@@ -37,7 +37,7 @@ public class GraphicContextManagerSimpleTest {
     @Before
     public void setup() {
         settings = createSettings();
-        contxt = GraphicContextManager.INSTANCE;
+        contxt = GraphicContextHolder.CONTEXT_HOLDER;
         contxt.setSettings(settings);
         pickEvent = new PickEvent(settings.getWidth(), settings.getHeight(), settings.getWidth() / 2f, settings.getHeight() / 2f);
     }

@@ -3,7 +3,7 @@ package net.wohlfart.gl.shader;
 /**
  * MockGraphicContext class.
  */
-public class MockGraphicContext implements GraphicContextManager.IGraphicContext {
+public class MockGraphicContext implements GraphicContextHolder.IGraphicContext {
 
     @Override
     public int getAttributeLocation(String lookupString) {

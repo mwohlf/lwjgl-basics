@@ -2,7 +2,7 @@ package net.wohlfart.gl.elements.hud.widgets;
 
 import net.wohlfart.gl.elements.hud.Layer;
 import net.wohlfart.gl.input.PointEvent;
-import net.wohlfart.gl.shader.GraphicContextManager;
+import net.wohlfart.gl.shader.GraphicContextHolder;
 
 import com.google.common.eventbus.Subscribe;
 
@@ -13,7 +13,7 @@ public class MouseClickLabel extends FormattedLabel {
     @Override
     public void setLayer(Layer layer) {
         super.setLayer(layer);
-        GraphicContextManager.INSTANCE.register(this);
+        GraphicContextHolder.CONTEXT_HOLDER.register(this);
     }
 
     public MouseClickLabel(int x, int y) {
@@ -28,6 +28,6 @@ public class MouseClickLabel extends FormattedLabel {
     @Override
     public void destroy() {
         super.destroy();
-        GraphicContextManager.INSTANCE.unregister(this);
+        GraphicContextHolder.CONTEXT_HOLDER.unregister(this);
     }
 }

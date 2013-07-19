@@ -1,6 +1,6 @@
 package net.wohlfart.gl.shader;
 
-import static net.wohlfart.gl.shader.GraphicContextManager.INSTANCE;
+import static net.wohlfart.gl.shader.GraphicContextHolder.CONTEXT_HOLDER;
 
 import java.nio.FloatBuffer;
 import java.util.HashMap;
@@ -112,17 +112,17 @@ public enum ShaderUniformHandle {// @formatter:off
     public void set(VertexLight vertexLight, int index) {
         int location;
 
-        location = INSTANCE.getUniformLocation(LIGHT_ATTENTUATION_KEYS[index]);
+        location = CONTEXT_HOLDER.getUniformLocation(LIGHT_ATTENTUATION_KEYS[index]);
         if (location > 0) {
             GL20.glUniform1f(location, vertexLight.attenuation);
         }
 
-        location = INSTANCE.getUniformLocation(LIGHT_DIFFUSE_KEYS[index]);
+        location = CONTEXT_HOLDER.getUniformLocation(LIGHT_DIFFUSE_KEYS[index]);
         if (location > 0) {
             GL20.glUniform4f(location, vertexLight.diffuse.x, vertexLight.diffuse.y, vertexLight.diffuse.z, vertexLight.diffuse.w);
         }
 
-        location = INSTANCE.getUniformLocation(LIGHT_POSITION_KEYS[index]);
+        location = CONTEXT_HOLDER.getUniformLocation(LIGHT_POSITION_KEYS[index]);
         if (location > 0) {
             // FIXME: for performance reasons we could transform the light's position here, its done in the shader right now
             // INSTANCE.getPerspectiveProjMatrix()
@@ -134,19 +134,19 @@ public enum ShaderUniformHandle {// @formatter:off
     public void set(Material material) {
         int location;
 
-        location = INSTANCE.getUniformLocation(MATERIAL_AMBIENT);
+        location = CONTEXT_HOLDER.getUniformLocation(MATERIAL_AMBIENT);
         if (location > 0) {
             GL20.glUniform3f(location, material.ambient.x, material.ambient.y, material.ambient.z);
         }
-        location = INSTANCE.getUniformLocation(MATERIAL_DIFFUSE);
+        location = CONTEXT_HOLDER.getUniformLocation(MATERIAL_DIFFUSE);
         if (location > 0) {
             GL20.glUniform4f(location, material.diffuse.x, material.diffuse.y, material.diffuse.z, material.diffuse.w);
         }
-        location = INSTANCE.getUniformLocation(MATERIAL_SPECULAR);
+        location = CONTEXT_HOLDER.getUniformLocation(MATERIAL_SPECULAR);
         if (location > 0) {
             GL20.glUniform3f(location, material.specular.x, material.specular.y, material.specular.z);
         }
-        location = INSTANCE.getUniformLocation(MATERIAL_SHININESS);
+        location = CONTEXT_HOLDER.getUniformLocation(MATERIAL_SHININESS);
         if (location > 0) {
             GL20.glUniform1f(location, material.shininess);
         }
@@ -157,7 +157,7 @@ public enum ShaderUniformHandle {// @formatter:off
         matrix.store(buff);
         buff.flip();
         // NPE here could mean that the graphic context was not yet initialized
-        GL20.glUniformMatrix4(INSTANCE.getUniformLocation(lookupString), false, buff);  // todo: there is a 4f version?
+        GL20.glUniformMatrix4(CONTEXT_HOLDER.getUniformLocation(lookupString), false, buff);  // todo: there is a 4f version?
     }
 
     public void set(Matrix3f matrix) {
@@ -165,15 +165,15 @@ public enum ShaderUniformHandle {// @formatter:off
         matrix.store(buff);
         buff.flip();
         // NPE here could mean that the graphic context was not yet initialized
-        GL20.glUniformMatrix3(INSTANCE.getUniformLocation(lookupString), false, buff);
+        GL20.glUniformMatrix3(CONTEXT_HOLDER.getUniformLocation(lookupString), false, buff);
     }
 
     public void set(Vector3f vector) {
-        GL20.glUniform3f(INSTANCE.getUniformLocation(lookupString), vector.x, vector.y, vector.z);
+        GL20.glUniform3f(CONTEXT_HOLDER.getUniformLocation(lookupString), vector.x, vector.y, vector.z);
     }
 
     public void set(ReadableColor readableColor) {
-        GL20.glUniform4f(INSTANCE.getUniformLocation(lookupString),
+        GL20.glUniform4f(CONTEXT_HOLDER.getUniformLocation(lookupString),
                 readableColor.getRed() / 255f,
                 readableColor.getGreen() / 255f,
                 readableColor.getBlue() / 255f,
@@ -181,7 +181,7 @@ public enum ShaderUniformHandle {// @formatter:off
     }
 
     public void set(FloatBuffer colorBuffer) {
-        GL20.glUniform4(INSTANCE.getUniformLocation(lookupString), colorBuffer);
+        GL20.glUniform4(CONTEXT_HOLDER.getUniformLocation(lookupString), colorBuffer);
     }
 
 }

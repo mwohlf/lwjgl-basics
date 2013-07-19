@@ -1,6 +1,6 @@
 package net.wohlfart.gl.spatial;
 
-import net.wohlfart.gl.shader.GraphicContextManager;
+import net.wohlfart.gl.shader.GraphicContextHolder;
 import net.wohlfart.gl.shader.Vertex;
 import net.wohlfart.gl.view.Camera;
 import net.wohlfart.tools.ObjectPool;
@@ -122,7 +122,7 @@ public class Particle implements PoolableObject {
     }
 
     private float[] setupStream(Vector3f position, Vector3f emitterPos) {
-        Camera cam = GraphicContextManager.INSTANCE.getCamera();
+        Camera cam = GraphicContextHolder.CONTEXT_HOLDER.getCamera();
 
         Vector3f worldPos = new Vector3f(position);
         Vector3f.add(worldPos, emitterPos, worldPos);

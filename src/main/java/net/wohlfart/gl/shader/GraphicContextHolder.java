@@ -9,17 +9,17 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 //@formatter:off
 /**
- * The GraphicContextManager is responsible for
+ * The GraphicContextHolder is responsible for
  * - switching between graphic contexts containing shaders
  * - holding the current graphic context and providing access to attributes and uniforms
- * - holding settings like screen dimension specified at start
+ * - holding settings like screen dimension specified at startup
  * - calculating and holding the perspective- and orthographic-projection matrix
  * - holding the input dispatcher and handling registration and de-registration
  */
-public enum GraphicContextManager { // REVIEWED
-    INSTANCE; // @formatter:on
+public enum GraphicContextHolder { // REVIEWED
+    CONTEXT_HOLDER; // @formatter:on
 
-    protected static final Logger LOGGER = LoggerFactory.getLogger(GraphicContextManager.class);
+    protected static final Logger LOGGER = LoggerFactory.getLogger(GraphicContextHolder.class);
 
     public interface IGraphicContext {
 
@@ -94,17 +94,17 @@ public enum GraphicContextManager { // REVIEWED
         return settings.getHeight();
     }
 
+    // 0.1 or 1
     public float getNearPlane() {
-        return settings.getNearPlane(); // 0.1
+        return settings.getNearPlane();
     }
 
+    // 100 or 1000
     public float getFarPlane() {
-        return settings.getFarPlane(); // 100
+        return settings.getFarPlane();
     }
 
-    /**
-     * @return field of view in degree
-     */
+    // @return field of view in degree [0..360]
     public float getFieldOfView() {
         return settings.getFieldOfView();
     }
@@ -132,8 +132,4 @@ public enum GraphicContextManager { // REVIEWED
     public void destroy() {
         unregister(camera);
     }
-
-
-
-
 }

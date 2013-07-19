@@ -1,7 +1,7 @@
 package net.wohlfart.gl.view;
 
 import net.wohlfart.gl.input.PointEvent;
-import net.wohlfart.gl.shader.GraphicContextManager;
+import net.wohlfart.gl.shader.GraphicContextHolder;
 
 import com.google.common.eventbus.Subscribe;
 
@@ -17,10 +17,10 @@ public class ElementPicker {
     }
 
     public void setup() {
-        final GraphicContextManager ctxManager = GraphicContextManager.INSTANCE;
+        final GraphicContextHolder ctxManager = GraphicContextHolder.CONTEXT_HOLDER;
         this.width = ctxManager.getScreenWidth();
         this.height = ctxManager.getScreenHeight();
-        GraphicContextManager.INSTANCE.register(this);
+        GraphicContextHolder.CONTEXT_HOLDER.register(this);
     }
 
     @Subscribe
@@ -29,11 +29,11 @@ public class ElementPicker {
         final float y = clickEvent.getY();
 
         final PickEvent ray = new PickEvent(width, height, x, y);
-        GraphicContextManager.INSTANCE.post(ray);
+        GraphicContextHolder.CONTEXT_HOLDER.post(ray);
     }
 
     public void destroy() {
-        GraphicContextManager.INSTANCE.unregister(this);
+        GraphicContextHolder.CONTEXT_HOLDER.unregister(this);
 
     }
 

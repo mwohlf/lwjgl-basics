@@ -9,7 +9,7 @@ import net.wohlfart.basic.time.Clock;
 import net.wohlfart.basic.time.TimerImpl;
 import net.wohlfart.gl.input.InputDispatcher;
 import net.wohlfart.gl.input.InputSource;
-import net.wohlfart.gl.shader.GraphicContextManager;
+import net.wohlfart.gl.shader.GraphicContextHolder;
 import net.wohlfart.gl.view.Camera;
 
 import org.lwjgl.LWJGLException;
@@ -33,7 +33,7 @@ import org.springframework.util.Assert;
 class Game implements InitializingBean { // REVIEWED
     private static final Logger LOGGER = LoggerFactory.getLogger(Game.class);
 
-    protected final GraphicContextManager graphContext = GraphicContextManager.INSTANCE;
+    protected final GraphicContextHolder graphContext = GraphicContextHolder.CONTEXT_HOLDER;
 
     protected GameState initialState = GameStateEnum.NULL;
     protected GameState currentState = GameStateEnum.NULL;
@@ -147,7 +147,6 @@ class Game implements InitializingBean { // REVIEWED
 
         // map the internal OpenGL coordinate system to the entire viewport
         GL11.glViewport(0, 0, settings.width, settings.height);
-        // used for GL11.glClear(GL11.GL_COLOR_BUFFER_BIT); not really needed if we have a skybox anyways
         GL11.glHint(GL11.GL_LINE_SMOOTH_HINT, GL11.GL_NICEST);
         GL11.glClearColor(0.5f, 0.5f, 0.5f, 0f);
         GL11.glClearDepth(1f);

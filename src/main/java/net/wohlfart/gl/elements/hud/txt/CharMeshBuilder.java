@@ -1,7 +1,7 @@
 package net.wohlfart.gl.elements.hud.txt;
 
 import net.wohlfart.basic.elements.IsRenderable;
-import net.wohlfart.gl.shader.GraphicContextManager;
+import net.wohlfart.gl.shader.GraphicContextHolder;
 import net.wohlfart.gl.shader.ShaderAttributeHandle;
 import net.wohlfart.gl.shader.Vertex;
 import net.wohlfart.gl.shader.mesh.AbstractMeshBuilder;
@@ -54,7 +54,7 @@ public class CharMeshBuilder extends AbstractMeshBuilder {
     }
 
     protected float[] createVertexStream() {
-        final GraphicContextManager cxtManager = GraphicContextManager.INSTANCE;
+        final GraphicContextHolder cxtManager = GraphicContextHolder.CONTEXT_HOLDER;
         final float screenWidth = cxtManager.getScreenWidth();
         final float screenHeight = cxtManager.getScreenHeight();  // screen size in pixel 1200/700
         final float aspectRatio = screenWidth / screenHeight;    // > 1   e.g.1.7

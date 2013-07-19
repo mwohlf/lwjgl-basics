@@ -1,7 +1,7 @@
 package net.wohlfart.basic.states;
 
 import net.wohlfart.gl.input.CommandEvent;
-import net.wohlfart.gl.shader.GraphicContextManager;
+import net.wohlfart.gl.shader.GraphicContextHolder;
 import net.wohlfart.gl.view.Camera;
 
 import org.lwjgl.opengl.Display;
@@ -19,7 +19,7 @@ import com.google.common.eventbus.Subscribe;
  */
 abstract class AbstractGraphicState implements GameState { // REVIEWED
 
-    private GraphicContextManager graphContextManager;
+    private GraphicContextHolder graphContextManager;
     private boolean quit = false;
     private Camera camera;
 
@@ -35,7 +35,7 @@ abstract class AbstractGraphicState implements GameState { // REVIEWED
     @Override
     public void setup() {
         Assert.notNull(camera);
-        graphContextManager = GraphicContextManager.INSTANCE;
+        graphContextManager = GraphicContextHolder.CONTEXT_HOLDER;
         graphContextManager.register(this);
     }
 
@@ -51,7 +51,7 @@ abstract class AbstractGraphicState implements GameState { // REVIEWED
         return camera;
     }
 
-    protected GraphicContextManager getGraphContextManager() {
+    protected GraphicContextHolder getGraphContextManager() {
         return graphContextManager;
     }
 

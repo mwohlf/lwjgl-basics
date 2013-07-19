@@ -62,6 +62,7 @@ public class TestingState extends AbstractGraphicState implements InitializingBe
 
     @Override
     public void render() {
+        GL11.glClearColor(0.7f, 0.7f, 0.9f, 0f);
         GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT | GL11.GL_STENCIL_BUFFER_BIT);
 
         GL11.glClear(GL11.GL_DEPTH_BUFFER_BIT);

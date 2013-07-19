@@ -18,7 +18,7 @@ import net.wohlfart.gl.elements.debug.Circle;
 import net.wohlfart.gl.elements.debug.Cube;
 import net.wohlfart.gl.elements.debug.Icosphere;
 import net.wohlfart.gl.elements.debug.Tetrahedron;
-import net.wohlfart.gl.shader.GraphicContextManager;
+import net.wohlfart.gl.shader.GraphicContextHolder;
 import net.wohlfart.gl.spatial.Model;
 import net.wohlfart.tools.SimpleMath;
 
@@ -49,7 +49,7 @@ public final class WireframeToolkit {
 
     public static Collection<IsUpdatable> createRandomLocatedSpheres() {
         final HashSet<IsUpdatable> elemBucket = new HashSet<>();
-        final GraphicContextManager graphContext = GraphicContextManager.INSTANCE;
+        final GraphicContextHolder graphContext = GraphicContextHolder.CONTEXT_HOLDER;
         final float farPlane = graphContext.getFarPlane();
         for (int i = 0; i < 10000; i++) {
             final float x = SimpleMath.random(-farPlane, farPlane);

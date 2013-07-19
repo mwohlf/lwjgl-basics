@@ -5,8 +5,8 @@ import java.util.HashSet;
 
 import net.wohlfart.basic.elements.IsUpdatable;
 import net.wohlfart.gl.shader.DefaultGraphicContext;
-import net.wohlfart.gl.shader.GraphicContextManager;
-import net.wohlfart.gl.shader.GraphicContextManager.IGraphicContext;
+import net.wohlfart.gl.shader.GraphicContextHolder;
+import net.wohlfart.gl.shader.GraphicContextHolder.IGraphicContext;
 import net.wohlfart.gl.shader.ShaderRegistry;
 import net.wohlfart.gl.shader.ShaderUniformHandle;
 import net.wohlfart.gl.shader.VertexLight;
@@ -56,7 +56,7 @@ public class DefaultRenderBatch<T extends IsUpdatable>  implements RenderBatch<T
 
     @Override
     public void setup() {
-        projMatrix.load(GraphicContextManager.INSTANCE.getPerspectiveProjMatrix());
+        projMatrix.load(GraphicContextHolder.CONTEXT_HOLDER.getPerspectiveProjMatrix());
         if (graphicContext == null) { // fallback
             graphicContext = new DefaultGraphicContext(ShaderRegistry.DEFAULT_SHADER);
         }
@@ -68,12 +68,12 @@ public class DefaultRenderBatch<T extends IsUpdatable>  implements RenderBatch<T
         assert graphicContext != null : "the graphicContext is null";
         assert graphicContext.isInitialized() : "the graphicContext is not initialized, call setup() before using the graphicContext";
 
-        final Camera camera = GraphicContextManager.INSTANCE.getCamera();       // fixme: this calculation should be moved into the camera
+        final Camera camera = GraphicContextHolder.CONTEXT_HOLDER.getCamera();       // fixme: this calculation should be moved into the camera
         SimpleMath.convert(camera.getPosition().negate(posVector), posMatrix);
         SimpleMath.convert(camera.getRotation(), rotMatrix);
         Matrix4f.mul(rotMatrix, posMatrix, rotPosMatrix);
 
-        GraphicContextManager.INSTANCE.setCurrentGraphicContext(graphicContext);
+        GraphicContextHolder.CONTEXT_HOLDER.setCurrentGraphicContext(graphicContext);
         ShaderUniformHandle.MODEL_TO_WORLD.set(SimpleMath.UNION_MATRIX); // the default, each model should set its own later
         ShaderUniformHandle.WORLD_TO_CAM.set(rotPosMatrix);
         ShaderUniformHandle.CAM_TO_CLIP.set(projMatrix);

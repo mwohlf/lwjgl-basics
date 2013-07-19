@@ -13,7 +13,7 @@ import org.slf4j.LoggerFactory;
  *
  *  see: http://www.opengl.org/wiki/OpenGL_Context
  */
-public class DefaultGraphicContext implements GraphicContextManager.IGraphicContext {
+public class DefaultGraphicContext implements GraphicContextHolder.IGraphicContext {
     private static final Logger LOGGER = LoggerFactory.getLogger(DefaultGraphicContext.class);
 
     private final IShaderProgram shaderProgram;

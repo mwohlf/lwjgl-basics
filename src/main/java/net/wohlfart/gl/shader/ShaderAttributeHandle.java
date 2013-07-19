@@ -1,6 +1,6 @@
 package net.wohlfart.gl.shader;
 
-import static net.wohlfart.gl.shader.GraphicContextManager.INSTANCE;
+import static net.wohlfart.gl.shader.GraphicContextHolder.CONTEXT_HOLDER;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -39,7 +39,7 @@ public enum ShaderAttributeHandle {// @formatter:off
     }
 
     public int getLocation() {
-        return INSTANCE.getAttributeLocation(lookupString);
+        return CONTEXT_HOLDER.getAttributeLocation(lookupString);
     }
 
     public void enable(int stride, int[] offset) {

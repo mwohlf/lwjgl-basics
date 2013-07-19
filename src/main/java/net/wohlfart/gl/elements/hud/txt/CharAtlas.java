@@ -5,7 +5,7 @@ import java.nio.ByteBuffer;
 import java.util.HashMap;
 
 import net.wohlfart.basic.elements.IsRenderable;
-import net.wohlfart.gl.shader.GraphicContextManager;
+import net.wohlfart.gl.shader.GraphicContextHolder;
 import net.wohlfart.gl.shader.mesh.TexturedMesh;
 
 import org.lwjgl.BufferUtils;
@@ -84,7 +84,7 @@ public class CharAtlas {
     protected IsRenderable getAsRenderable() {
         final TexturedMesh.Builder builder = new TexturedMesh.Builder();
         builder.setTextureId(getTextureId());
-        final float z = GraphicContextManager.INSTANCE.getNearPlane() - 1;
+        final float z = GraphicContextHolder.CONTEXT_HOLDER.getNearPlane() - 1;
         builder.setInitTranslation(new Vector3f(0, -0.5f, z));
         return builder.build();
     }
