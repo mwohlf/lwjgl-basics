@@ -125,6 +125,7 @@ public class CelestialState extends AbstractGraphicState implements Initializing
         meshBucket.setGraphicContext(new DefaultGraphicContext(ShaderRegistry.DEFAULT_SHADER));
         TexturedQuad tex = new TexturedQuad();
         tex.setPosition(new Vector3f(0,-10,-10));
+        tex.setTexFilename("/gfx/images/ash_uvgrid01.png");
         meshBucket.add(tex);
         meshBucket.setup();
 

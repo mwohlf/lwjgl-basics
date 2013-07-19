@@ -5,6 +5,7 @@ import net.wohlfart.basic.Settings;
 import net.wohlfart.basic.container.DefaultRenderBatch;
 import net.wohlfart.basic.elements.IsUpdatable;
 import net.wohlfart.gl.shader.GraphicContextHolder;
+import net.wohlfart.gl.shader.PerspectiveProjectionFab;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -26,7 +27,7 @@ public class GraphicContextManagerMovedTest {
 
         @Override
         public Matrix4f getProjectionMatrix() {
-            final Matrix4f m = contxt.getPerspectiveProjMatrix();
+            final Matrix4f m =  new PerspectiveProjectionFab().create(contxt.getSettings());
             return m;
         }
 

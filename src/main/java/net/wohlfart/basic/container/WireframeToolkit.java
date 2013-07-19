@@ -1,5 +1,7 @@
 package net.wohlfart.basic.container;
 
+import static net.wohlfart.gl.shader.GraphicContextHolder.CONTEXT_HOLDER;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Collection;
@@ -18,7 +20,6 @@ import net.wohlfart.gl.elements.debug.Circle;
 import net.wohlfart.gl.elements.debug.Cube;
 import net.wohlfart.gl.elements.debug.Icosphere;
 import net.wohlfart.gl.elements.debug.Tetrahedron;
-import net.wohlfart.gl.shader.GraphicContextHolder;
 import net.wohlfart.gl.spatial.Model;
 import net.wohlfart.tools.SimpleMath;
 
@@ -49,8 +50,7 @@ public final class WireframeToolkit {
 
     public static Collection<IsUpdatable> createRandomLocatedSpheres() {
         final HashSet<IsUpdatable> elemBucket = new HashSet<>();
-        final GraphicContextHolder graphContext = GraphicContextHolder.CONTEXT_HOLDER;
-        final float farPlane = graphContext.getFarPlane();
+        final float farPlane = CONTEXT_HOLDER.getSettings().getFarPlane();
         for (int i = 0; i < 10000; i++) {
             final float x = SimpleMath.random(-farPlane, farPlane);
             final float y = SimpleMath.random(-farPlane, farPlane);
@@ -104,7 +104,10 @@ public final class WireframeToolkit {
         elemBucket.add(new Icosphere(1, 2).withColor(ReadableColor.GREEN).withTranslation(new Vector3f(0, -7, 0)));
         elemBucket.add(new Icosphere(1, 1).withColor(ReadableColor.BLUE).withTranslation(new Vector3f(-5, -7, 0)));
 
-        elemBucket.add(new TexturedQuad().withTranslation(new Vector3f(-1, 5, 0)));
+        TexturedQuad quad = new TexturedQuad();
+        quad.withTranslation(new Vector3f(-1, 5, 0));
+        quad.setTexFilename("/gfx/images/ash_uvgrid01.png");
+        elemBucket.add(quad);
         elemBucket.add(new ColoredQuad().withTranslation(new Vector3f(-1, 5, 0)));
 
         return elemBucket;

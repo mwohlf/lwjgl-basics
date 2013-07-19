@@ -23,12 +23,12 @@ import org.slf4j.LoggerFactory;
  *
  * @return our projection matrix
  */
-class PerspectiveProjectionFab { // @formatter:on REVIEWED
+public class PerspectiveProjectionFab { // @formatter:on REVIEWED
     private static final Logger LOGGER = LoggerFactory.getLogger(PerspectiveProjectionFab.class);
 
     private static final float FIELD_OF_VIEW_LIMIT = 100; // << 180
 
-    Matrix4f create(Settings settings) {
+    public Matrix4f create(Settings settings) {
 
         final Matrix4f matrix = new Matrix4f();
         float fieldOfView = settings.getFieldOfView();

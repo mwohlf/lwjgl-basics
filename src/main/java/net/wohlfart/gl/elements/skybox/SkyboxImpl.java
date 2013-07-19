@@ -1,8 +1,9 @@
 package net.wohlfart.gl.elements.skybox;
 
+import static net.wohlfart.gl.shader.GraphicContextHolder.CONTEXT_HOLDER;
 import net.wohlfart.gl.shader.DefaultGraphicContext;
-import net.wohlfart.gl.shader.GraphicContextHolder;
 import net.wohlfart.gl.shader.GraphicContextHolder.IGraphicContext;
+import net.wohlfart.gl.shader.PerspectiveProjectionFab;
 import net.wohlfart.gl.shader.ShaderRegistry;
 import net.wohlfart.gl.shader.ShaderUniformHandle;
 import net.wohlfart.gl.view.Camera;
@@ -22,6 +23,9 @@ public class SkyboxImpl implements Skybox, SkyboxParameters {
 
     private final Matrix4f rotMatrix = new Matrix4f();
 
+    private final Matrix4f camViewMatrix = new Matrix4f();
+
+
     private BoxSide[] sides;
 
     private IGraphicContext graphicContext;
@@ -31,6 +35,7 @@ public class SkyboxImpl implements Skybox, SkyboxParameters {
     public void setup() {
         graphicContext = new DefaultGraphicContext(ShaderRegistry.DEFAULT_SHADER);
         graphicContext.setup();
+        camViewMatrix.load(new PerspectiveProjectionFab().create(CONTEXT_HOLDER.getSettings()));
     }
 
     private void createSides() {
@@ -45,13 +50,12 @@ public class SkyboxImpl implements Skybox, SkyboxParameters {
         assert graphicContext != null : "the graphicContext is null, make sure to call the init method";
         assert graphicContext.isInitialized() : "the graphicContext is not initialized";
 
-        GraphicContextHolder.CONTEXT_HOLDER.setCurrentGraphicContext(graphicContext);
+        CONTEXT_HOLDER.setCurrentGraphicContext(graphicContext);
         if (sides == null) {
             createSides();
         }
 
-        final Camera camera = GraphicContextHolder.CONTEXT_HOLDER.getCamera();
-        final Matrix4f camViewMatrix = GraphicContextHolder.CONTEXT_HOLDER.getPerspectiveProjMatrix();
+        final Camera camera = CONTEXT_HOLDER.getCamera();
         SimpleMath.convert(camera.getRotation(), rotMatrix);
 
         ShaderUniformHandle.MODEL_TO_WORLD.set(SimpleMath.UNION_MATRIX);

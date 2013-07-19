@@ -1,14 +1,16 @@
 package net.wohlfart.gl.shader.mesh;
 
+import static net.wohlfart.basic.texture.TextureRegistry.TEXTURE_REGISTRY;
+
 import java.nio.ByteBuffer;
 import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
 import java.util.List;
 
-import net.wohlfart.basic.texture.TextureRegistry;
 import net.wohlfart.tools.SimpleMath;
 
 import org.lwjgl.BufferUtils;
+import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL13;
 import org.lwjgl.opengl.GL15;
 import org.lwjgl.util.vector.Quaternion;
@@ -28,6 +30,8 @@ public abstract class AbstractMeshBuilder implements IMeshBuilder {
 
     private String textureFilename;
     private int texHandle;
+    private int textureWrap = GL11.GL_REPEAT;
+
 
     // setters for clients
 
@@ -45,6 +49,10 @@ public abstract class AbstractMeshBuilder implements IMeshBuilder {
 
     public void setTexFilename(String textureFilename) {
         this.textureFilename = textureFilename;
+    }
+
+    public void setTextureWrap(int textureWrap) {
+        this.textureWrap = textureWrap;
     }
 
 
@@ -98,11 +106,11 @@ public abstract class AbstractMeshBuilder implements IMeshBuilder {
             return texHandle;
         }
         if ((textureFilename != null) && (texHandle == 0)) {
-            texHandle = TextureRegistry.TEXTURE_REGISTRY.getTextureHandle(textureFilename, GL13.GL_TEXTURE0);
+            texHandle = TEXTURE_REGISTRY.getTextureHandle(textureFilename, GL13.GL_TEXTURE0, textureWrap);
             textureFilename = null;
             return texHandle;
         }
-        throw new IllegalStateException("textureFilename is '" + textureFilename + "' and texHandle is '" + texHandle + "#");
+        throw new IllegalStateException("textureFilename is '" + textureFilename + "' and texHandle is '" + texHandle + " either set id or use a file");
     }
 
 }

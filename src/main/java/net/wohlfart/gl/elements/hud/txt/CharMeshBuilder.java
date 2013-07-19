@@ -1,7 +1,8 @@
 package net.wohlfart.gl.elements.hud.txt;
 
+import static net.wohlfart.gl.shader.GraphicContextHolder.CONTEXT_HOLDER;
+import net.wohlfart.basic.Settings;
 import net.wohlfart.basic.elements.IsRenderable;
-import net.wohlfart.gl.shader.GraphicContextHolder;
 import net.wohlfart.gl.shader.ShaderAttributeHandle;
 import net.wohlfart.gl.shader.Vertex;
 import net.wohlfart.gl.shader.mesh.AbstractMeshBuilder;
@@ -54,19 +55,19 @@ public class CharMeshBuilder extends AbstractMeshBuilder {
     }
 
     protected float[] createVertexStream() {
-        final GraphicContextHolder cxtManager = GraphicContextHolder.CONTEXT_HOLDER;
-        final float screenWidth = cxtManager.getScreenWidth();
-        final float screenHeight = cxtManager.getScreenHeight();  // screen size in pixel 1200/700
+        Settings settings = CONTEXT_HOLDER.getSettings();
+        final float screenWidth = settings.getWidth();
+        final float screenHeight = settings.getHeight();  // screen size in pixel 1200/700
         final float aspectRatio = screenWidth / screenHeight;    // > 1   e.g.1.7
 
-        float alpha = SimpleMath.deg2rad(cxtManager.getFieldOfView()) / 2f;   // 0.39
+        float alpha = SimpleMath.deg2rad(settings.getFieldOfView()) / 2f;   // 0.39
         final float yScale = 1f / SimpleMath.tan(alpha);          // 2.41
         final float xScale = yScale / aspectRatio;                // 1.40
 
         final float atlasWidth = atlas.getImage().getWidth();
         final float atlasHeight = atlas.getImage().getHeight();  // texture atlas size in pixel (512)
 
-        float z = cxtManager.getNearPlane();
+        float z = settings.getNearPlane();
 
         // the x/y coordinates must fit into a [-0.5 .. +0.5] interval
         float x1 = ((screenX / screenWidth) / xScale ) * 2f;

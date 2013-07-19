@@ -1,5 +1,7 @@
 package net.wohlfart.basic.container;
 
+import static net.wohlfart.gl.shader.GraphicContextHolder.CONTEXT_HOLDER;
+
 import java.util.Collection;
 import java.util.HashSet;
 
@@ -7,6 +9,7 @@ import net.wohlfart.basic.elements.IsUpdatable;
 import net.wohlfart.gl.shader.DefaultGraphicContext;
 import net.wohlfart.gl.shader.GraphicContextHolder;
 import net.wohlfart.gl.shader.GraphicContextHolder.IGraphicContext;
+import net.wohlfart.gl.shader.PerspectiveProjectionFab;
 import net.wohlfart.gl.shader.ShaderRegistry;
 import net.wohlfart.gl.shader.ShaderUniformHandle;
 import net.wohlfart.gl.shader.VertexLight;
@@ -56,7 +59,7 @@ public class DefaultRenderBatch<T extends IsUpdatable>  implements RenderBatch<T
 
     @Override
     public void setup() {
-        projMatrix.load(GraphicContextHolder.CONTEXT_HOLDER.getPerspectiveProjMatrix());
+        projMatrix.load(new PerspectiveProjectionFab().create(CONTEXT_HOLDER.getSettings()));
         if (graphicContext == null) { // fallback
             graphicContext = new DefaultGraphicContext(ShaderRegistry.DEFAULT_SHADER);
         }

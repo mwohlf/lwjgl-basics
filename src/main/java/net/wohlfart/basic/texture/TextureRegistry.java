@@ -23,14 +23,18 @@ public enum TextureRegistry {
     HashMap<String, Integer> storage = new HashMap<>();
 
     public int getTextureHandle(String key, int textureUnit) {
+        return getTextureHandle(key, textureUnit, GL11.GL_REPEAT);
+    }
+
+    public int getTextureHandle(String key, int textureUnit, int textureWrap) {
         if (!storage.containsKey(key)) {
-            storage.put(key, createTextureHandle(key, textureUnit));
+            storage.put(key, createTextureHandle(key, textureUnit, textureWrap));
         }
         return (storage.get(key));
     }
 
 
-    private int createTextureHandle(String filename, int textureUnit) {
+    private int createTextureHandle(String filename, int textureUnit, int textureWrap) {
         int handle = 0;
 
         System.err.println("loading: " + filename);
@@ -59,8 +63,8 @@ public enum TextureRegistry {
             GL11.glTexImage2D(GL11.GL_TEXTURE_2D, 0, GL11.GL_RGBA8, tWidth, tHeight, 0, GL11.GL_RGBA, GL11.GL_UNSIGNED_BYTE, buffer);
             GL30.glGenerateMipmap(GL11.GL_TEXTURE_2D);
             // Setup the ST coordinate system
-            GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_S, GL11.GL_REPEAT);
-            GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_T, GL11.GL_REPEAT);
+            GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_S, textureWrap);
+            GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_T, textureWrap);
             // Setup what to do when the texture has to be scaled
             GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_NEAREST);
             GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER, GL11.GL_LINEAR_MIPMAP_LINEAR);

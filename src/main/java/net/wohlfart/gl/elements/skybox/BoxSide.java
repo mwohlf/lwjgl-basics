@@ -1,11 +1,12 @@
 package net.wohlfart.gl.elements.skybox;
 
+import static net.wohlfart.gl.shader.GraphicContextHolder.CONTEXT_HOLDER;
+
 import java.awt.Color;
 import java.nio.IntBuffer;
 
 import net.wohlfart.basic.elements.IsRenderable;
 import net.wohlfart.gl.elements.skybox.SkyboxParameters.PerlinNoiseParameters;
-import net.wohlfart.gl.shader.GraphicContextHolder;
 import net.wohlfart.gl.shader.mesh.TexturedMesh;
 import net.wohlfart.tools.ColorGradient;
 import net.wohlfart.tools.SimpleMath;
@@ -54,7 +55,7 @@ enum BoxSide implements IsRenderable {// @formatter:off
     // distance from the origin to any corner of the view zNear frustum, this becomes the distance to the wall of the skybox
     // and also half the length of the edge of the skybox since the skybox is a cube, getting closer means
     // we would cut off a piece of the skybox because it would get closer than zNear
-    protected float dist = SimpleMath.sqrt(2* SimpleMath.sqare(GraphicContextHolder.CONTEXT_HOLDER.getNearPlane()));
+    protected float dist = SimpleMath.sqrt(2* SimpleMath.sqare(CONTEXT_HOLDER.getSettings().getNearPlane()));
 
 
     protected Vector3f translation;

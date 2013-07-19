@@ -4,7 +4,6 @@ import net.wohlfart.basic.Settings;
 import net.wohlfart.gl.input.InputDispatcher;
 import net.wohlfart.gl.view.Camera;
 
-import org.lwjgl.util.vector.Matrix4f;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 //@formatter:off
@@ -42,10 +41,6 @@ public enum GraphicContextHolder { // REVIEWED
     // current shader and stuff
     private IGraphicContext currentGraphicContext;
 
-
-    // pre-calculated projection matrices to select from
-    private Matrix4f perspectiveProjMatrix;
-
     private Settings settings;
     private InputDispatcher inputDispatcher;
     private Camera camera;
@@ -65,7 +60,6 @@ public enum GraphicContextHolder { // REVIEWED
 
     public void setSettings(Settings settings) {
         this.settings = settings;
-        perspectiveProjMatrix = new PerspectiveProjectionFab().create(settings);
     }
 
     public void setCamera(Camera camera) {
@@ -76,39 +70,16 @@ public enum GraphicContextHolder { // REVIEWED
         register(camera);
     }
 
+    public Settings getSettings() {
+        return this.settings;
+    }
+
     int getAttributeLocation(String lookupString) {
         return currentGraphicContext.getAttributeLocation(lookupString);
     }
 
     int getUniformLocation(String lookupString) {
         return currentGraphicContext.getUniformLocation(lookupString);
-    }
-
-    public Matrix4f getPerspectiveProjMatrix() {
-        return perspectiveProjMatrix;
-    }
-
-    public int getScreenWidth() {
-        return settings.getWidth();
-    }
-
-    public int getScreenHeight() {
-        return settings.getHeight();
-    }
-
-    // @return  0.1 or 1 (usually)
-    public float getNearPlane() {
-        return settings.getNearPlane();
-    }
-
-    // @return  100 or 1000 (usually)
-    public float getFarPlane() {
-        return settings.getFarPlane();
-    }
-
-    // @return field of view in degree [0..360]
-    public float getFieldOfView() {
-        return settings.getFieldOfView();
     }
 
     public Camera getCamera() {

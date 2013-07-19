@@ -1,12 +1,13 @@
 package net.wohlfart.gl.spatial;
 
+import static net.wohlfart.basic.texture.TextureRegistry.TEXTURE_REGISTRY;
+
 import java.nio.FloatBuffer;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 
 import net.wohlfart.basic.elements.IsRenderable;
-import net.wohlfart.basic.texture.TextureRegistry;
 import net.wohlfart.gl.elements.AbstractRenderable;
 import net.wohlfart.gl.shader.mesh.ParticleMesh;
 import net.wohlfart.tools.SimpleMath;
@@ -55,7 +56,7 @@ public class ParticleEmitter extends AbstractRenderable implements Emitter {
     @Override
     protected IsRenderable setupMesh() {
         LOGGER.debug("rendering {} particles", particles.size());
-        commonTextureId = TextureRegistry.TEXTURE_REGISTRY.getTextureHandle("/gfx/images/ash_uvgrid01.png", GL13.GL_TEXTURE0);
+        commonTextureId = TEXTURE_REGISTRY.getTextureHandle("/gfx/images/ash_uvgrid01.png", GL13.GL_TEXTURE0);
 
         final ParticleMesh.Builder builder = new ParticleMesh.Builder();
         builder.setFlippedFloatBuffer(getFlippedFloatBuffer());

@@ -14,12 +14,15 @@ public class TexturedQuad extends AbstractRenderable {
 
         builder.setInitTranslation(initialTranslation);
         builder.setInitRotation(initialRotation);
-        builder.setTexFilename("/gfx/images/ash_uvgrid01.png");
         return builder.build();
     }
 
     public void setTexHandle(int texHandle) {
         builder.setTexHandle(texHandle);
+    }
+
+    public void setTexFilename(String texFilename) {
+        builder.setTexFilename(texFilename);
     }
 
 }

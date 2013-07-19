@@ -1,5 +1,6 @@
 package net.wohlfart.basic.states;
 
+import static net.wohlfart.gl.shader.GraphicContextHolder.CONTEXT_HOLDER;
 import net.wohlfart.gl.input.CommandEvent;
 import net.wohlfart.gl.shader.GraphicContextHolder;
 import net.wohlfart.gl.view.Camera;
@@ -35,16 +36,15 @@ abstract class AbstractGraphicState implements GameState { // REVIEWED
     @Override
     public void setup() {
         Assert.notNull(camera);
-        graphContextManager = GraphicContextHolder.CONTEXT_HOLDER;
-        graphContextManager.register(this);
+        CONTEXT_HOLDER.register(this);
     }
 
     protected float getScreenHeight() {
-        return graphContextManager.getScreenHeight();
+        return CONTEXT_HOLDER.getSettings().getHeight();
     }
 
     protected float getScreenWidth() {
-        return graphContextManager.getScreenWidth();
+        return CONTEXT_HOLDER.getSettings().getWidth();
     }
 
     protected Camera getCamera() {
