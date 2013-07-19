@@ -1,22 +1,25 @@
 package net.wohlfart.gl.view;
 
+import static net.wohlfart.gl.shader.GraphicContextHolder.CONTEXT_HOLDER;
 import net.wohlfart.gl.input.MoveEvent;
 import net.wohlfart.gl.input.RotateEvent;
 import net.wohlfart.tools.SimpleMath;
 
+import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Quaternion;
 import org.lwjgl.util.vector.Vector3f;
 
 import com.google.common.eventbus.Subscribe;
 
-/**
- * <p>
- * Camera class.
- * </p>
- */
+
 public class Camera implements CanRotate, CanMove {
     private final Quaternion TMP_QUATERNION = new Quaternion();
     private final Vector3f TMP_VECTOR = new Vector3f();
+    // reserve some memory for the render loop:  FIXME: need to be Thread local
+    private final Vector3f posVector = new Vector3f();
+    private final Matrix4f posMatrix = new Matrix4f();
+    private final Matrix4f rotMatrix = new Matrix4f();
+
 
     private final CanRotate rotation;
     private final CanMove movement;
@@ -90,6 +93,18 @@ public class Camera implements CanRotate, CanMove {
     public void setRotation(Quaternion quaternion) {
         rotation.setRotation(quaternion);
     }
+
+    public Matrix4f getWorldToCamMatrix() {
+        final Matrix4f rotPosMatrix = new Matrix4f();
+
+        final Camera camera = CONTEXT_HOLDER.getCamera();       // FIXME: this calculation should be moved into the camera class
+        SimpleMath.convert(camera.getPosition().negate(posVector), posMatrix);
+        SimpleMath.convert(camera.getRotation(), rotMatrix);
+        Matrix4f.mul(rotMatrix, posMatrix, rotPosMatrix);
+        // TODO Auto-generated method stub
+        return rotPosMatrix;
+    }
+
 
     @Override
     public String toString() {

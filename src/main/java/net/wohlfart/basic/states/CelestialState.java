@@ -1,9 +1,11 @@
 package net.wohlfart.basic.states;
 
+import static net.wohlfart.gl.shader.GraphicContextHolder.CONTEXT_HOLDER;
+
 import java.util.List;
 
 import net.wohlfart.basic.container.DefaultRenderBatch;
-import net.wohlfart.basic.container.ModelRenderSet;
+import net.wohlfart.basic.container.ModelRenderBatch;
 import net.wohlfart.basic.container.ModelToolkit;
 import net.wohlfart.basic.container.WireframeToolkit;
 import net.wohlfart.basic.elements.IsUpdatable;
@@ -17,17 +19,21 @@ import net.wohlfart.gl.elements.hud.widgets.StatisticLabel;
 import net.wohlfart.gl.elements.skybox.Skybox;
 import net.wohlfart.gl.elements.skybox.SkyboxImpl;
 import net.wohlfart.gl.shader.DefaultGraphicContext;
+import net.wohlfart.gl.shader.PerspectiveProjectionFab;
 import net.wohlfart.gl.shader.ShaderRegistry;
 import net.wohlfart.gl.shader.VertexLight;
 import net.wohlfart.gl.spatial.CelestialBody;
 import net.wohlfart.gl.spatial.Model;
 import net.wohlfart.gl.spatial.ParticleEmitter;
 import net.wohlfart.gl.texture.CelestialType;
+import net.wohlfart.gl.view.Camera;
 import net.wohlfart.gl.view.ElementPicker;
 import net.wohlfart.gl.view.PickEvent;
 import net.wohlfart.gl.view.PickingRay;
+import net.wohlfart.tools.SimpleMath;
 
 import org.lwjgl.opengl.GL11;
+import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector3f;
 import org.lwjgl.util.vector.Vector4f;
 import org.slf4j.Logger;
@@ -47,7 +53,7 @@ public class CelestialState extends AbstractGraphicState implements Initializing
 
     private final DefaultRenderBatch<CelestialBody> sunSet = new DefaultRenderBatch<>();
 
-    private final ModelRenderSet modelSet = new ModelRenderSet();
+    private final ModelRenderBatch modelSet = new ModelRenderBatch();
 
     private final DefaultRenderBatch<ParticleEmitter> emitterSet = new DefaultRenderBatch<>();
 
@@ -166,7 +172,21 @@ public class CelestialState extends AbstractGraphicState implements Initializing
 
     @Subscribe
     public void onPickEvent(PickEvent pickEvent) {
-        PickingRay pickingRay = pickEvent.createPickingRay(wireframeBucket);
+
+        Matrix4f projectionMatrix = new PerspectiveProjectionFab().create(CONTEXT_HOLDER.getSettings());
+
+        final Camera camera = CONTEXT_HOLDER.getCamera();       // FIXME: this calculation should be moved into the camera class
+        Vector3f posVector = new Vector3f();
+        Matrix4f posMatrix = new Matrix4f();
+        SimpleMath.convert(camera.getPosition().negate(posVector), posMatrix);
+        Matrix4f rotMatrix = new Matrix4f();
+        SimpleMath.convert(camera.getRotation(), rotMatrix);
+        Matrix4f rotPosMatrix = new Matrix4f();
+        Matrix4f.mul(rotMatrix, posMatrix, rotPosMatrix);
+
+        Matrix4f modelViewMatrix = rotPosMatrix;
+
+        PickingRay pickingRay = pickEvent.createPickingRay(projectionMatrix, modelViewMatrix);
         wireframeBucket.add(Arrow.createLink(pickingRay.getStart(), pickingRay.getEnd()));
         List<Model> picklist = modelSet.pick(pickingRay);
         System.out.println("picking: " + picklist);

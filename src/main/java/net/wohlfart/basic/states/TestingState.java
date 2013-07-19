@@ -1,6 +1,6 @@
 package net.wohlfart.basic.states;
 
-import net.wohlfart.basic.container.GlowRenderSet;
+import net.wohlfart.basic.container.GlowRenderBatch;
 import net.wohlfart.gl.elements.hud.Hud;
 import net.wohlfart.gl.elements.hud.HudImpl;
 import net.wohlfart.gl.elements.hud.widgets.SimpleLabel;
@@ -23,7 +23,7 @@ public class TestingState extends AbstractGraphicState implements InitializingBe
 
     private final Hud hud = new HudImpl();
 
-    private final GlowRenderSet renderSet = new GlowRenderSet();
+    private final GlowRenderBatch renderSet = new GlowRenderBatch();
 
 
     @Override

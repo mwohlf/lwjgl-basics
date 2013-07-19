@@ -1,7 +1,5 @@
 package net.wohlfart.gl.view;
 
-import net.wohlfart.basic.container.RenderBatch;
-
 import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector3f;
 import org.lwjgl.util.vector.Vector4f;
@@ -30,12 +28,10 @@ public class PickEvent {
     // render set itself where the matrixes are available
     // to do this post the complete picking ray as event and call a factory inside the render set to create the
     // actual start /endpoint...
-    public PickingRay createPickingRay(RenderBatch<?> renderSet) {
+    // this way we can get rid of the getModelViewMatrix/GetProjMatrix in the renderbatch
+    public PickingRay createPickingRay(Matrix4f projectionMatrix, Matrix4f modelViewMatrix) {
 
         Matrix4f matrx = transformMatrix.get();
-
-        Matrix4f projectionMatrix = renderSet.getProjectionMatrix();
-        Matrix4f modelViewMatrix = renderSet.getModelViewMatrix();
 
         Matrix4f.mul(projectionMatrix, modelViewMatrix, matrx);
         matrx = Matrix4f.invert(matrx, matrx);

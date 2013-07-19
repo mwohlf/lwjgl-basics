@@ -2,8 +2,6 @@ package net.wohlfart.gl.view;
 
 import static org.junit.Assert.assertEquals;
 import net.wohlfart.basic.Settings;
-import net.wohlfart.basic.container.DefaultRenderBatch;
-import net.wohlfart.basic.elements.IsUpdatable;
 import net.wohlfart.gl.shader.GraphicContextHolder;
 import net.wohlfart.gl.shader.PerspectiveProjectionFab;
 
@@ -16,22 +14,6 @@ public class GraphicContextManagerMovedTest {
     GraphicContextHolder contxt;
     Settings settings;
     PickEvent pickEvent;
-
-    DefaultRenderBatch<IsUpdatable> matrices = new DefaultRenderBatch<IsUpdatable>() {
-
-        @Override
-        public Matrix4f getModelViewMatrix() {
-            final Matrix4f m = new Matrix4f();
-            return m;
-        }
-
-        @Override
-        public Matrix4f getProjectionMatrix() {
-            final Matrix4f m =  new PerspectiveProjectionFab().create(contxt.getSettings());
-            return m;
-        }
-
-    };
 
     @Before
     public void setup() {
@@ -54,7 +36,9 @@ public class GraphicContextManagerMovedTest {
 
     @Test
     public void testCenter() {
-        PickingRay ray = pickEvent.createPickingRay(matrices);
+        Matrix4f projectionMatrix = new Matrix4f();;
+        Matrix4f modelViewMatrix = new PerspectiveProjectionFab().create(contxt.getSettings());
+        PickingRay ray = pickEvent.createPickingRay(projectionMatrix, modelViewMatrix);
 
         assertEquals(0.0, ray.getStart().x, 0.01);
         assertEquals(0.0, ray.getStart().y, 0.01);

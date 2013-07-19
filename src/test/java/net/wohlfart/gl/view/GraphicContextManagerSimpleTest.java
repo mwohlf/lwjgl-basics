@@ -2,8 +2,6 @@ package net.wohlfart.gl.view;
 
 import static org.junit.Assert.assertEquals;
 import net.wohlfart.basic.Settings;
-import net.wohlfart.basic.container.DefaultRenderBatch;
-import net.wohlfart.basic.elements.IsUpdatable;
 import net.wohlfart.gl.shader.GraphicContextHolder;
 import net.wohlfart.gl.shader.PerspectiveProjectionFab;
 
@@ -18,22 +16,6 @@ public class GraphicContextManagerSimpleTest {
     Settings settings;
     PickEvent pickEvent;
 
-    DefaultRenderBatch<IsUpdatable> matrices = new DefaultRenderBatch<IsUpdatable>() {
-
-        @Override
-        public Matrix4f getModelViewMatrix() {
-            final Matrix4f m = new Matrix4f();
-            return m;
-        }
-
-
-        @Override
-        public Matrix4f getProjectionMatrix() {
-            final Matrix4f m =  new PerspectiveProjectionFab().create(contxt.getSettings());
-            return m;
-        }
-
-    };
 
     @Before
     public void setup() {
@@ -58,7 +40,9 @@ public class GraphicContextManagerSimpleTest {
     public void testTopRight() {
         // mouse origin is bottom left:
         pickEvent = new PickEvent(settings.getWidth(), settings.getHeight(), settings.getWidth(), settings.getHeight());
-        PickingRay ray = pickEvent.createPickingRay(matrices);
+        Matrix4f projectionMatrix = new Matrix4f();
+        Matrix4f modelViewMatrix = new PerspectiveProjectionFab().create(contxt.getSettings());
+        PickingRay ray = pickEvent.createPickingRay(projectionMatrix, modelViewMatrix);
 
         assertEquals(0.059173370, ray.getStart().x, 0.01);
         assertEquals(0.041421358, ray.getStart().y, 0.01);
@@ -73,7 +57,9 @@ public class GraphicContextManagerSimpleTest {
     public void testTopLeft() {
         // mouse origin is bottom left:
         pickEvent = new PickEvent(settings.getWidth(), settings.getHeight(), 0, 700);
-        PickingRay ray = pickEvent.createPickingRay(matrices);
+        Matrix4f projectionMatrix = new Matrix4f();
+        Matrix4f modelViewMatrix = new PerspectiveProjectionFab().create(contxt.getSettings());
+        PickingRay ray = pickEvent.createPickingRay(projectionMatrix, modelViewMatrix);
 
         assertEquals(-0.059173370, ray.getStart().x, 0.01);
         assertEquals(0.041421358, ray.getStart().y, 0.01);
@@ -91,7 +77,9 @@ public class GraphicContextManagerSimpleTest {
 
         // mouse origin is bottom left:
         pickEvent = new PickEvent(settings.getWidth(), settings.getHeight(), 0, 0);
-        PickingRay ray = pickEvent.createPickingRay(matrices);
+        Matrix4f projectionMatrix = new Matrix4f();
+        Matrix4f modelViewMatrix = new PerspectiveProjectionFab().create(contxt.getSettings());
+        PickingRay ray = pickEvent.createPickingRay(projectionMatrix, modelViewMatrix);
 
         assertEquals(-0.059173370, ray.getStart().x, 0.01);
         assertEquals(-0.041421358, ray.getStart().y, 0.01);
@@ -106,7 +94,9 @@ public class GraphicContextManagerSimpleTest {
     public void testBottomRigth() {
         // mouse origin is bottom left:
         pickEvent = new PickEvent(settings.getWidth(), settings.getHeight(), 1000, 0);
-        PickingRay ray = pickEvent.createPickingRay(matrices);
+        Matrix4f projectionMatrix = new Matrix4f();
+        Matrix4f modelViewMatrix = new PerspectiveProjectionFab().create(contxt.getSettings());
+        PickingRay ray = pickEvent.createPickingRay(projectionMatrix, modelViewMatrix);
 
         assertEquals(0.059173370, ray.getStart().x, 0.01);
         assertEquals(-0.041421358, ray.getStart().y, 0.01);
@@ -122,7 +112,9 @@ public class GraphicContextManagerSimpleTest {
         // mouse origin is bottom left
         // picking the center of the screen should give us a solid line along the z axis:
         pickEvent = new PickEvent(settings.getWidth(), settings.getHeight(), settings.getWidth() / 2f, settings.getHeight() / 2f);
-        PickingRay ray = pickEvent.createPickingRay(matrices);
+        Matrix4f projectionMatrix = new Matrix4f();
+        Matrix4f modelViewMatrix = new PerspectiveProjectionFab().create(contxt.getSettings());
+        PickingRay ray = pickEvent.createPickingRay(projectionMatrix, modelViewMatrix);
 
         assertEquals(0.0, ray.getStart().x, 0.01);
         assertEquals(0.0, ray.getStart().y, 0.01);

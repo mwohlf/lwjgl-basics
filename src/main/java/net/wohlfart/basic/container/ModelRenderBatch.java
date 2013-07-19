@@ -13,22 +13,7 @@ import net.wohlfart.tools.SimpleMath;
 import org.lwjgl.util.vector.Vector3f;
 
 
-public class ModelRenderSet extends DefaultRenderBatch<Model> {
-
-    @Override
-    public void update(float timeInSec) {
-        for (final Model model : getElements()) {
-            model.update(timeInSec);
-        }
-    }
-
-    @Override
-    public void destroy() {
-        for (final Model model : getElements()) {
-            model.destroy();
-        }
-        getElements().clear();
-    }
+public class ModelRenderBatch extends DefaultRenderBatch<Model> {
 
     public List<Model> pick(final PickingRay ray) {
         List<Model> list = new ArrayList<>();
