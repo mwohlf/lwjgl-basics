@@ -76,14 +76,14 @@ public class CharAtlas {
         return map.get(c);
     }
 
-    public int getTextureId() {
+    public int getTexHandle() {
         return texHandle;
     }
 
     // for debugging
     protected IsRenderable getAsRenderable() {
         final TexturedMesh.Builder builder = new TexturedMesh.Builder();
-        builder.setTextureId(getTextureId());
+        builder.setTexHandle(getTexHandle());
         final float z = GraphicContextHolder.CONTEXT_HOLDER.getNearPlane() - 1;
         builder.setInitTranslation(new Vector3f(0, -0.5f, z));
         return builder.build();

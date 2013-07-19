@@ -24,7 +24,6 @@ public class GlowRenderSet extends DefaultRenderBatch<IsUpdatable> { // @formatt
 
     private final int width = 512;
     private final int height = 512;
-    private final int maxsamples = 3;
 
     private int framebufferID;
     private int colorTextureID;
@@ -57,19 +56,16 @@ public class GlowRenderSet extends DefaultRenderBatch<IsUpdatable> { // @formatt
         TexturedQuad quad1 = new TexturedQuad();
         quad1.setPosition(new Vector3f(0,0,-10));
         quad1.setTexHandle(colorTextureID);
-        quad1.setTexFilename(null);
         quad1.render();
 
         TexturedQuad quad2 = new TexturedQuad();
         quad2.setPosition(new Vector3f(0,5,-10));
         quad2.setTexHandle(colorTextureID);
-        quad2.setTexFilename(null);
         quad2.render();
 
         TexturedQuad quad3 = new TexturedQuad();
         quad3.setPosition(new Vector3f(0,-5,-10));
         quad3.setTexHandle(colorTextureID);
-        quad3.setTexFilename(null);
         quad3.render();
     }
 

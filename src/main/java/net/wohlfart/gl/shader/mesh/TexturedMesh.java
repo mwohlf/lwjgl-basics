@@ -20,33 +20,32 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * TexturedFragmentMesh class.
- *
+ * TexturedMesh class.
  */
 public class TexturedMesh implements IsRenderable {
 
     private final int vaoHandle;
+    private final int texHandle;
     private final int indicesCount;
     private final int indexOffset;
     private final int indexElemSize;
     private final int indicesType;
-    private final int textureId;
 
 
-    private TexturedMesh(int vaoHandle, int indicesType, int indexElemSize, int indicesCount, int indexOffset, int textureId) {
+    private TexturedMesh(int vaoHandle, int indicesType, int indexElemSize, int indicesCount, int indexOffset, int texHandle) {
         this.vaoHandle = vaoHandle;
+        this.texHandle = texHandle;
         this.indicesType = indicesType;
         this.indexElemSize = indexElemSize;
         this.indicesCount = indicesCount;
         this.indexOffset = indexOffset;
-        this.textureId = textureId;
     }
 
     @Override
     public void render() {
         GL30.glBindVertexArray(vaoHandle);
         GL13.glActiveTexture(GL13.GL_TEXTURE0);
-        GL11.glBindTexture(GL11.GL_TEXTURE_2D, textureId);
+        GL11.glBindTexture(GL11.GL_TEXTURE_2D, texHandle);
         GL11.glDrawElements(indicesType, indicesCount, indexElemSize, indexOffset);
         GL30.glBindVertexArray(0);
     }
@@ -58,12 +57,11 @@ public class TexturedMesh implements IsRenderable {
     }
 
 
-    public static class Builder extends AbstractMeshBuilder {
 
+
+    public static class Builder extends AbstractMeshBuilder {
         protected static final Logger LOGGER = LoggerFactory.getLogger(Builder.class);
 
-        private String textureFilename;
-        private Integer texId;
         private float size = 1f;                              // length of one side of the texture
         private int textureWrap = GL11.GL_REPEAT;
 
@@ -73,11 +71,7 @@ public class TexturedMesh implements IsRenderable {
             final int vaoHandle = GL30.glGenVertexArrays();
             GL30.glBindVertexArray(vaoHandle);
 
-            if (textureFilename != null) {
-                texId  = createTextureHandle(textureFilename, GL13.GL_TEXTURE0);
-            } else {
-                texId = AbstractMeshBuilder.texHandle;
-            }
+            int texHandle = resolveTexHandle();
 
             createVboHandle(createStream());
 
@@ -97,7 +91,7 @@ public class TexturedMesh implements IsRenderable {
             // done with the VAO
             GL30.glBindVertexArray(0);
 
-            return new TexturedMesh(vaoHandle, GL11.GL_TRIANGLES, GL11.GL_UNSIGNED_BYTE, indices.length, 0, texId);
+            return new TexturedMesh(vaoHandle, GL11.GL_TRIANGLES, GL11.GL_UNSIGNED_BYTE, indices.length, 0, texHandle);
         }
 
         protected float[] createStream() {
@@ -190,14 +184,6 @@ public class TexturedMesh implements IsRenderable {
                 LOGGER.error("can't load texture image", ex);
             }
             return texHandle;
-        }
-
-        public void setTextureFilename(final String textureFilename) {
-            this.textureFilename = textureFilename;
-        }
-
-        public void setTextureId(int texId) {
-            this.texId = texId;
         }
 
         public void setSize(float size) {

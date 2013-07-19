@@ -5,7 +5,6 @@ import net.wohlfart.gl.shader.ShaderAttributeHandle;
 import net.wohlfart.gl.shader.mesh.AbstractMeshBuilder;
 
 import org.lwjgl.opengl.GL11;
-import org.lwjgl.opengl.GL13;
 import org.lwjgl.opengl.GL30;
 
 public class ModelMesh implements IsRenderable {
@@ -41,6 +40,9 @@ public class ModelMesh implements IsRenderable {
 
 
     public static class Builder extends AbstractMeshBuilder {
+        {
+            setTexFilename("/models/cube/cube.png"); // fixed texture for all models so far
+        }
 
         private int[] indices;
         private int triangelPrimitive;
@@ -64,7 +66,7 @@ public class ModelMesh implements IsRenderable {
             final int vaoHandle = GL30.glGenVertexArrays();
             GL30.glBindVertexArray(vaoHandle);
 
-            final int textureHandle = createTextureHandle("/models/cube/cube.png", GL13.GL_TEXTURE0);  // also binds the texture
+            final int textureHandle = resolveTexHandle();
             createVboHandle(stream); // this also binds the GL15.GL_ARRAY_BUFFER
             createIdxBufferHandle(indices); // this also binds the GL15.GL_ELEMENT_ARRAY_BUFFER
 

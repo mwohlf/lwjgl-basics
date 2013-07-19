@@ -11,7 +11,7 @@
 
     <logger name="net.wohlfart" level="INFO" />
     <logger name="net.wohlfart.basic.Game" level="INFO" />
-    <logger name="net.wohlfart.gl.shader.GraphicContextManager" level="INFO" />
+    <logger name="net.wohlfart.gl.shader.GraphicContextHolder" level="INFO" />
     <logger name="net.wohlfart.basic.states.SimpleState" level="INFO" />
     <logger name="net.wohlfart.gl.shader" level="DEBUG" />
 

@@ -85,7 +85,7 @@ enum BoxSide implements IsRenderable {// @formatter:off
         final int textureId = createAndLoadTexture(GL13.GL_TEXTURE0, parameters);
 
         final TexturedMesh.Builder builder = new TexturedMesh.Builder();
-        builder.setTextureId(textureId);
+        builder.setTexHandle(textureId);
         builder.setInitRotation(rotation);
         builder.setSize(dist * 2f);
         builder.setTextureWrap(GL12.GL_CLAMP_TO_EDGE);

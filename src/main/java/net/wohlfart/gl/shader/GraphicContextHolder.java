@@ -41,6 +41,8 @@ public enum GraphicContextHolder { // REVIEWED
 
     // current shader and stuff
     private IGraphicContext currentGraphicContext;
+
+
     // pre-calculated projection matrices to select from
     private Matrix4f perspectiveProjMatrix;
 
@@ -94,12 +96,12 @@ public enum GraphicContextHolder { // REVIEWED
         return settings.getHeight();
     }
 
-    // 0.1 or 1
+    // @return  0.1 or 1 (usually)
     public float getNearPlane() {
         return settings.getNearPlane();
     }
 
-    // 100 or 1000
+    // @return  100 or 1000 (usually)
     public float getFarPlane() {
         return settings.getFarPlane();
     }

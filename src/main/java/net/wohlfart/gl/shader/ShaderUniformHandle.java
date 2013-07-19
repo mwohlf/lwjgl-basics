@@ -9,9 +9,12 @@ import java.util.Map;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL20;
 import org.lwjgl.util.ReadableColor;
+import org.lwjgl.util.vector.Matrix2f;
 import org.lwjgl.util.vector.Matrix3f;
 import org.lwjgl.util.vector.Matrix4f;
+import org.lwjgl.util.vector.Vector2f;
 import org.lwjgl.util.vector.Vector3f;
+import org.lwjgl.util.vector.Vector4f;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -25,18 +28,26 @@ import org.slf4j.LoggerFactory;
  * return the name of the uniform mapped to the location
  */
 public enum ShaderUniformHandle {// @formatter:off
-    MODEL_TO_WORLD("modelToWorldMatrix"),
-    WORLD_TO_CAM("worldToCameraMatrix"),  // model view matrix
-    CAM_TO_CLIP("cameraToClipMatrix"),    // projection matrix
-    NORMAL_MATRIX("normalMatrix"),
-    LIGHT_POSITION("lightPosition"),
-    MATERIAL(null) {
+
+    MODEL_TO_WORLD("modelToWorldMatrix") {},
+
+    WORLD_TO_CAM("worldToCameraMatrix") {},  // model view matrix
+
+    CAM_TO_CLIP("cameraToClipMatrix") {},    // projection matrix
+
+    NORMAL_MATRIX("normalMatrix") {},
+
+    LIGHT_POSITION("lightPosition") {},
+
+    MATERIAL() {
         @Override Map<String, Integer> getLocationMap(IShaderProgram shaderProgram) {
             return super.getLocationMap(shaderProgram,
                     MATERIAL_AMBIENT, MATERIAL_DIFFUSE, MATERIAL_SPECULAR, MATERIAL_SHININESS);
         }
     },
-    LIGHTS(null) {
+
+
+    LIGHTS() {
         @Override Map<String, Integer> getLocationMap(IShaderProgram shaderProgram) {
             HashMap<String, Integer> result = new HashMap<String, Integer>();
             for (int i = 0; i < MAX_LIGHT_SOURCES; i++) {
@@ -71,22 +82,22 @@ public enum ShaderUniformHandle {// @formatter:off
     private static final String MATERIAL_SHININESS = "material.shininess";
 
 
+
     private final String lookupString;
 
-    // FIXME: remove these:
-    private final static ThreadLocal<FloatBuffer> matrix4Buffer = new ThreadLocal<>();
-    private final static ThreadLocal<FloatBuffer> matrix3Buffer = new ThreadLocal<>();
-
-    static {
-        matrix4Buffer.set(BufferUtils.createFloatBuffer(16));
-        matrix3Buffer.set(BufferUtils.createFloatBuffer(9));
+    ShaderUniformHandle() {
+        this.lookupString = null;
     }
-
 
     ShaderUniformHandle(String lookupString) {
         this.lookupString = lookupString;
     }
 
+
+
+    // resolve all locations for this uniform, a uniform might have multiple locations
+    // for example an array or struct uses multiple names mapped to different locations
+    // this must be overridden if a handle has multipl  locations
     Map<String, Integer> getLocationMap(IShaderProgram shaderProgram) {
         return getLocationMap(shaderProgram, lookupString);
     }
@@ -108,6 +119,13 @@ public enum ShaderUniformHandle {// @formatter:off
         return result;
     }
 
+
+    // ---------------------------------------------------------------------------------------------------------
+    //                       setter for uniform objects
+    // ---------------------------------------------------------------------------------------------------------
+
+
+
     // see: http://www.lwjgl.org/wiki/index.php?title=GLSL_Tutorial:_Communicating_with_Shaders
     public void set(VertexLight vertexLight, int index) {
         int location;
@@ -128,7 +146,6 @@ public enum ShaderUniformHandle {// @formatter:off
             // INSTANCE.getPerspectiveProjMatrix()
             GL20.glUniform3f(location, vertexLight.position.x, vertexLight.position.y, vertexLight.position.z);
         }
-
     }
 
     public void set(Material material) {
@@ -152,24 +169,38 @@ public enum ShaderUniformHandle {// @formatter:off
         }
     }
 
-    public void set(Matrix4f matrix) {
-        FloatBuffer buff = matrix4Buffer.get();
-        matrix.store(buff);
-        buff.flip();
-        // NPE here could mean that the graphic context was not yet initialized
-        GL20.glUniformMatrix4(CONTEXT_HOLDER.getUniformLocation(lookupString), false, buff);  // todo: there is a 4f version?
+
+
+    private final static ThreadLocal<FloatBuffer> matrix2Buffer = new ThreadLocal<FloatBuffer>() {{ set(BufferUtils.createFloatBuffer(4)); }};
+    public void set(Matrix2f matrix) {
+        matrix.store(matrix2Buffer.get());
+        GL20.glUniformMatrix3(CONTEXT_HOLDER.getUniformLocation(lookupString), false, (FloatBuffer)matrix2Buffer.get().flip());
     }
 
+    private final static ThreadLocal<FloatBuffer> matrix3Buffer = new ThreadLocal<FloatBuffer>() {{ set(BufferUtils.createFloatBuffer(9)); }};
     public void set(Matrix3f matrix) {
-        FloatBuffer buff = matrix3Buffer.get();
-        matrix.store(buff);
-        buff.flip();
-        // NPE here could mean that the graphic context was not yet initialized
-        GL20.glUniformMatrix3(CONTEXT_HOLDER.getUniformLocation(lookupString), false, buff);
+        matrix.store(matrix3Buffer.get());
+        GL20.glUniformMatrix3(CONTEXT_HOLDER.getUniformLocation(lookupString), false, (FloatBuffer)matrix3Buffer.get().flip());
+    }
+
+    private final static ThreadLocal<FloatBuffer> matrix4Buffer = new ThreadLocal<FloatBuffer>() {{ set(BufferUtils.createFloatBuffer(16)); }};
+    public void set(Matrix4f matrix) {
+        matrix.store(matrix4Buffer.get());
+        GL20.glUniformMatrix4(CONTEXT_HOLDER.getUniformLocation(lookupString), false, (FloatBuffer)matrix4Buffer.get().flip());
+    }
+
+
+
+    public void set(Vector2f vector) {
+        GL20.glUniform2f(CONTEXT_HOLDER.getUniformLocation(lookupString), vector.x, vector.y);
     }
 
     public void set(Vector3f vector) {
         GL20.glUniform3f(CONTEXT_HOLDER.getUniformLocation(lookupString), vector.x, vector.y, vector.z);
+    }
+
+    public void set(Vector4f vector) {
+        GL20.glUniform4f(CONTEXT_HOLDER.getUniformLocation(lookupString), vector.x, vector.y, vector.z, vector.w);
     }
 
     public void set(ReadableColor readableColor) {
@@ -178,10 +209,6 @@ public enum ShaderUniformHandle {// @formatter:off
                 readableColor.getGreen() / 255f,
                 readableColor.getBlue() / 255f,
                 readableColor.getAlpha() / 255f );
-    }
-
-    public void set(FloatBuffer colorBuffer) {
-        GL20.glUniform4(CONTEXT_HOLDER.getUniformLocation(lookupString), colorBuffer);
     }
 
 }

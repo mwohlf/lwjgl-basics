@@ -119,7 +119,7 @@ public class CelestialState extends AbstractGraphicState implements Initializing
         wireframeBucket.addAll(WireframeToolkit.createDebugElements());
         wireframeBucket.addAll(WireframeToolkit.createOriginAxis());
         wireframeBucket.addAll(WireframeToolkit.createRandomElements());
-        wireframeBucket.addAll(WireframeToolkit.createRandomLocatedSpheres());
+//        wireframeBucket.addAll(WireframeToolkit.createRandomLocatedSpheres());
         wireframeBucket.setup();
 
         meshBucket.setGraphicContext(new DefaultGraphicContext(ShaderRegistry.DEFAULT_SHADER));

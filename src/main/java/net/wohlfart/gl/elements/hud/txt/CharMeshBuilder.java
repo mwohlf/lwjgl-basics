@@ -49,7 +49,7 @@ public class CharMeshBuilder extends AbstractMeshBuilder {
         // done with the VAO
         GL30.glBindVertexArray(0);
 
-        final int texId = atlas.getTextureId();
+        final int texId = atlas.getTexHandle();
         return new CharacterMesh(vaoHandle, GL11.GL_TRIANGLES, GL11.GL_UNSIGNED_BYTE, indices.length, 0, texId);
     }
 

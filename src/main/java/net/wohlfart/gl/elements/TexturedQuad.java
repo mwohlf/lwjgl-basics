@@ -7,28 +7,19 @@ import net.wohlfart.gl.shader.mesh.TexturedMesh;
  * TexturedQuad class.
  */
 public class TexturedQuad extends AbstractRenderable {
-
-    private int texHandle = -1;
-    private String texFilename = "/gfx/images/ash_uvgrid01.png";
-
+    final TexturedMesh.Builder builder = new TexturedMesh.Builder();
 
     @Override
     protected IsRenderable setupMesh() {
-        final TexturedMesh.Builder builder = new TexturedMesh.Builder();
+
         builder.setInitTranslation(initialTranslation);
         builder.setInitRotation(initialRotation);
-        builder.setTexHandle(texHandle);
-        builder.setTextureFilename(texFilename);
+        builder.setTexFilename("/gfx/images/ash_uvgrid01.png");
         return builder.build();
     }
 
     public void setTexHandle(int texHandle) {
-        this.texHandle = texHandle;
+        builder.setTexHandle(texHandle);
     }
-
-    public void setTexFilename(String texFilename) {
-        this.texFilename = texFilename;
-    }
-
 
 }

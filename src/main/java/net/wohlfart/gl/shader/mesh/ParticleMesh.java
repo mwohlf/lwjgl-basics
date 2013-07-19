@@ -7,6 +7,7 @@ import java.nio.ByteBuffer;
 import java.nio.FloatBuffer;
 
 import net.wohlfart.basic.elements.IsRenderable;
+import net.wohlfart.basic.texture.TextureRegistry;
 import net.wohlfart.gl.shader.ShaderAttributeHandle;
 import net.wohlfart.tools.PNGDecoder;
 import net.wohlfart.tools.PNGDecoder.Format;
@@ -82,7 +83,7 @@ public class ParticleMesh implements IsRenderable {
 
            // load the texture if needed
             if (textureFilename != null) {
-                texId  = loadPNGTexture(textureFilename, GL13.GL_TEXTURE0);
+                texId  = TextureRegistry.TEXTURE_REGISTRY.getTextureHandle(textureFilename, GL13.GL_TEXTURE0);
             }
 
             // FIXME: use createStream
