@@ -1,6 +1,6 @@
 #version 330 core
 
-uniform sampler2D texture_diffuse;
+uniform sampler2D uniformTexture;
 
 in vec4 pass_Color;
 

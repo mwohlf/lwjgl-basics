@@ -4,8 +4,6 @@ import net.wohlfart.basic.container.GlowRenderBatch;
 import net.wohlfart.gl.elements.hud.Hud;
 import net.wohlfart.gl.elements.hud.HudImpl;
 import net.wohlfart.gl.elements.hud.widgets.SimpleLabel;
-import net.wohlfart.gl.shader.DefaultGraphicContext;
-import net.wohlfart.gl.shader.ShaderRegistry;
 import net.wohlfart.gl.shader.VertexLight;
 import net.wohlfart.gl.spatial.CelestialBody;
 import net.wohlfart.gl.texture.CelestialType;
@@ -40,7 +38,6 @@ public class TestingState extends AbstractGraphicState implements InitializingBe
         VertexLight lightA = new VertexLight(0.001f, new Vector4f(0.9f, 0.9f, 0.9f, 1.0f), new Vector3f( 0, 0, -13));
         VertexLight lightB = new VertexLight(0.001f, new Vector4f(0.9f, 0.9f, 0.9f, 1.0f), new Vector3f( 0, 0, 13));
 
-        renderSet.setGraphicContext(new DefaultGraphicContext(ShaderRegistry.DEFAULT_SHADER));
         CelestialBody sun1 = new CelestialBody(1L, CelestialType.SUN, 1f);
         sun1.setPosition(lightA.getPosition());
         renderSet.add(sun1);

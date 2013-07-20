@@ -22,7 +22,7 @@ class AbstractShaderProgram implements IShaderProgram {
      * <p>
      * loadShader.
      * </p>
-     * 
+     *
      * @param filename
      *            a {@link java.lang.String} object.
      * @param shaderType
@@ -54,6 +54,8 @@ class AbstractShaderProgram implements IShaderProgram {
             return shader;
         } catch (final FileNotFoundException ex) {
             throw new ShaderException("file not found: '" + filename + "'", ex);
+        } catch (final NullPointerException ex) {
+            throw new ShaderException("null pointer, file not found: '" + filename + "'", ex);
         } catch (final IOException ex) {
             throw new ShaderException("stream problems", ex);
         } finally {
@@ -65,7 +67,7 @@ class AbstractShaderProgram implements IShaderProgram {
 
     /**
      * attach, link and validate the shaders into a shader program
-     * 
+     *
      * @param handles
      *            the shaders
      */
@@ -90,7 +92,7 @@ class AbstractShaderProgram implements IShaderProgram {
      * <p>
      * unlink.
      * </p>
-     * 
+     *
      * @param handles
      *            a int.
      */
@@ -108,7 +110,7 @@ class AbstractShaderProgram implements IShaderProgram {
      * <p>
      * getLogInfo.
      * </p>
-     * 
+     *
      * @param obj
      *            a int.
      * @return a {@link java.lang.String} object.

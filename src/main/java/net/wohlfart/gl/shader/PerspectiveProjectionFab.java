@@ -9,7 +9,9 @@ import org.slf4j.LoggerFactory;
 
 // @formatter:off
 /**
- *  - the projection matrix defines the lens of the camera it translates the world space into 2D screen space
+ *  - the projection matrix defines the lens of the camera it translates the world space into 2D screen space,
+ *    it is independent of the actual screen resolution or pixel, just the aspect ratio matters, the screen
+ *    resolution is used when setting the viewport e.g. GL11.glViewport(0, 0, textureWidth, textureHeight);
  *
  *  - the view matrix defines the position and the direction of the camera it is set once per rendering
  *    pass and defined in which direction the cam is looking
@@ -68,6 +70,11 @@ public class PerspectiveProjectionFab { // @formatter:on REVIEWED
         matrix.m33 = 0;
 
         return matrix;
+    }
+
+    public Matrix4f createReduced(Settings settings, int textureWidth, int textureHeight) {
+        // TODO Auto-generated method stub
+        return null;
     }
 
 }

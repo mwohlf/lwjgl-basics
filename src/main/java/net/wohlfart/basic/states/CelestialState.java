@@ -210,7 +210,6 @@ public class CelestialState extends AbstractGraphicState implements Initializing
         GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
         emitterSet.render();
 
-        // FIXME: transparency is broken
         GL11.glDisable(GL11.GL_BLEND);
         modelSet.render();
         wireframeBucket.render();

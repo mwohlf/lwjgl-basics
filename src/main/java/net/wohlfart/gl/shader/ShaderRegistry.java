@@ -23,6 +23,12 @@ public class ShaderRegistry {
     private static final String LIGHTING_VERTEX_SHADER = "/shaders/lighting/vertex.glsl";
     private static final String LIGHTING_FRAGMENT_SHADER = "/shaders/lighting/fragment.glsl";
 
+    private static final String FBO_VERTEX_SHADER = "/shaders/fbo/vertex.glsl";
+    private static final String FBO_FRAGMENT_SHADER = "/shaders/fbo/fragment.glsl";
+
+    private static final String FBO_BLUR_VERTEX_SHADER = "/shaders/fbo/blur_vertex.glsl";
+    private static final String FBO_BLUR_FRAGMENT_SHADER = "/shaders/fbo/blur_fragment.glsl";
+
 
 
     // more complex light this shader needs some light sources otherwise the surfaces will stay black
@@ -39,5 +45,8 @@ public class ShaderRegistry {
     public static final IShaderProgram WIREFRAME_SHADER = new DefaultShaderProgram(WIREFRAME_VERTEX_SHADER, WIREFRAME_FRAGMENT_SHADER);
     // used in the hud
     public static final IShaderProgram HUD_SHADER = new DefaultShaderProgram(HUD_VERTEX_SHADER, HUD_FRAGMENT_SHADER);
+    // used in the hud
+    public static final IShaderProgram FBO_SHADER = new DefaultShaderProgram(FBO_VERTEX_SHADER, FBO_FRAGMENT_SHADER);
+    public static final IShaderProgram FBO_BLUR_SHADER = new DefaultShaderProgram(FBO_BLUR_VERTEX_SHADER, FBO_BLUR_FRAGMENT_SHADER);
 
 }

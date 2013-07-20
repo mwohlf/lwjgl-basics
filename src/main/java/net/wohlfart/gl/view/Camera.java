@@ -1,6 +1,5 @@
 package net.wohlfart.gl.view;
 
-import static net.wohlfart.gl.shader.GraphicContextHolder.CONTEXT_HOLDER;
 import net.wohlfart.gl.input.MoveEvent;
 import net.wohlfart.gl.input.RotateEvent;
 import net.wohlfart.tools.SimpleMath;
@@ -96,12 +95,9 @@ public class Camera implements CanRotate, CanMove {
 
     public Matrix4f getWorldToCamMatrix() {
         final Matrix4f rotPosMatrix = new Matrix4f();
-
-        final Camera camera = CONTEXT_HOLDER.getCamera();       // FIXME: this calculation should be moved into the camera class
-        SimpleMath.convert(camera.getPosition().negate(posVector), posMatrix);
-        SimpleMath.convert(camera.getRotation(), rotMatrix);
+        SimpleMath.convert(getPosition().negate(posVector), posMatrix);
+        SimpleMath.convert(getRotation(), rotMatrix);
         Matrix4f.mul(rotMatrix, posMatrix, rotPosMatrix);
-        // TODO Auto-generated method stub
         return rotPosMatrix;
     }
 

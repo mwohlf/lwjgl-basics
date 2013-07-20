@@ -39,6 +39,12 @@ public enum ShaderUniformHandle {// @formatter:off
 
     LIGHT_POSITION("lightPosition") {},
 
+    DIRECTION("dir") {},
+
+    RESOLUTION("resolution") {},
+
+    RADIUS("radius") {},
+
     MATERIAL() {
         @Override Map<String, Integer> getLocationMap(IShaderProgram shaderProgram) {
             return super.getLocationMap(shaderProgram,
@@ -189,7 +195,9 @@ public enum ShaderUniformHandle {// @formatter:off
         GL20.glUniformMatrix4(CONTEXT_HOLDER.getUniformLocation(lookupString), false, (FloatBuffer)matrix4Buffer.get().flip());
     }
 
-
+    public void set(float value) {
+        GL20.glUniform1f(CONTEXT_HOLDER.getUniformLocation(lookupString), value);
+    }
 
     public void set(Vector2f vector) {
         GL20.glUniform2f(CONTEXT_HOLDER.getUniformLocation(lookupString), vector.x, vector.y);
@@ -210,5 +218,6 @@ public enum ShaderUniformHandle {// @formatter:off
                 readableColor.getBlue() / 255f,
                 readableColor.getAlpha() / 255f );
     }
+
 
 }
