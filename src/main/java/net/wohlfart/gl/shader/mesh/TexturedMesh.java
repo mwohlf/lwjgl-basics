@@ -26,7 +26,7 @@ public class TexturedMesh implements IsRenderable {
     private final int indicesType;
 
 
-    private TexturedMesh(int vaoHandle, int indicesType, int indexElemSize, int indicesCount, int indexOffset, int texHandle) {
+    private TexturedMesh(int vaoHandle, int texHandle, int indicesType, int indexElemSize, int indicesCount, int indexOffset) {
         this.vaoHandle = vaoHandle;
         this.texHandle = texHandle;
         this.indicesType = indicesType;
@@ -87,7 +87,7 @@ public class TexturedMesh implements IsRenderable {
             // done with the VAO
             GL30.glBindVertexArray(0);
 
-            return new TexturedMesh(vaoHandle, GL11.GL_TRIANGLES, GL11.GL_UNSIGNED_BYTE, indices.length, 0, texHandle);
+            return new TexturedMesh(vaoHandle, texHandle, GL11.GL_TRIANGLES, GL11.GL_UNSIGNED_BYTE, indices.length, 0);
         }
 
         protected float[] createStream() {
@@ -104,17 +104,17 @@ public class TexturedMesh implements IsRenderable {
             final Vertex[] vertices = new Vertex[] {
                     new Vertex() {{
                         setXYZ(vectors[0].x, vectors[0].y, vectors[0].z);
-                        setRGB(1, 0, 0);
+                        setRGB(1, 1, 1);
                         setST(0, 0);
                     }},
                     new Vertex() {{
                         setXYZ(vectors[1].x, vectors[1].y, vectors[1].z);
-                        setRGB(0, 1, 0);
+                        setRGB(1, 1, 1);
                         setST(0, 1);
                     }},
                     new Vertex() {{
                         setXYZ(vectors[2].x, vectors[2].y, vectors[2].z);
-                        setRGB(0, 0, 1);
+                        setRGB(1, 1, 1);
                         setST(1, 1);
                     }},
                     new Vertex() {{

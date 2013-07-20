@@ -67,7 +67,7 @@ public class CharMeshBuilder extends AbstractMeshBuilder {
         final float atlasWidth = atlas.getImage().getWidth();
         final float atlasHeight = atlas.getImage().getHeight();  // texture atlas size in pixel (512)
 
-        float z = settings.getNearPlane();
+        float z = -settings.getNearPlane();
 
         // the x/y coordinates must fit into a [-0.5 .. +0.5] interval
         float x1 = ((screenX / screenWidth) / xScale ) * 2f;
@@ -88,10 +88,10 @@ public class CharMeshBuilder extends AbstractMeshBuilder {
         final float t2 = (info.getY() + info.getHeight()) / atlasHeight;
 
         // We'll define our quad using 4 vertices of the custom 'Vertex' class
-        vertices[0].setXYZ(x1, y1, -z).setST(s1, t1);
-        vertices[1].setXYZ(x1, y2, -z).setST(s1, t2);
-        vertices[2].setXYZ(x2, y2, -z).setST(s2, t2);
-        vertices[3].setXYZ(x2, y1, -z).setST(s2, t1);
+        vertices[0].setXYZ(x1, y1, z).setST(s1, t1);
+        vertices[1].setXYZ(x1, y2, z).setST(s1, t2);
+        vertices[2].setXYZ(x2, y2, z).setST(s2, t2);
+        vertices[3].setXYZ(x2, y1, z).setST(s2, t1);
 
         int i = 0;
         for (Vertex vertex : vertices) {

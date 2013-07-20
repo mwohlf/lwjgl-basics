@@ -25,4 +25,8 @@ public class TexturedQuad extends AbstractRenderable {
         builder.setTexFilename(texFilename);
     }
 
+    public void setSize(float size) {
+        builder.setSize(size);
+    }
+
 }

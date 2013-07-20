@@ -1,34 +1,28 @@
 #version 330 core
 
 uniform sampler2D uniformTexture;
-uniform float resolution;
-uniform float radius;
-uniform vec2 dir;
 
 in vec4 pass_Color;
 in vec2 pass_TextureCoord;
 
 out vec4 out_Color;
 
-void main() {
+void main(void) {
     //this will be our RGBA sum
     vec4 sum = vec4(0.0);
 
     //our original texcoord for this fragment
     vec2 tc = pass_TextureCoord;
 
+    vec4 pc = pass_Color;
+
     //the amount to blur, i.e. how far off center to sample from
     //1.0 -> blur by one pixel
     //2.0 -> blur by two pixels, etc.
-    float blur = radius/resolution;
+    float blur = 0.005;
 
-    //the direction of our blur
-    //(1.0, 0.0) -> x-axis blur
-    //(0.0, 1.0) -> y-axis blur
-    float hstep = dir.x;
-    float vstep = dir.y;
-
-    //apply blurring, using a 9-tap filter with predefined gaussian weights
+    float hstep = 1.0;
+    float vstep = 0.0;
 
     sum += texture2D(uniformTexture, vec2(tc.x - 4.0*blur*hstep, tc.y - 4.0*blur*vstep)) * 0.0162162162;
     sum += texture2D(uniformTexture, vec2(tc.x - 3.0*blur*hstep, tc.y - 3.0*blur*vstep)) * 0.0540540541;
@@ -42,6 +36,13 @@ void main() {
     sum += texture2D(uniformTexture, vec2(tc.x + 3.0*blur*hstep, tc.y + 3.0*blur*vstep)) * 0.0540540541;
     sum += texture2D(uniformTexture, vec2(tc.x + 4.0*blur*hstep, tc.y + 4.0*blur*vstep)) * 0.0162162162;
 
-    //discard alpha for our simple demo, multiply by vertex color and return
-    out_Color = pass_Color * vec4(sum.rgb, 1.0);
+
+    //out_Color = pass_Color;
+    //out_Color = texture2D(uniformTexture, pass_TextureCoord);
+
+    pc = vec4(1.0, 1.0, 1.0, 0.0);
+    out_Color = pc * vec4(sum.rgb, 1.0);
+    //out_Color = vec4(sum.rgb, 1.0);
+
+
 }
