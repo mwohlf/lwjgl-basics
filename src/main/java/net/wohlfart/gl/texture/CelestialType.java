@@ -13,13 +13,14 @@ public enum CelestialType {
     SUN {{
             maxRadius = 0.5f;
             minRadius = 0.5f; }
+        ColorGradient gradient = new ColorGradient(Color.WHITE, Color.YELLOW);
 
         @Override
         Color getColor(final float x, final float y, final float z, final float v) {
-            return Color.WHITE;
+            final double noise = createNoise(x, y, z, v, 0.5f, 5);
+            return gradient.getColor(noise);
         }
     },
-
 
     GREEN {{
             maxRadius = 2f;

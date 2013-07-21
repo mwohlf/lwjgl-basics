@@ -29,21 +29,19 @@ import org.slf4j.LoggerFactory;
  */
 public enum ShaderUniformHandle {// @formatter:off
 
-    MODEL_TO_WORLD("modelToWorldMatrix") {},
+    MODEL_TO_WORLD("modelToWorldMatrix"),
 
-    WORLD_TO_CAM("worldToCameraMatrix") {},  // model view matrix
+    WORLD_TO_CAM("worldToCameraMatrix"),  // model view matrix
 
-    CAM_TO_CLIP("cameraToClipMatrix") {},    // projection matrix
+    CAM_TO_CLIP("cameraToClipMatrix"),    // projection matrix
 
-    NORMAL_MATRIX("normalMatrix") {},
+    NORMAL_MATRIX("normalMatrix"),
 
-    LIGHT_POSITION("lightPosition") {},
+    LIGHT_POSITION("lightPosition"),
 
-    DIRECTION("dir") {},
+    DIRECTION("dir"),
 
-    RESOLUTION("resolution") {},
-
-    RADIUS("radius") {},
+    DISTANCE("dist"),
 
     MATERIAL() {
         @Override Map<String, Integer> getLocationMap(IShaderProgram shaderProgram) {
@@ -51,7 +49,6 @@ public enum ShaderUniformHandle {// @formatter:off
                     MATERIAL_AMBIENT, MATERIAL_DIFFUSE, MATERIAL_SPECULAR, MATERIAL_SHININESS);
         }
     },
-
 
     LIGHTS() {
         @Override Map<String, Integer> getLocationMap(IShaderProgram shaderProgram) {
@@ -66,6 +63,11 @@ public enum ShaderUniformHandle {// @formatter:off
         }
     }
     ;
+
+    // values for the DIRECTION uniform
+    public static final Vector2f HORIZONTAL = new Vector2f(1,0);
+    public static final Vector2f VERTICAL = new Vector2f(0,1);
+
     // @formatter:on
     private static final Logger LOGGER = LoggerFactory.getLogger(ShaderUniformHandle.class);
     private static final int MAX_LIGHT_SOURCES = 10;  // must match with the shader

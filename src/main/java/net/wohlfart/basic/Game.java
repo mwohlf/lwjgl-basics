@@ -148,6 +148,7 @@ class Game implements InitializingBean { // REVIEWED
         // map the internal OpenGL coordinate system to the entire viewport
         GL11.glViewport(0, 0, settings.width, settings.height);
         GL11.glHint(GL11.GL_LINE_SMOOTH_HINT, GL11.GL_NICEST);
+        GL11.glEnable(GL20.GL_VERTEX_PROGRAM_POINT_SIZE); // this doesn't do anything it seems
         GL11.glClearColor(0.5f, 0.5f, 0.5f, 0f);
         GL11.glClearDepth(1f);
         // turn culling off so it will be drawn regardless of which way a surface is facing

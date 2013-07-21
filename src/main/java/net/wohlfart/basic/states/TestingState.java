@@ -1,5 +1,6 @@
 package net.wohlfart.basic.states;
 
+import net.wohlfart.basic.container.DefaultRenderBatch;
 import net.wohlfart.basic.container.GlowRenderBatch;
 import net.wohlfart.gl.elements.hud.Hud;
 import net.wohlfart.gl.elements.hud.HudImpl;
@@ -23,6 +24,9 @@ public class TestingState extends AbstractGraphicState implements InitializingBe
 
     private final GlowRenderBatch renderSet = new GlowRenderBatch();
 
+    private final DefaultRenderBatch<CelestialBody> planetSet = new DefaultRenderBatch<>();
+
+
 
     @Override
     public void afterPropertiesSet() throws Exception {
@@ -35,8 +39,8 @@ public class TestingState extends AbstractGraphicState implements InitializingBe
         super.setup();
 
 
-        VertexLight lightA = new VertexLight(0.001f, new Vector4f(0.9f, 0.9f, 0.9f, 1.0f), new Vector3f( 0, 0, -13));
-        VertexLight lightB = new VertexLight(0.001f, new Vector4f(0.9f, 0.9f, 0.9f, 1.0f), new Vector3f( 0, 0, 13));
+        VertexLight lightA = new VertexLight(0.001f, new Vector4f(0.9f, 0.9f, 0.9f, 1.0f), new Vector3f( 0, 0, -3));
+        VertexLight lightB = new VertexLight(0.001f, new Vector4f(0.9f, 0.9f, 0.9f, 1.0f), new Vector3f( 0, 0, 3));
 
         CelestialBody sun1 = new CelestialBody(1L, CelestialType.SUN, 1f);
         sun1.setPosition(lightA.getPosition());
@@ -46,6 +50,13 @@ public class TestingState extends AbstractGraphicState implements InitializingBe
         renderSet.add(sun2);
         renderSet.setup();
 
+        CelestialBody sun3 = new CelestialBody(1L, CelestialType.SUN, 1f);
+        sun3.setPosition(new Vector3f( 0, 0, 0));
+        planetSet.add(sun1);
+        planetSet.add(sun2);
+        planetSet.add(sun3);
+        planetSet.setup();
+
         hud.setup();
         hud.add(new SimpleLabel(200, 200, "test state"));
 
@@ -53,6 +64,7 @@ public class TestingState extends AbstractGraphicState implements InitializingBe
 
     @Override
     public void update(float tpf) {
+        planetSet.update(tpf);
         renderSet.update(tpf);
         hud.update(tpf);
     }
@@ -67,15 +79,19 @@ public class TestingState extends AbstractGraphicState implements InitializingBe
         GL11.glDisable(GL11.GL_BLEND);
         renderSet.render();
 
+
         GL11.glDisable(GL11.GL_DEPTH_TEST);
         GL11.glEnable(GL11.GL_BLEND);
         GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+        planetSet.render();
+
         hud.render();
     }
 
     @Override
     public void destroy() {
         renderSet.destroy();
+        planetSet.destroy();
         hud.destroy();
         super.destroy();
     }

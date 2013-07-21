@@ -5,6 +5,7 @@ import static net.wohlfart.gl.shader.GraphicContextHolder.CONTEXT_HOLDER;
 import java.util.List;
 
 import net.wohlfart.basic.container.DefaultRenderBatch;
+import net.wohlfart.basic.container.GlowRenderBatch;
 import net.wohlfart.basic.container.ModelRenderBatch;
 import net.wohlfart.basic.container.ModelToolkit;
 import net.wohlfart.basic.container.WireframeToolkit;
@@ -61,6 +62,8 @@ public class CelestialState extends AbstractGraphicState implements Initializing
 
     private final DefaultRenderBatch<IsUpdatable> meshBucket = new DefaultRenderBatch<>();
 
+    private final GlowRenderBatch glowRenderSet = new GlowRenderBatch();
+
     private final Hud hud = new HudImpl();
 
     private final ElementPicker elementPicker = new ElementPicker();
@@ -81,6 +84,8 @@ public class CelestialState extends AbstractGraphicState implements Initializing
         super.setup();
 
         skybox.setup();
+
+        elementPicker.setup();
 
         modelSet.setGraphicContext(new DefaultGraphicContext(ShaderRegistry.LIGHTING_SHADER));
         Model cube = ModelToolkit.createCube();
@@ -114,11 +119,13 @@ public class CelestialState extends AbstractGraphicState implements Initializing
         //modelSet.add(light1);
         //modelSet.add(light2);
 
+
         ParticleEmitter particleEmitter = new ParticleEmitter();
         particleEmitter.setPosition(new Vector3f(20,0,0));
         emitterSet.setGraphicContext(new DefaultGraphicContext(ShaderRegistry.DEFAULT_SHADER));
         emitterSet.add(particleEmitter);
         emitterSet.setup();
+
 
         wireframeBucket.setGraphicContext(new DefaultGraphicContext(ShaderRegistry.WIREFRAME_SHADER));
         wireframeBucket.addAll(WireframeToolkit.createCircledTarget());
@@ -162,12 +169,16 @@ public class CelestialState extends AbstractGraphicState implements Initializing
 
         hud.add(new SimpleLabel(0, 0, "hello world at (0,0)"));
 
-        elementPicker.setup();
 
         hud.add(new StatisticLabel(0, -70));
         hud.add(new MouseClickLabel(0, -35));
 
         hud.setup();
+
+        glowRenderSet.add(ship01);
+        glowRenderSet.add(sun1);
+        glowRenderSet.add(sun2);
+        glowRenderSet.setup();
     }
 
     @Subscribe
@@ -219,6 +230,7 @@ public class CelestialState extends AbstractGraphicState implements Initializing
         GL11.glDisable(GL11.GL_DEPTH_TEST);
         GL11.glEnable(GL11.GL_BLEND);
         GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+        glowRenderSet.render();
         hud.render();
     }
 
@@ -230,6 +242,7 @@ public class CelestialState extends AbstractGraphicState implements Initializing
         modelSet.update(tpf);
         wireframeBucket.update(tpf);
         meshBucket.update(tpf);
+        glowRenderSet.update(tpf);
         hud.update(tpf);
     }
 

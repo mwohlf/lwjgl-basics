@@ -25,7 +25,7 @@ import org.slf4j.LoggerFactory;
 //
 public class ParticleEmitter extends AbstractRenderable implements Emitter {
     private static final Logger LOGGER = LoggerFactory.getLogger(ParticleEmitter.class);
-    public static final int MAX_PARTICLES = 500;
+    public static final int MAX_PARTICLES = 1000;
 
     private final Set<Particle> particles = new HashSet<Particle>(MAX_PARTICLES);
     private final int newPerSecond; // new particles per second;
@@ -36,7 +36,7 @@ public class ParticleEmitter extends AbstractRenderable implements Emitter {
 
 
     public ParticleEmitter() {
-        this.newPerSecond = 5;
+        this.newPerSecond = 2;
     }
 
     protected void add(int count) {
