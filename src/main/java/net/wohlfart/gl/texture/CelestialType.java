@@ -16,7 +16,7 @@ public enum CelestialType {
         ColorGradient gradient = new ColorGradient(Color.WHITE, Color.YELLOW);
 
         @Override
-        Color getColor(final float x, final float y, final float z, final float v) {
+        Color getColor(float x, float y, float z, float v) {
             final double noise = createNoise(x, y, z, v, 0.5f, 5);
             return gradient.getColor(noise);
         }
@@ -27,7 +27,7 @@ public enum CelestialType {
             minRadius = 0.5f; }
 
         @Override
-        Color getColor(final float x, final float y, final float z, final float v) {
+        Color getColor(float x, float y, float z, float v) {
             return Color.GREEN.brighter();
         }
     },
@@ -39,7 +39,7 @@ public enum CelestialType {
         ColorGradient gradient = new ColorGradient(Color.RED.brighter(), Color.YELLOW);
 
         @Override
-        Color getColor(final float x, final float y, final float z, final float v) {
+        Color getColor(float x, float y, float z, float v) {
             final double noise = createNoise(x, y, z, v, 0.5f, 5);
             return gradient.getColor(noise);
         }
@@ -52,7 +52,7 @@ public enum CelestialType {
         ColorGradient gradient = new ColorGradient(Color.BLUE, Color.WHITE);
 
         @Override
-        Color getColor(final float x, final float y, final float z, final float v) {
+        Color getColor(float x, float y, float z, float v) {
             final double noise = createNoise(x, y, z, v, 0.5f, 5);
             return gradient.getColor(noise);
         }
@@ -65,7 +65,7 @@ public enum CelestialType {
         ColorGradient gradient = new ColorGradient(new Color(255, 213, 133), new Color(102, 68, 58));
 
         @Override
-        Color getColor(final float x, final float y, final float z, final float v) {
+        Color getColor(float x, float y, float z, float v) {
             final double noise = createNoise(x / 1.5f, y * 10, z / 1.5f, v, 0.5f, 5);
             return gradient.getColor(noise);
         }
@@ -86,7 +86,7 @@ public enum CelestialType {
                 new Color(0, 50, 0));
 
         @Override
-        Color getColor(final float x, final float y, final float z, final float v) {
+        Color getColor(float x, float y, float z, float v) {
             final double groundNoise = createNoise(x, (float) Math.asin(y), z, v, 0.5f, 4);
             final Color ground = gradient.getColor(groundNoise);
             final double skyNoise = createNoise(x * 2, (float) Math.asin(y) * 4, z * 2, v, 0.2f, 3);
@@ -110,12 +110,12 @@ public enum CelestialType {
     public float maxAxisDeplacement = 0.25f; // this value is randomly added to a normalized up vectors x and y values, earth is around 23.4 degree
 
 
-    Color getColor(final float x, final float y, final float z, final float textureVariant) {
+    Color getColor(float x, float y, float z, float textureVariant) {
         return Color.YELLOW;
     }
 
     // adding octaves
-    double createNoise(final float x, final float y, final float z, final float v, final float persistence, final int octaves) {
+    double createNoise(float x, float y, float z, float v, float persistence, int octaves) {
         double result = 0;
         float max = 0;
         for (int i = 0; i < octaves; i++) {
@@ -128,7 +128,7 @@ public enum CelestialType {
     }
 
     // calling the noise
-    double createNoise(final float x, final float y, final float z, final float v, final float amplitude, final float frequency) {
+    double createNoise(float x, float y, float z, float v, float amplitude, float frequency) {
         // the noise returns [-1 .. +1]
         // double noise = PerlinNoise.noise(x * frequency, y * frequency, z * frequency);
         final double noise = SimplexNoise.noise(x * frequency, y * frequency, z * frequency, v);

@@ -15,26 +15,52 @@ void main(void) {
     vec4 sum = vec4(0.0);
 
     //our original texcoord for this fragment
-    vec2 tc = pass_TextureCoord;
+    vec2 flipped_texcoord = vec2(pass_TextureCoord.x, 1.0 - pass_TextureCoord.y);
+    vec2 tc = flipped_texcoord;
     vec4 pc = pass_Color;
 
     float hstep = dir.x;
     float vstep = dir.y;
 
-    float s = 1;
 
-    sum += texture2D(uniformTexture, vec2(tc.x - 4.0*dist*hstep, tc.y - 4.0*dist*vstep)) * 0.0162162162 * s;
-    sum += texture2D(uniformTexture, vec2(tc.x - 3.0*dist*hstep, tc.y - 3.0*dist*vstep)) * 0.0540540541 * s;
-    sum += texture2D(uniformTexture, vec2(tc.x - 2.0*dist*hstep, tc.y - 2.0*dist*vstep)) * 0.1216216216 * s;
-    sum += texture2D(uniformTexture, vec2(tc.x - 1.0*dist*hstep, tc.y - 1.0*dist*vstep)) * 0.1945945946 * s;
+    // check: http://home.comcast.net/~tom_forsyth/blog.wiki.html#[[Premultiplied%20alpha]]
 
-    vec4 current = texture2D(uniformTexture, vec2(tc.x, tc.y));
-    sum += current * 0.2270270270 * s;
+    vec4 pix;
+    pix = texture2D(uniformTexture, vec2(tc.x - 4.0*dist*hstep, tc.y - 4.0*dist*vstep));
+    pix *= pix.a;
+    sum += pix * 0.0162162162;
 
-    sum += texture2D(uniformTexture, vec2(tc.x + 1.0*dist*hstep, tc.y + 1.0*dist*vstep)) * 0.1945945946 * s;
-    sum += texture2D(uniformTexture, vec2(tc.x + 2.0*dist*hstep, tc.y + 2.0*dist*vstep)) * 0.1216216216 * s;
-    sum += texture2D(uniformTexture, vec2(tc.x + 3.0*dist*hstep, tc.y + 3.0*dist*vstep)) * 0.0540540541 * s;
-    sum += texture2D(uniformTexture, vec2(tc.x + 4.0*dist*hstep, tc.y + 4.0*dist*vstep)) * 0.0162162162 * s;
+    pix = texture2D(uniformTexture, vec2(tc.x - 3.0*dist*hstep, tc.y - 3.0*dist*vstep));
+    pix *= pix.a;
+    sum += pix * 0.0540540541;
+
+    pix = texture2D(uniformTexture, vec2(tc.x - 2.0*dist*hstep, tc.y - 2.0*dist*vstep));
+    pix *= pix.a;
+    sum += pix * 0.1216216216;
+
+    pix = texture2D(uniformTexture, vec2(tc.x - 1.0*dist*hstep, tc.y - 1.0*dist*vstep));
+    pix *= pix.a;
+    sum += pix * 0.1945945946;
+
+    pix = texture2D(uniformTexture, vec2(tc.x, tc.y));
+    pix *= pix.a;
+    sum += pix * 0.2270270270;
+
+    pix = texture2D(uniformTexture, vec2(tc.x + 1.0*dist*hstep, tc.y + 1.0*dist*vstep));
+    pix *= pix.a;
+    sum += pix * 0.1945945946;
+
+    pix = texture2D(uniformTexture, vec2(tc.x + 2.0*dist*hstep, tc.y + 2.0*dist*vstep));
+    pix *= pix.a;
+    sum += pix * 0.1216216216;
+
+    pix = texture2D(uniformTexture, vec2(tc.x + 3.0*dist*hstep, tc.y + 3.0*dist*vstep));
+    pix *= pix.a;
+    sum += pix * 0.0540540541;
+
+    pix = texture2D(uniformTexture, vec2(tc.x + 4.0*dist*hstep, tc.y + 4.0*dist*vstep));
+    pix *= pix.a;
+    sum += pix * 0.0162162162;
 
 
     //out_Color = pass_Color;

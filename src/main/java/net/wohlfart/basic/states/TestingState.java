@@ -22,7 +22,7 @@ public class TestingState extends AbstractGraphicState implements InitializingBe
 
     private final Hud hud = new HudImpl();
 
-    private final GlowRenderBatch renderSet = new GlowRenderBatch();
+    private final GlowRenderBatch glowRenderBatch = new GlowRenderBatch();
 
     private final DefaultRenderBatch<CelestialBody> planetSet = new DefaultRenderBatch<>();
 
@@ -43,18 +43,19 @@ public class TestingState extends AbstractGraphicState implements InitializingBe
         VertexLight lightB = new VertexLight(0.001f, new Vector4f(0.9f, 0.9f, 0.9f, 1.0f), new Vector3f( 0, 0, 3));
 
         CelestialBody sun1 = new CelestialBody(1L, CelestialType.SUN, 1f);
+        sun1.setLod(9);
         sun1.setPosition(lightA.getPosition());
-        renderSet.add(sun1);
-        CelestialBody sun2 = new CelestialBody(1L, CelestialType.SUN, 1f);
-        sun2.setPosition(lightB.getPosition());
-        renderSet.add(sun2);
-        renderSet.setup();
+        glowRenderBatch.add(sun1);
+        //CelestialBody sun2 = new CelestialBody(1L, CelestialType.SUN, 1f);
+        //sun2.setPosition(lightB.getPosition());
+        //renderSet.add(sun2);
+        glowRenderBatch.setup();
 
-        CelestialBody sun3 = new CelestialBody(1L, CelestialType.SUN, 1f);
-        sun3.setPosition(new Vector3f( 0, 0, 0));
-        planetSet.add(sun1);
-        planetSet.add(sun2);
-        planetSet.add(sun3);
+        //planetSet.add(sun1);
+        //planetSet.add(sun2);
+        //CelestialBody sun3 = new CelestialBody(1L, CelestialType.SUN, 1f);
+        //sun3.setPosition(new Vector3f( 0, 0, 0));
+        //planetSet.add(sun3);
         planetSet.setup();
 
         hud.setup();
@@ -65,7 +66,7 @@ public class TestingState extends AbstractGraphicState implements InitializingBe
     @Override
     public void update(float tpf) {
         planetSet.update(tpf);
-        renderSet.update(tpf);
+        glowRenderBatch.update(tpf);
         hud.update(tpf);
     }
 
@@ -77,7 +78,7 @@ public class TestingState extends AbstractGraphicState implements InitializingBe
         GL11.glClear(GL11.GL_DEPTH_BUFFER_BIT);
         GL11.glEnable(GL11.GL_DEPTH_TEST);
         GL11.glDisable(GL11.GL_BLEND);
-        renderSet.render();
+        glowRenderBatch.render();
 
 
         GL11.glDisable(GL11.GL_DEPTH_TEST);
@@ -90,7 +91,7 @@ public class TestingState extends AbstractGraphicState implements InitializingBe
 
     @Override
     public void destroy() {
-        renderSet.destroy();
+        glowRenderBatch.destroy();
         planetSet.destroy();
         hud.destroy();
         super.destroy();

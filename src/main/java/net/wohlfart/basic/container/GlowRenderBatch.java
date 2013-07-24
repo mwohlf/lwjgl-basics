@@ -18,6 +18,7 @@ import net.wohlfart.tools.SimpleMath;
 
 import org.lwjgl.opengl.EXTFramebufferObject;
 import org.lwjgl.opengl.GL11;
+import org.lwjgl.opengl.GL12;
 import org.lwjgl.opengl.GL14;
 import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector3f;
@@ -89,8 +90,8 @@ public class GlowRenderBatch<T extends IsUpdatable> implements RenderBatch<T>, I
         screenWidth = settings.getWidth();
         screenHeight = settings.getHeight();
 
-        textureWidth = screenWidth/2;
-        textureHeight = screenHeight/2;
+        textureWidth = screenWidth/1;
+        textureHeight = screenHeight/1;
 
         fboGraphicContext = new DefaultGraphicContext(ShaderRegistry.FBO_STD_SHADER);
         fboGraphicContext.setup();
@@ -119,8 +120,11 @@ public class GlowRenderBatch<T extends IsUpdatable> implements RenderBatch<T>, I
 
         // initialize color texture
         GL11.glBindTexture(GL11.GL_TEXTURE_2D, colorTextureA);
-        GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_LINEAR);
-        GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER, GL11.GL_LINEAR);
+        GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_S, GL12.GL_CLAMP_TO_EDGE);
+        GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_T, GL12.GL_CLAMP_TO_EDGE);
+        // we want GL11.GL_NEAREST so we don'tmix in the background color of the first texture/fbo at the edges
+        GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_NEAREST); // GL_NEAREST, GL_LINEAR without mipmaps
+        GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER, GL11.GL_NEAREST);
         GL11.glTexImage2D(GL11.GL_TEXTURE_2D, 0, GL11.GL_RGBA8, textureWidth, textureHeight, 0, GL11.GL_RGBA, GL11.GL_INT, (java.nio.ByteBuffer) null);  // Create the texture data
         EXTFramebufferObject.glFramebufferTexture2DEXT(EXTFramebufferObject.GL_FRAMEBUFFER_EXT,
                 EXTFramebufferObject.GL_COLOR_ATTACHMENT0_EXT, GL11.GL_TEXTURE_2D, colorTextureA, 0); // attach it to the framebuffer
@@ -149,8 +153,10 @@ public class GlowRenderBatch<T extends IsUpdatable> implements RenderBatch<T>, I
 
         // initialize color texture
         GL11.glBindTexture(GL11.GL_TEXTURE_2D, colorTextureB);
-        GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_LINEAR);
-        GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER, GL11.GL_LINEAR);
+        GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_S, GL12.GL_CLAMP_TO_EDGE);
+        GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_T, GL12.GL_CLAMP_TO_EDGE);
+        GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_NEAREST); // GL_NEAREST, GL_LINEAR without mipmaps
+        GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER, GL11.GL_NEAREST);
         GL11.glTexImage2D(GL11.GL_TEXTURE_2D, 0, GL11.GL_RGBA8, textureWidth, textureHeight, 0, GL11.GL_RGBA, GL11.GL_INT, (java.nio.ByteBuffer) null);  // Create the texture data
         EXTFramebufferObject.glFramebufferTexture2DEXT(EXTFramebufferObject.GL_FRAMEBUFFER_EXT,
                 EXTFramebufferObject.GL_COLOR_ATTACHMENT0_EXT, GL11.GL_TEXTURE_2D, colorTextureB, 0); // attach it to the framebuffer
@@ -168,20 +174,19 @@ public class GlowRenderBatch<T extends IsUpdatable> implements RenderBatch<T>, I
 
     @Override
     public void render() {
-
-        // normal rendering to the FBO
-        GL11.glEnable(GL11.GL_BLEND);
-        GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
         renderOffScreen();
         // blur the FBO to another FBO
-        blurOffScreen();
-        //GL11.glEnable(GL11.GL_BLEND);
-        //GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-        blurOnScreen();
-
+        blurOffScreen1();
+        // GL11.glEnable(GL11.GL_BLEND);
+        // GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+        // blurOnScreen();
+        // GL11.glDisable(GL11.GL_BLEND);
+        blurOffScreen2();
         // back to screen rendering
         GL11.glViewport(0, 0, screenWidth, screenHeight);
-        //renderOnScreen();
+        // renderOnScreen1();
+        // renderOnScreen2();
+        renderOnScreen3();
     }
 
 
@@ -189,10 +194,17 @@ public class GlowRenderBatch<T extends IsUpdatable> implements RenderBatch<T>, I
         GL11.glBindTexture(GL11.GL_TEXTURE_2D, 0);
         // switch to rendering on our FBO
         EXTFramebufferObject.glBindFramebufferEXT(EXTFramebufferObject.GL_FRAMEBUFFER_EXT, fboHandleA);
+
         // clear screen and depth buffer on the FBO
-        GL11.glClearColor (1f, 1f, 1f, 0f);
-        GL11.glClear (GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT);
+        GL11.glClearColor(0f, 0f, 0f, 0f);
+        GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT);
+        // normal rendering to the FBO
+        GL11.glEnable(GL11.GL_BLEND);
+        //GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ZERO);
+        GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+
         GL11.glViewport(0, 0, textureWidth, textureHeight);
+        GL11.glEnable(GL11.GL_DEPTH_TEST);
 
         CONTEXT_HOLDER.setCurrentGraphicContext(fboGraphicContext);
         ShaderUniformHandle.MODEL_TO_WORLD.set(SimpleMath.UNION_MATRIX);
@@ -201,7 +213,7 @@ public class GlowRenderBatch<T extends IsUpdatable> implements RenderBatch<T>, I
 
         int i = 0;
         for (final VertexLight light : lights) {
-            ShaderUniformHandle.LIGHTS.set(light, i++);
+    //        ShaderUniformHandle.LIGHTS.set(light, i++);
         }
 
         for (T element : elements) {
@@ -210,14 +222,19 @@ public class GlowRenderBatch<T extends IsUpdatable> implements RenderBatch<T>, I
 
     }
 
-    private void blurOffScreen() {
+    private void blurOffScreen1() {
         GL11.glBindTexture(GL11.GL_TEXTURE_2D, 0);
         // switch to rendering on our FBO, this is the render target now
         EXTFramebufferObject.glBindFramebufferEXT(EXTFramebufferObject.GL_FRAMEBUFFER_EXT, fboHandleB);
         // clear screen and depth buffer on the FBO
-        GL11.glClearColor (1f, 1f, 1f, 0f);
-        GL11.glClear (GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT);
+        GL11.glClearColor (0f, 0f, 0f, 0f);
+        GL11.glClear (GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT);
+        // normal rendering to the FBO
+        GL11.glEnable(GL11.GL_BLEND);
+        GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+
         GL11.glViewport(0, 0, textureWidth, textureHeight);
+        GL11.glEnable(GL11.GL_DEPTH_TEST);
 
         CONTEXT_HOLDER.setCurrentGraphicContext(fboBlurGraphicContext);
         ShaderUniformHandle.MODEL_TO_WORLD.set(SimpleMath.UNION_MATRIX);
@@ -236,6 +253,38 @@ public class GlowRenderBatch<T extends IsUpdatable> implements RenderBatch<T>, I
         quad1.render();
     }
 
+    private void blurOffScreen2() {
+        GL11.glBindTexture(GL11.GL_TEXTURE_2D, 0);
+        // switch to rendering on our FBO, this is the render target now
+        EXTFramebufferObject.glBindFramebufferEXT(EXTFramebufferObject.GL_FRAMEBUFFER_EXT, fboHandleA);
+        // clear screen and depth buffer on the FBO
+        GL11.glClearColor (0f, 0f, 0f, 0f);
+        GL11.glClear (GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT);
+        // normal rendering to the FBO
+        GL11.glEnable(GL11.GL_BLEND);
+        GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+
+        GL11.glViewport(0, 0, textureWidth, textureHeight);
+        GL11.glEnable(GL11.GL_DEPTH_TEST);
+
+        CONTEXT_HOLDER.setCurrentGraphicContext(fboBlurGraphicContext);
+        ShaderUniformHandle.MODEL_TO_WORLD.set(SimpleMath.UNION_MATRIX);
+        ShaderUniformHandle.WORLD_TO_CAM.set(SimpleMath.UNION_MATRIX);
+        ShaderUniformHandle.CAM_TO_CLIP.set(SimpleMath.UNION_MATRIX);
+
+        ShaderUniformHandle.DIRECTION.set(ShaderUniformHandle.VERTICAL);
+        ShaderUniformHandle.DISTANCE.set(BLUR_DIST/textureHeight);
+
+        // FIXME: we don't need a 3D quad if we only want to copy/blur a texture...
+        // FIXME: use clamp to border here
+        TexturedQuad quad1 = new TexturedQuad();
+        quad1.setPosition(new Vector3f(0,0,0));
+        quad1.setTexHandle(colorTextureB); // this is the render source
+        quad1.setSize(2);
+        quad1.render();
+    }
+
+
     private void blurOnScreen() {
         GL11.glBindTexture(GL11.GL_TEXTURE_2D, 0);
         // switch to rendering on the screen
@@ -253,6 +302,10 @@ public class GlowRenderBatch<T extends IsUpdatable> implements RenderBatch<T>, I
         ShaderUniformHandle.DIRECTION.set(ShaderUniformHandle.VERTICAL);
         ShaderUniformHandle.DISTANCE.set(BLUR_DIST/textureHeight);
 
+        // normal rendering to the FBO
+        GL11.glEnable(GL11.GL_BLEND);
+        GL11.glBlendFunc(GL11.GL_ONE, GL11.GL_ONE_MINUS_SRC_ALPHA); // pre-multiplied" alpha
+
         // FIXME: we don't need a 3D quad if we only want to copy/blur a texture...
         // FIXME: use clamp to border here
         TexturedQuad quad1 = new TexturedQuad();
@@ -264,7 +317,73 @@ public class GlowRenderBatch<T extends IsUpdatable> implements RenderBatch<T>, I
     }
 
 
-    private void renderOnScreen() {
+    private void renderOnScreen3() {
+        GL11.glBindTexture(GL11.GL_TEXTURE_2D, 0);
+        // switch to rendering on the screen
+        EXTFramebufferObject.glBindFramebufferEXT(EXTFramebufferObject.GL_FRAMEBUFFER_EXT, 0);
+        // clear screen and depth buffer on the FBO
+        //GL11.glClearColor (1f, 1f, 1f, 0f);
+        //GL11.glClear (GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT);
+        GL11.glViewport(0, 0, screenWidth, screenHeight);
+
+        CONTEXT_HOLDER.setCurrentGraphicContext(fboBlurGraphicContext);
+        ShaderUniformHandle.MODEL_TO_WORLD.set(SimpleMath.UNION_MATRIX);
+        ShaderUniformHandle.WORLD_TO_CAM.set(SimpleMath.UNION_MATRIX);
+        ShaderUniformHandle.CAM_TO_CLIP.set(SimpleMath.UNION_MATRIX);
+
+        ShaderUniformHandle.DIRECTION.set(ShaderUniformHandle.VERTICAL);
+        ShaderUniformHandle.DISTANCE.set(0);
+
+        // normal rendering to the FBO
+        GL11.glEnable(GL11.GL_BLEND);
+        //GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+        GL11.glBlendFunc(GL11.GL_ONE, GL11.GL_ONE_MINUS_SRC_ALPHA); // pre-multiplied" alpha
+
+
+        // FIXME: we don't need a 3D quad if we only want to copy/blur a texture...
+        // FIXME: use clamp to border here
+        TexturedQuad quad1 = new TexturedQuad();
+        quad1.setPosition(new Vector3f(0,0,0));
+        //quad1.setPosition(CONTEXT_HOLDER.getCamera().getPosition());
+        quad1.setTexHandle(colorTextureA); // this is the render source
+        quad1.setSize(1);
+        quad1.render();
+    }
+
+
+    private void renderOnScreen2() {
+        GL11.glBindTexture(GL11.GL_TEXTURE_2D, 0);
+        // switch to rendering on the screen
+        EXTFramebufferObject.glBindFramebufferEXT(EXTFramebufferObject.GL_FRAMEBUFFER_EXT, 0);
+        // clear screen and depth buffer on the FBO
+        //GL11.glClearColor (1f, 1f, 1f, 0f);
+        //GL11.glClear (GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT);
+        GL11.glViewport(0, 0, screenWidth, screenHeight);
+
+        CONTEXT_HOLDER.setCurrentGraphicContext(fboBlurGraphicContext);
+        ShaderUniformHandle.MODEL_TO_WORLD.set(SimpleMath.UNION_MATRIX);
+        ShaderUniformHandle.WORLD_TO_CAM.set(SimpleMath.UNION_MATRIX);
+        ShaderUniformHandle.CAM_TO_CLIP.set(SimpleMath.UNION_MATRIX);
+
+        ShaderUniformHandle.DIRECTION.set(ShaderUniformHandle.VERTICAL);
+        ShaderUniformHandle.DISTANCE.set(0);
+
+        // normal rendering to the FBO
+        GL11.glEnable(GL11.GL_BLEND);
+        GL11.glBlendFunc(GL11.GL_ONE, GL11.GL_ONE_MINUS_SRC_ALPHA);
+
+        // FIXME: we don't need a 3D quad if we only want to copy/blur a texture...
+        // FIXME: use clamp to border here
+        TexturedQuad quad1 = new TexturedQuad();
+        quad1.setPosition(new Vector3f(0,0,0));
+        //quad1.setPosition(CONTEXT_HOLDER.getCamera().getPosition());
+        quad1.setTexHandle(colorTextureA); // this is the render source
+        quad1.setSize(2);
+        quad1.render();
+    }
+
+
+    private void renderOnScreen1() {
         // render on screen again
         EXTFramebufferObject.glBindFramebufferEXT(EXTFramebufferObject.GL_FRAMEBUFFER_EXT, 0);
         CONTEXT_HOLDER.setCurrentGraphicContext(screenGraphicContext);
@@ -272,6 +391,7 @@ public class GlowRenderBatch<T extends IsUpdatable> implements RenderBatch<T>, I
         ShaderUniformHandle.WORLD_TO_CAM.set(CONTEXT_HOLDER.getCamera().getWorldToCamMatrix());
         ShaderUniformHandle.CAM_TO_CLIP.set(screenProjMatrix);
 
+        /*
         int i = 0;
         for (final VertexLight light : lights) {
             ShaderUniformHandle.LIGHTS.set(light, i++);
@@ -280,6 +400,15 @@ public class GlowRenderBatch<T extends IsUpdatable> implements RenderBatch<T>, I
         for (T element : elements) {
             element.render();
         }
+        */
+
+        //GL11.glDisable(GL11.GL_BLEND);
+        GL11.glEnable(GL11.GL_BLEND);
+        GL11.glDisable(GL11.GL_DEPTH_TEST);
+        //GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ZERO);
+        //GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+        GL11.glBlendFunc(GL11.GL_ONE, GL11.GL_ONE_MINUS_SRC_ALPHA);
+
 
         TexturedQuad quad1 = new TexturedQuad();
         quad1.setPosition(new Vector3f(-1,0,-2));
@@ -290,6 +419,7 @@ public class GlowRenderBatch<T extends IsUpdatable> implements RenderBatch<T>, I
         quad2.setPosition(new Vector3f(+1,0,-2));
         quad2.setTexHandle(colorTextureB);
         quad2.render();
+
     }
 
 

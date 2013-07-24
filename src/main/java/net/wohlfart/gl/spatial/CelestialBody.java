@@ -14,8 +14,9 @@ public class CelestialBody extends AbstractRenderable implements SpatialEntity {
 
     private final Random random;
     private final CelestialType planetType;
-
     private final float radius;
+
+    private int lod = DEFAULT_LOD;
 
 
     public CelestialBody(long seed, CelestialType planetType, float radius) {
@@ -32,6 +33,9 @@ public class CelestialBody extends AbstractRenderable implements SpatialEntity {
         this.radius = random.nextFloat() * (planetType.maxRadius - planetType.minRadius) + planetType.minRadius;
     }
 
+    public void setLod(int lod) {
+        this.lod = lod;
+    }
 
     @Override
     public void update(final float tpf) {
@@ -46,7 +50,7 @@ public class CelestialBody extends AbstractRenderable implements SpatialEntity {
     @Override
     protected IsRenderable setupMesh() {
         final CelestialBodyMesh.Builder builder = new CelestialBodyMesh.Builder();
-        builder.setLod(DEFAULT_LOD);
+        builder.setLod(lod);
         builder.setInitRotation(initialRotation);
         builder.setInitTranslation(initialTranslation);
         builder.setCelestialType(planetType);

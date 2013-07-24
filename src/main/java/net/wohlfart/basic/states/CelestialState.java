@@ -160,10 +160,10 @@ public class CelestialState extends AbstractGraphicState implements Initializing
 
         CelestialBody sun1 = new CelestialBody(1L, CelestialType.SUN, 1f);
         sun1.setPosition(light6.getPosition());
-        sunSet.add(sun1);
+  //      sunSet.add(sun1);
         CelestialBody sun2 = new CelestialBody(1L, CelestialType.SUN, 1f);
         sun2.setPosition(light7.getPosition());
-        sunSet.add(sun2);
+  //      sunSet.add(sun2);
         sunSet.setup();
 
 
@@ -226,11 +226,11 @@ public class CelestialState extends AbstractGraphicState implements Initializing
         wireframeBucket.render();
         meshBucket.render();
 
-
         GL11.glDisable(GL11.GL_DEPTH_TEST);
+
+        glowRenderSet.render();
         GL11.glEnable(GL11.GL_BLEND);
         GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-        glowRenderSet.render();
         hud.render();
     }
 

@@ -56,7 +56,7 @@ public class TexturedMesh implements IsRenderable {
     public static class Builder extends AbstractMeshBuilder {
         protected static final Logger LOGGER = LoggerFactory.getLogger(Builder.class);
 
-        private float size = 1f;                              // length of one side of the texture
+        private float size = 1f;  // length of one side of the texture
 
         public void setSize(float size) {
             this.size = size;

@@ -153,6 +153,8 @@ class Game implements InitializingBean { // REVIEWED
         GL11.glClearDepth(1f);
         // turn culling off so it will be drawn regardless of which way a surface is facing
         GL11.glDisable(GL11.GL_CULL_FACE); // enable for production
+        //GL11.glEnable(GL11.GL_CULL_FACE); // enable for production
+        //GL11.glCullFace(GL11.GL_FRONT); //  GL_BACK or GL_FRONT
 
         // wire the stuff after the display has been created and the settings have been fixed
         graphContext.setSettings(settings);
