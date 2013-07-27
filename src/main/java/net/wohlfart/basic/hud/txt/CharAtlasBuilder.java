@@ -21,10 +21,10 @@ public class CharAtlasBuilder {
 
     protected static final Logger LOGGER = LoggerFactory.getLogger(CharAtlasBuilder.class);
 
-    private static final float DEFAULT_FONT_SIZE = 17f;
-    // private static final String FONT_FILE = "/fonts/alphbeta.ttf";
-    // private static final String FONT_FILE = "/fonts/Greyscale_Basic_Regular.ttf";
-    // private static final String FONT_FILE = "/fonts/AeroviasBrasilNF.ttf";
+    private static final float DEFAULT_FONT_SIZE = 45f;
+    //private static final String DEFAULT_FONT_FILE = "/fonts/alphbeta.ttf";
+    //private static final String DEFAULT_FONT_FILE = "/fonts/Greyscale_Basic_Regular.ttf";
+    //private static final String DEFAULT_FONT_FILE = "/fonts/AeroviasBrasilNF.ttf";
     private static final String DEFAULT_FONT_FILE = "/fonts/VeraMono.ttf";
 
     public static final char NULL_CHAR = '_';

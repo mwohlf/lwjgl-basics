@@ -59,7 +59,7 @@ public class TestingState extends AbstractGraphicState implements InitializingBe
         planetSet.setup();
 
         hud.setup();
-        hud.add(new SimpleLabel(200, 200, "test state"));
+        hud.add(new SimpleLabel(0, 0, "test state at 0,0"));
 
     }
 

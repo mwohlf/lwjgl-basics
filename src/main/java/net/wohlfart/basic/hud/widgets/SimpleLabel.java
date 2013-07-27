@@ -11,6 +11,9 @@ public class SimpleLabel extends AbstractCharComponent {
     private final String string;
     private IsRenderable characters;
 
+    /**
+     * create a label at a certain position, origin is top left on the screen
+     */
     public SimpleLabel(int x, int y, String string) {
         this.x = x;
         this.y = y;

@@ -1,5 +1,6 @@
 package net.wohlfart.gl.shader;
 
+import org.lwjgl.util.ReadableColor;
 import org.lwjgl.util.vector.Vector3f;
 
 /**
@@ -55,6 +56,16 @@ public class Vertex { // REVIEWED
         return this;
     }
 
+
+    public Vertex setColor(ReadableColor color) {
+        this.rgba = new float[] {
+                color.getRedByte()/255f,
+                color.getGreenByte()/255f,
+                color.getBlueByte()/255f,
+                color.getAlphaByte()/255f };
+        return this;
+    }
+
     public float[] getXYZ() {
         return new float[] { this.xyzw[0], this.xyzw[1], this.xyzw[2] };
     }
@@ -74,4 +85,5 @@ public class Vertex { // REVIEWED
     public float[] getNormal() {
         return new float[] { this.normal[0], this.normal[1], this.normal[2] };
     }
+
 }

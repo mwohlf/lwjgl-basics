@@ -7,9 +7,10 @@ import net.wohlfart.basic.hud.Layer.Widget;
 import net.wohlfart.basic.hud.txt.CharAtlas;
 import net.wohlfart.basic.hud.txt.CharAtlasBuilder;
 import net.wohlfart.basic.hud.txt.CharInfo;
-import net.wohlfart.basic.hud.txt.CharMeshBuilder;
 import net.wohlfart.basic.hud.txt.CharSet;
+import net.wohlfart.basic.hud.txt.CharacterMesh;
 
+import org.lwjgl.util.Color;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -46,8 +47,9 @@ class LayerImpl extends HashSet<Widget> implements Layer {
         assert string != null : "string to create MeshSet is null";
         final CharSet characters = new CharSet();
 
-        final CharMeshBuilder builder = new CharMeshBuilder();
+        final CharacterMesh.Builder builder = new CharacterMesh.Builder();
         builder.setCharAtlas(characterAtlas);
+        builder.setColor(Color.GREEN);
 
         int d = 0;
         final char[] charArray = string.toCharArray();
@@ -72,7 +74,7 @@ class LayerImpl extends HashSet<Widget> implements Layer {
     public void update(float tpf) {
         if (characterAtlas == null) {
             characterAtlas = new CharAtlasBuilder()
-                .setFontSize(12)
+                //.setFontSize(20)
                 //.setBorderOn(true)
                 .build();
         }
