@@ -24,7 +24,7 @@
 
 
     <!-- huds -->
-    <bean id="defaultHud" class="net.wohlfart.gl.elements.hud.HudImpl"/>
+    <bean id="defaultHud" class="net.wohlfart.basic.hud.HudImpl"/>
 
 
     <!-- skyboxes -->

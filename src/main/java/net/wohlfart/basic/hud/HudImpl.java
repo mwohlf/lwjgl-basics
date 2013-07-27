@@ -10,6 +10,7 @@ import net.wohlfart.gl.shader.ShaderRegistry;
 import net.wohlfart.gl.shader.ShaderUniformHandle;
 import net.wohlfart.tools.SimpleMath;
 
+import org.lwjgl.opengl.GL11;
 import org.lwjgl.util.vector.Matrix4f;
 
 
@@ -40,6 +41,9 @@ public class HudImpl implements Hud {
         ShaderUniformHandle.MODEL_TO_WORLD.set(SimpleMath.UNION_MATRIX);
         ShaderUniformHandle.WORLD_TO_CAM.set(SimpleMath.UNION_MATRIX);
         ShaderUniformHandle.CAM_TO_CLIP.set(camViewMatrix);
+        //ShaderUniformHandle.CAM_TO_CLIP.set(SimpleMath.UNION_MATRIX);
+        GL11.glDisable(GL11.GL_DEPTH_TEST);
+
         layer.render();
     }
 

@@ -35,6 +35,4 @@ public interface Layer extends IsRenderable, IsUpdatable {
     @Override
     void destroy();
 
-
-
 }
