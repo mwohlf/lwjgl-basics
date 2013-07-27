@@ -1,4 +1,4 @@
-package net.wohlfart.gl.elements.hud.txt;
+package net.wohlfart.basic.hud.txt;
 
 import java.awt.Color;
 import java.awt.Font;

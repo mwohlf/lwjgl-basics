@@ -1,4 +1,4 @@
-package net.wohlfart.gl.elements.hud.txt;
+package net.wohlfart.basic.hud.txt;
 
 /*
  * dimension info for a single character

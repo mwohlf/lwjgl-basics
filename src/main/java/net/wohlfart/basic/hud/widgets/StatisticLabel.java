@@ -1,4 +1,4 @@
-package net.wohlfart.gl.elements.hud.widgets;
+package net.wohlfart.basic.hud.widgets;
 
 
 public class StatisticLabel extends FormattedLabel {

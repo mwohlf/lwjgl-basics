@@ -36,7 +36,10 @@ import org.lwjgl.util.vector.Vector3f;
  */
 public class GlowRenderBatch<T extends IsUpdatable> implements RenderBatch<T>, IsUpdatable { // REVIEWED
 
-    private static final float BLUR_DIST = 2.5f;
+    private static final float BLUR_DIST = 1.5f;
+    private static final int SCALE_DOWN = 8;
+
+    private static final int FILTER_MAPPING = GL11.GL_NEAREST; // GL11.GL_LINEAR GL11.GL_NEAREST
 
     private IGraphicContext screenGraphicContext;
     private IGraphicContext fboGraphicContext;
@@ -90,8 +93,8 @@ public class GlowRenderBatch<T extends IsUpdatable> implements RenderBatch<T>, I
         screenWidth = settings.getWidth();
         screenHeight = settings.getHeight();
 
-        textureWidth = screenWidth/1;
-        textureHeight = screenHeight/1;
+        textureWidth = screenWidth/SCALE_DOWN;
+        textureHeight = screenHeight/SCALE_DOWN;
 
         fboGraphicContext = new DefaultGraphicContext(ShaderRegistry.FBO_STD_SHADER);
         fboGraphicContext.setup();
@@ -123,8 +126,8 @@ public class GlowRenderBatch<T extends IsUpdatable> implements RenderBatch<T>, I
         GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_S, GL12.GL_CLAMP_TO_EDGE);
         GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_T, GL12.GL_CLAMP_TO_EDGE);
         // we want GL11.GL_NEAREST so we don'tmix in the background color of the first texture/fbo at the edges
-        GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_NEAREST); // GL_NEAREST, GL_LINEAR without mipmaps
-        GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER, GL11.GL_NEAREST);
+        GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, FILTER_MAPPING); // GL_NEAREST, GL_LINEAR without mipmaps
+        GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER, FILTER_MAPPING);
         GL11.glTexImage2D(GL11.GL_TEXTURE_2D, 0, GL11.GL_RGBA8, textureWidth, textureHeight, 0, GL11.GL_RGBA, GL11.GL_INT, (java.nio.ByteBuffer) null);  // Create the texture data
         EXTFramebufferObject.glFramebufferTexture2DEXT(EXTFramebufferObject.GL_FRAMEBUFFER_EXT,
                 EXTFramebufferObject.GL_COLOR_ATTACHMENT0_EXT, GL11.GL_TEXTURE_2D, colorTextureA, 0); // attach it to the framebuffer
@@ -155,8 +158,8 @@ public class GlowRenderBatch<T extends IsUpdatable> implements RenderBatch<T>, I
         GL11.glBindTexture(GL11.GL_TEXTURE_2D, colorTextureB);
         GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_S, GL12.GL_CLAMP_TO_EDGE);
         GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_T, GL12.GL_CLAMP_TO_EDGE);
-        GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_NEAREST); // GL_NEAREST, GL_LINEAR without mipmaps
-        GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER, GL11.GL_NEAREST);
+        GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, FILTER_MAPPING); // GL_NEAREST, GL_LINEAR without mipmaps
+        GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER, FILTER_MAPPING);
         GL11.glTexImage2D(GL11.GL_TEXTURE_2D, 0, GL11.GL_RGBA8, textureWidth, textureHeight, 0, GL11.GL_RGBA, GL11.GL_INT, (java.nio.ByteBuffer) null);  // Create the texture data
         EXTFramebufferObject.glFramebufferTexture2DEXT(EXTFramebufferObject.GL_FRAMEBUFFER_EXT,
                 EXTFramebufferObject.GL_COLOR_ATTACHMENT0_EXT, GL11.GL_TEXTURE_2D, colorTextureB, 0); // attach it to the framebuffer
@@ -343,7 +346,7 @@ public class GlowRenderBatch<T extends IsUpdatable> implements RenderBatch<T>, I
         // FIXME: we don't need a 3D quad if we only want to copy/blur a texture...
         // FIXME: use clamp to border here
         TexturedQuad quad1 = new TexturedQuad();
-        quad1.setPosition(new Vector3f(0,0,0));
+        quad1.setPosition(new Vector3f(0,0,-0.5f));
         //quad1.setPosition(CONTEXT_HOLDER.getCamera().getPosition());
         quad1.setTexHandle(colorTextureA); // this is the render source
         quad1.setSize(1);

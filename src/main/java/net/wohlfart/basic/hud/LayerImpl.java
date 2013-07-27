@@ -1,14 +1,14 @@
-package net.wohlfart.gl.elements.hud;
+package net.wohlfart.basic.hud;
 
 import java.util.HashSet;
 
 import net.wohlfart.basic.elements.IsRenderable;
-import net.wohlfart.gl.elements.hud.Layer.Widget;
-import net.wohlfart.gl.elements.hud.txt.CharAtlas;
-import net.wohlfart.gl.elements.hud.txt.CharAtlasBuilder;
-import net.wohlfart.gl.elements.hud.txt.CharInfo;
-import net.wohlfart.gl.elements.hud.txt.CharMeshBuilder;
-import net.wohlfart.gl.elements.hud.txt.CharSet;
+import net.wohlfart.basic.hud.Layer.Widget;
+import net.wohlfart.basic.hud.txt.CharAtlas;
+import net.wohlfart.basic.hud.txt.CharAtlasBuilder;
+import net.wohlfart.basic.hud.txt.CharInfo;
+import net.wohlfart.basic.hud.txt.CharMeshBuilder;
+import net.wohlfart.basic.hud.txt.CharSet;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

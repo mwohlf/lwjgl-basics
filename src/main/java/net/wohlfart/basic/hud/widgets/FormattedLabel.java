@@ -1,9 +1,9 @@
-package net.wohlfart.gl.elements.hud.widgets;
+package net.wohlfart.basic.hud.widgets;
 
 import java.text.MessageFormat;
 
 import net.wohlfart.basic.elements.IsRenderable;
-import net.wohlfart.gl.elements.hud.txt.AbstractCharComponent;
+import net.wohlfart.basic.hud.txt.AbstractCharComponent;
 
 
 public class FormattedLabel extends AbstractCharComponent {

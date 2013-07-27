@@ -1,8 +1,8 @@
 package net.wohlfart.basic.states;
 
-import net.wohlfart.gl.elements.hud.Hud;
-import net.wohlfart.gl.elements.hud.HudImpl;
-import net.wohlfart.gl.elements.hud.widgets.SimpleLabel;
+import net.wohlfart.basic.hud.Hud;
+import net.wohlfart.basic.hud.HudImpl;
+import net.wohlfart.basic.hud.widgets.SimpleLabel;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

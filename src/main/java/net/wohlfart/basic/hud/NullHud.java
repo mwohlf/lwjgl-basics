@@ -1,6 +1,6 @@
-package net.wohlfart.gl.elements.hud;
+package net.wohlfart.basic.hud;
 
-import net.wohlfart.gl.elements.hud.Layer.Widget;
+import net.wohlfart.basic.hud.Layer.Widget;
 
 public enum NullHud implements Hud {
     INSTANCE;

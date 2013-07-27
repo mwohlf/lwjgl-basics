@@ -1,7 +1,7 @@
-package net.wohlfart.gl.elements.hud;
+package net.wohlfart.basic.hud;
 
 import static net.wohlfart.gl.shader.GraphicContextHolder.CONTEXT_HOLDER;
-import net.wohlfart.gl.elements.hud.Layer.Widget;
+import net.wohlfart.basic.hud.Layer.Widget;
 import net.wohlfart.gl.shader.DefaultGraphicContext;
 import net.wohlfart.gl.shader.GraphicContextHolder;
 import net.wohlfart.gl.shader.GraphicContextHolder.IGraphicContext;

@@ -1,4 +1,4 @@
-package net.wohlfart.gl.elements.hud;
+package net.wohlfart.basic.hud;
 
 import net.wohlfart.basic.elements.IsRenderable;
 import net.wohlfart.basic.elements.IsUpdatable;

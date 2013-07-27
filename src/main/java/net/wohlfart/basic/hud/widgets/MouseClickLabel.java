@@ -1,6 +1,6 @@
-package net.wohlfart.gl.elements.hud.widgets;
+package net.wohlfart.basic.hud.widgets;
 
-import net.wohlfart.gl.elements.hud.Layer;
+import net.wohlfart.basic.hud.Layer;
 import net.wohlfart.gl.input.PointEvent;
 import net.wohlfart.gl.shader.GraphicContextHolder;
 

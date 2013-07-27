@@ -2,9 +2,9 @@ package net.wohlfart.basic.states;
 
 import net.wohlfart.basic.container.DefaultRenderBatch;
 import net.wohlfart.basic.container.GlowRenderBatch;
-import net.wohlfart.gl.elements.hud.Hud;
-import net.wohlfart.gl.elements.hud.HudImpl;
-import net.wohlfart.gl.elements.hud.widgets.SimpleLabel;
+import net.wohlfart.basic.hud.Hud;
+import net.wohlfart.basic.hud.HudImpl;
+import net.wohlfart.basic.hud.widgets.SimpleLabel;
 import net.wohlfart.gl.shader.VertexLight;
 import net.wohlfart.gl.spatial.CelestialBody;
 import net.wohlfart.gl.texture.CelestialType;
