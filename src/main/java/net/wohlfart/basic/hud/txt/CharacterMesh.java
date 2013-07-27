@@ -13,34 +13,28 @@ import org.lwjgl.opengl.GL30;
 import org.lwjgl.util.ReadableColor;
 
 /**
- * CharacterMesh class.
+ * a single character somewhere on the screen, also a builder class to create
  */
 public class CharacterMesh implements IsRenderable {
 
     private final int vaoHandle;
-    private final int indicesCount;
-    private final int indexOffset;
-    private final int indexElemSize;
-    private final int indicesType;
     private final int texHandle;
 
-
-    public CharacterMesh(int vaoHandle, int indicesType, int indexElemSize, int indicesCount, int indexOffset, int textureId) {
+    private CharacterMesh(int vaoHandle, int texHandle) {
         this.vaoHandle = vaoHandle;
-        this.indicesType = indicesType;
-        this.indexElemSize = indexElemSize;
-        this.indicesCount = indicesCount;
-        this.indexOffset = indexOffset;
-        this.texHandle = textureId;
+        this.texHandle = texHandle;
     }
 
     @Override
     public void render() {
         // Bind the texture
         GL30.glBindVertexArray(vaoHandle);
-        GL13.glActiveTexture(GL13.GL_TEXTURE0);
+        GL13.glActiveTexture(GL13.GL_TEXTURE0);   // FIXME: check if texture binding is stored in the VAO
         GL11.glBindTexture(GL11.GL_TEXTURE_2D, texHandle);
-        GL11.glDrawElements(indicesType, indicesCount, indexElemSize, indexOffset);
+        GL11.glDrawElements(GL11.GL_TRIANGLES, // indices type
+                6, // index elem count
+                GL11.GL_UNSIGNED_BYTE,  // index elem size
+                0);  // index offset
         GL30.glBindVertexArray(0);
     }
 
@@ -88,7 +82,7 @@ public class CharacterMesh implements IsRenderable {
             GL30.glBindVertexArray(0);
 
             final int texId = atlas.getTexHandle();
-            return new CharacterMesh(vaoHandle, GL11.GL_TRIANGLES, GL11.GL_UNSIGNED_BYTE, indices.length, 0, texId);
+            return new CharacterMesh(vaoHandle, texId);
         }
 
         protected float[] createVertexStream() {
