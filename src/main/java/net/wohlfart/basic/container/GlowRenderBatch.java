@@ -36,7 +36,7 @@ import org.lwjgl.util.vector.Vector3f;
 public class GlowRenderBatch<T extends IsUpdatable> implements RenderBatch<T>, IsUpdatable { // REVIEWED
 
     private static final float BLUR_DIST = 1f;
-    private static final int SCALE_DOWN = 1;
+    private static final int SCALE_DOWN = 4;
 
     private IGraphicContext screenGraphicContext;
     private IGraphicContext fboGraphicContext;
@@ -99,7 +99,6 @@ public class GlowRenderBatch<T extends IsUpdatable> implements RenderBatch<T>, I
 
         plainContext = new DefaultGraphicContext(ShaderRegistry.PLAIN_SHADER);
         plainContext.setup();
-
 
         frameBuffer1 = new FrameBufferObject(textureWidth, textureHeight);
         frameBuffer1.setup();
@@ -186,7 +185,8 @@ public class GlowRenderBatch<T extends IsUpdatable> implements RenderBatch<T>, I
         // normal rendering to the FBO
         GL11.glEnable(GL11.GL_BLEND);
         //GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-        GL11.glBlendFunc(GL11.GL_ONE, GL11.GL_ONE_MINUS_SRC_ALPHA); // pre-multiplied" alpha
+        //GL11.glBlendFunc(GL11.GL_ONE, GL11.GL_ONE_MINUS_SRC_ALPHA); // pre-multiplied" alpha
+        GL11.glBlendFunc(GL11.GL_ONE, GL11.GL_ONE);
 
         // FIXME: we don't need a 3D quad if we only want to copy/blur a texture...
         // FIXME: use clamp to border here

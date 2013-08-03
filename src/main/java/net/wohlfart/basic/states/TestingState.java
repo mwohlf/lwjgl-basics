@@ -2,14 +2,18 @@ package net.wohlfart.basic.states;
 
 import net.wohlfart.basic.container.DefaultRenderBatch;
 import net.wohlfart.basic.container.GlowRenderBatch;
+import net.wohlfart.basic.container.ModelToolkit;
 import net.wohlfart.basic.hud.Hud;
 import net.wohlfart.basic.hud.HudImpl;
 import net.wohlfart.basic.hud.widgets.CamPositionLabel;
+import net.wohlfart.gl.elements.debug.Arrow;
 import net.wohlfart.gl.shader.VertexLight;
 import net.wohlfart.gl.spatial.CelestialBody;
+import net.wohlfart.gl.spatial.Model;
 import net.wohlfart.gl.texture.CelestialType;
 
 import org.lwjgl.opengl.GL11;
+import org.lwjgl.util.ReadableColor;
 import org.lwjgl.util.vector.Vector3f;
 import org.lwjgl.util.vector.Vector4f;
 import org.slf4j.Logger;
@@ -38,14 +42,18 @@ public class TestingState extends AbstractGraphicState implements InitializingBe
     public void setup() {
         super.setup();
 
-
         VertexLight lightA = new VertexLight(0.001f, new Vector4f(0.9f, 0.9f, 0.9f, 1.0f), new Vector3f( 2, 0, -8));
         VertexLight lightB = new VertexLight(0.001f, new Vector4f(0.9f, 0.9f, 0.9f, 1.0f), new Vector3f( -2, 0, -8));
+
+        Model cube = ModelToolkit.createCube();
+        cube.setPosition(new Vector3f(30,20,10));
 
         CelestialBody sun1 = new CelestialBody(1L, CelestialType.SUN, 1f);
         sun1.setLod(3);
         sun1.setPosition(lightA.getPosition());
         glowRenderBatch.add(sun1);
+        glowRenderBatch.add(cube);
+        glowRenderBatch.add(new Arrow(new Vector3f(0, 10, 0)).withColor(ReadableColor.RED));
         //CelestialBody sun2 = new CelestialBody(1L, CelestialType.SUN, 1f);
         //sun2.setPosition(lightB.getPosition());
         //renderSet.add(sun2);

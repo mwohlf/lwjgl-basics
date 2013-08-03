@@ -27,7 +27,7 @@ public class FrameBufferObject {
     public FrameBufferObject(int width, int height) {
         this.width = width;
         this.height = height;
-        this.filterMapping = GL11.GL_NEAREST;
+        this.filterMapping = GL11.GL_LINEAR;
     }
 
 
