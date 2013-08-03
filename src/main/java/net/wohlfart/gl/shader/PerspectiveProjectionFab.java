@@ -30,6 +30,9 @@ public class PerspectiveProjectionFab { // @formatter:on REVIEWED
 
     private static final float FIELD_OF_VIEW_LIMIT = 100; // << 180
 
+
+    // note that this matrix does not depend on the actual size of the screen
+    // but just on the aspect ratio
     public Matrix4f create(Settings settings) {
 
         final Matrix4f matrix = new Matrix4f();
@@ -70,11 +73,6 @@ public class PerspectiveProjectionFab { // @formatter:on REVIEWED
         matrix.m33 = 0;
 
         return matrix;
-    }
-
-    public Matrix4f createReduced(Settings settings, int textureWidth, int textureHeight) {
-        // TODO Auto-generated method stub
-        return null;
     }
 
 }

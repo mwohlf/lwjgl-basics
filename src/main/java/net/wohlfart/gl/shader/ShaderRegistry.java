@@ -8,8 +8,8 @@ public class ShaderRegistry {
     private static final String WIREFRAME_VERTEX_SHADER = "/shaders/wireframe/vertex.glsl";
     private static final String WIREFRAME_FRAGMENT_SHADER = "/shaders/wireframe/fragment.glsl";
 
-    private static final String HUD_VERTEX_SHADER = "/shaders/hud/vertex.glsl";
-    private static final String HUD_FRAGMENT_SHADER = "/shaders/hud/fragment.glsl";
+    private static final String PLAIN_VERTEX_SHADER = "/shaders/plain/vertex.glsl";
+    private static final String PLAIN_FRAGMENT_SHADER = "/shaders/plain/fragment.glsl";
 
     private static final String LIGHTING01_VERTEX_SHADER = "/shaders/lighting01/vertex.glsl";
     private static final String LIGHTING01_FRAGMENT_SHADER = "/shaders/lighting01/fragment.glsl";
@@ -44,7 +44,7 @@ public class ShaderRegistry {
     // wireframe only shader, planes  will be black, no shadow
     public static final IShaderProgram WIREFRAME_SHADER = new DefaultShaderProgram(WIREFRAME_VERTEX_SHADER, WIREFRAME_FRAGMENT_SHADER);
     // used in the hud
-    public static final IShaderProgram HUD_SHADER = new DefaultShaderProgram(HUD_VERTEX_SHADER, HUD_FRAGMENT_SHADER);
+    public static final IShaderProgram PLAIN_SHADER = new DefaultShaderProgram(PLAIN_VERTEX_SHADER, PLAIN_FRAGMENT_SHADER);
     // used in the hud
     public static final IShaderProgram FBO_STD_SHADER = new DefaultShaderProgram(FBO_STD_VERTEX_SHADER, FBO_STD_FRAGMENT_SHADER);
     public static final IShaderProgram FBO_BLUR_SHADER = new DefaultShaderProgram(FBO_BLUR_VERTEX_SHADER, FBO_BLUR_FRAGMENT_SHADER);

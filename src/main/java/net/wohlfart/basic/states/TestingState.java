@@ -4,7 +4,7 @@ import net.wohlfart.basic.container.DefaultRenderBatch;
 import net.wohlfart.basic.container.GlowRenderBatch;
 import net.wohlfart.basic.hud.Hud;
 import net.wohlfart.basic.hud.HudImpl;
-import net.wohlfart.basic.hud.widgets.SimpleLabel;
+import net.wohlfart.basic.hud.widgets.CamPositionLabel;
 import net.wohlfart.gl.shader.VertexLight;
 import net.wohlfart.gl.spatial.CelestialBody;
 import net.wohlfart.gl.texture.CelestialType;
@@ -39,11 +39,11 @@ public class TestingState extends AbstractGraphicState implements InitializingBe
         super.setup();
 
 
-        VertexLight lightA = new VertexLight(0.001f, new Vector4f(0.9f, 0.9f, 0.9f, 1.0f), new Vector3f( 0, 0, -3));
-        VertexLight lightB = new VertexLight(0.001f, new Vector4f(0.9f, 0.9f, 0.9f, 1.0f), new Vector3f( 0, 0, 3));
+        VertexLight lightA = new VertexLight(0.001f, new Vector4f(0.9f, 0.9f, 0.9f, 1.0f), new Vector3f( 2, 0, -8));
+        VertexLight lightB = new VertexLight(0.001f, new Vector4f(0.9f, 0.9f, 0.9f, 1.0f), new Vector3f( -2, 0, -8));
 
         CelestialBody sun1 = new CelestialBody(1L, CelestialType.SUN, 1f);
-        sun1.setLod(9);
+        sun1.setLod(3);
         sun1.setPosition(lightA.getPosition());
         glowRenderBatch.add(sun1);
         //CelestialBody sun2 = new CelestialBody(1L, CelestialType.SUN, 1f);
@@ -53,14 +53,14 @@ public class TestingState extends AbstractGraphicState implements InitializingBe
 
         //planetSet.add(sun1);
         //planetSet.add(sun2);
-        //CelestialBody sun3 = new CelestialBody(1L, CelestialType.SUN, 1f);
-        //sun3.setPosition(new Vector3f( 0, 0, 0));
-        //planetSet.add(sun3);
+        CelestialBody sun3 = new CelestialBody(1L, CelestialType.SUN, 1f);
+        sun3.setLod(3);
+        sun3.setPosition(lightB.getPosition());
+        planetSet.add(sun3);
         planetSet.setup();
 
         hud.setup();
-        hud.add(new SimpleLabel(0, 0, "test state at 0,0"));
-
+        hud.add(new CamPositionLabel(0, 0));
     }
 
     @Override
@@ -75,16 +75,15 @@ public class TestingState extends AbstractGraphicState implements InitializingBe
         GL11.glClearColor(0.7f, 0.7f, 0.9f, 0f);
         GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT | GL11.GL_STENCIL_BUFFER_BIT);
 
+        GL11.glEnable(GL11.GL_DEPTH_TEST);
+        GL11.glEnable(GL11.GL_BLEND);
+        GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+        planetSet.render();
+
         GL11.glClear(GL11.GL_DEPTH_BUFFER_BIT);
         GL11.glEnable(GL11.GL_DEPTH_TEST);
         GL11.glDisable(GL11.GL_BLEND);
         glowRenderBatch.render();
-
-
-        GL11.glDisable(GL11.GL_DEPTH_TEST);
-        GL11.glEnable(GL11.GL_BLEND);
-        GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-        planetSet.render();
 
         hud.render();
     }

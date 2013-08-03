@@ -18,7 +18,7 @@ public class HudImpl implements Hud {
 
     @Override
     public void setup() {
-        graphicContext = new DefaultGraphicContext(ShaderRegistry.HUD_SHADER);
+        graphicContext = new DefaultGraphicContext(ShaderRegistry.PLAIN_SHADER);
         graphicContext.setup();
     }
 
@@ -31,6 +31,8 @@ public class HudImpl implements Hud {
     public void render() {  // no uniform matrices needed since the hud is just 2D
         GraphicContextHolder.CONTEXT_HOLDER.setCurrentGraphicContext(graphicContext);
         GL11.glDisable(GL11.GL_DEPTH_TEST);
+        GL11.glEnable(GL11.GL_BLEND);
+        GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
         layer.render();
     }
 

@@ -85,6 +85,8 @@ public class CharacterMesh implements IsRenderable {
             return new CharacterMesh(vaoHandle, texId);
         }
 
+        // FIXME: instead of calculating the screen coords here we
+        // should do the calculations in the shader
         protected float[] createVertexStream() {
             Settings settings = CONTEXT_HOLDER.getSettings();
             final float screenWidth = settings.getWidth();
